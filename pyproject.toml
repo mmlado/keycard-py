@@ -1,0 +1,11 @@
+[build-system]
+requires = ["flit_core >=3.11,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "keycard"
+authors = [{name = "mmlado", email = "developer@mmlado.com"}]
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+dynamic = ["version", "description"]
