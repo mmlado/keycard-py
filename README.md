@@ -44,8 +44,8 @@ APDU commands are being implemented one by one.
 ## Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/keycard-python-sdk.git
-cd keycard-python-sdk
+git clone https://github.com/mmlado/keycard-py.git
+cd keycard-py
 python -m venv venv
 source venv/bin/activate
 pip install -e .
