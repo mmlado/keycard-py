@@ -1,6 +1,6 @@
 from typing import List, Tuple
 
-from keycard.exceptions import TLVParseError
+from keycard.exceptions import InvalidResponseError
 
 
 def parse_tlv(data: bytes) -> List[Tuple[int, bytes]]:
@@ -9,7 +9,7 @@ def parse_tlv(data: bytes) -> List[Tuple[int, bytes]]:
 
     while index < len(data):
         if index + 2 > len(data):
-            raise TLVParseError("Incomplete TLV header")
+            raise InvalidResponseError("Incomplete TLV header")
 
         tag = data[index]
         index += 1
@@ -18,7 +18,7 @@ def parse_tlv(data: bytes) -> List[Tuple[int, bytes]]:
         index += 1
 
         if index + length > len(data):
-            raise TLVParseError("Declared length exceeds available data")
+            raise InvalidResponseError("Declared length exceeds available data")
 
         value = data[index : index + length]
         index += length

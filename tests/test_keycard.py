@@ -7,8 +7,11 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from keycard.parsing.application_info import ApplicationInfo
 from keycard.keycard import KeyCard
 from .mocks import MockTransport
-from keycard.apdu import APDUResponse
-from keycard.exceptions import KeyCardError
+from keycard.exceptions import (
+    APDUError,
+    InvalidResponseError,
+    NotSelectedError
+)
 from keycard.parsing.capabilities import Capabilities
 
 
@@ -42,6 +45,21 @@ def test_select_applet_success():
 def test_select_failure():
     transport = MockTransport(b"", status_word=0x6A82)
     card = KeyCard(transport)
-    with pytest.raises(KeyCardError) as exc_info:
+    with pytest.raises(APDUError) as exc_info:
         card.select()
-    assert "6A82" in str(exc_info.value)
+    
+    assert exc_info.value.sw == 0x6A82
+    
+def test_init_without_select_raises_not_selected_error():
+    transport = MockTransport()
+    card = KeyCard(transport)
+    
+    with pytest.raises(NotSelectedError):
+        card.init(pin=b'123456', puk=b'123456789012', pairing_secret=b'secret-secret-secret-secret-secret-secret')
+
+def test_invalid_response_error():
+    transport = MockTransport(b'\xA4\x05\x8F')
+    card = KeyCard(transport)
+    
+    with pytest.raises(InvalidResponseError):
+        card.select()
