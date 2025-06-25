@@ -9,3 +9,7 @@ readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
 dynamic = ["version", "description"]
+
+dependencies = [
+    "pycryptodome"
+]

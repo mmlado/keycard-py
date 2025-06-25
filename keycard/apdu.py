@@ -1,9 +1,13 @@
 from dataclasses import dataclass
 
+
 @dataclass
+
+
 class APDUResponse:
     data: bytes
     status_word: int
+
 
 def encode_lv(value: bytes) -> bytes:
     if len(value) > 255:
