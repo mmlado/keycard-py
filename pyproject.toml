@@ -13,3 +13,6 @@ dynamic = ["version", "description"]
 dependencies = [
     "pycryptodome"
 ]
+
+[project.optional-dependencies]
+dev = ["pytest", "coverage"]
