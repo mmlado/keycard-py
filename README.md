@@ -2,6 +2,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)  
 [![Python](https://img.shields.io/badge/python-3.13.3-blue.svg)](https://www.python.org/downloads/)
+[![codecov](https://codecov.io/gh/mmlado/keycard-py/branch/main/graph/badge.svg)](https://codecov.io/gh/mmlado/keycard-py)
 
 A minimal, clean, fully native Python SDK for communicating with [Keycard](https://keycard.tech) smart cards.
 
@@ -12,7 +13,7 @@ APDU commands are being implemented one by one.
 
 - [x] SELECT
 - [x] INIT
-- [ ] IDENT
+- [x] IDENT
 - [ ] OPEN SECURE CHANNEL
 - [ ] MUTUALLY AUTHENTICATE
 - [ ] PAIR
