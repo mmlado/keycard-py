@@ -1,3 +1,8 @@
+"""
+This module defines constants used for communication with the Keycard applet
+via APDU commands.
+"""
+
 # Applet AID
 KEYCARD_AID: bytes = bytes.fromhex('A000000804000101')
 
