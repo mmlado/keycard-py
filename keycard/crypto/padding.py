@@ -4,9 +4,10 @@ def iso9797_m2_pad(data: bytes, block_size: int = 16) -> bytes:
 
     return data + padding
 
+
 def iso9797_m2_unpad(padded: bytes) -> bytes:
     index: int = padded.rfind(b'\x80')
     if index == -1:
         raise ValueError("Invalid padding")
-    
+
     return padded[:index]

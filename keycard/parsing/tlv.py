@@ -9,7 +9,8 @@ def parse_tlv(data: bytes) -> List[Tuple[int, bytes]]:
 
     while index < len(data):
         if index + 2 > len(data):
-            raise InvalidResponseError("Incomplete TLV header")
+            raise InvalidResponseError(
+                "Incomplete TLV header")
 
         tag = data[index]
         index += 1
@@ -18,9 +19,10 @@ def parse_tlv(data: bytes) -> List[Tuple[int, bytes]]:
         index += 1
 
         if index + length > len(data):
-            raise InvalidResponseError("Declared length exceeds available data")
+            raise InvalidResponseError(
+                "Declared length exceeds available data")
 
-        value = data[index : index + length]
+        value = data[index:index + length]
         index += length
 
         result.append((tag, value))

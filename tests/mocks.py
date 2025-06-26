@@ -1,5 +1,6 @@
 from keycard.transport import Transport, APDUResponse
 
+
 class MockTransport(Transport):
     """General purpose mock where you control responses"""
 

@@ -36,17 +36,20 @@ def test_parse_valid_public_key():
 
 def test_parse_invalid_point_coordinates():
     invalid_pubkey = b'\x04' + bytes([0xAA] * 64)
-    with pytest.raises(ValueError, match="EC point does not belong to the curve"):
+    with pytest.raises(ValueError,
+                       match='EC point does not belong to the curve'):
         parse_uncompressed_public_key(invalid_pubkey)
 
 
 def test_parse_invalid_prefix():
     invalid_pubkey = b'\x05' + bytes(64)
-    with pytest.raises(ValueError, match="Invalid uncompressed public key format"):
+    with pytest.raises(ValueError,
+                       match='Invalid uncompressed public key format'):
         parse_uncompressed_public_key(invalid_pubkey)
 
 
 def test_parse_wrong_length():
     invalid_pubkey = b'\x04' + bytes(32)  # too short
-    with pytest.raises(ValueError, match="Invalid uncompressed public key format"):
+    with pytest.raises(ValueError,
+                       match='Invalid uncompressed public key format'):
         parse_uncompressed_public_key(invalid_pubkey)

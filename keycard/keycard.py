@@ -14,7 +14,7 @@ from .crypto.ecc import (
 )
 from .crypto.padding import iso9797_m2_pad
 from .exceptions import (
-    APDUError, 
+    APDUError,
     NotSelectedError
 )
 from .parsing.application_info import ApplicationInfo
@@ -49,7 +49,8 @@ class KeyCard:
 
         ephemeral_key: ECC.EccKey = generate_ephemeral_keypair()
         our_pubkey_bytes: bytes = export_uncompressed_public_key(ephemeral_key)
-        card_pubkey: ECC.EccKey = parse_uncompressed_public_key(self.card_public_key)
+        card_pubkey: ECC.EccKey = parse_uncompressed_public_key(
+            self.card_public_key)
         shared_secret: bytes = derive_shared_secret(ephemeral_key, card_pubkey)
         aes_key: bytes = derive_aes_key(shared_secret)
         plaintext: bytes = pin + puk + pairing_secret

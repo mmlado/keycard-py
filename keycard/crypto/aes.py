@@ -1,6 +1,7 @@
 from Crypto.Hash import SHA256
 from Crypto.Cipher import AES
 
+
 def aes_cbc_encrypt(aes_key: bytes, iv: bytes, plaintext: bytes) -> bytes:
     if len(aes_key) != 32:
         raise ValueError("AES key must be 32 bytes")
@@ -11,6 +12,7 @@ def aes_cbc_encrypt(aes_key: bytes, iv: bytes, plaintext: bytes) -> bytes:
     ciphertext: bytes = cipher.encrypt(plaintext)
 
     return ciphertext
+
 
 def derive_aes_key(shared_secret: bytes) -> bytes:
     if len(shared_secret) != 32:

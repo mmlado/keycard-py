@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
-from ..exceptions import InvalidResponseError  
+from ..exceptions import InvalidResponseError
 from .capabilities import Capabilities
 from .tlv import parse_tlv
 
@@ -58,6 +58,6 @@ class ApplicationInfo:
         if len(data) < 2 + total_length:
             raise InvalidResponseError("Invalid total length in response")
 
-        inner_data = data[2 : 2 + total_length]
+        inner_data = data[2:2 + total_length]
 
         return parse_tlv(inner_data)

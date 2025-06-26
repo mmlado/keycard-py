@@ -61,7 +61,7 @@ def test_select_failure():
         card.select()
 
     assert exc_info.value.sw == 0x6A82
-    
+
 
 def test_init_without_select_raises_not_selected_error():
     transport = MockTransport()

@@ -1,7 +1,8 @@
 from Crypto.PublicKey import ECC
 
 
-def derive_shared_secret(private_key: ECC.EccKey, peer_public_key: ECC.EccKey) -> bytes:
+def derive_shared_secret(private_key: ECC.EccKey,
+                         peer_public_key: ECC.EccKey) -> bytes:
     # Perform ECDH manually
     shared_point: ECC.EccPoint = private_key.d * peer_public_key.pointQ
     x_shared: bytes = int(shared_point.x).to_bytes(32, byteorder='big')
