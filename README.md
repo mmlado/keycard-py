@@ -11,7 +11,7 @@ APDU commands are being implemented one by one.
 ## Supported Commands
 
 - [x] SELECT
-- [ ] INIT
+- [x] INIT
 - [ ] IDENT
 - [ ] OPEN SECURE CHANNEL
 - [ ] MUTUALLY AUTHENTICATE
