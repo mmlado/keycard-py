@@ -1,3 +1,4 @@
+import binascii
 import os
 import sys
 
@@ -17,6 +18,7 @@ from keycard.exceptions import (
 from keycard.keycard import KeyCard
 from keycard.parsing.application_info import ApplicationInfo
 from keycard.parsing.capabilities import Capabilities
+from keycard.parsing.identity import Identity
 
 
 sys.path.insert(0, os.path.abspath(
@@ -128,3 +130,36 @@ def test_apdu_error_on_init():
 
     with pytest.raises(ValueError):
         card.init(PIN, PUK, PAIRING_SECRET)
+
+
+def test_ident_valid():
+    challenge = bytes.fromhex('00' * 32)
+
+    response_tlv_hex = (
+        '8a62' +
+        '02cf86373c304339c1bf8c4bc4d9fd4c7b8b9cb8f1efc90d9d1668aa0bccb9794e'
+        '36a89f6edf7dd38a205d977f995fd6226e5dfc6c54b1b83b7a7a3c5229df4da6'
+        'e9104eec7c470a4ac4a5e264414f2752c6ead32ab607a82823520fc5cd9ad04d'
+        '00' +
+        '3044' +
+        '02' +
+        '2036a89f6edf7dd38a205d977f995fd6226e5dfc6c54b1b83b7a7a3c5229df4da6' +
+        '0220e9104eec7c470a4ac4a5e264414f2752c6ead32ab607a82823520fc5cd9ad04d'
+    )
+    response_data = binascii.unhexlify(response_tlv_hex)
+
+    mock = MockTransport(response_data)
+
+    card = KeyCard(mock)
+    identity = card.ident(challenge)
+
+    assert isinstance(identity, Identity)
+    assert identity.certificate[:1] == b'\x02'
+
+
+def test_ident_invalid_response():
+    mock = MockTransport(b'\x30\x02\x01\x00')
+
+    card = KeyCard(mock)
+    with pytest.raises(InvalidResponseError):
+        card.ident(b'\x00' * 32)

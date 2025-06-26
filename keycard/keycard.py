@@ -3,20 +3,23 @@ from typing import Optional
 from Crypto.PublicKey import ECC
 from Crypto.Random import get_random_bytes
 
+
 from . import constants
 from .apdu import APDUResponse, encode_lv
 from .crypto.aes import aes_cbc_encrypt, derive_aes_key
+
 from .crypto.ecc import (
     derive_shared_secret,
     export_uncompressed_public_key,
     generate_ephemeral_keypair,
-    parse_uncompressed_public_key,
+    parse_uncompressed_public_key
 )
 from .crypto.padding import iso9797_m2_pad
 from .exceptions import (
     APDUError,
     NotSelectedError
 )
+from .parsing.identity import Identity
 from .parsing.application_info import ApplicationInfo
 from .transport import Transport
 
@@ -78,3 +81,35 @@ class KeyCard:
 
         if response.status_word != constants.SW_SUCCESS:
             raise APDUError(response.status_word)
+
+    def ident(self, challenge: bytes) -> Identity:
+        """
+        Sends an identification challenge to the card and returns the parsed
+        card identity.
+
+        Args:
+            challenge (bytes): A byte sequence representing the challenge to
+                send to the card.
+
+        Returns:
+            CardIdentity: The parsed identity information returned by the card.
+
+        Raises:
+            APDUError: If the card responds with a status word other than
+                0x9000.
+        """
+        apdu = (
+            bytes([
+                constants.CLA_PROPRIETARY,
+                constants.INS_IDENT,
+                0x00,
+                0x00,
+                len(challenge)
+            ]) + challenge
+        )
+        response = self.transport.send_apdu(apdu)
+
+        if response.status_word != 0x9000:
+            raise APDUError(response.status_word)
+
+        return Identity.parse(response.data)
