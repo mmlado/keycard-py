@@ -126,8 +126,8 @@ def test_apdu_error_on_init():
     card = KeyCard(transport)
 
     # Fake select to set card_public_key
-    card.card_public_key = b'\x04' + bytes([0xAA]*64)
-
+    card._card_public_key = b'\x04' + bytes([0xAA]*64)
+    
     with pytest.raises(ValueError):
         card.init(PIN, PUK, PAIRING_SECRET)
 
