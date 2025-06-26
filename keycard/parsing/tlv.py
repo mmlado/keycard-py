@@ -4,6 +4,20 @@ from keycard.exceptions import InvalidResponseError
 
 
 def parse_tlv(data: bytes) -> List[Tuple[int, bytes]]:
+    """
+    Parses a byte sequence containing TLV (Tag-Length-Value) encoded data.
+
+    Args:
+        data (bytes): The byte sequence to parse.
+
+    Returns:
+        List[Tuple[int, bytes]]: A list of tuples, each containing the tag
+            (as an int) and the value (as bytes).
+
+    Raises:
+        InvalidResponseError: If the TLV header is incomplete or the declared
+            length exceeds the available data.
+    """
     index = 0
     result = []
 

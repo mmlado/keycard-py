@@ -15,4 +15,10 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest", "coverage"]
+dev = [
+    "pytest", 
+    "pytest-cov", 
+    "coverage",
+    "sphinx",
+    "sphinx-autodoc-typehints"
+]
