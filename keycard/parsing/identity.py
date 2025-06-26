@@ -1,11 +1,47 @@
+"""
+This module provides functionality for parsing and verifying ECC-based card
+identities using the NIST P-256 curve.
+"""
+
 from dataclasses import dataclass
 
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import ECC
 from Crypto.Signature import DSS
+from Crypto.Math.Numbers import Integer
 
 from ..exceptions import InvalidResponseError
 from ..parsing.tlv import parse_tlv
+
+
+# Constants for the P-256 curve
+# These values are taken from the NIST P-256 curve parameters.
+# Source:
+# https://www.nist.gov/itl/antd/groups/publications/documents/fips186-3.pdf
+# Section 5.1.2, Table 1: P-256 Parameters
+# Note: The values are in hexadecimal format and converted to integers.
+# The curve equation is y^2 = x^3 + ax + b over the finite field defined by p.
+_p = Integer(int(
+    'FFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF', 16))
+_a = Integer(int(
+    'FFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFC', 16))
+_b = Integer(int(
+    '5AC635D8AA3A93E7B3EBBD55769886BC651D06B0CC53B0F63BCE3C3E27D2604B', 16))
+
+
+def _decompress_point(data: bytes) -> ECC.EccKey:
+    if len(data) != 33 or data[0] not in (2, 3):
+        raise ValueError("Invalid compressed ECC point")
+
+    x = Integer.from_bytes(data[1:])
+    alpha = (x**3 + _a * x + _b) % _p
+    beta = alpha.sqrt(modulus=_p)
+
+    # Choose the y with the correct parity
+    if bool(beta.is_odd()) != (data[0] == 3):
+        beta = _p - beta
+
+    return ECC.construct(curve='P-256', point_x=int(x), point_y=int(beta))
 
 
 @dataclass
@@ -43,7 +79,7 @@ class Identity:
 
         compressed_pubkey = self.certificate[:33]
         try:
-            ecc_key = ECC.import_key(compressed_pubkey)
+            ecc_key = _decompress_point(compressed_pubkey)
         except ValueError:
             raise InvalidResponseError("Invalid ECC public key")
 
