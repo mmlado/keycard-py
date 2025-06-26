@@ -1,7 +1,30 @@
 class KeyCardError(Exception):
     """Base exception for Keycard SDK"""
+
     pass
 
-class TLVParseError(Exception):
-    """Exception raised for errors in TLV parsing."""
+
+class APDUError(KeyCardError):
+    """Raised when APDU returns non-success status word."""
+
+    def __init__(self, sw: int):
+        self.sw = sw
+        super().__init__(f"APDU failed with SW={sw:04X}")
+
+
+class InvalidResponseError(KeyCardError):
+    """Raised when response parsing fails."""
+
+    pass
+
+
+class NotInitializedError(KeyCardError):
+    """Raised when trying to use card public key before select()."""
+
+    pass
+
+
+class NotSelectedError(KeyCardError):
+    """Raised when trying to use card before select()."""
+
     pass

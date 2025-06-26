@@ -1,5 +1,6 @@
 from enum import IntFlag
 
+
 class Capabilities(IntFlag):
     SECURE_CHANNEL = 0x01
     KEY_MANAGEMENT = 0x02
