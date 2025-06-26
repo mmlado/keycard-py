@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>keycard package &#8212; KeyCard.py  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="keycard.crypto package" href="keycard.crypto.html" />
+    <link rel="prev" title="keycard" href="modules.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="keycard-package">
+<h1>keycard package<a class="headerlink" href="#keycard-package" title="Link to this heading">¶</a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="keycard.crypto.html">keycard.crypto package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="keycard.crypto.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keycard.crypto.html#module-keycard.crypto.aes">keycard.crypto.aes module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="keycard.crypto.html#keycard.crypto.aes.aes_cbc_encrypt"><code class="docutils literal notranslate"><span class="pre">aes_cbc_encrypt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="keycard.crypto.html#keycard.crypto.aes.derive_aes_key"><code class="docutils literal notranslate"><span class="pre">derive_aes_key()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="keycard.crypto.html#module-keycard.crypto.ecc">keycard.crypto.ecc module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="keycard.crypto.html#keycard.crypto.ecc.derive_shared_secret"><code class="docutils literal notranslate"><span class="pre">derive_shared_secret()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="keycard.crypto.html#keycard.crypto.ecc.export_uncompressed_public_key"><code class="docutils literal notranslate"><span class="pre">export_uncompressed_public_key()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="keycard.crypto.html#keycard.crypto.ecc.generate_ephemeral_keypair"><code class="docutils literal notranslate"><span class="pre">generate_ephemeral_keypair()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="keycard.crypto.html#keycard.crypto.ecc.parse_uncompressed_public_key"><code class="docutils literal notranslate"><span class="pre">parse_uncompressed_public_key()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="keycard.crypto.html#module-keycard.crypto.padding">keycard.crypto.padding module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="keycard.crypto.html#keycard.crypto.padding.iso9797_m2_pad"><code class="docutils literal notranslate"><span class="pre">iso9797_m2_pad()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="keycard.crypto.html#keycard.crypto.padding.iso9797_m2_unpad"><code class="docutils literal notranslate"><span class="pre">iso9797_m2_unpad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="keycard.crypto.html#module-keycard.crypto">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="keycard.parsing.html">keycard.parsing package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="keycard.parsing.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keycard.parsing.html#module-keycard.parsing.application_info">keycard.parsing.application_info module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo"><code class="docutils literal notranslate"><span class="pre">ApplicationInfo</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.capabilities"><code class="docutils literal notranslate"><span class="pre">ApplicationInfo.capabilities</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.ecc_public_key"><code class="docutils literal notranslate"><span class="pre">ApplicationInfo.ecc_public_key</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.instance_uid"><code class="docutils literal notranslate"><span class="pre">ApplicationInfo.instance_uid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.key_uid"><code class="docutils literal notranslate"><span class="pre">ApplicationInfo.key_uid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.version_major"><code class="docutils literal notranslate"><span class="pre">ApplicationInfo.version_major</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.version_minor"><code class="docutils literal notranslate"><span class="pre">ApplicationInfo.version_minor</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#id0"><code class="docutils literal notranslate"><span class="pre">ApplicationInfo.capabilities</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#id1"><code class="docutils literal notranslate"><span class="pre">ApplicationInfo.ecc_public_key</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#id2"><code class="docutils literal notranslate"><span class="pre">ApplicationInfo.instance_uid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#id3"><code class="docutils literal notranslate"><span class="pre">ApplicationInfo.key_uid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.parse"><code class="docutils literal notranslate"><span class="pre">ApplicationInfo.parse()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#id4"><code class="docutils literal notranslate"><span class="pre">ApplicationInfo.version_major</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#id5"><code class="docutils literal notranslate"><span class="pre">ApplicationInfo.version_minor</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="keycard.parsing.html#module-keycard.parsing.capabilities">keycard.parsing.capabilities module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.capabilities.Capabilities"><code class="docutils literal notranslate"><span class="pre">Capabilities</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.capabilities.Capabilities.SECURE_CHANNEL"><code class="docutils literal notranslate"><span class="pre">Capabilities.SECURE_CHANNEL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.capabilities.Capabilities.KEY_MANAGEMENT"><code class="docutils literal notranslate"><span class="pre">Capabilities.KEY_MANAGEMENT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.capabilities.Capabilities.CREDENTIALS_MANAGEMENT"><code class="docutils literal notranslate"><span class="pre">Capabilities.CREDENTIALS_MANAGEMENT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.capabilities.Capabilities.NDEF"><code class="docutils literal notranslate"><span class="pre">Capabilities.NDEF</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#id6"><code class="docutils literal notranslate"><span class="pre">Capabilities.CREDENTIALS_MANAGEMENT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#id7"><code class="docutils literal notranslate"><span class="pre">Capabilities.KEY_MANAGEMENT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#id8"><code class="docutils literal notranslate"><span class="pre">Capabilities.NDEF</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#id9"><code class="docutils literal notranslate"><span class="pre">Capabilities.SECURE_CHANNEL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.capabilities.Capabilities.parse"><code class="docutils literal notranslate"><span class="pre">Capabilities.parse()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="keycard.parsing.html#module-keycard.parsing.identity">keycard.parsing.identity module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.identity.Identity"><code class="docutils literal notranslate"><span class="pre">Identity</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.identity.Identity.certificate"><code class="docutils literal notranslate"><span class="pre">Identity.certificate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.identity.Identity.signature"><code class="docutils literal notranslate"><span class="pre">Identity.signature</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#id10"><code class="docutils literal notranslate"><span class="pre">Identity.certificate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.identity.Identity.parse"><code class="docutils literal notranslate"><span class="pre">Identity.parse()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#id11"><code class="docutils literal notranslate"><span class="pre">Identity.signature</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.identity.Identity.verify"><code class="docutils literal notranslate"><span class="pre">Identity.verify()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="keycard.parsing.html#module-keycard.parsing.tlv">keycard.parsing.tlv module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.tlv.parse_tlv"><code class="docutils literal notranslate"><span class="pre">parse_tlv()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="keycard.parsing.html#module-keycard.parsing">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-keycard.apdu">
+<span id="keycard-apdu-module"></span><h2>keycard.apdu module<a class="headerlink" href="#module-keycard.apdu" title="Link to this heading">¶</a></h2>
+<p>This module provides classes and functions for handling APDU (Application
+Protocol Data Unit) responses and encoding data in LV (Length-Value) format.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="keycard.apdu.APDUResponse">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.apdu.</span></span><span class="sig-name descname"><span class="pre">APDUResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_word</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.apdu.APDUResponse" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a response to an APDU (Application Protocol Data Unit) command.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.apdu.APDUResponse.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#keycard.apdu.APDUResponse.data" title="Link to this definition">¶</a></dt>
+<dd><p>The response data returned from the APDU command.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.apdu.APDUResponse.status_word">
+<span class="sig-name descname"><span class="pre">status_word</span></span><a class="headerlink" href="#keycard.apdu.APDUResponse.status_word" title="Link to this definition">¶</a></dt>
+<dd><p>The status word indicating the result of the APDU
+command.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></em><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">status_word</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="keycard.apdu.encode_lv">
+<span class="sig-prename descclassname"><span class="pre">keycard.apdu.</span></span><span class="sig-name descname"><span class="pre">encode_lv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.apdu.encode_lv" title="Link to this definition">¶</a></dt>
+<dd><p>Encodes the given bytes using LV (Length-Value) encoding.</p>
+<p>The function prepends the length of the input bytes as a single byte,
+followed by the value itself. The maximum supported length is 255 bytes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>value</strong> (<em>bytes</em>) – The data to encode.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The LV-encoded bytes.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bytes</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the input exceeds 255 bytes in length.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-keycard.constants">
+<span id="keycard-constants-module"></span><h2>keycard.constants module<a class="headerlink" href="#module-keycard.constants" title="Link to this heading">¶</a></h2>
+<p>This module defines constants used for communication with the Keycard applet
+via APDU commands.</p>
+</section>
+<section id="module-keycard.exceptions">
+<span id="keycard-exceptions-module"></span><h2>keycard.exceptions module<a class="headerlink" href="#module-keycard.exceptions" title="Link to this heading">¶</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="keycard.exceptions.APDUError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.exceptions.</span></span><span class="sig-name descname"><span class="pre">APDUError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.exceptions.APDUError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#keycard.exceptions.KeyCardError" title="keycard.exceptions.KeyCardError"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeyCardError</span></code></a></p>
+<p>Raised when APDU returns non-success status word.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="keycard.exceptions.InvalidResponseError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.exceptions.</span></span><span class="sig-name descname"><span class="pre">InvalidResponseError</span></span><a class="headerlink" href="#keycard.exceptions.InvalidResponseError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#keycard.exceptions.KeyCardError" title="keycard.exceptions.KeyCardError"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeyCardError</span></code></a></p>
+<p>Raised when response parsing fails.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="keycard.exceptions.KeyCardError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.exceptions.</span></span><span class="sig-name descname"><span class="pre">KeyCardError</span></span><a class="headerlink" href="#keycard.exceptions.KeyCardError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Base exception for Keycard SDK</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="keycard.exceptions.NotInitializedError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.exceptions.</span></span><span class="sig-name descname"><span class="pre">NotInitializedError</span></span><a class="headerlink" href="#keycard.exceptions.NotInitializedError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#keycard.exceptions.KeyCardError" title="keycard.exceptions.KeyCardError"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeyCardError</span></code></a></p>
+<p>Raised when trying to use card public key before select().</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="keycard.exceptions.NotSelectedError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.exceptions.</span></span><span class="sig-name descname"><span class="pre">NotSelectedError</span></span><a class="headerlink" href="#keycard.exceptions.NotSelectedError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#keycard.exceptions.KeyCardError" title="keycard.exceptions.KeyCardError"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeyCardError</span></code></a></p>
+<p>Raised when trying to use card before select().</p>
+</dd></dl>
+
+</section>
+<section id="module-keycard.keycard">
+<span id="keycard-keycard-module"></span><h2>keycard.keycard module<a class="headerlink" href="#module-keycard.keycard" title="Link to this heading">¶</a></h2>
+<p>This module provides the KeyCard class, which implements an interface for
+interacting with Keycard-compliant smart cards.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.keycard.</span></span><span class="sig-name descname"><span class="pre">KeyCard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a Keycard smart card interface.</p>
+<p>This class provides methods to interact with a Keycard-compliant smart
+card.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.transport">
+<span class="sig-name descname"><span class="pre">transport</span></span><a class="headerlink" href="#keycard.keycard.KeyCard.transport" title="Link to this definition">¶</a></dt>
+<dd><p>The transport interface used to communicate
+with the smart card.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#keycard.transport.Transport" title="keycard.transport.Transport">Transport</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.ident">
+<span class="sig-name descname"><span class="pre">ident</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">challenge</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.ident" title="Link to this definition">¶</a></dt>
+<dd><p>Sends an identification challenge to the card and returns the parsed
+card identity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.identity.Identity" title="keycard.parsing.identity.Identity"><code class="xref py py-class docutils literal notranslate"><span class="pre">Identity</span></code></a></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>challenge</strong> (<em>bytes</em>) – A byte sequence representing the challenge to
+send to the card.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The parsed identity information returned by the card.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="keycard.parsing.html#keycard.parsing.identity.Identity" title="keycard.parsing.identity.Identity">Identity</a></p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card responds with a status word other than
+    0x9000.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">puk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_secret</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.init" title="Link to this definition">¶</a></dt>
+<dd><p>Initializes the card with the provided PIN, PUK, and pairing secret.</p>
+<p>This method performs the following steps:
+1. Checks if the card is selected.
+2. Generates an ephemeral ECC key pair.
+3. Derives a shared secret using ECDH with the card’s public key.
+4. Derives an AES key from the shared secret.
+5. Concatenates and pads the PIN, PUK, and pairing secret.
+6. Encrypts the padded data using AES-CBC with a random IV.
+7. Constructs the APDU command with the public key, IV, and ciphertext.
+8. Sends the APDU to the card and checks the response status.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>pin</strong> (<em>bytes</em>) – The PIN code to initialize the card with.</p></li>
+<li><p><strong>puk</strong> (<em>bytes</em>) – The PUK code to initialize the card with.</p></li>
+<li><p><strong>pairing_secret</strong> (<em>bytes</em>) – The pairing secret for secure</p></li>
+<li><p><strong>communication.</strong></p></li>
+</ul>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#keycard.exceptions.NotSelectedError" title="keycard.exceptions.NotSelectedError"><strong>NotSelectedError</strong></a> – If the card is not selected.</p></li>
+<li><p><strong>ValueError</strong> – If the data to be sent exceeds the APDU size limit.</p></li>
+<li><p><a class="reference internal" href="#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns an error status word.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.select">
+<span class="sig-name descname"><span class="pre">select</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.select" title="Link to this definition">¶</a></dt>
+<dd><p>Selects the Keycard application on the smart card and retrieves
+application information.</p>
+<p>Sends a SELECT APDU command using the Keycard AID, checks for a
+successful response, parses the returned application information, and
+stores the card’s public key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo" title="keycard.parsing.application_info.ApplicationInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApplicationInfo</span></code></a></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Parsed information about the selected application.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo" title="keycard.parsing.application_info.ApplicationInfo">ApplicationInfo</a></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Return type:</dt><dd><p>ApplicationInfo</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns a status word indicating failure.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-keycard.transport">
+<span id="keycard-transport-module"></span><h2>keycard.transport module<a class="headerlink" href="#module-keycard.transport" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="keycard.transport.Transport">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.transport.</span></span><span class="sig-name descname"><span class="pre">Transport</span></span><a class="headerlink" href="#keycard.transport.Transport" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.transport.Transport.send_apdu">
+<span class="sig-name descname"><span class="pre">send_apdu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">apdu</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.transport.Transport.send_apdu" title="Link to this definition">¶</a></dt>
+<dd><p>Abstract transport interface</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#keycard.apdu.APDUResponse" title="keycard.apdu.APDUResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">APDUResponse</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-keycard">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-keycard" title="Link to this heading">¶</a></h2>
+<p>KeyCard Python SDK - APDU communication and cryptographic utilities.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">KeyCard.py</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">keycard</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">keycard package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">keycard</a><ul>
+      <li>Previous: <a href="modules.html" title="previous chapter">keycard</a></li>
+      <li>Next: <a href="keycard.crypto.html" title="next chapter">keycard.crypto package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, mmlado.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/keycard.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

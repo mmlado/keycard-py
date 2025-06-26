@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>keycard.parsing package &#8212; KeyCard.py  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="keycard.crypto package" href="keycard.crypto.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="keycard-parsing-package">
+<h1>keycard.parsing package<a class="headerlink" href="#keycard-parsing-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-keycard.parsing.application_info">
+<span id="keycard-parsing-application-info-module"></span><h2>keycard.parsing.application_info module<a class="headerlink" href="#module-keycard.parsing.application_info" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="keycard.parsing.application_info.ApplicationInfo">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.parsing.application_info.</span></span><span class="sig-name descname"><span class="pre">ApplicationInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">capabilities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ecc_public_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance_uid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_uid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version_major</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version_minor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.application_info.ApplicationInfo" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents parsed application information from a TLV-encoded response.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.application_info.ApplicationInfo.capabilities">
+<span class="sig-name descname"><span class="pre">capabilities</span></span><a class="headerlink" href="#keycard.parsing.application_info.ApplicationInfo.capabilities" title="Link to this definition">¶</a></dt>
+<dd><p>Parsed capabilities value, if present.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.application_info.ApplicationInfo.ecc_public_key">
+<span class="sig-name descname"><span class="pre">ecc_public_key</span></span><a class="headerlink" href="#keycard.parsing.application_info.ApplicationInfo.ecc_public_key" title="Link to this definition">¶</a></dt>
+<dd><p>ECC public key bytes, if present.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[bytes]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.application_info.ApplicationInfo.instance_uid">
+<span class="sig-name descname"><span class="pre">instance_uid</span></span><a class="headerlink" href="#keycard.parsing.application_info.ApplicationInfo.instance_uid" title="Link to this definition">¶</a></dt>
+<dd><p>Unique identifier for the application
+instance, if present.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[bytes]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.application_info.ApplicationInfo.key_uid">
+<span class="sig-name descname"><span class="pre">key_uid</span></span><a class="headerlink" href="#keycard.parsing.application_info.ApplicationInfo.key_uid" title="Link to this definition">¶</a></dt>
+<dd><p>Unique identifier for the key, if present.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[bytes]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.application_info.ApplicationInfo.version_major">
+<span class="sig-name descname"><span class="pre">version_major</span></span><a class="headerlink" href="#keycard.parsing.application_info.ApplicationInfo.version_major" title="Link to this definition">¶</a></dt>
+<dd><p>Major version number of the application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.application_info.ApplicationInfo.version_minor">
+<span class="sig-name descname"><span class="pre">version_minor</span></span><a class="headerlink" href="#keycard.parsing.application_info.ApplicationInfo.version_minor" title="Link to this definition">¶</a></dt>
+<dd><p>Minor version number of the application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">capabilities</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><span class="pre">]</span></em><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">ecc_public_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><span class="pre">]</span></em><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">instance_uid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><span class="pre">]</span></em><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">key_uid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><span class="pre">]</span></em><a class="headerlink" href="#id3" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.parsing.application_info.ApplicationInfo.parse">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.application_info.ApplicationInfo.parse" title="Link to this definition">¶</a></dt>
+<dd><p>Parses a byte sequence containing TLV-encoded application information
+and returns an ApplicationInfo instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#keycard.parsing.application_info.ApplicationInfo" title="keycard.parsing.application_info.ApplicationInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApplicationInfo</span></code></a></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>data</strong> (<em>bytes</em>) – The TLV-encoded response data to parse.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>An instance populated with the parsed application</dt><dd><p>information fields.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#keycard.parsing.application_info.ApplicationInfo" title="keycard.parsing.application_info.ApplicationInfo">ApplicationInfo</a></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>The function extracts the following fields from the TLV data:</dt><dd><ul class="simple">
+<li><p>version_major (int): Major version number (from tag 0x02).</p></li>
+<li><p>version_minor (int): Minor version number (from tag 0x02).</p></li>
+<li><p>instance_uid (bytes or None): Instance UID (from tag 0x8F).</p></li>
+<li><p>key_uid (bytes or None): Key UID (from tag 0x8E).</p></li>
+<li><p>ecc_public_key (bytes or None): ECC public key (from tag 0x80).</p></li>
+<li><dl class="simple">
+<dt>capabilities (Capabilities or None): Capabilities object</dt><dd><p>(from tag 0x8D).</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Any exceptions raised by ApplicationInfo._parse_response or</strong> – </p></li>
+<li><p><strong>Capabilities.parse.</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">version_major</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#id4" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">version_minor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#id5" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-keycard.parsing.capabilities">
+<span id="keycard-parsing-capabilities-module"></span><h2>keycard.parsing.capabilities module<a class="headerlink" href="#module-keycard.parsing.capabilities" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="keycard.parsing.capabilities.Capabilities">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.parsing.capabilities.</span></span><span class="sig-name descname"><span class="pre">Capabilities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.capabilities.Capabilities" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntFlag</span></code></p>
+<p>An enumeration representing the various capabilities supported by a device
+or application.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.capabilities.Capabilities.SECURE_CHANNEL">
+<span class="sig-name descname"><span class="pre">SECURE_CHANNEL</span></span><a class="headerlink" href="#keycard.parsing.capabilities.Capabilities.SECURE_CHANNEL" title="Link to this definition">¶</a></dt>
+<dd><p>Indicates support for secure channel
+communication (0x01).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.capabilities.Capabilities.KEY_MANAGEMENT">
+<span class="sig-name descname"><span class="pre">KEY_MANAGEMENT</span></span><a class="headerlink" href="#keycard.parsing.capabilities.Capabilities.KEY_MANAGEMENT" title="Link to this definition">¶</a></dt>
+<dd><p>Indicates support for key management operations
+(0x02).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.capabilities.Capabilities.CREDENTIALS_MANAGEMENT">
+<span class="sig-name descname"><span class="pre">CREDENTIALS_MANAGEMENT</span></span><a class="headerlink" href="#keycard.parsing.capabilities.Capabilities.CREDENTIALS_MANAGEMENT" title="Link to this definition">¶</a></dt>
+<dd><p>Indicates support for credentials
+management (0x04).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.capabilities.Capabilities.NDEF">
+<span class="sig-name descname"><span class="pre">NDEF</span></span><a class="headerlink" href="#keycard.parsing.capabilities.Capabilities.NDEF" title="Link to this definition">¶</a></dt>
+<dd><p>Indicates support for NDEF (NFC Data Exchange Format)
+operations (0x08).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">CREDENTIALS_MANAGEMENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#id6" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">KEY_MANAGEMENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#id7" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">NDEF</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8</span></em><a class="headerlink" href="#id8" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">SECURE_CHANNEL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#id9" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.parsing.capabilities.Capabilities.parse">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.capabilities.Capabilities.parse" title="Link to this definition">¶</a></dt>
+<dd><p>Parses an integer value and returns a corresponding Capabilities
+instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#keycard.parsing.capabilities.Capabilities" title="keycard.parsing.capabilities.Capabilities"><code class="xref py py-class docutils literal notranslate"><span class="pre">Capabilities</span></code></a></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>value</strong> (<em>int</em>) – The integer value representing the capabilities.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An instance of the Capabilities class corresponding
+to the given value.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#keycard.parsing.capabilities.Capabilities" title="keycard.parsing.capabilities.Capabilities">Capabilities</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-keycard.parsing.identity">
+<span id="keycard-parsing-identity-module"></span><h2>keycard.parsing.identity module<a class="headerlink" href="#module-keycard.parsing.identity" title="Link to this heading">¶</a></h2>
+<p>This module provides functionality for parsing and verifying ECC-based card
+identities using the NIST P-256 curve.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="keycard.parsing.identity.Identity">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.parsing.identity.</span></span><span class="sig-name descname"><span class="pre">Identity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">certificate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signature</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.identity.Identity" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>CardIdentity represents a card’s identity, including its certificate and
+signature.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.identity.Identity.certificate">
+<span class="sig-name descname"><span class="pre">certificate</span></span><a class="headerlink" href="#keycard.parsing.identity.Identity.certificate" title="Link to this definition">¶</a></dt>
+<dd><p>The ECC public key certificate, expected to be
+at least 33 bytes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.identity.Identity.signature">
+<span class="sig-name descname"><span class="pre">signature</span></span><a class="headerlink" href="#keycard.parsing.identity.Identity.signature" title="Link to this definition">¶</a></dt>
+<dd><p>The signature associated with the certificate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">certificate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></em><a class="headerlink" href="#id10" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.parsing.identity.Identity.parse">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.identity.Identity.parse" title="Link to this definition">¶</a></dt>
+<dd><p>Parses a byte sequence containing TLV-encoded card identity data and
+extracts the certificate and signature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#keycard.parsing.identity.Identity" title="keycard.parsing.identity.Identity"><code class="xref py py-class docutils literal notranslate"><span class="pre">Identity</span></code></a></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>data</strong> (<em>bytes</em>) – The TLV-encoded data to parse.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An object containing the extracted certificate and
+signature.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>CardIdentity</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidResponseError" title="keycard.exceptions.InvalidResponseError"><strong>InvalidResponseError</strong></a> – If either the certificate or signature is</p></li>
+<li><p><strong>missing from the parsed data.</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id11">
+<span class="sig-name descname"><span class="pre">signature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></em><a class="headerlink" href="#id11" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.parsing.identity.Identity.verify">
+<span class="sig-name descname"><span class="pre">verify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">challenge</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.identity.Identity.verify" title="Link to this definition">¶</a></dt>
+<dd><p>Verifies the authenticity of a challenge using the certificate’s ECC
+public key and a signature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>challenge</strong> (<em>bytes</em>) – The challenge data to verify.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>True if the signature is valid for the given challenge,</dt><dd><p>False otherwise.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidResponseError" title="keycard.exceptions.InvalidResponseError"><strong>InvalidResponseError</strong></a> – If the certificate is too short or contains</p></li>
+<li><p><strong>an invalid ECC public key.</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-keycard.parsing.tlv">
+<span id="keycard-parsing-tlv-module"></span><h2>keycard.parsing.tlv module<a class="headerlink" href="#module-keycard.parsing.tlv" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="keycard.parsing.tlv.parse_tlv">
+<span class="sig-prename descclassname"><span class="pre">keycard.parsing.tlv.</span></span><span class="sig-name descname"><span class="pre">parse_tlv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.tlv.parse_tlv" title="Link to this definition">¶</a></dt>
+<dd><p>Parses a byte sequence containing TLV (Tag-Length-Value) encoded data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code>]]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>data</strong> (<em>bytes</em>) – The byte sequence to parse.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>A list of tuples, each containing the tag</dt><dd><p>(as an int) and the value (as bytes).</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[Tuple[int, bytes]]</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidResponseError" title="keycard.exceptions.InvalidResponseError"><strong>InvalidResponseError</strong></a> – If the TLV header is incomplete or the declared
+    length exceeds the available data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-keycard.parsing">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-keycard.parsing" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">KeyCard.py</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">keycard</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="keycard.html">keycard package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">keycard</a><ul>
+  <li><a href="keycard.html">keycard package</a><ul>
+      <li>Previous: <a href="keycard.crypto.html" title="previous chapter">keycard.crypto package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, mmlado.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/keycard.parsing.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
