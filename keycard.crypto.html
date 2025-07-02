@@ -204,65 +204,8 @@ P-256 curve.</p>
 </dd></dl>
 
 </section>
-<section id="module-keycard.crypto.padding">
-<span id="keycard-crypto-padding-module"></span><h2>keycard.crypto.padding module<a class="headerlink" href="#module-keycard.crypto.padding" title="Link to this heading">¶</a></h2>
-<p>Provides ISO/IEC 9797-1 Padding Method 2 (ISO9797 M2) functions for block
-cipher operations.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="keycard.crypto.padding.iso9797_m2_pad">
-<span class="sig-prename descclassname"><span class="pre">keycard.crypto.padding.</span></span><span class="sig-name descname"><span class="pre">iso9797_m2_pad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.crypto.padding.iso9797_m2_pad" title="Link to this definition">¶</a></dt>
-<dd><p>Pads the input data according to ISO/IEC 9797-1 Padding Method 2 (also
-known as ISO/IEC 9797-1 Padding Method 2 or ISO 7816-4 padding).</p>
-<p>This method appends a single byte with the value 0x80 to the data,
-followed by zero or more bytes with the value 0x00, so that the total
-length of the padded data is a multiple of the block size.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>data</strong> (<em>bytes</em>) – The input data to be padded.</p></li>
-<li><p><strong>block_size</strong> (<em>int</em><em>, </em><em>optional</em>) – The block size to pad to. Defaults to 16.</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The padded data.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bytes</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="keycard.crypto.padding.iso9797_m2_unpad">
-<span class="sig-prename descclassname"><span class="pre">keycard.crypto.padding.</span></span><span class="sig-name descname"><span class="pre">iso9797_m2_unpad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">padded</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.crypto.padding.iso9797_m2_unpad" title="Link to this definition">¶</a></dt>
-<dd><p>Remove ISO/IEC 9797-1 Padding Method 2 (ISO9797 M2) from the given byte
-sequence.</p>
-<p>This padding method appends a single byte 0x80 followed by zero or more
-0x00 bytes.
-The function locates the last occurrence of 0x80 and removes it along
-with any trailing 0x00 bytes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>padded</strong> (<em>bytes</em>) – The padded byte sequence.</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The original unpadded byte sequence.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bytes</p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ValueError</strong> – If the padding is invalid (i.e., 0x80 byte not found).</p>
-</dd>
-</dl>
-</dd></dl>
-
+<section id="keycard-crypto-padding-module">
+<h2>keycard.crypto.padding module<a class="headerlink" href="#keycard-crypto-padding-module" title="Link to this heading">¶</a></h2>
 </section>
 <section id="module-keycard.crypto">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-keycard.crypto" title="Link to this heading">¶</a></h2>

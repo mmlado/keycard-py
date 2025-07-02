@@ -53,11 +53,7 @@
 <li class="toctree-l3"><a class="reference internal" href="keycard.crypto.html#keycard.crypto.ecc.parse_uncompressed_public_key"><code class="docutils literal notranslate"><span class="pre">parse_uncompressed_public_key()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="keycard.crypto.html#module-keycard.crypto.padding">keycard.crypto.padding module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="keycard.crypto.html#keycard.crypto.padding.iso9797_m2_pad"><code class="docutils literal notranslate"><span class="pre">iso9797_m2_pad()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="keycard.crypto.html#keycard.crypto.padding.iso9797_m2_unpad"><code class="docutils literal notranslate"><span class="pre">iso9797_m2_unpad()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="keycard.crypto.html#keycard-crypto-padding-module">keycard.crypto.padding module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="keycard.crypto.html#module-keycard.crypto">Module contents</a></li>
 </ul>
 </li>
@@ -315,6 +311,30 @@ send to the card.</p>
 <li><p><strong>ValueError</strong> – If the data to be sent exceeds the APDU size limit.</p></li>
 <li><p><a class="reference internal" href="#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns an error status word.</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.open_secure_channel">
+<span class="sig-name descname"><span class="pre">open_secure_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pairing_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.open_secure_channel" title="Link to this definition">¶</a></dt>
+<dd><p>Establishes a secure communication channel with the card using an
+ephemeral ECDH key exchange.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>pairing_index</strong> (<em>int</em>) – The index of the pairing to use for the
+secure channel.</p></li>
+<li><p><strong>pairing_key</strong> (<em>bytes</em>) – The secret key associated with the pairing
+index.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#keycard.exceptions.NotSelectedError" title="keycard.exceptions.NotSelectedError"><strong>NotSelectedError</strong></a> – If the card is not selected or the public
+    key is missing.</p>
 </dd>
 </dl>
 </dd></dl>

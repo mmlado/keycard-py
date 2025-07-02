@@ -128,6 +128,30 @@ send to the card.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.open_secure_channel">
+<span class="sig-name descname"><span class="pre">open_secure_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pairing_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.open_secure_channel" title="Link to this definition">¶</a></dt>
+<dd><p>Establishes a secure communication channel with the card using an
+ephemeral ECDH key exchange.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>pairing_index</strong> (<em>int</em>) – The index of the pairing to use for the
+secure channel.</p></li>
+<li><p><strong>pairing_key</strong> (<em>bytes</em>) – The secret key associated with the pairing
+index.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.exceptions.NotSelectedError" title="keycard.exceptions.NotSelectedError"><strong>NotSelectedError</strong></a> – If the card is not selected or the public
+    key is missing.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.select">
 <span class="sig-name descname"><span class="pre">select</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.select" title="Link to this definition">¶</a></dt>
 <dd><p>Selects the Keycard application on the smart card and retrieves
