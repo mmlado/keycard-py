@@ -229,3 +229,64 @@ def test_open_secure_channel_not_selected():
 
     with pytest.raises(NotSelectedError):
         card.open_secure_channel(0, b'B' * 32)
+
+
+def test_mutually_authenticate_success(monkeypatch):
+    class DummySession:
+        def __init__(self):
+            self.authenticated = False
+
+        def wrap_apdu(self, cla, ins, p1, p2, data):
+            return cla, ins, p1, p2, data
+
+        def unwrap_response(self, response):
+            return (b'\xAB' * 32, 0x9000)
+
+    transport = MockTransport(b'')
+
+    card = KeyCard(transport)
+    card.session = DummySession()
+
+    card.mutually_authenticate()
+
+    assert card.session.authenticated is True
+    assert isinstance(card.client_challenge, bytes)
+    assert isinstance(card.card_challenge, bytes)
+    assert len(card.client_challenge) == 32
+    assert card.card_challenge == b'\xAB' * 32
+
+
+def test_mutually_authenticate_apdu_error(monkeypatch):
+    class DummySession:
+        def wrap_apdu(self, cla, ins, p1, p2, data):
+            return cla, ins, p1, p2, data
+
+        def unwrap_response(self, response):
+            return (b'\x00' * 32, 0x6A82)
+
+    transport = MockTransport(b'')
+
+    card = KeyCard(transport)
+    card.session = DummySession()
+
+    with pytest.raises(APDUError) as exc_info:
+        card.mutually_authenticate()
+    assert exc_info.value.sw == 0x6A82
+
+
+def test_mutually_authenticate_invalid_length(monkeypatch):
+    class DummySession:
+        def wrap_apdu(self, cla, ins, p1, p2, data):
+            return cla, ins, p1, p2, data
+
+        def unwrap_response(self, response):
+            return (b'\x01\x02', 0x9000)
+
+    transport = MockTransport(b'')
+
+    card = KeyCard(transport)
+    card.session = DummySession()
+
+    with pytest.raises(ValueError) as exc_info:
+        card.mutually_authenticate()
+    assert '32 bytes' in str(exc_info.value)

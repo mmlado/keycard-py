@@ -14,6 +14,7 @@ INS_SELECT: int = 0xA4
 INS_INIT: int = 0xFE
 INS_IDENT: int = 0x14
 INS_OPEN_SECURE_CHANNEL: int = 0x10
+INS_MUTUALLY_AUTHENTICATE: int = 0x11
 
 # Status words
 SW_SUCCESS: int = 0x9000
