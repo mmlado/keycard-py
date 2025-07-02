@@ -2,6 +2,7 @@ import os
 import sys
 
 from Crypto.PublicKey import ECC
+from Crypto.Util.Padding import pad
 
 from keycard.crypto.aes import (
     derive_aes_key,
@@ -11,7 +12,6 @@ from keycard.crypto.ecc import (
     parse_uncompressed_public_key,
     derive_shared_secret
 )
-from keycard.crypto.padding import iso9797_m2_pad
 
 
 sys.path.insert(0, os.path.abspath(
@@ -45,7 +45,7 @@ def test_full_crypto_vector():
     puk = b'123456789012'
     pairing_secret = b'A' * 32
     plaintext = pin + puk + pairing_secret
-    padded = iso9797_m2_pad(plaintext)
+    padded = pad(plaintext, 16, style='iso7816')
     ciphertext = aes_cbc_encrypt(aes_key, iv, padded)
 
     # Assert full correctness

@@ -48,7 +48,7 @@ def clean(c):
 
 
 @task
-def clean_all(c):
+def cleanall(c):
     """Thorough cleanup of all build, cache, and pycache files."""
     patterns = [
         "__pycache__",

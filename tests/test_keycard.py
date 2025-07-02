@@ -127,7 +127,7 @@ def test_apdu_error_on_init():
 
     # Fake select to set card_public_key
     card._card_public_key = b'\x04' + bytes([0xAA]*64)
-    
+
     with pytest.raises(ValueError):
         card.init(PIN, PUK, PAIRING_SECRET)
 
@@ -163,3 +163,69 @@ def test_ident_invalid_response():
     card = KeyCard(mock)
     with pytest.raises(InvalidResponseError):
         card.ident(b'\x00' * 32)
+
+
+def test_open_secure_channel_success(monkeypatch):
+    card_key = generate_ephemeral_keypair()
+
+    salt = b'\x11' * 32
+    seed_iv = b'\x22' * 16
+    response = salt + seed_iv
+
+    ephemeral_key = generate_ephemeral_keypair()
+    monkeypatch.setattr(
+        'Crypto.PublicKey.ECC.generate',
+        lambda curve: ephemeral_key
+    )
+
+    class DummySession:
+        def __init__(self, enc_key, mac_key, iv):
+            self.enc_key = enc_key
+            self.mac_key = mac_key
+            self.iv = iv
+
+    monkeypatch.setattr('keycard.keycard.SecureSession', DummySession)
+
+    # Patch derive_shared_secret to return a fixed value
+    monkeypatch.setattr(
+        'keycard.keycard.derive_shared_secret',
+        lambda a, b: b'sharedsecret'
+    )
+
+    class DummyDigest:
+        def __init__(self):
+            self._data = b''
+
+        def update(self, data):
+            self._data += data
+
+        def digest(self):
+            return b'A' * 64
+
+    monkeypatch.setattr(
+        'keycard.keycard.SHA512',
+        type('SHA512', (), {"new": DummyDigest})
+    )
+
+    transport = MockTransport(response)
+    card = KeyCard(transport)
+    card.public_key = card_key.public_key()
+
+    pairing_index = 1
+    pairing_key = b'B' * 32
+
+    card.open_secure_channel(pairing_index, pairing_key)
+
+    assert isinstance(card.secure_session, DummySession)
+    assert card.secure_session.enc_key == b'A' * 32
+    assert card.secure_session.mac_key == b'A' * 32
+    assert card.secure_session.iv == seed_iv
+
+
+def test_open_secure_channel_not_selected():
+    transport = MockTransport(b'')
+    card = KeyCard(transport)
+    card.public_key = None
+
+    with pytest.raises(NotSelectedError):
+        card.open_secure_channel(0, b'B' * 32)
