@@ -15,7 +15,7 @@ APDU commands are being implemented one by one.
 - [x] INIT
 - [x] IDENT
 - [x] OPEN SECURE CHANNEL
-- [ ] MUTUALLY AUTHENTICATE
+- [x] MUTUALLY AUTHENTICATE
 - [ ] PAIR
 - [ ] UNPAIR
 - [ ] GET STATUS

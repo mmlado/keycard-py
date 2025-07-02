@@ -13,7 +13,9 @@ def session():
     pairing_key = get_random_bytes(32)
     salt = get_random_bytes(16)
     seed_iv = get_random_bytes(16)
-    return SecureSession.open(shared_secret, pairing_key, salt, seed_iv)
+    session = SecureSession.open(shared_secret, pairing_key, salt, seed_iv)
+    session.authenticated = True
+    return session
 
 
 def test_derive_keys_length():

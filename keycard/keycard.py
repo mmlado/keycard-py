@@ -41,8 +41,14 @@ class KeyCard:
             with the smart card.
     """
     def __init__(self, transport: Transport) -> None:
+        if not transport:
+            raise ValueError("Transport not initialized")
+
         self.transport: Transport = transport
         self._card_public_key: Optional[bytes] = None
+        self.secure_session: Optional[SecureSession] = None
+        self.client_challenge: Optional[bytes] = None
+        self.card_challenge: Optional[bytes] = None
 
     def select(self) -> ApplicationInfo:
         """
@@ -222,3 +228,37 @@ class KeyCard:
             mac_key=mac_key,
             iv=seed_iv
         )
+
+    def mutually_authenticate(self) -> None:
+        """
+        Performs mutual authentication between the client and the card.
+
+        Raises:
+            APDUError: If the response status word (SW) is not 0x9000.
+            ValueError: If the response to MUTUALLY AUTHENTICATE is not
+                32 bytes.
+        """
+        client_challenge = get_random_bytes(32)
+
+        cla, ins, p1, p2, data = self.session.wrap_apdu(
+            cla=constants.CLA_PROPRIETARY,
+            ins=constants.INS_MUTUALLY_AUTHENTICATE,
+            p1=0x00,
+            p2=0x00,
+            data=client_challenge
+        )
+
+        response = self.transport.send_apdu(bytes([cla, ins, p1, p2]) + data)
+
+        plaintext, sw = self.session.unwrap_response(response)
+
+        if sw != 0x9000:
+            raise APDUError(sw)
+
+        if len(plaintext) != 32:
+            raise ValueError(
+                'Response to MUTUALLY AUTHENTICATE is not 32 bytes')
+
+        self.client_challenge = client_challenge
+        self.card_challenge = plaintext
+        self.session.authenticated = True
