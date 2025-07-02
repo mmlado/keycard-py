@@ -2,12 +2,12 @@
 This module provides the KeyCard class, which implements an interface for
 interacting with Keycard-compliant smart cards.
 """
-
 from typing import Optional
 
 from Crypto.PublicKey import ECC
 from Crypto.Random import get_random_bytes
-
+from Crypto.Hash import SHA512
+from Crypto.Util.Padding import pad
 
 from . import constants
 from .apdu import APDUResponse, encode_lv
@@ -19,13 +19,13 @@ from .crypto.ecc import (
     generate_ephemeral_keypair,
     parse_uncompressed_public_key
 )
-from .crypto.padding import iso9797_m2_pad
 from .exceptions import (
     APDUError,
     NotSelectedError
 )
 from .parsing.identity import Identity
 from .parsing.application_info import ApplicationInfo
+from .secure_channel import SecureSession
 from .transport import Transport
 
 
@@ -112,7 +112,7 @@ class KeyCard:
         shared_secret: bytes = derive_shared_secret(ephemeral_key, card_pubkey)
         aes_key: bytes = derive_aes_key(shared_secret)
         plaintext: bytes = pin + puk + pairing_secret
-        plaintext_padded: bytes = iso9797_m2_pad(plaintext)
+        plaintext_padded: bytes = pad(plaintext, 16, style="iso7816")
         iv: bytes = get_random_bytes(16)
         ciphertext: bytes = aes_cbc_encrypt(aes_key, iv, plaintext_padded)
         data: bytes = encode_lv(our_pubkey_bytes) + iv + ciphertext
@@ -168,3 +168,57 @@ class KeyCard:
             raise APDUError(response.status_word)
 
         return Identity.parse(response.data)
+
+    def open_secure_channel(
+        self,
+        pairing_index: int,
+        pairing_key: bytes
+    ) -> None:
+        """
+        Establishes a secure communication channel with the card using an
+        ephemeral ECDH key exchange.
+
+        Args:
+            pairing_index (int): The index of the pairing to use for the
+                secure channel.
+            pairing_key (bytes): The secret key associated with the pairing
+                index.
+
+        Raises:
+            NotSelectedError: If the card is not selected or the public
+                key is missing.
+        """
+        if not self.public_key:
+            raise NotSelectedError("Card not selected or missing public key")
+
+        ephemeral_key = ECC.generate(curve="secp256k1")
+        eph_pub_bytes = ephemeral_key.public_key().export_key(
+            format='DER')[27:]
+
+        response: APDUResponse = self.transport.send_apdu(
+            bytes([
+                constants.CLA_PROPRIETARY,
+                constants.INS_OPEN_SECURE_CHANNEL,
+                pairing_index,
+                0x00,
+                len(eph_pub_bytes)
+            ]) + eph_pub_bytes
+        )
+
+        salt = response.data[:32]
+        seed_iv = response.data[32:]
+
+        shared_secret = derive_shared_secret(ephemeral_key, self.public_key)
+
+        digest = SHA512.new()
+        digest.update(shared_secret + pairing_key + salt)
+        session_bytes = digest.digest()
+
+        enc_key = session_bytes[:32]
+        mac_key = session_bytes[32:]
+
+        self.secure_session = SecureSession(
+            enc_key=enc_key,
+            mac_key=mac_key,
+            iv=seed_iv
+        )
