@@ -358,6 +358,42 @@ index.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.pair">
+<span class="sig-name descname"><span class="pre">pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shared_secret</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.pair" title="Link to this definition">¶</a></dt>
+<dd><p>Establishes a secure pairing with the card using a shared secret.</p>
+<p>This method performs a challenge-response protocol to mutually
+authenticate the client and the card, and derives a pairing key for
+future secure communication.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>shared_secret</strong> (<em>bytes</em>) – A 32-byte shared secret used for
+authentication.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>A tuple containing the pairing index (int) and</dt><dd><p>the derived pairing key (bytes).</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[int, bytes]</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the shared secret is not 32 bytes long.</p></li>
+<li><p><a class="reference internal" href="#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns an unexpected status word.</p></li>
+<li><p><a class="reference internal" href="#keycard.exceptions.InvalidResponseError" title="keycard.exceptions.InvalidResponseError"><strong>InvalidResponseError</strong></a> – If the card response has an unexpected
+    length or the cryptogram does not match.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.select">
 <span class="sig-name descname"><span class="pre">select</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.select" title="Link to this definition">¶</a></dt>
 <dd><p>Selects the Keycard application on the smart card and retrieves
