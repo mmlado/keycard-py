@@ -6,7 +6,7 @@ from typing import Optional
 
 from Crypto.PublicKey import ECC
 from Crypto.Random import get_random_bytes
-from Crypto.Hash import SHA512
+from Crypto.Hash import SHA256, SHA512
 from Crypto.Util.Padding import pad
 
 from . import constants
@@ -21,6 +21,7 @@ from .crypto.ecc import (
 )
 from .exceptions import (
     APDUError,
+    InvalidResponseError,
     NotSelectedError
 )
 from .parsing.identity import Identity
@@ -262,3 +263,74 @@ class KeyCard:
         self.client_challenge = client_challenge
         self.card_challenge = plaintext
         self.session.authenticated = True
+
+    def pair(self, shared_secret: bytes) -> tuple[int, bytes]:
+        """
+        Establishes a secure pairing with the card using a shared secret.
+
+        This method performs a challenge-response protocol to mutually
+        authenticate the client and the card, and derives a pairing key for
+        future secure communication.
+
+        Args:
+            shared_secret (bytes): A 32-byte shared secret used for
+                authentication.
+
+        Returns:
+            tuple[int, bytes]: A tuple containing the pairing index (int) and
+                the derived pairing key (bytes).
+
+        Raises:
+            ValueError: If the shared secret is not 32 bytes long.
+            APDUError: If the card returns an unexpected status word.
+            InvalidResponseError: If the card response has an unexpected
+                length or the cryptogram does not match.
+        """
+        if len(shared_secret) != 32:
+            raise ValueError("Shared secret must be 32 bytes")
+
+        client_challenge = get_random_bytes(32)
+
+        response = self.transport.send_apdu(
+            bytes([
+                constants.CLA_PROPRIETARY,
+                constants.INS_PAIR,
+                0x00,
+                0x00
+            ]) + client_challenge
+        )
+
+        if response.status_word != 0x9000:
+            raise APDUError(response.status_word)
+        if len(response.data) != 64:
+            raise InvalidResponseError("Unexpected response length")
+
+        card_cryptogram = response.data[:32]
+        card_challenge = response.data[32:]
+
+        expected = SHA256.new(shared_secret + client_challenge).digest()
+        if card_cryptogram != expected:
+            raise InvalidResponseError("Card cryptogram mismatch")
+
+        client_cryptogram = SHA256.new(shared_secret + card_challenge).digest()
+
+        response = self.transport.send_apdu(
+            bytes([
+                constants.CLA_PROPRIETARY,
+                constants.INS_PAIR,
+                0x01,
+                0x00
+            ]) + client_cryptogram
+        )
+        if response.status_word != 0x9000:
+            raise APDUError(response.status_word)
+        if len(response.data) != 33:
+            raise InvalidResponseError("Unexpected response length")
+
+        pairing_index = response.data[0]
+        salt = response.data[1:]
+
+        pairing_material = shared_secret + salt
+        pairing_key = SHA256.new(pairing_material).digest()
+
+        return pairing_index, pairing_key
