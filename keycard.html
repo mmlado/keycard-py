@@ -423,6 +423,36 @@ stores the card’s public key.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.verify_pin">
+<span class="sig-name descname"><span class="pre">verify_pin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pin</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.verify_pin" title="Link to this definition">¶</a></dt>
+<dd><p>Sends the VERIFY PIN command over a secure session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>transport</strong> – The transport interface to communicate with the card.</p></li>
+<li><p><strong>secure_session</strong> – An active SecureSession instance.</p></li>
+<li><p><strong>pin</strong> (<em>str</em>) – The PIN string to verify.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the PIN was correct, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the secure session is not established.</p></li>
+<li><p><strong>RuntimeError</strong> – For unexpected response status.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
