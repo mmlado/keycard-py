@@ -19,7 +19,7 @@ APDU commands are being implemented one by one.
 - [x] PAIR
 - [ ] UNPAIR
 - [ ] GET STATUS
-- [ ] VERIFY PIN
+- [x] VERIFY PIN
 - [ ] CHANGE PIN
 - [ ] UNBLOCK PIN
 - [ ] LOAD KEY

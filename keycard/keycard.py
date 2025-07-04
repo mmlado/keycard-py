@@ -334,3 +334,47 @@ class KeyCard:
         pairing_key = SHA256.new(pairing_material).digest()
 
         return pairing_index, pairing_key
+
+    def verify_pin(self, pin: str) -> bool:
+        """
+        Sends the VERIFY PIN command over a secure session.
+
+        Args:
+            transport: The transport interface to communicate with the card.
+            secure_session: An active SecureSession instance.
+            pin (str): The PIN string to verify.
+
+        Returns:
+            bool: True if the PIN was correct, False otherwise.
+
+        Raises:
+            ValueError: If the secure session is not established.
+            RuntimeError: For unexpected response status.
+        """
+        if self.secure_session is None:
+            raise ValueError(
+                "Secure session must be established before verifying PIN.")
+
+        pin_bytes = pin.encode("utf-8")
+
+        cla, ins, p1, p2, data = self.secure_session.wrap_apdu(
+            cla=0x80,
+            ins=0x20,
+            p1=0x00,
+            p2=0x00,
+            data=pin_bytes
+        )
+
+        response = self.transport.send_apdu(bytes([cla, ins, p1, p2]) + data)
+
+        if response.status_word == 0x9000:
+            return True
+
+        if (response.status_word & 0xFFF0) == 0x63C0:
+            attempts = response.status_word & 0x000F
+            if attempts == 0:
+                raise RuntimeError("PIN is blocked")
+            return False
+
+        raise RuntimeError(
+            f"Unexpected status word: {hex(response.status_word)}")
