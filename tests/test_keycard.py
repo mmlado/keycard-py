@@ -5,7 +5,9 @@ import sys
 import pytest
 
 from .mocks import MockTransport
+from Crypto.Hash import SHA256
 
+from keycard.apdu import APDUResponse
 from keycard.crypto.ecc import (
     export_uncompressed_public_key,
     generate_ephemeral_keypair
@@ -290,3 +292,133 @@ def test_mutually_authenticate_invalid_length(monkeypatch):
     with pytest.raises(ValueError) as exc_info:
         card.mutually_authenticate()
     assert '32 bytes' in str(exc_info.value)
+
+
+def test_pair_success(monkeypatch):
+    shared_secret = b'A' * 32
+    client_challenge = b'C' * 32
+    card_challenge = b'D' * 32
+
+    monkeypatch.setattr(
+        'keycard.keycard.get_random_bytes',
+        lambda n: client_challenge
+    )
+
+    expected_card_cryptogram = SHA256.new(
+        shared_secret + client_challenge).digest()
+
+    first_response = expected_card_cryptogram + card_challenge
+
+    pairing_index = 5
+    salt = b'S' * 32
+    first_response = APDUResponse(first_response, 0x9000)
+    second_response = APDUResponse(bytes([pairing_index]) + salt, 0x9000)
+
+    transport = MockTransport()
+
+    def send_apdu(apdu):
+        if apdu[2] == 0x00:
+            return first_response
+        else:
+            return second_response
+    transport.send_apdu = send_apdu
+
+    card = KeyCard(transport)
+    result_index, result_key = card.pair(shared_secret)
+
+    assert result_index == pairing_index
+    assert result_key == SHA256.new(shared_secret + salt).digest()
+
+
+def test_pair_invalid_shared_secret_length():
+    transport = MockTransport()
+    card = KeyCard(transport)
+    with pytest.raises(ValueError):
+        card.pair(b'too short')
+
+
+def test_pair_apdu_error_on_first_response():
+    shared_secret = b'A' * 32
+
+    transport = MockTransport(status_word=0x6A82)
+    card = KeyCard(transport)
+
+    with pytest.raises(APDUError) as exc_info:
+        card.pair(shared_secret)
+
+    assert exc_info.value.sw == 0x6A82
+
+
+def test_pair_invalid_first_response_length():
+    shared_secret = b'A' * 32
+
+    transport = MockTransport(b'too short')
+    card = KeyCard(transport)
+
+    with pytest.raises(InvalidResponseError):
+        card.pair(shared_secret)
+
+
+def test_pair_card_cryptogram_mismatch():
+    shared_secret = b'A' * 32
+    card_challenge = b'D' * 32
+
+    wrong_card_cryptogram = b'Z' * 32
+
+    transport = MockTransport(wrong_card_cryptogram + card_challenge)
+    card = KeyCard(transport)
+
+    with pytest.raises(InvalidResponseError):
+        card.pair(shared_secret)
+
+
+def test_pair_apdu_error_on_second_response(monkeypatch):
+    shared_secret = b'A' * 32
+    client_challenge = b'C' * 32
+    card_challenge = b'D' * 32
+
+    monkeypatch.setattr(
+        'keycard.keycard.get_random_bytes',
+        lambda n: client_challenge
+    )
+
+    transport = MockTransport()
+
+    def send_apdu(apdu):
+        if apdu[2] == 0x00:
+            expected_card_cryptogram = SHA256.new(
+                shared_secret + client_challenge).digest()
+            return APDUResponse(expected_card_cryptogram + card_challenge,
+                                0x9000)
+        else:
+            return APDUResponse(b'', 0x6A82)
+    transport.send_apdu = send_apdu
+
+    card = KeyCard(transport)
+
+    with pytest.raises(APDUError) as exc_info:
+        card.pair(shared_secret)
+
+    assert exc_info.value.sw == 0x6A82
+
+
+def test_pair_invalid_second_response_length():
+    shared_secret = b'A' * 32
+    client_challenge = b'C' * 32
+    card_challenge = b'D' * 32
+
+    transport = MockTransport()
+
+    def send_apdu(apdu):
+        if apdu[2] == 0x00:
+            data = shared_secret + client_challenge
+            expected_card_cryptogram = SHA256.new(data).digest()
+            response = expected_card_cryptogram + card_challenge
+        else:
+            response = b'\x01' + b'X' * 9
+        return APDUResponse(response, 0x9000)
+    transport.send_apdu = send_apdu
+
+    card = KeyCard(transport)
+    with pytest.raises(InvalidResponseError):
+        card.pair(shared_secret)
