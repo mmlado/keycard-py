@@ -358,8 +358,8 @@ class KeyCard:
         pin_bytes = pin.encode("utf-8")
 
         cla, ins, p1, p2, data = self.secure_session.wrap_apdu(
-            cla=0x80,
-            ins=0x20,
+            cla=constants.CLA_PROPRIETARY,
+            ins=constants.INS_VERIFY_PIN,
             p1=0x00,
             p2=0x00,
             data=pin_bytes
