@@ -9,10 +9,11 @@ from Crypto.Random import get_random_bytes
 from Crypto.Hash import SHA256, SHA512
 from Crypto.Util.Padding import pad
 
+
 from . import constants
 from .apdu import APDUResponse, encode_lv
+from .commands.unpair import unpair
 from .crypto.aes import aes_cbc_encrypt, derive_aes_key
-
 from .crypto.ecc import (
     derive_shared_secret,
     export_uncompressed_public_key,
@@ -358,8 +359,8 @@ class KeyCard:
         pin_bytes = pin.encode("utf-8")
 
         cla, ins, p1, p2, data = self.secure_session.wrap_apdu(
-            cla=0x80,
-            ins=0x20,
+            cla=constants.CLA_PROPRIETARY,
+            ins=constants.INS_VERIFY_PIN,
             p1=0x00,
             p2=0x00,
             data=pin_bytes
@@ -378,3 +379,28 @@ class KeyCard:
 
         raise RuntimeError(
             f"Unexpected status word: {hex(response.status_word)}")
+
+    def unpair(self, index: int) -> None:
+        """
+        Unpairs a device or key at the specified index.
+
+        This method removes the pairing information for the device or key
+        identified by the given index. It requires that a secure channel
+        is established and authenticated before proceeding.
+
+        Args:
+            index (int): The index of the device or key to unpair.
+
+        Raises:
+            InvalidResponseError: If the secure channel is not established
+                or not authenticated.
+        """
+        if not self.secure_session or not self.secure_channel_authenticated:
+            raise InvalidResponseError(
+                "Secure channel not established or not authenticated")
+
+        unpair(
+            transport=self.transport,
+            session=self.secure_session,
+            index=index
+        )
