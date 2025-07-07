@@ -1,6 +1,7 @@
 from .. import constants
 from ..exceptions import APDUError
 
+
 def unpair(transport, secure_session, index: int):
     """
     Sends the UNPAIR command to remove a pairing index from the card.
