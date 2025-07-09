@@ -31,6 +31,17 @@ def parse_tlv(data: bytes) -> List[Tuple[int, bytes]]:
 
         length = data[index]
         index += 1
+        if length < 0x80:
+            length = length
+        elif length == 0x81:
+            length = data[index]
+            index += 1
+        elif length == 0x82:
+            length = (data[index] << 8) | data[index + 1]
+            index += 2
+        else:
+            raise InvalidResponseError("Unsupported length encoding")
+
 
         if index + length > len(data):
             raise InvalidResponseError(
