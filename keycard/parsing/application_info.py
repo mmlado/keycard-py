@@ -53,25 +53,34 @@ class ApplicationInfo:
             Any exceptions raised by ApplicationInfo._parse_response or
             Capabilities.parse.
         """
-        tlvs = ApplicationInfo._parse_response(data)
-
         version_major = version_minor = 0
         instance_uid = None
         key_uid = None
         ecc_public_key = None
-        capabilities = None
+        capabilities = 0
 
-        for tag, value in tlvs:
-            if tag == 0x02 and len(value) == 2:
-                version_major, version_minor = value[0], value[1]
-            elif tag == 0x8F:
-                instance_uid = value
-            elif tag == 0x80:
-                ecc_public_key = value
-            elif tag == 0x8E:
-                key_uid = value
-            elif tag == 0x8D:
-                capabilities = Capabilities.parse(value[0])
+        if data[0] == 0x80:
+            length = data[1]
+            pubkey = data[2:2+length]
+            ecc_public_key = bytes(pubkey)
+            capabilities += Capabilities.CREDENTIALS_MANAGEMENT
+
+            if pubkey:
+                capabilities += Capabilities.SECURE_CHANNEL
+            capabilities = Capabilities.parse(capabilities)
+        else:
+            tlvs = ApplicationInfo._parse_response(data)
+            for tag, value in tlvs:
+                if tag == 0x02 and len(value) == 2:
+                    version_major, version_minor = value[0], value[1]
+                elif tag == 0x8F:
+                    instance_uid = bytes(value)
+                elif tag == 0x80:
+                    ecc_public_key = bytes(value)
+                elif tag == 0x8E:
+                    key_uid = value
+                elif tag == 0x8D:
+                    capabilities = Capabilities.parse(value[0])
 
         return ApplicationInfo(
             capabilities=capabilities,
@@ -97,3 +106,18 @@ class ApplicationInfo:
         inner_data = data[2:2 + total_length]
 
         return parse_tlv(inner_data)
+
+
+    def __str__(self) -> str:
+        return (
+            f"ApplicationInfo(version="
+            f"{self.version_major}.{self.version_minor}, "
+            f"instance_uid="
+            f"{self.instance_uid.hex() if self.instance_uid else None}, "
+            f"key_uid="
+            f"{self.key_uid.hex() if self.key_uid else None}, "
+            f"ecc_public_key="
+            f"{self.ecc_public_key.hex() if self.ecc_public_key else None}, "
+            f"capabilities="
+            f"{self.capabilities})"
+        )
