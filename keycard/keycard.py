@@ -7,18 +7,13 @@ from typing import Optional
 from Crypto.PublicKey import ECC
 from Crypto.Random import get_random_bytes
 from Crypto.Hash import SHA256, SHA512
-from Crypto.Util.Padding import pad
 
 
 from . import constants
-from .apdu import APDUResponse, encode_lv
-from .commands.unpair import unpair
-from .crypto.aes import aes_cbc_encrypt, derive_aes_key
+from .apdu import APDUResponse
+from . import commands
 from .crypto.ecc import (
     derive_shared_secret,
-    export_uncompressed_public_key,
-    generate_ephemeral_keypair,
-    parse_uncompressed_public_key
 )
 from .exceptions import (
     APDUError,
@@ -73,7 +68,7 @@ class KeyCard:
         P2: int = 0x00
         aid: bytes = constants.KEYCARD_AID
         apdu: bytes = (
-            bytes([constants.CLAISO7816, constants.INS_SELECT, P1, P2]) + aid
+            bytes([constants.CLAISO7816, constants.INS_SELECT, P1, P2, len(aid)]) + aid
         )
         response: APDUResponse = self.transport.send_apdu(apdu)
 
@@ -86,64 +81,13 @@ class KeyCard:
         return info
 
     def init(self, pin: bytes, puk: bytes, pairing_secret: bytes) -> None:
-        """
-        Initializes the card with the provided PIN, PUK, and pairing secret.
-
-        This method performs the following steps:
-        1. Checks if the card is selected.
-        2. Generates an ephemeral ECC key pair.
-        3. Derives a shared secret using ECDH with the card's public key.
-        4. Derives an AES key from the shared secret.
-        5. Concatenates and pads the PIN, PUK, and pairing secret.
-        6. Encrypts the padded data using AES-CBC with a random IV.
-        7. Constructs the APDU command with the public key, IV, and ciphertext.
-        8. Sends the APDU to the card and checks the response status.
-
-        Args:
-            pin (bytes): The PIN code to initialize the card with.
-            puk (bytes): The PUK code to initialize the card with.
-            pairing_secret (bytes): The pairing secret for secure
-            communication.
-
-        Raises:
-            NotSelectedError: If the card is not selected.
-            ValueError: If the data to be sent exceeds the APDU size limit.
-            APDUError: If the card returns an error status word.
-        """
-        if self._card_public_key is None:
-            raise NotSelectedError("Card not selected. Call select() first.")
-
-        ephemeral_key: ECC.EccKey = generate_ephemeral_keypair()
-        our_pubkey_bytes: bytes = export_uncompressed_public_key(ephemeral_key)
-        card_pubkey: ECC.EccKey = parse_uncompressed_public_key(
-            self._card_public_key)
-        shared_secret: bytes = derive_shared_secret(ephemeral_key, card_pubkey)
-        aes_key: bytes = derive_aes_key(shared_secret)
-        plaintext: bytes = pin + puk + pairing_secret
-        plaintext_padded: bytes = pad(plaintext, 16, style="iso7816")
-        iv: bytes = get_random_bytes(16)
-        ciphertext: bytes = aes_cbc_encrypt(aes_key, iv, plaintext_padded)
-        data: bytes = encode_lv(our_pubkey_bytes) + iv + ciphertext
-        if len(data) > 255:
-            raise ValueError("Data too long for single APDU")
-
-        apdu: bytes = (
-            bytes(
-                [
-                    constants.CLA_PROPRIETARY,
-                    constants.INS_INIT,
-                    0x00,
-                    0x00,
-                    len(data),
-                ]
-            )
-            + data
+        commands.init(
+            self.transport, 
+            self._card_public_key, 
+            pin, 
+            puk, 
+            pairing_secret
         )
-
-        response: APDUResponse = self.transport.send_apdu(apdu)
-
-        if response.status_word != constants.SW_SUCCESS:
-            raise APDUError(response.status_word)
 
     def ident(self, challenge: bytes) -> Identity:
         """
@@ -174,8 +118,8 @@ class KeyCard:
 
         if response.status_word != 0x9000:
             raise APDUError(response.status_word)
-
-        return Identity.parse(response.data)
+        print(bytes(response.data))
+        return Identity.parse(bytes(response.data))
 
     def open_secure_channel(
         self,
@@ -399,7 +343,7 @@ class KeyCard:
             raise InvalidResponseError(
                 "Secure channel not established or not authenticated")
 
-        unpair(
+        commands.unpair(
             transport=self.transport,
             session=self.secure_session,
             index=index
