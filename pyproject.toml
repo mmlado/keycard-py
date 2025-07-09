@@ -11,7 +11,10 @@ license-files = ["LICENSE"]
 dynamic = ["version", "description"]
 
 dependencies = [
-    "pycryptodome"
+    "pycryptodome",
+    "pyscard",
+    "ecdsa",
+    "pyaes"
 ]
 
 [project.optional-dependencies]
