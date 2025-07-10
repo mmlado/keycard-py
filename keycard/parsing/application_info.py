@@ -70,17 +70,15 @@ class ApplicationInfo:
             capabilities = Capabilities.parse(capabilities)
         else:
             tlvs = ApplicationInfo._parse_response(data)
-            for tag, value in tlvs:
-                if tag == 0x02 and len(value) == 2:
+            print(tlvs)
+            
+            instance_uid = bytes(tlvs[0x8F][0])
+            ecc_public_key = bytes(tlvs[0x80][0])
+            key_uid = tlvs[0x8E][0]
+            capabilities = Capabilities.parse(tlvs[0x8D][0][0])
+            for value in tlvs[0x02]:
+                if len(value) == 2:
                     version_major, version_minor = value[0], value[1]
-                elif tag == 0x8F:
-                    instance_uid = bytes(value)
-                elif tag == 0x80:
-                    ecc_public_key = bytes(value)
-                elif tag == 0x8E:
-                    key_uid = value
-                elif tag == 0x8D:
-                    capabilities = Capabilities.parse(value[0])
 
         return ApplicationInfo(
             capabilities=capabilities,

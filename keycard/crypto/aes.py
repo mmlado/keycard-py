@@ -3,12 +3,14 @@ from .padding import iso7816_pad, iso7816_unpad
 import pyaes
 
 
-def aes_cbc_encrypt(key: bytes, iv: bytes, data: bytes) -> bytes:
+def aes_cbc_encrypt(key: bytes, iv: bytes, data: bytes, padding = True) -> bytes:
+    if padding:
+        data = iso7816_pad(data, 16)
     aes = pyaes.AESModeOfOperationCBC(key, iv=iv)
-    padded = iso7816_pad(data, 16)
+    print(f"aes data: {data.hex()}")
     ciphertext = b''
-    for i in range(0, len(padded), 16):
-        block = padded[i:i+16]
+    for i in range(0, len(data), 16):
+        block = data[i:i+16]
         ciphertext += aes.encrypt(block)
     return ciphertext
 

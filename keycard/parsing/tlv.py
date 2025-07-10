@@ -1,6 +1,29 @@
+from collections import defaultdict
 from typing import List, Tuple
 
 from keycard.exceptions import InvalidResponseError
+
+def parse_ber_length(data: bytes, index: int) -> tuple[int, int]:
+    """
+    Parses a BER-TLV length field starting at `index`.
+    Returns: (length_value, total_bytes_consumed)
+    """
+    first = data[index]
+    index += 1
+
+    if first < 0x80:
+        return first, 1
+    else:
+        num_bytes = first & 0x7F
+        if num_bytes > 4:
+            print(f"{index=}")
+            raise InvalidResponseError("Unsupported length encoding")
+
+        if index + num_bytes > len(data):
+            raise InvalidResponseError("Length exceeds remaining buffer")
+
+        length = int.from_bytes(data[index:index+num_bytes], "big")
+        return length, 1 + num_bytes
 
 
 def parse_tlv(data: bytes) -> List[Tuple[int, bytes]]:
@@ -19,37 +42,18 @@ def parse_tlv(data: bytes) -> List[Tuple[int, bytes]]:
             length exceeds the available data.
     """
     index = 0
-    result = []
+    result = defaultdict(list)
 
     while index < len(data):
-        if index + 2 > len(data):
-            raise InvalidResponseError(
-                "Incomplete TLV header")
-
         tag = data[index]
         index += 1
 
-        length = data[index]
-        index += 1
-        if length < 0x80:
-            length = length
-        elif length == 0x81:
-            length = data[index]
-            index += 1
-        elif length == 0x82:
-            length = (data[index] << 8) | data[index + 1]
-            index += 2
-        else:
-            raise InvalidResponseError("Unsupported length encoding")
+        length, length_size = parse_ber_length(data, index)
+        index += length_size
 
-
-        if index + length > len(data):
-            raise InvalidResponseError(
-                "Declared length exceeds available data")
-
-        value = data[index:index + length]
+        value = data[index:index+length]
         index += length
 
-        result.append((tag, value))
+        result[tag].append(value)
 
     return result
