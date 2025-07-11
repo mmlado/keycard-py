@@ -32,5 +32,5 @@ def select(transport) -> ApplicationInfo:
         raise APDUError(response.status_word)
 
     info: ApplicationInfo = ApplicationInfo.parse(response.data)
-    print(info)
+    
     return info
