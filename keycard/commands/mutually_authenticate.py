@@ -1,3 +1,4 @@
+import os
 from .. import constants
 from ..apdu import APDUResponse
 from ..exceptions import APDUError
@@ -11,7 +12,7 @@ def mutually_authenticate(transport, session) -> None:
         ValueError: If the response to MUTUALLY AUTHENTICATE is not
             32 bytes.
     """
-    client_challenge = bytes(32)#get_random_bytes(32)
+    client_challenge = os.urandom(32)
 
     cla, ins, p1, p2, data = session.wrap_apdu(
         cla=constants.CLA_PROPRIETARY,
@@ -34,5 +35,3 @@ def mutually_authenticate(transport, session) -> None:
     if len(plaintext) != 32:
         raise ValueError(
             'Response to MUTUALLY AUTHENTICATE is not 32 bytes')
-
-    return client_challenge, plaintext

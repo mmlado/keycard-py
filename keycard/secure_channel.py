@@ -74,8 +74,6 @@ class SecureSession:
         """
         digest = sha512(shared_secret + pairing_key + salt).digest()
         enc_key, mac_key = digest[:32], digest[32:]
-        print(f"{enc_key.hex()=}")
-        print(f"{mac_key.hex()=}")
         return cls(enc_key=enc_key, mac_key=mac_key, iv=seed_iv, authenticated=True)
 
     def wrap_apdu(
@@ -107,23 +105,15 @@ class SecureSession:
         """
         if not self.authenticated and ins != 0x11:
             raise ValueError("Secure channel not authenticated")
-        # self.enc_key = bytes.fromhex("f56582c3fdbe479ca208c4d453a68d5c0c9714355868360b320f667383bd4c77")
-        # self.mac_key = bytes.fromhex("cee375c7285b3728854d870094cc20e4d1a2df0b9e5a0fee6b284c266fb7f07b")
-        print(f"{self.enc_key.hex()=}")
-        # self.iv = bytes.fromhex("84a0b0f6b779c28a0800cb3bc1dfbcfb")
-        print(f"{self.iv.hex()=}")
-        # data = bytes.fromhex("313233343536")
-        print(f"{data.hex()=}")
+
         encrypted = aes_cbc_encrypt(self.enc_key, self.iv, data)
-        print(f"{encrypted.hex()=}", len(encrypted))
+
         lc = 16 + len(encrypted)
         mac_input = bytes([cla, ins, p1, p2, lc]) + bytes(11) + encrypted
-        print(f"{mac_input.hex()=}")
-        print(f"{self.mac_key.hex()=}")
+
         enc_data = aes_cbc_encrypt(self.mac_key, bytes(16), mac_input, padding=False)
-        print(f"{enc_data.hex()=}")
+
         self.iv = enc_data[-16:]
-        print(f"{self.iv.hex()=}")
 
         return cla, ins, p1, p2, self.iv + encrypted
 
@@ -151,13 +141,12 @@ class SecureSession:
         if len(response.data) < 18:
             raise ValueError("Invalid secure response length")
 
-        received_mac = bytes(response[:16])
-        encrypted = bytes(response[16:])
+        received_mac = bytes(response.data[:16])
+        encrypted = bytes(response.data[16:])
 
-        lr = len(encrypted)
-        mac_input = bytes([lr]) + b"\x00" * 15 + encrypted
-        expected_mac = aes_cbc_encrypt(self.mac_key, bytes(16), mac_input)[-16:]
-
+        lr = len(response.data)
+        mac_input = bytes([lr]) + bytes(15) + bytes(encrypted)
+        expected_mac = aes_cbc_encrypt(self.mac_key, bytes(16), mac_input, padding=False)[-16:]
         if received_mac != expected_mac:
             raise ValueError("Invalid MAC")
 

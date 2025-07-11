@@ -16,7 +16,6 @@ def open_secure_channel(
 
     ephemeral_key = SigningKey.generate(curve=SECP256k1)
     eph_pub_bytes = ephemeral_key.verifying_key.to_string("uncompressed")
-    print(f"{eph_pub_bytes.hex()=}")
     response: APDUResponse = transport.send_apdu(
         bytes([
             constants.CLA_PROPRIETARY,
@@ -31,10 +30,7 @@ def open_secure_channel(
         raise APDUError(response.status_word)
 
     salt = bytes(response.data[:32])
-    print(f"{salt.hex()=}")
     seed_iv = bytes(response.data[32:])
-    print(f"{seed_iv.hex()=}")
-
 
     public_key = VerifyingKey.from_string(card_public_key, curve=SECP256k1)
     ecdh = ECDH(
