@@ -1,16 +1,17 @@
 from smartcard.System import readers
 
 from .apdu import APDUResponse
+from .exceptions import TransportError
 
 
 class Transport:
     def __init__(self):
         self.connection = None
-        
+
     def __enter__(self):
         self.connect()
-        return self 
-    
+        return self
+
     def __exit__(self, exc_type, exc_value, traceback):
         if self.connection:
             self.connection.disconnect()
@@ -31,6 +32,6 @@ class Transport:
         apdu_list = list(apdu)
 
         response, sw1, sw2 = self.connection.transmit(apdu_list)
-        print(f"Received response: {bytes(response).hex()}, SW1: {hex(sw1)}, SW2: {hex(sw2)}")
+
         sw = (sw1 << 8) | sw2
         return APDUResponse(response, sw)

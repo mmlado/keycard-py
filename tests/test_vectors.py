@@ -1,13 +1,5 @@
-import os
-import sys
-
-from keycard.crypto.aes import aes_cbc_encrypt
-from pyaes import AESModeOfOperationCBC
 from ecdsa import ECDH, SigningKey, SECP256k1, VerifyingKey
-
-
-sys.path.insert(0, os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '..')))
+from keycard.crypto.aes import aes_cbc_encrypt
 
 
 def iso7816_pad(data: bytes, block_size: int) -> bytes:
@@ -30,14 +22,14 @@ def test_full_crypto_vector():
     )
 
     ephemeral_key = SigningKey.from_string(
-        ephemeral_private_bytes, 
+        ephemeral_private_bytes,
         curve=SECP256k1
     )
     card_pubkey = VerifyingKey.from_string(card_pubkey_bytes, curve=SECP256k1)
 
     ecdh = ECDH(
-        curve=SECP256k1, 
-        private_key=ephemeral_key, 
+        curve=SECP256k1,
+        private_key=ephemeral_key,
         public_key=card_pubkey
     )
     shared_secret = ecdh.generate_sharedsecret_bytes()

@@ -28,3 +28,8 @@ class NotSelectedError(KeyCardError):
     """Raised when trying to use card before select()."""
 
     pass
+
+
+class TransportError(KeyCardError):
+    """Raised there are no readers"""
+    pass
