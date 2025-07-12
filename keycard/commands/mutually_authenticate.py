@@ -4,7 +4,7 @@ from ..apdu import APDUResponse
 from ..exceptions import APDUError
 
 
-def mutually_authenticate(transport, session) -> None:
+def mutually_authenticate(transport, session, client_challenge=None) -> None:
     """
     Performs mutual authentication between the client and the card.
 
@@ -13,7 +13,7 @@ def mutually_authenticate(transport, session) -> None:
         ValueError: If the response to MUTUALLY AUTHENTICATE is not
             32 bytes.
     """
-    client_challenge = os.urandom(32)
+    client_challenge = client_challenge or os.urandom(32)
 
     cla, ins, p1, p2, data = session.wrap_apdu(
         cla=constants.CLA_PROPRIETARY,
