@@ -13,17 +13,16 @@ def parse_ber_length(data: bytes, index: int) -> tuple[int, int]:
 
     if first < 0x80:
         return first, 1
-    else:
-        num_bytes = first & 0x7F
-        if num_bytes > 4:
-            print(f"{index=}")
-            raise InvalidResponseError("Unsupported length encoding")
 
-        if index + num_bytes > len(data):
-            raise InvalidResponseError("Length exceeds remaining buffer")
+    num_bytes = first & 0x7F
+    if num_bytes > 4:
+        raise InvalidResponseError("Unsupported length encoding")
 
-        length = int.from_bytes(data[index:index+num_bytes], "big")
-        return length, 1 + num_bytes
+    if index + num_bytes > len(data):
+        raise InvalidResponseError("Length exceeds remaining buffer")
+
+    length = int.from_bytes(data[index:index+num_bytes], "big")
+    return length, 1 + num_bytes
 
 
 def parse_tlv(data: bytes) -> List[Tuple[int, bytes]]:
@@ -52,6 +51,10 @@ def parse_tlv(data: bytes) -> List[Tuple[int, bytes]]:
         index += length_size
 
         value = data[index:index+length]
+        
+        if len(value) < length:
+            raise InvalidResponseError("Not enough bytes for value")
+        
         index += length
 
         result[tag].append(value)

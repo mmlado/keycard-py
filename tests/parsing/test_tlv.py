@@ -32,7 +32,7 @@ def test_parse_ber_length_exceeds_buffer():
 
 def test_parse_tlv_single():
     # Tag: 0x01, Length: 3, Value: b'abc'
-    data = bytes([0x01, 0x03]) + bytes(3)
+    data = bytes([0x01, 0x03, ord('a'), ord('b'), ord('c')])
     result = tlv.parse_tlv(data)
     assert 0x01 in result
     assert result[0x01][0] == b'abc'
@@ -40,7 +40,7 @@ def test_parse_tlv_single():
 def test_parse_tlv_multiple_tags():
     # Tag: 0x01, Length: 2, Value: b'hi'
     # Tag: 0x02, Length: 1, Value: b'x'
-    data = bytes([0x01, 0x02, 0x01, ord('i'), 0x02, 0x01, ord('x')])
+    data = bytes([0x01, 0x02, ord('h'), ord('i'), 0x02, 0x01, ord('x')])
     result = tlv.parse_tlv(data)
     assert result[0x01][0] == b'hi'
     assert result[0x02][0] == b'x'
