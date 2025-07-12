@@ -5,7 +5,6 @@ from hashlib import sha512
 from .apdu import APDUResponse
 
 from .crypto.aes import aes_cbc_encrypt, aes_cbc_decrypt
-from .crypto.padding import iso7816_pad, iso7816_unpad
 
 from dataclasses import dataclass
 
@@ -26,29 +25,6 @@ class SecureSession:
     mac_key: bytes
     iv: bytes
     authenticated: bool = False
-
-    @staticmethod
-    def derive_keys(
-        shared_secret: bytes,
-        pairing_key: bytes,
-        salt: bytes
-    ) -> tuple[bytes, bytes]:
-        """
-        Derives two cryptographic keys from the given shared secret,
-        pairing key, and salt.
-
-        Args:
-            shared_secret (bytes): The shared secret used as input for key
-                derivation.
-            pairing_key (bytes): The pairing key used as input for key
-                derivation.
-            salt (bytes): The salt value used as input for key derivation.
-
-        Returns:
-            tuple[bytes, bytes]: A tuple containing two derived keys, each
-                32 bytes in length.
-        """
-
 
     @classmethod
     def open(
@@ -74,7 +50,12 @@ class SecureSession:
         """
         digest = sha512(shared_secret + pairing_key + salt).digest()
         enc_key, mac_key = digest[:32], digest[32:]
-        return cls(enc_key=enc_key, mac_key=mac_key, iv=seed_iv, authenticated=True)
+        return cls(
+            enc_key=enc_key,
+            mac_key=mac_key,
+            iv=seed_iv,
+            authenticated=True
+        )
 
     def wrap_apdu(
         self,
@@ -111,7 +92,8 @@ class SecureSession:
         lc = 16 + len(encrypted)
         mac_input = bytes([cla, ins, p1, p2, lc]) + bytes(11) + encrypted
 
-        enc_data = aes_cbc_encrypt(self.mac_key, bytes(16), mac_input, padding=False)
+        enc_data = aes_cbc_encrypt(
+            self.mac_key, bytes(16), mac_input, padding=False)
 
         self.iv = enc_data[-16:]
 
@@ -146,7 +128,8 @@ class SecureSession:
 
         lr = len(response.data)
         mac_input = bytes([lr]) + bytes(15) + bytes(encrypted)
-        expected_mac = aes_cbc_encrypt(self.mac_key, bytes(16), mac_input, padding=False)[-16:]
+        expected_mac = aes_cbc_encrypt(
+            self.mac_key, bytes(16), mac_input, padding=False)[-16:]
         if received_mac != expected_mac:
             raise ValueError("Invalid MAC")
 

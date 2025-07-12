@@ -1,6 +1,7 @@
 from .. import constants
 from ..exceptions import APDUError
 
+
 def verify_pin(transport, session, pin: str) -> bool:
     if session is None:
         raise ValueError(

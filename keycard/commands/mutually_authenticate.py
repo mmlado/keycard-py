@@ -3,6 +3,7 @@ from .. import constants
 from ..apdu import APDUResponse
 from ..exceptions import APDUError
 
+
 def mutually_authenticate(transport, session) -> None:
     """
     Performs mutual authentication between the client and the card.
@@ -22,11 +23,12 @@ def mutually_authenticate(transport, session) -> None:
         data=client_challenge
     )
 
-    response: APDUResponse = transport.send_apdu(bytes([cla, ins, p1, p2, len(data)]) + data)
+    response: APDUResponse = transport.send_apdu(
+        bytes([cla, ins, p1, p2, len(data)]) + data)
 
     if response.status_word != 0x9000:
         raise APDUError(response.status_word)
-    
+
     plaintext, sw = session.unwrap_response(response)
 
     if sw != 0x9000:

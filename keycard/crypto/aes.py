@@ -3,7 +3,12 @@ from .padding import iso7816_pad, iso7816_unpad
 import pyaes
 
 
-def aes_cbc_encrypt(key: bytes, iv: bytes, data: bytes, padding = True) -> bytes:
+def aes_cbc_encrypt(
+    key: bytes,
+    iv: bytes,
+    data: bytes,
+    padding=True
+) -> bytes:
     if padding:
         data = iso7816_pad(data, 16)
     aes = pyaes.AESModeOfOperationCBC(key, iv=iv)

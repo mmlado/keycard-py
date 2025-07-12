@@ -70,8 +70,7 @@ class ApplicationInfo:
             capabilities = Capabilities.parse(capabilities)
         else:
             tlvs = ApplicationInfo._parse_response(data)
-            print(tlvs)
-            
+
             instance_uid = bytes(tlvs[0x8F][0])
             ecc_public_key = bytes(tlvs[0x80][0])
             key_uid = tlvs[0x8E][0]
@@ -104,7 +103,6 @@ class ApplicationInfo:
         inner_data = data[2:2 + total_length]
 
         return parse_tlv(inner_data)
-
 
     def __str__(self) -> str:
         return (

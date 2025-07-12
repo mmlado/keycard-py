@@ -3,10 +3,24 @@ from typing import List, Tuple
 
 from keycard.exceptions import InvalidResponseError
 
+
 def parse_ber_length(data: bytes, index: int) -> tuple[int, int]:
     """
-    Parses a BER-TLV length field starting at `index`.
-    Returns: (length_value, total_bytes_consumed)
+    Parses a BER-encoded length field from a byte sequence starting at the
+    given index.
+
+    Args:
+        data (bytes): The byte sequence containing the BER-encoded length.
+        index (int): The starting index in the byte sequence to parse the
+            length from.
+
+    Returns:
+        tuple[int, int]: A tuple containing the parsed length (int) and the
+            total number of bytes consumed (int).
+
+    Raises:
+        InvalidResponseError: If the length encoding is unsupported or exceeds
+            the remaining buffer.
     """
     first = data[index]
     index += 1
@@ -51,10 +65,10 @@ def parse_tlv(data: bytes) -> List[Tuple[int, bytes]]:
         index += length_size
 
         value = data[index:index+length]
-        
+
         if len(value) < length:
             raise InvalidResponseError("Not enough bytes for value")
-        
+
         index += length
 
         result[tag].append(value)

@@ -36,13 +36,12 @@ class KeyCard:
         self._card_public_key = info.ecc_public_key
         return info
 
-
     def init(self, pin: bytes, puk: bytes, pairing_secret: bytes) -> None:
         commands.init(
-            self.transport, 
-            self._card_public_key, 
-            pin, 
-            puk, 
+            self.transport,
+            self._card_public_key,
+            pin,
+            puk,
             pairing_secret
         )
 
@@ -55,9 +54,9 @@ class KeyCard:
         pairing_key: bytes
     ) -> None:
         self.secure_session = commands.open_secure_channel(
-            self.transport, 
-            self._card_public_key, 
-            pairing_index, 
+            self.transport,
+            self._card_public_key,
+            pairing_index,
             pairing_key
         )
 

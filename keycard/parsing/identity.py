@@ -7,7 +7,6 @@ from ..exceptions import InvalidResponseError
 from ..parsing.tlv import parse_tlv
 
 
-
 @dataclass
 class Identity:
     certificate: bytes
@@ -38,9 +37,9 @@ class Identity:
         der_signature = util.sigencode_der(r, s, SECP256k1.order)
 
         vk.verify(
-            der_signature, 
-            challenge, 
-            hashfunc=sha256, 
+            der_signature,
+            challenge,
+            hashfunc=sha256,
             sigdecode=util.sigdecode_der
         )
 

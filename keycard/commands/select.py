@@ -3,6 +3,7 @@ from ..apdu import APDUResponse
 from ..exceptions import APDUError
 from ..parsing.application_info import ApplicationInfo
 
+
 def select(transport) -> ApplicationInfo:
     """
     Selects the Keycard application on the smart card and retrieves
@@ -24,7 +25,13 @@ def select(transport) -> ApplicationInfo:
     P2: int = 0x00
     aid: bytes = constants.KEYCARD_AID
     apdu: bytes = (
-        bytes([constants.CLAISO7816, constants.INS_SELECT, P1, P2, len(aid)]) + aid
+        bytes([
+            constants.CLAISO7816,
+            constants.INS_SELECT,
+            P1,
+            P2,
+            len(aid)
+        ]) + aid
     )
     response: APDUResponse = transport.send_apdu(apdu)
 
@@ -32,5 +39,5 @@ def select(transport) -> ApplicationInfo:
         raise APDUError(response.status_word)
 
     info: ApplicationInfo = ApplicationInfo.parse(response.data)
-    
+
     return info

@@ -3,8 +3,8 @@ from ecdsa import ECDH, SECP256k1, SigningKey, VerifyingKey
 
 def derive_shared_secret(private_key, peer_public_key) -> bytes:
     ecdh = ECDH(
-        curve=SECP256k1, 
-        private_key=private_key, 
+        curve=SECP256k1,
+        private_key=private_key,
         public_key=peer_public_key
     )
     shared_secret = ecdh.generate_sharedsecret_bytes()
