@@ -31,16 +31,16 @@ def test_aes_cbc_encrypt_no_padding():
     data = b'1234567890abcdef'
     ciphertext = aes.aes_cbc_encrypt(key, iv, data, padding=False)
     assert len(ciphertext) == 16
-    decrypted = aes.aes_cbc_decrypt(key, iv, ciphertext)
-    assert decrypted == data
+    with pytest.raises(ValueError):
+        aes.aes_cbc_decrypt(key, iv, ciphertext)
 
 def test_aes_cbc_decrypt_invalid_padding():
     key = b'0123456789abcdef'
     iv = b'abcdef9876543210'
     data = b'1234567890abcdef'
     ciphertext = aes.aes_cbc_encrypt(key, iv, data, padding=False)
-    decrypted = aes.aes_cbc_decrypt(key, iv, ciphertext)
-    assert decrypted == data
+    with pytest.raises(ValueError):
+        aes.aes_cbc_decrypt(key, iv, ciphertext)
 
 @pytest.mark.parametrize("data", [
     b"",
