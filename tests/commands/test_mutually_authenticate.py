@@ -1,7 +1,7 @@
 import os
 import pytest
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 from keycard.commands.mutually_authenticate import mutually_authenticate
 from keycard.exceptions import APDUError
 from keycard.apdu import APDUResponse
@@ -29,7 +29,13 @@ def test_mutually_authenticate_success():
         data=client_challenge
     )
     transport.send_apdu.assert_called_once_with(
-        bytes([0x80, 0x11, 0x00, 0x00, len(client_challenge)]) + client_challenge
+        bytes([
+            0x80,
+            0x11,
+            0x00,
+            0x00,
+            len(client_challenge)
+        ]) + client_challenge
     )
     session.unwrap_response.assert_called_once_with(response)
 
@@ -60,6 +66,8 @@ def test_mutually_authenticate_invalid_response_length():
     transport.send_apdu.return_value = response
     session.unwrap_response.return_value = (response_data, 0x9000)
 
-    with pytest.raises(ValueError, match='Response to MUTUALLY AUTHENTICATE is '
-                                        'not 32 bytes'):
+    with pytest.raises(
+        ValueError,
+        match='Response to MUTUALLY AUTHENTICATE is not 32 bytes'
+    ):
         mutually_authenticate(transport, session)

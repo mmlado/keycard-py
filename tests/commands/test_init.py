@@ -1,4 +1,3 @@
-from ecdsa import SigningKey, VerifyingKey, ECDH, SECP256k1
 import pytest
 from unittest.mock import MagicMock, patch
 from keycard.commands.init import init
@@ -15,12 +14,16 @@ CARD_PUBLIC_KEY = b"\x04" + b"\x00" * 64  # Valid uncompressed pubkey format
 
 @pytest.fixture
 def ecc_patches():
-    with patch("keycard.commands.init.urandom", return_value=b"\x00" * 16), \
-         patch("keycard.commands.init.aes_cbc_encrypt", side_effect=lambda k, iv, pt: b"\xAA" * len(pt)), \
-         patch("keycard.commands.init.SigningKey.generate") as mock_gen, \
-         patch("keycard.commands.init.VerifyingKey.from_string") as mock_parse, \
-         patch("keycard.commands.init.ECDH") as mock_ecdh:
-
+    with (
+        patch("keycard.commands.init.urandom", return_value=b"\x00" * 16),
+        patch(
+            "keycard.commands.init.aes_cbc_encrypt",
+            side_effect=lambda k, iv, pt: b"\xAA" * len(pt)
+        ),
+        patch("keycard.commands.init.SigningKey.generate") as mock_gen,
+        patch("keycard.commands.init.VerifyingKey.from_string") as mock_parse,
+        patch("keycard.commands.init.ECDH") as mock_ecdh,
+    ):
         fake_privkey = MagicMock()
         fake_privkey.verifying_key.to_string.return_value = b"\x01" * 65
         mock_gen.return_value = fake_privkey
@@ -61,7 +64,7 @@ def test_init_data_length(ecc_patches, secret_length):
 
     pairing_secret = b"x" * secret_length
     plaintext = PIN + PUK + pairing_secret
-    total_data_len = 1 + 65 + 16 + len(plaintext)  # len + pubkey + iv + ciphertext
+    total_data_len = 1 + 65 + 16 + len(plaintext)
 
     if total_data_len > 255:
         with pytest.raises(ValueError, match="Data too long"):

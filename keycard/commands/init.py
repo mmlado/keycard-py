@@ -18,7 +18,8 @@ def init(
         raise NotSelectedError("Card not selected. Call select() first.")
 
     ephemeral_key = SigningKey.generate(curve=SECP256k1)
-    our_pubkey_bytes: bytes = ephemeral_key.verifying_key.to_string("uncompressed")
+    our_pubkey_bytes: bytes = \
+        ephemeral_key.verifying_key.to_string("uncompressed")
     card_pubkey = VerifyingKey.from_string(card_public_key, curve=SECP256k1)
     ecdh = ECDH(
         curve=SECP256k1,

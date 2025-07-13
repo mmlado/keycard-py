@@ -22,5 +22,6 @@ dev = [
     "pytest-cov", 
     "coverage",
     "sphinx",
-    "sphinx-autodoc-typehints"
+    "sphinx-autodoc-typehints",
+    "flake8"
 ]

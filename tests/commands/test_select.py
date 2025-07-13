@@ -11,9 +11,13 @@ def test_select_success():
     response_data = b"\x01\x02\x03\x04"
 
     transport = MagicMock()
-    transport.send_apdu.return_value = APDUResponse(response_data, constants.SW_SUCCESS)
+    transport.send_apdu.return_value = APDUResponse(
+        response_data, constants.SW_SUCCESS)
 
-    with patch("keycard.commands.select.ApplicationInfo.parse", return_value=dummy_info) as mock_parse:
+    with patch(
+        "keycard.commands.select.ApplicationInfo.parse",
+        return_value=dummy_info
+    ) as mock_parse:
         result = select(transport)
 
     expected_apdu = (

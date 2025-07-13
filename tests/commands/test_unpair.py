@@ -10,7 +10,8 @@ def test_unpair_success():
     transport = MagicMock()
     secure_session = MagicMock()
     secure_session.authenticated = True
-    secure_session.wrap_apdu.return_value = (0x80, 0x3E, 0x01, 0x00, b"\xDE\xAD")
+    secure_session.wrap_apdu.return_value = (
+        0x80, 0x3E, 0x01, 0x00, b"\xDE\xAD")
 
     transport.send_apdu.return_value = APDUResponse(b"", 0x9000)
 
@@ -43,7 +44,10 @@ def test_unpair_session_not_authenticated():
     session = MagicMock()
     session.authenticated = False
 
-    with pytest.raises(ValueError, match="Secure session must be authenticated"):
+    with pytest.raises(
+        ValueError,
+        match="Secure session must be authenticated"
+    ):
         unpair(MagicMock(), session, 1)
 
 
@@ -51,8 +55,8 @@ def test_unpair_apdu_error():
     transport = MagicMock()
     secure_session = MagicMock()
     secure_session.authenticated = True
-    secure_session.wrap_apdu.return_value = (0x80, 0x3E, 0x01, 0x00, b"")
-    transport.send_apdu.return_value = APDUResponse(b"", 0x6A84)
+    secure_session.wrap_apdu.return_value = (0x80, 0x3E, 0x01, 0x00, b'')
+    transport.send_apdu.return_value = APDUResponse(b'', 0x6A84)
 
     with pytest.raises(APDUError) as excinfo:
         unpair(transport, secure_session, 1)
