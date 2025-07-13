@@ -1,3 +1,4 @@
+import os
 import hashlib
 import unicodedata
 from keycard.keycard import KeyCard
@@ -9,19 +10,10 @@ PAIRING_PASSWORD = "KeycardTest"
 
 with Transport() as transport:
     card = KeyCard(transport)
-    print(card.select())
+    card.select()
     transport.send_apdu(bytes([0x80, 0xFD, 0xAA, 0x55]))
 
-    # Step 1: IDENT (optional but recommended)
-    # challenge = os.urandom(32)
-    # identity = card.ident(challenge)
-    # assert identity.verify(challenge)
-    # print("Card identity verified.")
-    # transport.send_apdu(bytes([0x80, 0xFD, 0xAA, 0x55]))
-    # Step 2: INIT
-    # exit()
     print(card.select())
-
     def generate_pairing_token(passphrase: str) -> bytes:
         norm_pass = unicodedata.normalize(
             "NFKD", passphrase).encode("utf-8")
@@ -37,9 +29,13 @@ with Transport() as transport:
     print("Card initialized.")
     print(card.select())
 
-    # challenge = os.urandom(32)
-    # identity = card.ident(challenge)
-    # identity.verify(challenge)
+    challenge = os.urandom(32)
+    identity = card.ident(challenge)
+    print(identity)
+    if identity.verify(challenge):
+        print('Card verified')
+    else:
+        print('Card verification failed')
 
     # keypair = SigningKey.generate(curve=SECP256k1)
 
