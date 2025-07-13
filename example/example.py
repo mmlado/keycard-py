@@ -1,6 +1,5 @@
 import os
-import hashlib
-import unicodedata
+
 from keycard.keycard import KeyCard
 from keycard.transport import Transport
 
@@ -14,18 +13,7 @@ with Transport() as transport:
     transport.send_apdu(bytes([0x80, 0xFD, 0xAA, 0x55]))
 
     print(card.select())
-    def generate_pairing_token(passphrase: str) -> bytes:
-        norm_pass = unicodedata.normalize(
-            "NFKD", passphrase).encode("utf-8")
-        salt = unicodedata.normalize(
-            "NFKD",
-            "Keycard Pairing Password Salt"
-        ).encode("utf-8")
-        return hashlib.pbkdf2_hmac(
-            "sha256", norm_pass, salt, 50000, dklen=32)
-    shared_secret = generate_pairing_token(PAIRING_PASSWORD)
-    # print(f"{shared_secret.hex()=}")
-    card.init(PIN, PUK, shared_secret)
+    card.init(PIN, PUK, PAIRING_PASSWORD)
     print("Card initialized.")
     print(card.select())
 
@@ -41,10 +29,7 @@ with Transport() as transport:
 
     # # Step 4: PAIR (both steps handled internally)
     print('Pairing....')
-    pairing_index, pairing_key = card.pair(shared_secret)
-    # pairing_index = 0
-    # pairing_key = bytes.fromhex(
-    #    'e6984050429656efef8a72f94ef9d51c77c9077a40db16302c00294564d541d1')
+    pairing_index, pairing_key = card.pair(PAIRING_PASSWORD)
     print(f"Paired. Index: {pairing_index}")
     print(f"{pairing_key.hex()=}")
 

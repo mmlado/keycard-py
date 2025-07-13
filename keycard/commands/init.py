@@ -4,6 +4,7 @@ from ecdsa import SigningKey, VerifyingKey, ECDH, SECP256k1
 from ..apdu import APDUResponse
 from .. import constants
 from ..crypto.aes import aes_cbc_encrypt
+from ..crypto.generate_pairing_token import generate_pairing_token
 from ..exceptions import APDUError, NotSelectedError
 
 
@@ -16,6 +17,9 @@ def init(
 ) -> None:
     if card_public_key is None:
         raise NotSelectedError("Card not selected. Call select() first.")
+
+    if not isinstance(pairing_secret, bytes):
+        pairing_secret = generate_pairing_token(pairing_secret)
 
     ephemeral_key = SigningKey.generate(curve=SECP256k1)
     our_pubkey_bytes: bytes = \

@@ -1,11 +1,15 @@
 import hashlib
 from os import urandom
 
-from keycard import constants
-from keycard.exceptions import APDUError, InvalidResponseError
+from .. import constants
+from ..crypto.generate_pairing_token import generate_pairing_token
+from ..exceptions import APDUError, InvalidResponseError
 
 
 def pair(transport, shared_secret: bytes) -> tuple[int, bytes]:
+    if not isinstance(shared_secret, bytes):
+        shared_secret: bytes = generate_pairing_token(shared_secret)
+
     if len(shared_secret) != 32:
         raise ValueError("Shared secret must be 32 bytes")
 
