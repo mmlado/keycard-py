@@ -41,15 +41,13 @@ def init(
         raise ValueError("Data too long for single APDU")
 
     apdu: bytes = (
-        bytes(
-            [
-                constants.CLA_PROPRIETARY,
-                constants.INS_INIT,
-                0x00,
-                0x00,
-                len(data),
-            ]
-        )
+        bytes([
+            constants.CLA_PROPRIETARY,
+            constants.INS_INIT,
+            0x00,
+            0x00,
+            len(data),
+        ])
         + data
     )
 
