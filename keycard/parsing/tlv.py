@@ -39,7 +39,7 @@ def parse_ber_length(data: bytes, index: int) -> tuple[int, int]:
     return length, 1 + num_bytes
 
 
-def parse_tlv(data: bytes) -> List[Tuple[int, bytes]]:
+def parse_tlv(data: bytes) -> defaultdict[Tuple[int, bytes]]:
     """
     Parses a byte sequence containing TLV (Tag-Length-Value) encoded data.
 

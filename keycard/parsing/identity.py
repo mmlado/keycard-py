@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from ecdsa import VerifyingKey, SECP256k1, util, ellipticcurve
+from ecdsa import VerifyingKey, SECP256k1, util, ellipticcurve, BadSignatureError
 from hashlib import sha256
 
 from ..exceptions import InvalidResponseError
@@ -36,27 +36,28 @@ class Identity:
 
         der_signature = util.sigencode_der(r, s, SECP256k1.order)
 
-        vk.verify(
-            der_signature,
-            challenge,
-            hashfunc=sha256,
-            sigdecode=util.sigdecode_der
-        )
+        try:
+            vk.verify(
+                der_signature,
+                challenge,
+                hashfunc=sha256,
+                sigdecode=util.sigdecode_der
+            )
+            return True
+        except BadSignatureError:
+            return False
 
     @staticmethod
     def parse(data: bytes) -> "Identity":
-        tlvs: list[tuple[int, bytes]] = parse_tlv(data)
+        tlvs = parse_tlv(data)
 
         cert = sig = None
-        for tag, value in tlvs:
-            if tag == 0xA0:
-                inner_tlvs = parse_tlv(value)
+        inner_tlvs = parse_tlv(tlvs[0xA0][0])
 
-                for inner_tag, inner_value in inner_tlvs:
-                    if inner_tag == 0x8A:
-                        cert = inner_value
-                    elif inner_tag == 0x30:
-                        sig = inner_value
+        if 0x8A in inner_tlvs and len(inner_tlvs[0x8A]):
+            cert = inner_tlvs[0x8a][0]
+        if 0x30 in inner_tlvs and len(inner_tlvs[0x30]):
+            sig = inner_tlvs[0x30][0]
 
         if not cert or not sig:
             raise InvalidResponseError("Missing certificate or signature")

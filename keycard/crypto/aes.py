@@ -12,18 +12,21 @@ def aes_cbc_encrypt(
     if padding:
         data = iso7816_pad(data, 16)
     aes = pyaes.AESModeOfOperationCBC(key, iv=iv)
-    print(f"aes data: {data.hex()}")
+
     ciphertext = b''
     for i in range(0, len(data), 16):
         block = data[i:i+16]
         ciphertext += aes.encrypt(block)
+
     return ciphertext
 
 
 def aes_cbc_decrypt(key: bytes, iv: bytes, ciphertext: bytes) -> bytes:
     aes = pyaes.AESModeOfOperationCBC(key, iv=iv)
+
     decrypted = b''
     for i in range(0, len(ciphertext), 16):
         block = ciphertext[i:i+16]
         decrypted += aes.decrypt(block)
+
     return iso7816_unpad(decrypted)

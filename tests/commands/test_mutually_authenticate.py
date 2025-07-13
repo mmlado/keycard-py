@@ -47,7 +47,7 @@ def test_mutually_authenticate_invalid_status_word():
     client_challenge = os.urandom(32)
     response = APDUResponse(b'', 0x6F00)
 
-    session.wrap_apdu.return_value = (0x80, 0x50, 0x00, 0x00, client_challenge)
+    session.wrap_apdu.return_value = (0x80, 0x11, 0x00, 0x00, client_challenge)
     transport.send_apdu.return_value = response
 
     with pytest.raises(APDUError, match='APDU failed with SW=6F00'):
@@ -62,7 +62,7 @@ def test_mutually_authenticate_invalid_response_length():
     response_data = os.urandom(16)  # Invalid length
     response = APDUResponse(response_data, 0x9000)
 
-    session.wrap_apdu.return_value = (0x80, 0x50, 0x00, 0x00, client_challenge)
+    session.wrap_apdu.return_value = (0x80, 0x11, 0x00, 0x00, client_challenge)
     transport.send_apdu.return_value = response
     session.unwrap_response.return_value = (response_data, 0x9000)
 
