@@ -1,8 +1,28 @@
+import os
 from pathlib import Path
 import shutil
 
 from invoke import task
 
+
+@task
+def venv(c):
+    if not os.path.exists("venv"):
+        c.run("python -m venv venv")
+        print("venv created.")
+    else:
+        print("venv already exists.")
+
+@task
+def install(c, dev=False):
+    """Install dependencies with Flit."""
+    pip = "venv/bin/pip"
+    c.run(f"{pip} install flit")
+    if dev:
+        c.run("venv/bin/flit install --symlink --deps develop")
+    else:
+        c.run("venv/bin/flit install --deps production")
+        
 
 @task
 def test(c):
@@ -57,7 +77,8 @@ def cleanall(c):
         "htmlcov",
         "dist",
         "build",
-        "*.egg-info"
+        "*.egg-info",
+        "venv"
     ]
 
     for pattern in patterns:
