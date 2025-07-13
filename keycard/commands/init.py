@@ -1,14 +1,9 @@
 from os import urandom
+from ecdsa import SigningKey, VerifyingKey, ECDH, SECP256k1
 
 from ..apdu import APDUResponse
 from .. import constants
 from ..crypto.aes import aes_cbc_encrypt
-from ..crypto.ecc import (
-    derive_shared_secret,
-    export_uncompressed_public_key,
-    generate_ephemeral_keypair,
-    parse_uncompressed_public_key,
-)
 from ..exceptions import APDUError, NotSelectedError
 
 
@@ -22,10 +17,15 @@ def init(
     if card_public_key is None:
         raise NotSelectedError("Card not selected. Call select() first.")
 
-    ephemeral_key = generate_ephemeral_keypair()
-    our_pubkey_bytes: bytes = export_uncompressed_public_key(ephemeral_key)
-    card_pubkey = parse_uncompressed_public_key(card_public_key)
-    shared_secret: bytes = derive_shared_secret(ephemeral_key, card_pubkey)
+    ephemeral_key = SigningKey.generate(curve=SECP256k1)
+    our_pubkey_bytes: bytes = ephemeral_key.verifying_key.to_string("uncompressed")
+    card_pubkey = VerifyingKey.from_string(card_public_key, curve=SECP256k1)
+    ecdh = ECDH(
+        curve=SECP256k1,
+        private_key=ephemeral_key,
+        public_key=card_pubkey
+    )
+    shared_secret = ecdh.generate_sharedsecret_bytes()
 
     plaintext: bytes = pin + puk + pairing_secret
     iv: bytes = urandom(16)
