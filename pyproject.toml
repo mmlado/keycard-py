@@ -11,7 +11,9 @@ license-files = ["LICENSE"]
 dynamic = ["version", "description"]
 
 dependencies = [
-    "pycryptodome"
+    "pyscard",
+    "ecdsa",
+    "pyaes"
 ]
 
 [project.optional-dependencies]
@@ -20,5 +22,6 @@ dev = [
     "pytest-cov", 
     "coverage",
     "sphinx",
-    "sphinx-autodoc-typehints"
+    "sphinx-autodoc-typehints",
+    "flake8"
 ]

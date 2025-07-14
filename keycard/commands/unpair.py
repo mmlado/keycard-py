@@ -6,10 +6,13 @@ def unpair(transport, secure_session, index: int):
     """
     Sends the UNPAIR command to remove a pairing index from the card.
 
+    This function securely communicates with the card using the established
+    session to instruct it to forget a specific pairing index.
+
     Args:
         transport: The transport interface used to send APDUs.
-        secure_session: The active SecureSession object.
-        index (int): The pairing index to unpair.
+        secure_session: The active SecureSession object used to wrap APDUs.
+        index (int): The pairing index (0–15) to unpair from the card.
 
     Raises:
         ValueError: If transport or secure_session is not provided, or if

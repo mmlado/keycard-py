@@ -1,8 +1,28 @@
+import os
 from pathlib import Path
 import shutil
 
 from invoke import task
 
+
+@task
+def venv(c):
+    if not os.path.exists("venv"):
+        c.run("python -m venv venv")
+        print("venv created.")
+    else:
+        print("venv already exists.")
+
+@task
+def install(c, dev=False):
+    """Install dependencies with Flit."""
+    pip = "venv/bin/pip"
+    c.run(f"{pip} install flit")
+    if dev:
+        c.run("venv/bin/flit install --symlink --deps develop")
+    else:
+        c.run("venv/bin/flit install --deps production")
+        
 
 @task
 def test(c):
@@ -34,6 +54,29 @@ def lint(c):
     c.run("flake8 keycard tests", pty=True)
 
 
+
+@task
+def docs(ctx, clean=False, open=False):
+    """
+    Build Sphinx documentation.
+
+    Args:
+        clean (bool): If True, removes the build directory before building.
+        open (bool): If True, opens the built docs in a browser.
+    """
+    docs_dir = "docs"
+    build_dir = os.path.join(docs_dir, "_build")
+
+    if clean and os.path.exists(build_dir):
+        ctx.run(f"rm -rf {build_dir}")
+
+    ctx.run(f"sphinx-build -b html {docs_dir} {build_dir}/html")
+
+    if open:
+        index_path = os.path.join(build_dir, "html", "index.html")
+        ctx.run(f"xdg-open {index_path} || open {index_path}", warn=True)
+
+
 @task
 def clean(c):
     """Clean artifacts"""
@@ -57,7 +100,8 @@ def cleanall(c):
         "htmlcov",
         "dist",
         "build",
-        "*.egg-info"
+        "*.egg-info",
+        "venv"
     ]
 
     for pattern in patterns:

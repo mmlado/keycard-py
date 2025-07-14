@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   keycard.commands
    keycard.crypto
    keycard.parsing
 

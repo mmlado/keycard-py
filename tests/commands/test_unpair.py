@@ -1,54 +1,64 @@
-import os
-import sys
 import pytest
-
-from ..mocks import MockTransport
+from unittest.mock import MagicMock
 from keycard.commands.unpair import unpair
+from keycard.apdu import APDUResponse
 from keycard.exceptions import APDUError
-
-sys.path.insert(0, os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '..', '..')))
-
-
-class DummySecureSession:
-    def __init__(self, authenticated=True, wrap_result=None):
-        self.authenticated = authenticated
-        self._wrap_result = wrap_result or (0x80, 0x13, 0x01, 0x00, b"")
-
-    def wrap_apdu(self, cla, ins, p1, p2, data):
-        return self._wrap_result
+from keycard import constants
 
 
 def test_unpair_success():
-    session = DummySecureSession(authenticated=True)
-    transport = MockTransport(b'')
+    transport = MagicMock()
+    secure_session = MagicMock()
+    secure_session.authenticated = True
+    secure_session.wrap_apdu.return_value = (
+        0x80, 0x3E, 0x01, 0x00, b"\xDE\xAD")
 
-    unpair(transport, session, 1)
-    assert True
+    transport.send_apdu.return_value = APDUResponse(b"", 0x9000)
+
+    unpair(transport, secure_session, 1)
+
+    secure_session.wrap_apdu.assert_called_once_with(
+        constants.CLA_PROPRIETARY,
+        constants.INS_UNPAIR,
+        1,
+        0x00,
+        b""
+    )
+
+    transport.send_apdu.assert_called_once_with(
+        bytes([0x80, 0x3E, 0x01, 0x00]) + b"\xDE\xAD"
+    )
 
 
-@pytest.mark.parametrize("transport,secure_session,err_msg", [
-    (None, object(), "Transport must be provided"),
-    (object(), None, "Secure session must be provided"),
-])
-def test_unpair_missing_args(transport, secure_session, err_msg):
-    with pytest.raises(ValueError, match=err_msg):
-        unpair(transport, secure_session, 1)
+def test_unpair_transport_missing():
+    with pytest.raises(ValueError, match="Transport must be provided"):
+        unpair(None, MagicMock(), 1)
 
 
-def test_unpair_not_authenticated():
-    session = DummySecureSession(authenticated=False)
-    transport = MockTransport()
+def test_unpair_session_missing():
+    with pytest.raises(ValueError, match="Secure session must be provided"):
+        unpair(MagicMock(), None, 1)
+
+
+def test_unpair_session_not_authenticated():
+    session = MagicMock()
+    session.authenticated = False
+
     with pytest.raises(
         ValueError,
         match="Secure session must be authenticated"
     ):
-        unpair(transport, session, 1)
+        unpair(MagicMock(), session, 1)
 
 
 def test_unpair_apdu_error():
-    session = DummySecureSession(authenticated=True)
-    transport = MockTransport(status_word=0x6A80)
+    transport = MagicMock()
+    secure_session = MagicMock()
+    secure_session.authenticated = True
+    secure_session.wrap_apdu.return_value = (0x80, 0x3E, 0x01, 0x00, b'')
+    transport.send_apdu.return_value = APDUResponse(b'', 0x6A84)
+
     with pytest.raises(APDUError) as excinfo:
-        unpair(transport, session, 1)
-    assert excinfo.value.sw == 0x6A80
+        unpair(transport, secure_session, 1)
+
+    assert excinfo.value.sw == 0x6A84

@@ -1,116 +1,132 @@
 import pytest
 
-from Crypto.Cipher import AES
-from Crypto.Random import get_random_bytes
-from Crypto.Util.Padding import pad
-
+from keycard.apdu import APDUResponse
 from keycard.secure_channel import SecureSession
 
 
 @pytest.fixture
-def session():
-    shared_secret = get_random_bytes(32)
-    pairing_key = get_random_bytes(32)
-    salt = get_random_bytes(16)
-    seed_iv = get_random_bytes(16)
-    session = SecureSession.open(shared_secret, pairing_key, salt, seed_iv)
-    session.authenticated = True
-    return session
+def session_params():
+    return {
+        "shared_secret": bytes(32),
+        "pairing_key": bytes(32),
+        "salt": bytes(16),
+        "seed_iv": bytes(16),
+    }
 
 
-def test_derive_keys_length():
-    shared_secret = b'a' * 32
-    pairing_key = b'b' * 32
-    salt = b'c' * 16
-    enc_key, mac_key = SecureSession.derive_keys(
-        shared_secret,
-        pairing_key,
-        salt
+def test_open_sets_authenticated_and_keys(session_params):
+    session = SecureSession.open(**session_params)
+    assert session.authenticated is True
+    assert isinstance(session.enc_key, bytes) and len(session.enc_key) == 32
+    assert isinstance(session.mac_key, bytes) and len(session.mac_key) == 32
+    assert session.iv == session_params['seed_iv']
+
+
+def test_wrap_apdu_authenticated(session_params):
+    session = SecureSession.open(**session_params)
+    _, _, _, _, wrapped = session.wrap_apdu(
+        0x80,
+        0xCA,
+        0x00,
+        0x00,
+        b'testdata'
     )
-    assert len(enc_key) == 32
-    assert len(mac_key) == 32
-    assert enc_key != mac_key
-
-
-def test_open_returns_session():
-    shared_secret = b'a' * 32
-    pairing_key = b'b' * 32
-    salt = b'c' * 16
-    seed_iv = b'd' * 16
-    session = SecureSession.open(shared_secret, pairing_key, salt, seed_iv)
-    assert isinstance(session, SecureSession)
-    assert session.enc_key
-    assert session.mac_key
-    assert session.iv == seed_iv
-
-
-def test_wrap_apdu_and_unwrap_response(session):
-    cla, ins, p1, p2 = 0x80, 0xCA, 0x00, 0x00
-    data = b"test data"
-    # Wrap APDU
-    out_cla, out_ins, out_p1, out_p2, wrapped = session.wrap_apdu(
-        cla, ins, p1, p2, data
-    )
-    assert (out_cla, out_ins, out_p1, out_p2) == (cla, ins, p1, p2)
     assert isinstance(wrapped, bytes)
-    assert len(wrapped) > 16  # MAC + encrypted
-
-    response_data = b'response'
-    sw = (0x90, 0x00)
-    plaintext = response_data + bytes(sw)
-
-    padded = pad(plaintext, 16, style='iso7816')
-    cipher = AES.new(session.enc_key, AES.MODE_CBC, iv=session.iv)
-    encrypted = cipher.encrypt(padded)
-
-    lr = len(encrypted)
-    mac_input = bytes([lr]) + b'\x00' * 15 + encrypted
-    mac_cipher = AES.new(session.mac_key, AES.MODE_CBC, iv=bytes(16))
-    mac = mac_cipher.encrypt(mac_input)[-16:]
-    response = mac + encrypted
-
-    unwrapped, sw_out = session.unwrap_response(response)
-    assert unwrapped == response_data
-    assert sw_out == 0x9000
+    assert len(wrapped) > 16  # IV + encrypted data
 
 
-def test_unwrap_response_invalid_mac(session):
-    response_data = b'abc'
-    sw = (0x90, 0x00)
+@pytest.mark.parametrize("ins,should_raise", [
+    (0x11, False),
+    (0xCA, True),
+])
+def test_wrap_apdu_auth_check(ins, should_raise):
+    session = SecureSession(
+        b'\x01' * 32,
+        b'\x02' * 32,
+        bytes(16),
+        authenticated=False
+    )
+    if should_raise:
+        with pytest.raises(ValueError, match="not authenticated"):
+            session.wrap_apdu(0x80, ins, 0x00, 0x00, b'test')
+    else:
+        session.wrap_apdu(0x80, ins, 0x00, 0x00, b'test')
 
-    plaintext = response_data + bytes(sw)
-    padded = pad(plaintext, 16, style='iso7816')
-    cipher = AES.new(session.enc_key, AES.MODE_CBC, iv=session.iv)
-    encrypted = cipher.encrypt(padded)
 
-    lr = len(encrypted)
-    mac_input = bytes([lr]) + b'\x00' * 15 + encrypted
-    mac_cipher = AES.new(session.mac_key, AES.MODE_CBC, iv=bytes(16))
-    mac = mac_cipher.encrypt(mac_input)[-16:]
+def test_unwrap_response_authenticated_and_mac(monkeypatch, session_params):
+    # Patch aes_cbc_encrypt and aes_cbc_decrypt to simulate expected behavior
+    session = SecureSession.open(**session_params)
+    plaintext = b"hello world" + b'\x90\x00'  # status word 0x9000
 
-    bad_mac = bytes([b ^ 0xFF for b in mac])
-    response = bad_mac + encrypted
+    # Simulate encryption and MAC
+
+    def fake_decrypt(key, iv, data):
+        return plaintext
+
+    def fake_encrypt(key, iv, data, padding=True):
+        # Return 16 bytes MAC for mac_key, else just return dummy
+        if key == session.mac_key:
+            return b'Y' * 16
+        return b'Z' * (len(data) // 16 * 16)
+
+    monkeypatch.setattr('keycard.secure_channel.aes_cbc_decrypt', fake_decrypt)
+    monkeypatch.setattr('keycard.secure_channel.aes_cbc_encrypt', fake_encrypt)
+
+    # Compose response: 16 bytes MAC + encrypted data
+    response = APDUResponse(b'Y' * 16 + b'Z' * 16, 0x900)
+    out, sw = session.unwrap_response(response)
+    assert out == plaintext[:-2]
+    assert sw == 0x9000
+
+
+def test_unwrap_response_not_authenticated_raises(session_params):
+    session = SecureSession.open(**session_params)
+    session.authenticated = False
+    response = APDUResponse(bytes(32), 0x900)
+    with pytest.raises(ValueError, match="not authenticated"):
+        session.unwrap_response(response)
+
+
+def test_unwrap_response_invalid_length_raises(session_params):
+    session = SecureSession.open(**session_params)
+    session.authenticated = True
+    response = APDUResponse(bytes(10), 0x900)
+    with pytest.raises(ValueError, match="Invalid secure response length"):
+        session.unwrap_response(response)
+
+
+def test_unwrap_response_invalid_mac_raises(monkeypatch, session_params):
+    session = SecureSession.open(**session_params)
+    # Patch aes_cbc_encrypt to return a different MAC
+
+    def fake_encrypt(key, iv, data, padding=True):
+        return b'X' * 16
+
+    monkeypatch.setattr(
+        'keycard.secure_channel.aes_cbc_encrypt',
+        fake_encrypt
+    )
+
+    response = APDUResponse(b'Y' * 16 + b'Z' * 16, 0x900)
 
     with pytest.raises(ValueError, match="Invalid MAC"):
         session.unwrap_response(response)
 
 
-def test_unwrap_response_too_short(session):
-    with pytest.raises(ValueError, match="Invalid secure response length"):
-        session.unwrap_response(b'short')
+def test_unwrap_response_missing_status_word(monkeypatch, session_params):
+    session = SecureSession.open(**session_params)
 
+    def fake_decrypt(key, iv, data):
+        return b'\x01'
 
-def test_unwrap_response_missing_sw(session):
-    plaintext = b'x'  # less than 2 bytes
-    padded = pad(plaintext, 16, style='iso7816')
-    cipher = AES.new(session.enc_key, AES.MODE_CBC, iv=session.iv)
-    encrypted = cipher.encrypt(padded)
+    monkeypatch.setattr(
+        'keycard.secure_channel.aes_cbc_decrypt',
+        fake_decrypt)
+    monkeypatch.setattr(
+        'keycard.secure_channel.aes_cbc_encrypt',
+        lambda *a, **k: b'Y' * 16)
 
-    lr = len(encrypted)
-    mac_input = bytes([lr]) + b'\x00' * 15 + encrypted
-    mac_cipher = AES.new(session.mac_key, AES.MODE_CBC, iv=bytes(16))
-    mac = mac_cipher.encrypt(mac_input)[-16:]
-    response = mac + encrypted
+    response = APDUResponse(b'Y' * 16 + b'Z' * 16, 0x9000)
 
-    with pytest.raises(ValueError, match="Missing status word in response"):
+    with pytest.raises(ValueError, match="Missing status word"):
         session.unwrap_response(response)

@@ -35,3 +35,10 @@ class Capabilities(IntFlag):
             to the given value.
         """
         return cls(value)
+
+    def __str__(self) -> str:
+        return " | ".join(
+            name
+            for name, member in self.__class__.__members__.items()
+            if member in self
+        )

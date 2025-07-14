@@ -1,8 +1,10 @@
 # keycard/secure_channel.py
 
-from Crypto.Cipher import AES
-from Crypto.Hash import SHA512
-from Crypto.Util.Padding import pad, unpad
+from hashlib import sha512
+
+from .apdu import APDUResponse
+
+from .crypto.aes import aes_cbc_encrypt, aes_cbc_decrypt
 
 from dataclasses import dataclass
 
@@ -23,31 +25,6 @@ class SecureSession:
     mac_key: bytes
     iv: bytes
     authenticated: bool = False
-
-    @staticmethod
-    def derive_keys(
-        shared_secret: bytes,
-        pairing_key: bytes,
-        salt: bytes
-    ) -> tuple[bytes, bytes]:
-        """
-        Derives two cryptographic keys from the given shared secret,
-        pairing key, and salt.
-
-        Args:
-            shared_secret (bytes): The shared secret used as input for key
-                derivation.
-            pairing_key (bytes): The pairing key used as input for key
-                derivation.
-            salt (bytes): The salt value used as input for key derivation.
-
-        Returns:
-            tuple[bytes, bytes]: A tuple containing two derived keys, each
-                32 bytes in length.
-        """
-        material = shared_secret + pairing_key + salt
-        digest = SHA512.new(material).digest()
-        return digest[:32], digest[32:]
 
     @classmethod
     def open(
@@ -71,8 +48,14 @@ class SecureSession:
             SecureSession: An instance of SecureSession initialized with
                 derived encryption and MAC keys, and the provided IV.
         """
-        enc_key, mac_key = cls.derive_keys(shared_secret, pairing_key, salt)
-        return cls(enc_key=enc_key, mac_key=mac_key, iv=seed_iv)
+        digest = sha512(shared_secret + pairing_key + salt).digest()
+        enc_key, mac_key = digest[:32], digest[32:]
+        return cls(
+            enc_key=enc_key,
+            mac_key=mac_key,
+            iv=seed_iv,
+            authenticated=True
+        )
 
     def wrap_apdu(
         self,
@@ -104,22 +87,19 @@ class SecureSession:
         if not self.authenticated and ins != 0x11:
             raise ValueError("Secure channel not authenticated")
 
-        padded_data = pad(data, 16, style="iso7816")
+        encrypted = aes_cbc_encrypt(self.enc_key, self.iv, data)
 
-        cipher = AES.new(self.enc_key, AES.MODE_CBC, iv=self.iv)
-        encrypted = cipher.encrypt(padded_data)
+        lc = 16 + len(encrypted)
+        mac_input = bytes([cla, ins, p1, p2, lc]) + bytes(11) + encrypted
 
-        lc = len(encrypted)
-        mac_input = bytes([cla, ins, p1, p2, lc]) + b"\x00" * 11 + encrypted
+        enc_data = aes_cbc_encrypt(
+            self.mac_key, bytes(16), mac_input, padding=False)
 
-        mac_cipher = AES.new(self.mac_key, AES.MODE_CBC, iv=bytes(16))
-        mac = mac_cipher.encrypt(mac_input)[-16:]
+        self.iv = enc_data[-16:]
 
-        self.iv = mac
+        return cla, ins, p1, p2, self.iv + encrypted
 
-        return cla, ins, p1, p2, mac + encrypted
-
-    def unwrap_response(self, response: bytes) -> tuple[bytes, int]:
+    def unwrap_response(self, response: APDUResponse) -> tuple[bytes, int]:
         """
         Unwraps and verifies a secure channel response.
 
@@ -140,22 +120,20 @@ class SecureSession:
         if not self.authenticated:
             raise ValueError("Secure channel not authenticated")
 
-        if len(response) < 18:
+        if len(response.data) < 18:
             raise ValueError("Invalid secure response length")
 
-        received_mac = response[:16]
-        encrypted = response[16:]
+        received_mac = bytes(response.data[:16])
+        encrypted = bytes(response.data[16:])
 
-        lr = len(encrypted)
-        mac_input = bytes([lr]) + b"\x00" * 15 + encrypted
-        mac_cipher = AES.new(self.mac_key, AES.MODE_CBC, iv=bytes(16))
-        expected_mac = mac_cipher.encrypt(mac_input)[-16:]
-
+        lr = len(response.data)
+        mac_input = bytes([lr]) + bytes(15) + bytes(encrypted)
+        expected_mac = aes_cbc_encrypt(
+            self.mac_key, bytes(16), mac_input, padding=False)[-16:]
         if received_mac != expected_mac:
             raise ValueError("Invalid MAC")
 
-        cipher = AES.new(self.enc_key, AES.MODE_CBC, iv=self.iv)
-        plaintext = unpad(cipher.decrypt(encrypted), 16, style="iso7816")
+        plaintext = aes_cbc_decrypt(self.enc_key, self.iv, encrypted)
 
         self.iv = received_mac
 

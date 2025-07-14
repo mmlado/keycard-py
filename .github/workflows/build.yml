@@ -20,9 +20,13 @@ jobs:
       with:
         python-version: "3.13"
 
+    - name: Install system dependencies
+      run: sudo apt-get update && sudo apt-get install -y libpcsclite-dev
+
     - name: Install dependencies
       run: |
         pip install -e ".[dev]"
+        pip install invoke
 
     - name: Run tests
       run: |
@@ -35,11 +39,10 @@ jobs:
 
     - name: Build docs
       run: |
-        cd docs
-        make html
+        invoke docs
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: docs/build/html
+        publish_dir: docs/_build/html
