@@ -1,45 +1,35 @@
 from .. import constants
-from ..apdu import APDUResponse
 from ..exceptions import APDUError
-from ..parsing.application_info import ApplicationInfo
 
 
-def select(transport) -> ApplicationInfo:
+def unpair(transport, secure_session, index: int):
     """
-    Selects the Keycard application on the smart card and retrieves
-    application information.
+    Sends the UNPAIR command to remove a pairing index from the card.
 
-    Sends a SELECT APDU command using the Keycard AID, checks for a
-    successful response, parses the returned application information,
-    and returns it.
+    This function securely communicates with the card using the established
+    session to instruct it to forget a specific pairing index.
 
     Args:
-        transport: The transport instance used to send the APDU command.
-
-    Returns:
-        ApplicationInfo: Parsed information about the selected Keycard
-        application.
+        transport: The transport interface used to send APDUs.
+        secure_session: The active SecureSession object used to wrap APDUs.
+        index (int): The pairing index (0–15) to unpair from the card.
 
     Raises:
-        APDUError: If the card returns a status word indicating failure.
+        ValueError: If transport or secure_session is not provided, or if
+            the session is not authenticated.
+        APDUError: If the response status word indicates an error.
     """
-    P1: int = 0x04
-    P2: int = 0x00
-    aid: bytes = constants.KEYCARD_AID
-    apdu: bytes = (
-        bytes([
-            constants.CLAISO7816,
-            constants.INS_SELECT,
-            P1,
-            P2,
-            len(aid)
-        ]) + aid
+    if not transport:
+        raise ValueError("Transport must be provided")
+    if not secure_session:
+        raise ValueError("Secure session must be provided")
+    if not secure_session.authenticated:
+        raise ValueError("Secure session must be authenticated")
+
+    cla, ins, p1, p2, data = secure_session.wrap_apdu(
+        constants.CLA_PROPRIETARY, constants.INS_UNPAIR, index, 0x00, b""
     )
-    response: APDUResponse = transport.send_apdu(apdu)
+    response = transport.send_apdu(bytes([cla, ins, p1, p2]) + data)
 
-    if response.status_word != constants.SW_SUCCESS:
+    if response.status_word != 0x9000:
         raise APDUError(response.status_word)
-
-    info: ApplicationInfo = ApplicationInfo.parse(response.data)
-
-    return info
