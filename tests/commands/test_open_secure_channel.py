@@ -2,14 +2,9 @@ import pytest
 from unittest.mock import MagicMock, patch
 from ecdsa import SECP256k1
 
+from keycard.apdu import APDUResponse
 from keycard.commands.open_secure_channel import open_secure_channel
 from keycard.exceptions import APDUError, NotSelectedError
-
-
-class DummyAPDUResponse:
-    def __init__(self, status_word=0x9000, data=b''):
-        self.status_word = status_word
-        self.data = data
 
 
 @patch("keycard.commands.open_secure_channel.SecureSession")
@@ -25,12 +20,13 @@ def test_open_secure_channel_success(
     pairing_key = b"pairing_key"
     card_public_key = b"\x04" + b"\x01" * 64
 
+    # Simulated card response: 32 bytes salt + 16 bytes IV
     salt = b"A" * 32
     seed_iv = b"B" * 16
     response_data = salt + seed_iv
-    transport.send_apdu.return_value = DummyAPDUResponse(
-        0x9000, response_data)
+    transport.send_apdu.return_value = APDUResponse(response_data, 0x9000)
 
+    # Setup mocks
     mock_verifying_key.from_string.return_value = MagicMock()
     mock_ecdh_instance = MagicMock()
     mock_ecdh.return_value = mock_ecdh_instance
@@ -48,14 +44,12 @@ def test_open_secure_channel_success(
 
     transport.send_apdu.assert_called_once()
     mock_verifying_key.from_string.assert_called_once_with(
-        card_public_key, curve=SECP256k1)
+        card_public_key, curve=SECP256k1
+    )
     mock_ecdh.assert_called_once()
     mock_ecdh_instance.generate_sharedsecret_bytes.assert_called_once()
     mock_secure_session.open.assert_called_once_with(
-        b"shared_secret",
-        pairing_key,
-        salt,
-        seed_iv
+        b"shared_secret", pairing_key, salt, seed_iv
     )
     assert result == "secure_session"
 
@@ -81,7 +75,7 @@ def test_open_secure_channel_raises_apdu_error():
     pairing_key = b"pairing_key"
     card_public_key = b"\x04" + b"\x01" * 64
 
-    transport.send_apdu.return_value = DummyAPDUResponse(0x6A80, b"")
+    transport.send_apdu.return_value = APDUResponse(b"", 0x6A80)
 
     with pytest.raises(APDUError):
         open_secure_channel(

@@ -67,7 +67,7 @@ class KeyCard:
         return commands.pair(self.transport, shared_secret)
 
     def verify_pin(self, pin: str) -> bool:
-        commands.verify_pin(self.transport, self.secure_session, pin)
+        return commands.verify_pin(self.transport, self.secure_session, pin)
 
     def unpair(self, index: int) -> None:
         commands.unpair(

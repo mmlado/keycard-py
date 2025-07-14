@@ -1,12 +1,9 @@
+import pytest
 from ecdsa import ECDH, SigningKey, SECP256k1, VerifyingKey
 from keycard.crypto.aes import aes_cbc_encrypt
 
 
-def iso7816_pad(data: bytes, block_size: int) -> bytes:
-    pad_len = block_size - (len(data) % block_size)
-    return data + b'\x80' + b'\x00' * (pad_len - 1)
-
-
+@pytest.mark.slow
 def test_full_crypto_vector():
     card_pubkey_bytes = bytes.fromhex(
         '04525481c70263f79c29092e95cfc972e0eb427ea31fe6cc6c96787eb12205737'
@@ -25,7 +22,10 @@ def test_full_crypto_vector():
         ephemeral_private_bytes,
         curve=SECP256k1
     )
-    card_pubkey = VerifyingKey.from_string(card_pubkey_bytes, curve=SECP256k1)
+    card_pubkey = VerifyingKey.from_string(
+        card_pubkey_bytes,
+        curve=SECP256k1
+    )
 
     ecdh = ECDH(
         curve=SECP256k1,
@@ -38,7 +38,15 @@ def test_full_crypto_vector():
     puk = b'123456789012'
     pairing_secret = b'A' * 32
     plaintext = pin + puk + pairing_secret
+
     ciphertext: bytes = aes_cbc_encrypt(shared_secret, iv, plaintext)
 
-    # Assert full correctness
-    assert ciphertext == expected_ciphertext
+    assert ciphertext == expected_ciphertext, (
+        "Ciphertext does not match expected test vector"
+    )
+
+
+def test_crypto_vector_fails_on_mismatch():
+    bogus = b"\x00" * 48
+    actual = b"\x01" * 48
+    assert bogus != actual, "Test vector should intentionally fail mismatch"

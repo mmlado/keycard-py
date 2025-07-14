@@ -1,5 +1,4 @@
 import pytest
-
 from keycard.crypto import aes
 
 
@@ -46,7 +45,7 @@ def test_aes_cbc_decrypt_invalid_padding():
     b'a',
     b'short',
     b'exactly16bytes!!',
-    b"longer data that is not a multiple of block size",
+    b'longer data that is not a multiple of block size',
 ])
 def test_various_lengths(data):
     key = b'0123456789abcdef'

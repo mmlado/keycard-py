@@ -49,20 +49,6 @@ def test_send_apdu_success(mock_readers):
 
 
 @patch("keycard.transport.readers")
-def test_transport_context_manager(mock_readers):
-    mock_connection = MagicMock()
-    mock_reader = MagicMock()
-    mock_reader.createConnection.return_value = mock_connection
-    mock_readers.return_value = [mock_reader]
-
-    with Transport() as transport:
-        assert transport.connection == mock_connection
-
-    mock_connection.disconnect.assert_called_once()
-    assert transport.connection is None
-
-    
-@patch("keycard.transport.readers")
 def test_send_apdu_auto_connect(mock_readers):
     mock_connection = MagicMock()
     mock_connection.transmit.return_value = ([0x90], 0x90, 0x00)
@@ -77,6 +63,20 @@ def test_send_apdu_auto_connect(mock_readers):
     assert isinstance(response, APDUResponse)
     assert response.status_word == 0x9000
     assert mock_connection.connect.called
+
+
+@patch("keycard.transport.readers")
+def test_transport_context_manager(mock_readers):
+    mock_connection = MagicMock()
+    mock_reader = MagicMock()
+    mock_reader.createConnection.return_value = mock_connection
+    mock_readers.return_value = [mock_reader]
+
+    with Transport() as transport:
+        assert transport.connection == mock_connection
+
+    mock_connection.disconnect.assert_called_once()
+    assert transport.connection is None
 
 
 def test_exit_without_connection():

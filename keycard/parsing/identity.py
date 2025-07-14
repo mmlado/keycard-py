@@ -1,6 +1,12 @@
 from dataclasses import dataclass
 
-from ecdsa import VerifyingKey, SECP256k1, util, ellipticcurve, BadSignatureError
+from ecdsa import (
+    BadSignatureError,
+    ellipticcurve,
+    VerifyingKey,
+    SECP256k1,
+    util,
+)
 from hashlib import sha256
 
 from ..exceptions import InvalidResponseError
@@ -14,10 +20,10 @@ class Identity:
 
     def verify(self, challenge: bytes) -> bool:
         if len(self.certificate) < 33:
-            raise InvalidResponseError("Certificate too short")
+            raise InvalidResponseError('Certificate too short')
 
         compressed = self.certificate[:33]
-        x = int.from_bytes(compressed[1:], "big")
+        x = int.from_bytes(compressed[1:], 'big')
 
         p = SECP256k1.curve.p()
         a = SECP256k1.curve.a()
@@ -48,7 +54,7 @@ class Identity:
             return False
 
     @staticmethod
-    def parse(data: bytes) -> "Identity":
+    def parse(data: bytes) -> 'Identity':
         tlvs = parse_tlv(data)
 
         cert = sig = None
@@ -60,14 +66,14 @@ class Identity:
             sig = inner_tlvs[0x30][0]
 
         if not cert or not sig:
-            raise InvalidResponseError("Missing certificate or signature")
+            raise InvalidResponseError('Missing certificate or signature')
 
         return Identity(certificate=cert, signature=sig)
 
     def __str__(self) -> str:
         return (
-            f"Identity(certificate="
-            f"{self.certificate.hex() if self.certificate else None}, "
-            f"signature="
-            f"{self.signature.hex() if self.signature else None})"
+            f'Identity(certificate='
+            f'{self.certificate.hex() if self.certificate else None}, '
+            f'signature='
+            f'{self.signature.hex() if self.signature else None})'
         )

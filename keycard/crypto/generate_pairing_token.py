@@ -7,6 +7,7 @@ SALT = 'Keycard Pairing Password Salt'
 NUMBER_OF_ITERATIONS = 50000
 DKLEN = 32
 
+
 def generate_pairing_token(passphrase: str) -> bytes:
     norm_pass = unicodedata.normalize('NFKD', passphrase).encode('utf-8')
     salt = unicodedata.normalize('NFKD', SALT).encode('utf-8')

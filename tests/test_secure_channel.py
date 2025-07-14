@@ -35,21 +35,22 @@ def test_wrap_apdu_authenticated(session_params):
     assert len(wrapped) > 16  # IV + encrypted data
 
 
-def test_wrap_apdu_not_authenticated_raises():
+@pytest.mark.parametrize("ins,should_raise", [
+    (0x11, False),
+    (0xCA, True),
+])
+def test_wrap_apdu_auth_check(ins, should_raise):
     session = SecureSession(
         b'\x01' * 32,
         b'\x02' * 32,
         bytes(16),
         authenticated=False
     )
-
-    try:
-        session.wrap_apdu(0x80, 0x11, 0x00, 0x00, b'test')
-    except ValueError:
-        pytest.fail("Should not raise for ins == 0x11")
-
-    with pytest.raises(ValueError, match="not authenticated"):
-        session.wrap_apdu(0x80, 0xCA, 0x00, 0x00, b'test')
+    if should_raise:
+        with pytest.raises(ValueError, match="not authenticated"):
+            session.wrap_apdu(0x80, ins, 0x00, 0x00, b'test')
+    else:
+        session.wrap_apdu(0x80, ins, 0x00, 0x00, b'test')
 
 
 def test_unwrap_response_authenticated_and_mac(monkeypatch, session_params):
