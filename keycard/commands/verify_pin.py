@@ -3,6 +3,26 @@ from ..exceptions import APDUError
 
 
 def verify_pin(transport, session, pin: str) -> bool:
+    """
+    Verifies the user PIN with the card using a secure session.
+
+    Sends the VERIFY PIN APDU command through the secure session. Returns
+    True if the PIN is correct, False if incorrect with remaining attempts,
+    and raises an error if blocked or another APDU error occurs.
+
+    Args:
+        transport: The transport instance used to send the command.
+        session: An established SecureSession object.
+        pin (str): The PIN string to be verified.
+
+    Returns:
+        bool: True if the PIN is correct, False if incorrect but still allowed.
+
+    Raises:
+        ValueError: If no secure session is provided.
+        RuntimeError: If the PIN is blocked (no attempts remaining).
+        APDUError: For other status word errors returned by the card.
+    """
     if session is None:
         raise ValueError(
             "Secure session must be established before verifying PIN.")

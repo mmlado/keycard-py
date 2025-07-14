@@ -54,6 +54,29 @@ def lint(c):
     c.run("flake8 keycard tests", pty=True)
 
 
+
+@task
+def docs(ctx, clean=False, open=False):
+    """
+    Build Sphinx documentation.
+
+    Args:
+        clean (bool): If True, removes the build directory before building.
+        open (bool): If True, opens the built docs in a browser.
+    """
+    docs_dir = "docs"
+    build_dir = os.path.join(docs_dir, "_build")
+
+    if clean and os.path.exists(build_dir):
+        ctx.run(f"rm -rf {build_dir}")
+
+    ctx.run(f"sphinx-build -b html {docs_dir} {build_dir}/html")
+
+    if open:
+        index_path = os.path.join(build_dir, "html", "index.html")
+        ctx.run(f"xdg-open {index_path} || open {index_path}", warn=True)
+
+
 @task
 def clean(c):
     """Clean artifacts"""

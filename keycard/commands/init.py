@@ -15,6 +15,26 @@ def init(
     puk: bytes,
     pairing_secret: bytes
 ) -> None:
+    """
+    Initializes a Keycard device with PIN, PUK, and pairing secret.
+
+    Establishes an ephemeral ECDH key exchange and sends encrypted
+    credentials to the card.
+
+    Args:
+        transport: The transport used to send APDU commands to the card.
+        card_public_key (bytes): The card's ECC public key, usually
+            retrieved via select().
+        pin (bytes): The personal identification number (PIN) as bytes.
+        puk (bytes): The personal unblocking key (PUK) as bytes.
+        pairing_secret (bytes): A 32-byte shared secret or a passphrase that
+            will be converted into one.
+
+    Raises:
+        NotSelectedError: If no card public key is provided.
+        ValueError: If the encrypted data exceeds a single APDU length.
+        APDUError: If the card returns a failure status word.
+    """
     if card_public_key is None:
         raise NotSelectedError("Card not selected. Call select() first.")
 

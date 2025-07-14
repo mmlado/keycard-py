@@ -10,13 +10,15 @@ def select(transport) -> ApplicationInfo:
     application information.
 
     Sends a SELECT APDU command using the Keycard AID, checks for a
-    successful response, parses the returned application information, and
-    stores the card's public key.
+    successful response, parses the returned application information,
+    and returns it.
+
+    Args:
+        transport: The transport instance used to send the APDU command.
 
     Returns:
-        ApplicationInfo: Parsed information about the selected application.
-    Return type:
-        ApplicationInfo
+        ApplicationInfo: Parsed information about the selected Keycard
+            application.
 
     Raises:
         APDUError: If the card returns a status word indicating failure.

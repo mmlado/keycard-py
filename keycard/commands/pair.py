@@ -7,6 +7,26 @@ from ..exceptions import APDUError, InvalidResponseError
 
 
 def pair(transport, shared_secret: bytes) -> tuple[int, bytes]:
+    """
+    Performs an ECDH-based pairing handshake with the card.
+
+    This function initiates a mutual challenge-response authentication and
+    derives a secure pairing key.
+
+    Args:
+        transport: A transport instance used to send APDU commands.
+        shared_secret (bytes): A 32-byte ECDH-derived secret or a passphrase
+            convertible to one.
+
+    Returns:
+        tuple[int, bytes]: The pairing index (0–15) and a derived 32-byte
+        pairing key.
+
+    Raises:
+        ValueError: If the shared secret is not 32 bytes.
+        APDUError: If the card returns a non-success status word.
+        InvalidResponseError: If response lengths or values are unexpected.
+    """
     if not isinstance(shared_secret, bytes):
         shared_secret: bytes = generate_pairing_token(shared_secret)
 

@@ -11,7 +11,29 @@ def open_secure_channel(
     card_public_key,
     pairing_index: int,
     pairing_key: bytes
-) -> None:
+) -> SecureSession:
+    """
+    Opens a secure session with the Keycard using ECDH and a pairing key.
+
+    This function performs an ephemeral ECDH key exchange with the card,
+    sends the ephemeral public key, and receives cryptographic material
+    from the card to derive a secure session.
+
+    Args:
+        transport: The transport used to communicate with the card.
+        card_public_key (bytes): The ECC public key of the card, retrieved
+            via select().
+        pairing_index (int): The index of the previously established
+            pairing slot.
+        pairing_key (bytes): The shared 32-byte pairing key.
+
+    Returns:
+        SecureSession: A newly established secure session with the card.
+
+    Raises:
+        NotSelectedError: If no card public key is provided.
+        APDUError: If the card returns a failure status word.
+    """
     if not card_public_key:
         raise NotSelectedError("Card not selected or missing public key")
 

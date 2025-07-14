@@ -4,6 +4,20 @@ from ..parsing.identity import Identity
 
 
 def ident(transport, challenge: bytes) -> Identity:
+    """
+    Sends a challenge to the card to receive a signed identity response.
+
+    Args:
+        transport: An instance of the Transport class to communicate with
+            the card.
+        challenge (bytes): A challenge (nonce or data) to send to the card.
+
+    Returns:
+        Identity: A parsed identity object containing the card's response.
+
+    Raises:
+        APDUError: If the response status word is not successful (0x9000).
+    """
     apdu = (
         bytes([
             constants.CLA_PROPRIETARY,

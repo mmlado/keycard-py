@@ -1,32 +1,45 @@
 from .. import constants
+from ..apdu import APDUResponse
 from ..exceptions import APDUError
+from ..parsing.application_info import ApplicationInfo
 
 
-def unpair(transport, secure_session, index: int):
+def select(transport) -> ApplicationInfo:
     """
-    Sends the UNPAIR command to remove a pairing index from the card.
+    Selects the Keycard application on the smart card and retrieves
+    application information.
+
+    Sends a SELECT APDU command using the Keycard AID, checks for a
+    successful response, parses the returned application information,
+    and returns it.
 
     Args:
-        transport: The transport interface used to send APDUs.
-        secure_session: The active SecureSession object.
-        index (int): The pairing index to unpair.
+        transport: The transport instance used to send the APDU command.
+
+    Returns:
+        ApplicationInfo: Parsed information about the selected Keycard
+        application.
 
     Raises:
-        ValueError: If transport or secure_session is not provided, or if
-            the session is not authenticated.
-        APDUError: If the response status word indicates an error.
+        APDUError: If the card returns a status word indicating failure.
     """
-    if not transport:
-        raise ValueError("Transport must be provided")
-    if not secure_session:
-        raise ValueError("Secure session must be provided")
-    if not secure_session.authenticated:
-        raise ValueError("Secure session must be authenticated")
-
-    cla, ins, p1, p2, data = secure_session.wrap_apdu(
-        constants.CLA_PROPRIETARY, constants.INS_UNPAIR, index, 0x00, b""
+    P1: int = 0x04
+    P2: int = 0x00
+    aid: bytes = constants.KEYCARD_AID
+    apdu: bytes = (
+        bytes([
+            constants.CLAISO7816,
+            constants.INS_SELECT,
+            P1,
+            P2,
+            len(aid)
+        ]) + aid
     )
-    response = transport.send_apdu(bytes([cla, ins, p1, p2]) + data)
+    response: APDUResponse = transport.send_apdu(apdu)
 
-    if response.status_word != 0x9000:
+    if response.status_word != constants.SW_SUCCESS:
         raise APDUError(response.status_word)
+
+    info: ApplicationInfo = ApplicationInfo.parse(response.data)
+
+    return info
