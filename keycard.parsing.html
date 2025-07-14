@@ -295,102 +295,36 @@ to the given value.</p>
 </section>
 <section id="module-keycard.parsing.identity">
 <span id="keycard-parsing-identity-module"></span><h2>keycard.parsing.identity module<a class="headerlink" href="#module-keycard.parsing.identity" title="Link to this heading">¶</a></h2>
-<p>This module provides functionality for parsing and verifying ECC-based card
-identities using the NIST P-256 curve.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="keycard.parsing.identity.Identity">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.parsing.identity.</span></span><span class="sig-name descname"><span class="pre">Identity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">certificate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signature</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.identity.Identity" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>CardIdentity represents a card’s identity, including its certificate and
-signature.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.parsing.identity.Identity.certificate">
-<span class="sig-name descname"><span class="pre">certificate</span></span><a class="headerlink" href="#keycard.parsing.identity.Identity.certificate" title="Link to this definition">¶</a></dt>
-<dd><p>The ECC public key certificate, expected to be
-at least 33 bytes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bytes</p>
+<span class="sig-name descname"><span class="pre">certificate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></em><a class="headerlink" href="#keycard.parsing.identity.Identity.certificate" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.parsing.identity.Identity.parse">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.identity.Identity.parse" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#keycard.parsing.identity.Identity" title="keycard.parsing.identity.Identity"><code class="xref py py-class docutils literal notranslate"><span class="pre">Identity</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.parsing.identity.Identity.signature">
-<span class="sig-name descname"><span class="pre">signature</span></span><a class="headerlink" href="#keycard.parsing.identity.Identity.signature" title="Link to this definition">¶</a></dt>
-<dd><p>The signature associated with the certificate.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bytes</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id10">
-<span class="sig-name descname"><span class="pre">certificate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></em><a class="headerlink" href="#id10" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.parsing.identity.Identity.parse">
-<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.identity.Identity.parse" title="Link to this definition">¶</a></dt>
-<dd><p>Parses a byte sequence containing TLV-encoded card identity data and
-extracts the certificate and signature.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#keycard.parsing.identity.Identity" title="keycard.parsing.identity.Identity"><code class="xref py py-class docutils literal notranslate"><span class="pre">Identity</span></code></a></span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>data</strong> (<em>bytes</em>) – The TLV-encoded data to parse.</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>An object containing the extracted certificate and
-signature.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>CardIdentity</p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidResponseError" title="keycard.exceptions.InvalidResponseError"><strong>InvalidResponseError</strong></a> – If either the certificate or signature is</p></li>
-<li><p><strong>missing from the parsed data.</strong> – </p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id11">
-<span class="sig-name descname"><span class="pre">signature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></em><a class="headerlink" href="#id11" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">signature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></em><a class="headerlink" href="#keycard.parsing.identity.Identity.signature" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.parsing.identity.Identity.verify">
 <span class="sig-name descname"><span class="pre">verify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">challenge</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.identity.Identity.verify" title="Link to this definition">¶</a></dt>
-<dd><p>Verifies the authenticity of a challenge using the certificate’s ECC
-public key and a signature.</p>
-<dl class="field-list simple">
+<dd><dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>challenge</strong> (<em>bytes</em>) – The challenge data to verify.</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><dl class="simple">
-<dt>True if the signature is valid for the given challenge,</dt><dd><p>False otherwise.</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidResponseError" title="keycard.exceptions.InvalidResponseError"><strong>InvalidResponseError</strong></a> – If the certificate is too short or contains</p></li>
-<li><p><strong>an invalid ECC public key.</strong> – </p></li>
-</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -401,12 +335,45 @@ public key and a signature.</p>
 <section id="module-keycard.parsing.tlv">
 <span id="keycard-parsing-tlv-module"></span><h2>keycard.parsing.tlv module<a class="headerlink" href="#module-keycard.parsing.tlv" title="Link to this heading">¶</a></h2>
 <dl class="py function">
+<dt class="sig sig-object py" id="keycard.parsing.tlv.parse_ber_length">
+<span class="sig-prename descclassname"><span class="pre">keycard.parsing.tlv.</span></span><span class="sig-name descname"><span class="pre">parse_ber_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.tlv.parse_ber_length" title="Link to this definition">¶</a></dt>
+<dd><p>Parses a BER-encoded length field from a byte sequence starting at the
+given index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>data</strong> (<em>bytes</em>) – The byte sequence containing the BER-encoded length.</p></li>
+<li><p><strong>index</strong> (<em>int</em>) – The starting index in the byte sequence to parse the
+length from.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>A tuple containing the parsed length (int) and the</dt><dd><p>total number of bytes consumed (int).</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[int, int]</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidResponseError" title="keycard.exceptions.InvalidResponseError"><strong>InvalidResponseError</strong></a> – If the length encoding is unsupported or exceeds
+    the remaining buffer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="keycard.parsing.tlv.parse_tlv">
 <span class="sig-prename descclassname"><span class="pre">keycard.parsing.tlv.</span></span><span class="sig-name descname"><span class="pre">parse_tlv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.tlv.parse_tlv" title="Link to this definition">¶</a></dt>
 <dd><p>Parses a byte sequence containing TLV (Tag-Length-Value) encoded data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code>]]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">defaultdict</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code>]]</span></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>data</strong> (<em>bytes</em>) – The byte sequence to parse.</p>

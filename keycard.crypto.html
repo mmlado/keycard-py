@@ -15,7 +15,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="keycard.parsing package" href="keycard.parsing.html" />
-    <link rel="prev" title="keycard package" href="keycard.html" />
+    <link rel="prev" title="keycard.commands package" href="keycard.commands.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -40,172 +40,49 @@
 </section>
 <section id="module-keycard.crypto.aes">
 <span id="keycard-crypto-aes-module"></span><h2>keycard.crypto.aes module<a class="headerlink" href="#module-keycard.crypto.aes" title="Link to this heading">¶</a></h2>
-<p>This module provides cryptographic utilities for AES encryption in CBC mode and
-key derivation.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="keycard.crypto.aes.aes_cbc_decrypt">
+<span class="sig-prename descclassname"><span class="pre">keycard.crypto.aes.</span></span><span class="sig-name descname"><span class="pre">aes_cbc_decrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ciphertext</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.crypto.aes.aes_cbc_decrypt" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="keycard.crypto.aes.aes_cbc_encrypt">
-<span class="sig-prename descclassname"><span class="pre">keycard.crypto.aes.</span></span><span class="sig-name descname"><span class="pre">aes_cbc_encrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aes_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plaintext</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.crypto.aes.aes_cbc_encrypt" title="Link to this definition">¶</a></dt>
-<dd><p>Encrypts the given plaintext using AES encryption in CBC mode.</p>
-<dl class="field-list simple">
+<span class="sig-prename descclassname"><span class="pre">keycard.crypto.aes.</span></span><span class="sig-name descname"><span class="pre">aes_cbc_encrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.crypto.aes.aes_cbc_encrypt" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>aes_key</strong> (<em>bytes</em>) – The 32-byte (256-bit) AES key.</p></li>
-<li><p><strong>iv</strong> (<em>bytes</em>) – The 16-byte initialization vector.</p></li>
-<li><p><strong>plaintext</strong> (<em>bytes</em>) – The data to encrypt. Must be a multiple of 16 bytes
-in length.</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The encrypted ciphertext.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bytes</p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ValueError</strong> – If the AES key is not 32 bytes or the IV is not 16 bytes.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="keycard.crypto.aes.derive_aes_key">
-<span class="sig-prename descclassname"><span class="pre">keycard.crypto.aes.</span></span><span class="sig-name descname"><span class="pre">derive_aes_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shared_secret</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.crypto.aes.derive_aes_key" title="Link to this definition">¶</a></dt>
-<dd><p>Derives a 256-bit AES key from a 32-byte shared secret using SHA-256.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>shared_secret</strong> (<em>bytes</em>) – A 32-byte shared secret.</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A 32-byte (256-bit) AES key derived from the shared secret.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bytes</p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ValueError</strong> – If the shared secret is not exactly 32 bytes long.</p>
 </dd>
 </dl>
 </dd></dl>
 
 </section>
-<section id="module-keycard.crypto.ecc">
-<span id="keycard-crypto-ecc-module"></span><h2>keycard.crypto.ecc module<a class="headerlink" href="#module-keycard.crypto.ecc" title="Link to this heading">¶</a></h2>
-<p>This module provides utility functions for Elliptic Curve Cryptography (ECC)
-operations using the PyCryptodome library.</p>
+<section id="module-keycard.crypto.padding">
+<span id="keycard-crypto-padding-module"></span><h2>keycard.crypto.padding module<a class="headerlink" href="#module-keycard.crypto.padding" title="Link to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="keycard.crypto.ecc.derive_shared_secret">
-<span class="sig-prename descclassname"><span class="pre">keycard.crypto.ecc.</span></span><span class="sig-name descname"><span class="pre">derive_shared_secret</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">private_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peer_public_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.crypto.ecc.derive_shared_secret" title="Link to this definition">¶</a></dt>
-<dd><p>Derives a shared secret using Elliptic Curve Diffie-Hellman (ECDH) key
-exchange.</p>
-<dl class="field-list simple">
+<dt class="sig sig-object py" id="keycard.crypto.padding.iso7816_pad">
+<span class="sig-prename descclassname"><span class="pre">keycard.crypto.padding.</span></span><span class="sig-name descname"><span class="pre">iso7816_pad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.crypto.padding.iso7816_pad" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
 </dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>private_key</strong> (<em>ECC.EccKey</em>) – The local party’s private ECC key.</p></li>
-<li><p><strong>peer_public_key</strong> (<em>ECC.EccKey</em>) – The peer’s public ECC key.</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The derived shared secret as a 32-byte big-endian value.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bytes</p>
-</dd>
 </dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This function performs the ECDH operation manually by multiplying the
-private scalar with the peer’s public point and extracting the
-x-coordinate as the shared secret.</p>
-</div>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="keycard.crypto.ecc.export_uncompressed_public_key">
-<span class="sig-prename descclassname"><span class="pre">keycard.crypto.ecc.</span></span><span class="sig-name descname"><span class="pre">export_uncompressed_public_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ecc_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.crypto.ecc.export_uncompressed_public_key" title="Link to this definition">¶</a></dt>
-<dd><p>Exports an ECC public key in uncompressed format.</p>
-<dl class="field-list simple">
+<dt class="sig sig-object py" id="keycard.crypto.padding.iso7816_unpad">
+<span class="sig-prename descclassname"><span class="pre">keycard.crypto.padding.</span></span><span class="sig-name descname"><span class="pre">iso7816_unpad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">padded</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.crypto.padding.iso7816_unpad" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
 </dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ecc_key</strong> (<em>ECC.EccKey</em>) – The ECC key object containing the public key.</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><dl class="simple">
-<dt>The uncompressed public key as a byte string, consisting of a</dt><dd><p>0x04 prefix followed by the 32-byte big-endian X and Y coordinates.</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bytes</p>
-</dd>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="keycard.crypto.ecc.generate_ephemeral_keypair">
-<span class="sig-prename descclassname"><span class="pre">keycard.crypto.ecc.</span></span><span class="sig-name descname"><span class="pre">generate_ephemeral_keypair</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.crypto.ecc.generate_ephemeral_keypair" title="Link to this definition">¶</a></dt>
-<dd><p>Generates an ephemeral ECC (Elliptic Curve Cryptography) key pair using the
-P-256 curve.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">EccKey</span></code></span></p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The generated ephemeral ECC key pair.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ECC.EccKey</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="keycard.crypto.ecc.parse_uncompressed_public_key">
-<span class="sig-prename descclassname"><span class="pre">keycard.crypto.ecc.</span></span><span class="sig-name descname"><span class="pre">parse_uncompressed_public_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.crypto.ecc.parse_uncompressed_public_key" title="Link to this definition">¶</a></dt>
-<dd><p>Parses an uncompressed ECC public key and returns an ECC.EccKey object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">EccKey</span></code></span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>raw</strong> (<em>bytes</em>) – The uncompressed public key as a 65-byte sequence. The</p></li>
-<li><p><strong>0x04</strong> (<em>first byte should be</em>)</p></li>
-<li><p><strong>coordinate</strong> (<em>followed by 32 bytes for the X</em>)</p></li>
-<li><p><strong>coordinate.</strong> (<em>and 32 bytes for the Y</em>)</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><dl class="simple">
-<dt>The constructed ECC public key object using the P-256</dt><dd><p>curve.</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>ECC.EccKey</p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ValueError</strong> – If the input does not conform to the uncompressed public
-    key format.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
-<section id="keycard-crypto-padding-module">
-<h2>keycard.crypto.padding module<a class="headerlink" href="#keycard-crypto-padding-module" title="Link to this heading">¶</a></h2>
 </section>
 <section id="module-keycard.crypto">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-keycard.crypto" title="Link to this heading">¶</a></h2>
@@ -252,7 +129,7 @@ P-256 curve.</p>
   <li><a href="index.html">Documentation overview</a><ul>
   <li><a href="modules.html">keycard</a><ul>
   <li><a href="keycard.html">keycard package</a><ul>
-      <li>Previous: <a href="keycard.html" title="previous chapter">keycard package</a></li>
+      <li>Previous: <a href="keycard.commands.html" title="previous chapter">keycard.commands package</a></li>
       <li>Next: <a href="keycard.parsing.html" title="next chapter">keycard.parsing package</a></li>
   </ul></li>
   </ul></li>

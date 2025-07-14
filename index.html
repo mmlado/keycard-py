@@ -46,48 +46,28 @@ documentation for details.</p>
 </li>
 </ul>
 </div>
-<p id="module-keycard.keycard">This module provides the KeyCard class, which implements an interface for
-interacting with Keycard-compliant smart cards.</p>
-<dl class="py class">
+<dl class="py class" id="module-keycard.keycard">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.keycard.</span></span><span class="sig-name descname"><span class="pre">KeyCard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard" title="Link to this definition">¶</a></dt>
-<dd><p>Represents a Keycard smart card interface.</p>
-<p>This class provides methods to interact with a Keycard-compliant smart
-card.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.keycard.KeyCard.transport">
-<span class="sig-name descname"><span class="pre">transport</span></span><a class="headerlink" href="#keycard.keycard.KeyCard.transport" title="Link to this definition">¶</a></dt>
-<dd><p>The transport interface used to communicate
-with the smart card.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.transport.Transport" title="keycard.transport.Transport">Transport</a></p>
-</dd>
-</dl>
-</dd></dl>
-
+<dd><p>High-level interface for interacting with a Keycard device.</p>
+<p>This class provides convenient methods to manage pairing, secure channels,
+and card operations.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.ident">
 <span class="sig-name descname"><span class="pre">ident</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">challenge</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.ident" title="Link to this definition">¶</a></dt>
-<dd><p>Sends an identification challenge to the card and returns the parsed
-card identity.</p>
+<dd><p>Sends an identity challenge to the card.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.identity.Identity" title="keycard.parsing.identity.Identity"><code class="xref py py-class docutils literal notranslate"><span class="pre">Identity</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>challenge</strong> (<em>bytes</em>) – A byte sequence representing the challenge to
-send to the card.</p>
+<dd class="field-even"><p><strong>challenge</strong> (<em>bytes</em>) – Challenge data to sign.</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The parsed identity information returned by the card.</p>
+<dd class="field-odd"><p>Response data (e.g., signature or proof).</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="keycard.parsing.html#keycard.parsing.identity.Identity" title="keycard.parsing.identity.Identity">Identity</a></p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card responds with a status word other than
-    0x9000.</p>
+<dd class="field-even"><p>bytes</p>
 </dd>
 </dl>
 </dd></dl>
@@ -95,33 +75,13 @@ send to the card.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.init">
 <span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">puk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_secret</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.init" title="Link to this definition">¶</a></dt>
-<dd><p>Initializes the card with the provided PIN, PUK, and pairing secret.</p>
-<p>This method performs the following steps:
-1. Checks if the card is selected.
-2. Generates an ephemeral ECC key pair.
-3. Derives a shared secret using ECDH with the card’s public key.
-4. Derives an AES key from the shared secret.
-5. Concatenates and pads the PIN, PUK, and pairing secret.
-6. Encrypts the padded data using AES-CBC with a random IV.
-7. Constructs the APDU command with the public key, IV, and ciphertext.
-8. Sends the APDU to the card and checks the response status.</p>
+<dd><p>Initializes the card with security credentials.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>pin</strong> (<em>bytes</em>) – The PIN code to initialize the card with.</p></li>
-<li><p><strong>puk</strong> (<em>bytes</em>) – The PUK code to initialize the card with.</p></li>
-<li><p><strong>pairing_secret</strong> (<em>bytes</em>) – The pairing secret for secure</p></li>
-<li><p><strong>communication.</strong></p></li>
-</ul>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.NotSelectedError" title="keycard.exceptions.NotSelectedError"><strong>NotSelectedError</strong></a> – If the card is not selected.</p></li>
-<li><p><strong>ValueError</strong> – If the data to be sent exceeds the APDU size limit.</p></li>
-<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns an error status word.</p></li>
+<li><p><strong>pin</strong> (<em>bytes</em>) – The PIN code in bytes.</p></li>
+<li><p><strong>puk</strong> (<em>bytes</em>) – The PUK code in bytes.</p></li>
+<li><p><strong>pairing_secret</strong> (<em>bytes</em>) – The shared secret for pairing.</p></li>
 </ul>
 </dd>
 </dl>
@@ -130,17 +90,10 @@ send to the card.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.mutually_authenticate">
 <span class="sig-name descname"><span class="pre">mutually_authenticate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.mutually_authenticate" title="Link to this definition">¶</a></dt>
-<dd><p>Performs mutual authentication between the client and the card.</p>
+<dd><p>Performs mutual authentication between host and card.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the response status word (SW) is not 0x9000.</p></li>
-<li><p><strong>ValueError</strong> – If the response to MUTUALLY AUTHENTICATE is not
-    32 bytes.</p></li>
-</ul>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the authentication fails.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -148,23 +101,13 @@ send to the card.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.open_secure_channel">
 <span class="sig-name descname"><span class="pre">open_secure_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pairing_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.open_secure_channel" title="Link to this definition">¶</a></dt>
-<dd><p>Establishes a secure communication channel with the card using an
-ephemeral ECDH key exchange.</p>
+<dd><p>Opens a secure session with the card.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>pairing_index</strong> (<em>int</em>) – The index of the pairing to use for the
-secure channel.</p></li>
-<li><p><strong>pairing_key</strong> (<em>bytes</em>) – The secret key associated with the pairing
-index.</p></li>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pairing_index</strong> (<em>int</em>) – Index of the pairing slot to use.</p></li>
+<li><p><strong>pairing_key</strong> (<em>bytes</em>) – The shared pairing key (32 bytes).</p></li>
 </ul>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.exceptions.NotSelectedError" title="keycard.exceptions.NotSelectedError"><strong>NotSelectedError</strong></a> – If the card is not selected or the public
-    key is missing.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -172,35 +115,19 @@ index.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.pair">
 <span class="sig-name descname"><span class="pre">pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shared_secret</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.pair" title="Link to this definition">¶</a></dt>
-<dd><p>Establishes a secure pairing with the card using a shared secret.</p>
-<p>This method performs a challenge-response protocol to mutually
-authenticate the client and the card, and derives a pairing key for
-future secure communication.</p>
+<dd><p>Pairs with the card using an ECDH-derived shared secret.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code>]</span></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>shared_secret</strong> (<em>bytes</em>) – A 32-byte shared secret used for
-authentication.</p>
+<dd class="field-even"><p><strong>shared_secret</strong> (<em>bytes</em>) – 32-byte ECDH shared secret.</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><dl class="simple">
-<dt>A tuple containing the pairing index (int) and</dt><dd><p>the derived pairing key (bytes).</p>
-</dd>
-</dl>
-</p>
+<dd class="field-odd"><p>The pairing index and client cryptogram.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>tuple[int, bytes]</p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ValueError</strong> – If the shared secret is not 32 bytes long.</p></li>
-<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns an unexpected status word.</p></li>
-<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidResponseError" title="keycard.exceptions.InvalidResponseError"><strong>InvalidResponseError</strong></a> – If the card response has an unexpected
-    length or the cryptogram does not match.</p></li>
-</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -208,29 +135,13 @@ authentication.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.select">
 <span class="sig-name descname"><span class="pre">select</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.select" title="Link to this definition">¶</a></dt>
-<dd><p>Selects the Keycard application on the smart card and retrieves
-application information.</p>
-<p>Sends a SELECT APDU command using the Keycard AID, checks for a
-successful response, parses the returned application information, and
-stores the card’s public key.</p>
+<dd><p>Selects the Keycard applet and retrieves application metadata.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo" title="keycard.parsing.application_info.ApplicationInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApplicationInfo</span></code></a></span></p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Object containing ECC public key and card info.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Parsed information about the selected application.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo" title="keycard.parsing.application_info.ApplicationInfo">ApplicationInfo</a></p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>Return type:</dt><dd><p>ApplicationInfo</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns a status word indicating failure.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo" title="keycard.parsing.application_info.ApplicationInfo">ApplicationInfo</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -238,20 +149,10 @@ stores the card’s public key.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.unpair">
 <span class="sig-name descname"><span class="pre">unpair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.unpair" title="Link to this definition">¶</a></dt>
-<dd><p>Unpairs a device or key at the specified index.</p>
-<p>This method removes the pairing information for the device or key
-identified by the given index. It requires that a secure channel
-is established and authenticated before proceeding.</p>
+<dd><p>Removes a pairing slot from the card.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>index</strong> (<em>int</em>) – The index of the device or key to unpair.</p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidResponseError" title="keycard.exceptions.InvalidResponseError"><strong>InvalidResponseError</strong></a> – If the secure channel is not established
-    or not authenticated.</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Index of the pairing slot to remove.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -259,29 +160,19 @@ is established and authenticated before proceeding.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.verify_pin">
 <span class="sig-name descname"><span class="pre">verify_pin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pin</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.verify_pin" title="Link to this definition">¶</a></dt>
-<dd><p>Sends the VERIFY PIN command over a secure session.</p>
+<dd><p>Verifies the user PIN with the card.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>transport</strong> – The transport interface to communicate with the card.</p></li>
-<li><p><strong>secure_session</strong> – An active SecureSession instance.</p></li>
-<li><p><strong>pin</strong> (<em>str</em>) – The PIN string to verify.</p></li>
-</ul>
+<dd class="field-even"><p><strong>pin</strong> (<em>str</em>) – The user-entered PIN.</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True if the PIN was correct, False otherwise.</p>
+<dd class="field-odd"><p>True if PIN is valid, otherwise False.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ValueError</strong> – If the secure session is not established.</p></li>
-<li><p><strong>RuntimeError</strong> – For unexpected response status.</p></li>
-</ul>
 </dd>
 </dl>
 </dd></dl>
