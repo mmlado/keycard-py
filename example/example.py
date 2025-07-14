@@ -25,7 +25,6 @@ with Transport() as transport:
     else:
         print('Card verification failed')
 
-    # keypair = SigningKey.generate(curve=SECP256k1)
 
     # # Step 4: PAIR (both steps handled internally)
     print('Pairing....')
@@ -39,12 +38,12 @@ with Transport() as transport:
 
     card.mutually_authenticate()
 
+    print(card.status)
+
     # # Step 6: VERIFY PIN
     card.verify_pin(PIN)
     print("PIN verified.")
 
     # # Step 7: UNPAIR
-    # card.unpair(pairing_index)
-    # print(f"Unpaired index {pairing_index}.")
-
-    # transport.send_apdu(bytes([0x80, 0xFD, 0xAA, 0x55]))
+    card.unpair(pairing_index)
+    print(f"Unpaired index {pairing_index}.")

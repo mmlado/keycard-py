@@ -1,9 +1,6 @@
 # KeyCard Python SDK
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)  
-[![Python](https://img.shields.io/badge/python-3.13.3-blue.svg)](https://www.python.org/downloads/)  
-[![codecov](https://codecov.io/gh/mmlado/keycard-py/branch/main/graph/badge.svg)](https://codecov.io/gh/mmlado/keycard-py)
-
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Python](https://img.shields.io/badge/python-3.13.3-blue.svg)](https://www.python.org/downloads/) [![codecov](https://codecov.io/gh/mmlado/keycard-py/branch/main/graph/badge.svg)](https://codecov.io/gh/mmlado/keycard-py) ![stars](https://img.shields.io/github/stars/mmlado/keycard-py.svg?style=social) ![lastcommit](https://img.shields.io/github/last-commit/mmlado/keycard-py.svg) ![numcontributors](https://img.shields.io/github/contributors-anon/mmlado/keycard-py.svg) 
 A minimal, clean, fully native Python SDK for communicating with [Keycard](https://keycard.tech) smart cards.
 
 This SDK is under active development.  
@@ -17,8 +14,8 @@ APDU commands are being implemented one by one.
 - [x] OPEN SECURE CHANNEL
 - [x] MUTUALLY AUTHENTICATE
 - [x] PAIR
-- [ ] UNPAIR
-- [ ] GET STATUS
+- [x] UNPAIR
+- [x] GET STATUS
 - [x] VERIFY PIN
 - [ ] CHANGE PIN
 - [ ] UNBLOCK PIN

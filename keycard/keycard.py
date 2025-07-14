@@ -118,6 +118,44 @@ class KeyCard:
         """
         return commands.verify_pin(self.transport, self.secure_session, pin)
 
+    @property
+    def status(self):
+        """
+        Retrieves the application status using the secure session.
+
+        Returns:
+            dict: A dictionary with:
+                - pin_retry_count (int)
+                - puk_retry_count (int)
+                - initialized (bool)
+
+        Raises:
+            RuntimeError: If the secure session is not open.
+        """
+        if self.secure_session is None:
+            raise RuntimeError("Secure session not established")
+
+        return commands.get_status(
+            self.transport, self.secure_session, key_path=False)
+
+    @property
+    def get_key_path(self):
+        """
+        Returns the current key derivation path from the card.
+
+        Returns:
+            list of int: List of 32-bit integers representing the key path.
+
+        Raises:
+            RuntimeError: If the secure session is not open.
+        """
+        if self.secure_session is None:
+            raise RuntimeError("Secure session not established")
+
+        return commands.get_status(
+            self.transport, self.secure_session, key_path=True)
+
+
     def unpair(self, index: int):
         """
         Removes a pairing slot from the card.
@@ -125,8 +163,4 @@ class KeyCard:
         Args:
             index (int): Index of the pairing slot to remove.
         """
-        commands.unpair(
-            transport=self.transport,
-            session=self.secure_session,
-            index=index,
-        )
+        commands.unpair(self.transport, self.secure_session, index)
