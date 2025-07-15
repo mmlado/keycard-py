@@ -335,39 +335,6 @@ to the given value.</p>
 <section id="module-keycard.parsing.tlv">
 <span id="keycard-parsing-tlv-module"></span><h2>keycard.parsing.tlv module<a class="headerlink" href="#module-keycard.parsing.tlv" title="Link to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="keycard.parsing.tlv.parse_ber_length">
-<span class="sig-prename descclassname"><span class="pre">keycard.parsing.tlv.</span></span><span class="sig-name descname"><span class="pre">parse_ber_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.tlv.parse_ber_length" title="Link to this definition">¶</a></dt>
-<dd><p>Parses a BER-encoded length field from a byte sequence starting at the
-given index.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>data</strong> (<em>bytes</em>) – The byte sequence containing the BER-encoded length.</p></li>
-<li><p><strong>index</strong> (<em>int</em>) – The starting index in the byte sequence to parse the
-length from.</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><dl class="simple">
-<dt>A tuple containing the parsed length (int) and the</dt><dd><p>total number of bytes consumed (int).</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple[int, int]</p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidResponseError" title="keycard.exceptions.InvalidResponseError"><strong>InvalidResponseError</strong></a> – If the length encoding is unsupported or exceeds
-    the remaining buffer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="keycard.parsing.tlv.parse_tlv">
 <span class="sig-prename descclassname"><span class="pre">keycard.parsing.tlv.</span></span><span class="sig-name descname"><span class="pre">parse_tlv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.tlv.parse_tlv" title="Link to this definition">¶</a></dt>
 <dd><p>Parses a byte sequence containing TLV (Tag-Length-Value) encoded data.</p>
