@@ -84,12 +84,9 @@ def test_verify_pin_delegates_call_and_returns_result():
 
 
 def test_unpair_delegates_call():
+    transport = MagicMock()
     with patch('keycard.keycard.commands.unpair') as mock_unpair:
-        kc = KeyCard(MagicMock())
+        kc = KeyCard(transport)
         kc.secure_session = 'sess'
         kc.unpair(2)
-        mock_unpair.assert_called_once_with(
-            transport=kc.transport,
-            session='sess',
-            index=2
-        )
+        mock_unpair.assert_called_once_with(kc.transport, 'sess', 2)
