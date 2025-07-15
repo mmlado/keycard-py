@@ -29,7 +29,7 @@ def unpair(transport, secure_session, index: int):
     cla, ins, p1, p2, data = secure_session.wrap_apdu(
         constants.CLA_PROPRIETARY, constants.INS_UNPAIR, index, 0x00, b""
     )
-    response = transport.send_apdu(bytes([cla, ins, p1, p2]) + data)
+    response = transport.send_apdu(bytes([cla, ins, p1, p2, len(data)]) + data)
 
     if response.status_word != 0x9000:
         raise APDUError(response.status_word)

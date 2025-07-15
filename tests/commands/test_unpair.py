@@ -26,7 +26,7 @@ def test_unpair_success():
     )
 
     transport.send_apdu.assert_called_once_with(
-        bytes([0x80, 0x3E, 0x01, 0x00]) + b"\xDE\xAD"
+        bytes([0x80, 0x3E, 0x01, 0x00, 0x02]) + b"\xDE\xAD"
     )
 
 

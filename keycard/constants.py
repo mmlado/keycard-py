@@ -18,6 +18,7 @@ INS_MUTUALLY_AUTHENTICATE: int = 0x11
 INS_PAIR: int = 0x12
 INS_UNPAIR: int = 0x13
 INS_VERIFY_PIN: int = 0x20
+INS_GET_STATUS: int = 0xF2
 
 # Status words
 SW_SUCCESS: int = 0x9000

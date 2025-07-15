@@ -6,21 +6,21 @@ from keycard.parsing import tlv
 
 def test_parse_ber_length_short_form():
     data = bytes([0x05])
-    length, consumed = tlv.parse_ber_length(data, 0)
+    length, consumed = tlv._parse_ber_length(data, 0)
     assert length == 5
     assert consumed == 1
 
 
 def test_parse_ber_length_long_form_1byte():
     data = bytes([0x81, 0x10])
-    length, consumed = tlv.parse_ber_length(data, 0)
+    length, consumed = tlv._parse_ber_length(data, 0)
     assert length == 0x10
     assert consumed == 2
 
 
 def test_parse_ber_length_long_form_2bytes():
     data = bytes([0x82, 0x01, 0xF4])
-    length, consumed = tlv.parse_ber_length(data, 0)
+    length, consumed = tlv._parse_ber_length(data, 0)
     assert length == 500
     assert consumed == 3
 
@@ -28,13 +28,13 @@ def test_parse_ber_length_long_form_2bytes():
 def test_parse_ber_length_unsupported_length():
     data = bytes([0x85, 0, 0, 0, 0, 0])
     with pytest.raises(InvalidResponseError):
-        tlv.parse_ber_length(data, 0)
+        tlv._parse_ber_length(data, 0)
 
 
 def test_parse_ber_length_exceeds_buffer():
     data = bytes([0x82, 0x01])
     with pytest.raises(InvalidResponseError):
-        tlv.parse_ber_length(data, 0)
+        tlv._parse_ber_length(data, 0)
 
 
 def test_parse_tlv_single():

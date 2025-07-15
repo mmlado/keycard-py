@@ -4,7 +4,7 @@ from typing import Tuple
 from keycard.exceptions import InvalidResponseError
 
 
-def parse_ber_length(data: bytes, index: int) -> tuple[int, int]:
+def _parse_ber_length(data: bytes, index: int) -> tuple[int, int]:
     """
     Parses a BER-encoded length field from a byte sequence starting at the
     given index.
@@ -61,7 +61,7 @@ def parse_tlv(data: bytes) -> defaultdict[Tuple[int, bytes]]:
         tag = data[index]
         index += 1
 
-        length, length_size = parse_ber_length(data, index)
+        length, length_size = _parse_ber_length(data, index)
         index += length_size
 
         value = data[index:index+length]

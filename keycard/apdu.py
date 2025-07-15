@@ -18,6 +18,13 @@ class APDUResponse:
     """
     data: bytes
     status_word: int
+    
+    def __str__(self) -> str:
+        print(self.status_word)
+        return (
+            f"APDUResponse(data={bytes(self.data).hex()}, "
+            f"status_word={hex(self.status_word)})"
+        )
 
 
 def encode_lv(value: bytes) -> bytes:
