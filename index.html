@@ -52,6 +52,17 @@ documentation for details.</p>
 <dd><p>High-level interface for interacting with a Keycard device.</p>
 <p>This class provides convenient methods to manage pairing, secure channels,
 and card operations.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.factory_reset">
+<span class="sig-name descname"><span class="pre">factory_reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.factory_reset" title="Link to this definition">¶</a></dt>
+<dd><p>Sends the FACTORY_RESET command to the card.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns a failure status word.</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.get_key_path">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_key_path</span></span><a class="headerlink" href="#keycard.keycard.KeyCard.get_key_path" title="Link to this definition">¶</a></dt>
