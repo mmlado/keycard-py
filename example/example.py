@@ -10,7 +10,7 @@ PAIRING_PASSWORD = "KeycardTest"
 with Transport() as transport:
     card = KeyCard(transport)
     card.select()
-    transport.send_apdu(bytes([0x80, 0xFD, 0xAA, 0x55]))
+    card.factory_reset()
 
     print(card.select())
     card.init(PIN, PUK, PAIRING_PASSWORD)
