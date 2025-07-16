@@ -164,3 +164,12 @@ class KeyCard:
             index (int): Index of the pairing slot to remove.
         """
         commands.unpair(self.transport, self.secure_session, index)
+
+    def factory_reset(self):
+        """
+        Sends the FACTORY_RESET command to the card.
+
+        Raises:
+            APDUError: If the card returns a failure status word.
+        """
+        commands.factory_reset(self.transport)
