@@ -23,7 +23,7 @@ APDU commands are being implemented one by one.
 - [ ] DERIVE KEY
 - [ ] GENERATE MNEMONIC
 - [ ] REMOVE KEY
-- [ ] GENERATE KEY
+- [x] GENERATE KEY
 - [ ] SIGN
 - [ ] SET PINLESS PATH
 - [ ] EXPORT KEY

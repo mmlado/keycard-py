@@ -1,4 +1,7 @@
+from . import constants
 from . import commands
+from .apdu import APDUResponse
+from .exceptions import APDUError
 from .transport import Transport
 
 
@@ -24,8 +27,8 @@ class KeyCard:
             raise ValueError("Transport not initialized")
 
         self.transport = transport
-        self._card_public_key = None
-        self.secure_session = None
+        self.card_public_key = None
+        self.session = None
 
     def select(self):
         """
@@ -34,8 +37,8 @@ class KeyCard:
         Returns:
             ApplicationInfo: Object containing ECC public key and card info.
         """
-        info = commands.select(self.transport)
-        self._card_public_key = info.ecc_public_key
+        info = commands.select(self)
+        self.card_public_key = info.ecc_public_key
         return info
 
     def init(self, pin: bytes, puk: bytes, pairing_secret: bytes):
@@ -48,8 +51,7 @@ class KeyCard:
             pairing_secret (bytes): The shared secret for pairing.
         """
         commands.init(
-            self.transport,
-            self._card_public_key,
+            self,
             pin,
             puk,
             pairing_secret,
@@ -65,7 +67,7 @@ class KeyCard:
         Returns:
             bytes: Response data (e.g., signature or proof).
         """
-        return commands.ident(self.transport, challenge)
+        return commands.ident(self, challenge)
 
     def open_secure_channel(self, pairing_index: int, pairing_key: bytes):
         """
@@ -75,9 +77,8 @@ class KeyCard:
             pairing_index (int): Index of the pairing slot to use.
             pairing_key (bytes): The shared pairing key (32 bytes).
         """
-        self.secure_session = commands.open_secure_channel(
-            self.transport,
-            self._card_public_key,
+        self.session = commands.open_secure_channel(
+            self,
             pairing_index,
             pairing_key,
         )
@@ -89,10 +90,7 @@ class KeyCard:
         Raises:
             APDUError: If the authentication fails.
         """
-        commands.mutually_authenticate(
-            self.transport,
-            self.secure_session,
-        )
+        commands.mutually_authenticate(self)
 
     def pair(self, shared_secret: bytes) -> tuple[int, bytes]:
         """
@@ -104,7 +102,7 @@ class KeyCard:
         Returns:
             tuple[int, bytes]: The pairing index and client cryptogram.
         """
-        return commands.pair(self.transport, shared_secret)
+        return commands.pair(self, shared_secret)
 
     def verify_pin(self, pin: str) -> bool:
         """
@@ -116,7 +114,7 @@ class KeyCard:
         Returns:
             bool: True if PIN is valid, otherwise False.
         """
-        return commands.verify_pin(self.transport, self.secure_session, pin)
+        return commands.verify_pin(self, pin)
 
     @property
     def status(self):
@@ -132,11 +130,10 @@ class KeyCard:
         Raises:
             RuntimeError: If the secure session is not open.
         """
-        if self.secure_session is None:
+        if self.session is None:
             raise RuntimeError("Secure session not established")
 
-        return commands.get_status(
-            self.transport, self.secure_session, key_path=False)
+        return commands.get_status(self)
 
     @property
     def get_key_path(self):
@@ -149,11 +146,10 @@ class KeyCard:
         Raises:
             RuntimeError: If the secure session is not open.
         """
-        if self.secure_session is None:
+        if self.session is None:
             raise RuntimeError("Secure session not established")
 
-        return commands.get_status(
-            self.transport, self.secure_session, key_path=True)
+        return commands.get_status(self, key_path=True)
 
 
     def unpair(self, index: int):
@@ -163,7 +159,7 @@ class KeyCard:
         Args:
             index (int): Index of the pairing slot to remove.
         """
-        commands.unpair(self.transport, self.secure_session, index)
+        commands.unpair(self, index)
 
     def factory_reset(self):
         """
@@ -172,4 +168,66 @@ class KeyCard:
         Raises:
             APDUError: If the card returns a failure status word.
         """
-        commands.factory_reset(self.transport)
+        commands.factory_reset(self)
+        
+    def generate_key(self) -> bytes:
+        """
+        Generates a new key on the card and returns the key UID.
+
+        Returns:
+            bytes: Key UID (SHA-256 of the public key)
+
+        Raises:
+            APDUError: If the response status word is not 0x9000
+        """
+        return commands.generate_key(self)
+    
+    
+    def send_apdu(
+        self,
+        ins: int,
+        p1: int=0x00,
+        p2: int=0x00,
+        data: bytes=b'',
+        cla: int=None
+    ) -> bytes:
+        if cla == None:
+            cla = constants.CLA_PROPRIETARY
+
+        response: APDUResponse = self.transport.send_apdu(
+            bytes([cla, ins, p1, p2, len(data)]) + data
+        )
+        
+        if response.status_word != constants.SW_SUCCESS:
+            raise APDUError(response.status_word)
+        
+        return bytes(response.data)
+    
+    def send_secure_apdu(
+        self,
+        ins: int,
+        p1: int=0x00,
+        p2: int=0x00,
+        data: bytes=b''
+    ) -> bytes:
+        encrypted = self.session.wrap_apdu(
+            cla=constants.CLA_PROPRIETARY,
+            ins=ins,
+            p1=p1,
+            p2=p2,
+            data=data
+        )
+
+        response: APDUResponse = self.transport.send_apdu(
+            bytes([constants.CLA_PROPRIETARY, ins, p1, p2, len(encrypted)]) + encrypted
+        )
+
+        if response.status_word != 0x9000:
+            raise APDUError(response.status_word)
+
+        plaintext, sw = self.session.unwrap_response(response)
+
+        if sw != 0x9000:
+            raise APDUError(sw)
+        
+        return plaintext

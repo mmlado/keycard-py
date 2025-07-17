@@ -20,6 +20,7 @@ INS_UNPAIR: int = 0x13
 INS_VERIFY_PIN: int = 0x20
 INS_GET_STATUS: int = 0xF2
 INS_FACTORY_RESET: int = 0xFD
+INS_GENERATE_KEY: int = 0xD4
 
 # Status words
 SW_SUCCESS: int = 0x9000

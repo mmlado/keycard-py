@@ -4,9 +4,12 @@ from ..apdu import APDUResponse
 from ..exceptions import APDUError
 
 
-def mutually_authenticate(transport, session, client_challenge=None) -> None:
+def mutually_authenticate(card, client_challenge=None) -> None:
     """
     Performs mutual authentication between the client and the Keycard.
+
+    Preconditions:
+        - Secure Channel must be opened
 
     The card will respond with a cryptographic challenge. The secure
     session will verify the response. If the response is not exactly
@@ -25,25 +28,11 @@ def mutually_authenticate(transport, session, client_challenge=None) -> None:
     """
     client_challenge = client_challenge or os.urandom(32)
 
-    cla, ins, p1, p2, data = session.wrap_apdu(
-        cla=constants.CLA_PROPRIETARY,
+    response: bytes = card.send_secure_apdu(
         ins=constants.INS_MUTUALLY_AUTHENTICATE,
-        p1=0x00,
-        p2=0x00,
         data=client_challenge
     )
 
-    response: APDUResponse = transport.send_apdu(
-        bytes([cla, ins, p1, p2, len(data)]) + data)
-
-    if response.status_word != 0x9000:
-        raise APDUError(response.status_word)
-
-    plaintext, sw = session.unwrap_response(response)
-
-    if sw != 0x9000:
-        raise APDUError(sw)
-
-    if len(plaintext) != 32:
+    if len(response) != 32:
         raise ValueError(
             'Response to MUTUALLY AUTHENTICATE is not 32 bytes')

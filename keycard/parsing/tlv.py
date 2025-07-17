@@ -54,6 +54,7 @@ def parse_tlv(data: bytes) -> defaultdict[Tuple[int, bytes]]:
         InvalidResponseError: If the TLV header is incomplete or the declared
             length exceeds the available data.
     """
+    print(data.hex())
     index = 0
     result = defaultdict(list)
 

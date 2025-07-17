@@ -20,6 +20,7 @@ if __debug__:
 else:
     # Production mode: static imports for safety and stability
     from .factory_reset import factory_reset
+    from .generate_key import generate_key
     from .ident import ident
     from .init import init
     from .get_status import get_status
@@ -31,7 +32,8 @@ else:
     from .unpair import unpair
 
     __all__ = [
-        'fasctory_reset',
+        'factory_reset',
+        'generate_key',
         'ident',
         'init',
         'get_status',

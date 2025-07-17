@@ -5,7 +5,7 @@ from ..parsing import tlv
 from ..secure_channel import SecureSession
 
 
-def get_status(transport, session: SecureSession, key_path=False):
+def get_status(card, key_path=False):
     """
     Query the application status or key path from the Keycard.
 
@@ -31,28 +31,18 @@ def get_status(transport, session: SecureSession, key_path=False):
         APDUError: If the response status word is not 0x9000.
         ValueError: If the application status template (tag 0xA3) is missing.
     """
-    cla, ins, p1, p2, data = session.wrap_apdu(
-        constants.CLA_PROPRIETARY,
-        constants.INS_GET_STATUS,
-        0x01 if key_path else 0x00,
-        0x00,
-        b"",
+    response: bytes = card.send_secure_apdu(
+        ins=constants.INS_GET_STATUS,
+        p1=0x01 if key_path else 0x00,
     )
-    response: APDUResponse = transport.send_apdu(
-        bytes([cla, ins, p1, p2, len(data)]) + data)
-
-    decoded, sw = session.unwrap_response(response)
-
-    if sw != constants.SW_SUCCESS:
-        raise APDUError(sw)
 
     if key_path:
         return [
-            int.from_bytes(decoded[i:i+4], "big")
-            for i in range(0, len(decoded), 4)
+            int.from_bytes(response[i:i+4], "big")
+            for i in range(0, len(response), 4)
         ]
 
-    outer = tlv.parse_tlv(decoded)
+    outer = tlv.parse_tlv(response)
 
     if 0xA3 not in outer:
         raise ValueError("Missing tag 0xA3 (Application Status Template)")

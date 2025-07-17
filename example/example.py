@@ -1,5 +1,6 @@
 import os
 
+from keycard.exceptions import APDUError
 from keycard.keycard import KeyCard
 from keycard.transport import Transport
 
@@ -10,9 +11,13 @@ PAIRING_PASSWORD = "KeycardTest"
 with Transport() as transport:
     card = KeyCard(transport)
     card.select()
-    card.factory_reset()
+    try:
+        card.factory_reset()
+    except APDUError as e:
+        print(f"Factory reset failed: {e}")
+    else:
+        print(card.select())
 
-    print(card.select())
     card.init(PIN, PUK, PAIRING_PASSWORD)
     print("Card initialized.")
     print(card.select())

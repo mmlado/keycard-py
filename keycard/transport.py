@@ -25,12 +25,14 @@ class Transport:
         self.connection.connect()
 
     def send_apdu(self, apdu: bytes) -> bytes:
+        print(f"Sending APDU: {apdu.hex()}")
         if not self.connection:
             self.connect()
 
         apdu_list = list(apdu)
 
         response, sw1, sw2 = self.connection.transmit(apdu_list)
+        print(f"Received response: {bytes(response).hex()} with SW: {sw1:02X} {sw2:02X}")
 
         sw = (sw1 << 8) | sw2
         return APDUResponse(response, sw)

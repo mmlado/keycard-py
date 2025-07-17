@@ -24,7 +24,7 @@ def test_open_sets_authenticated_and_keys(session_params):
 
 def test_wrap_apdu_authenticated(session_params):
     session = SecureSession.open(**session_params)
-    _, _, _, _, wrapped = session.wrap_apdu(
+    wrapped = session.wrap_apdu(
         0x80,
         0xCA,
         0x00,

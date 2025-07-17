@@ -2,9 +2,13 @@ from .. import constants
 from ..exceptions import APDUError
 
 
-def unpair(transport, secure_session, index: int):
+def unpair(card, index: int):
     """
     Sends the UNPAIR command to remove a pairing index from the card.
+
+    Preconditions:
+        - Secure Channel must be opened
+        - PIN must be verified
 
     This function securely communicates with the card using the established
     session to instruct it to forget a specific pairing index.
@@ -19,17 +23,7 @@ def unpair(transport, secure_session, index: int):
             the session is not authenticated.
         APDUError: If the response status word indicates an error.
     """
-    if not transport:
-        raise ValueError("Transport must be provided")
-    if not secure_session:
-        raise ValueError("Secure session must be provided")
-    if not secure_session.authenticated:
-        raise ValueError("Secure session must be authenticated")
-
-    cla, ins, p1, p2, data = secure_session.wrap_apdu(
-        constants.CLA_PROPRIETARY, constants.INS_UNPAIR, index, 0x00, b""
+    card.send_secure_apdu(
+        ins=constants.INS_UNPAIR,
+        p1=index,
     )
-    response = transport.send_apdu(bytes([cla, ins, p1, p2, len(data)]) + data)
-
-    if response.status_word != 0x9000:
-        raise APDUError(response.status_word)

@@ -6,7 +6,7 @@ from ..crypto.generate_pairing_token import generate_pairing_token
 from ..exceptions import APDUError, InvalidResponseError
 
 
-def pair(transport, shared_secret: bytes) -> tuple[int, bytes]:
+def pair(card, shared_secret: bytes) -> tuple[int, bytes]:
     """
     Performs an ECDH-based pairing handshake with the card.
 
@@ -35,23 +35,16 @@ def pair(transport, shared_secret: bytes) -> tuple[int, bytes]:
 
     client_challenge = urandom(32)
 
-    response = transport.send_apdu(
-        bytes([
-            constants.CLA_PROPRIETARY,
-            constants.INS_PAIR,
-            0x00,
-            0x00,
-            len(client_challenge)
-        ]) + client_challenge
+    response = card.send_apdu(
+        ins=constants.INS_PAIR,
+        data=client_challenge
     )
 
-    if response.status_word != 0x9000:
-        raise APDUError(response.status_word)
-    if len(response.data) != 64:
+    if len(response) != 64:
         raise InvalidResponseError("Unexpected response length")
 
-    card_cryptogram = bytes(response.data[:32])
-    card_challenge = bytes(response.data[32:])
+    card_cryptogram = bytes(response[:32])
+    card_challenge = bytes(response[32:])
 
     expected = hashlib.sha256(shared_secret + client_challenge).digest()
 
@@ -59,23 +52,18 @@ def pair(transport, shared_secret: bytes) -> tuple[int, bytes]:
         raise InvalidResponseError("Card cryptogram mismatch")
 
     client_cryptogram = hashlib.sha256(shared_secret + card_challenge).digest()
-
-    response = transport.send_apdu(
-        bytes([
-            constants.CLA_PROPRIETARY,
-            constants.INS_PAIR,
-            0x01,
-            0x00,
-            len(client_cryptogram)
-        ]) + client_cryptogram
+    print(client_cryptogram.hex())
+    response = card.send_apdu(
+        ins=constants.INS_PAIR,
+        p1=0x01,        
+        data=client_cryptogram
     )
-    if response.status_word != 0x9000:
-        raise APDUError(response.status_word)
-    if len(response.data) != 33:
+
+    if len(response) != 33:
         raise InvalidResponseError("Unexpected response length")
 
-    pairing_index = response.data[0]
-    salt = bytes(response.data[1:])
+    pairing_index = response[0]
+    salt = bytes(response[1:])
 
     pairing_key = hashlib.sha256(shared_secret + salt).digest()
 
