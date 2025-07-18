@@ -274,6 +274,25 @@ class KeyCard:
         '''
         commands.change_secret(self, new_value, constants.PinType.PAIRING)
 
+    def unblock_pin(self, puk: str | bytes, new_pin: str | bytes) -> None:
+        '''
+        Unblocks the user PIN using the provided PUK and sets a new PIN.
+
+        Args:
+            puk_and_pin (str | bytes): Concatenation of PUK (12 digits) +
+                new PIN (6 digits)
+
+        Raises:
+            ValueError: If the format is invalid.
+            APDUError: If the card returns an error.
+        '''
+        if isinstance(puk, str):
+            puk = puk.encode("utf-8")
+        if isinstance(new_pin, str):
+            new_pin = new_pin.encode("utf-8")
+
+        commands.unblock_pin(self, puk + new_pin)
+
     def send_apdu(
         self,
         ins: int,
