@@ -3,6 +3,9 @@ This module defines constants used for communication with the Keycard applet
 via APDU commands.
 """
 
+from enum import IntEnum
+
+
 # Applet AID
 KEYCARD_AID: bytes = bytes.fromhex('A000000804000101')
 
@@ -21,6 +24,13 @@ INS_VERIFY_PIN: int = 0x20
 INS_GET_STATUS: int = 0xF2
 INS_FACTORY_RESET: int = 0xFD
 INS_GENERATE_KEY: int = 0xD4
+INS_CHANGE_SECRET: int = 0x21
 
 # Status words
 SW_SUCCESS: int = 0x9000
+
+
+class PinType(IntEnum):
+    USER = 0x00
+    PUK = 0x01
+    PAIRING = 0x02

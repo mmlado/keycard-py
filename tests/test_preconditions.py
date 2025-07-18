@@ -2,10 +2,12 @@ import pytest
 from keycard.preconditions import make_precondition
 from keycard.exceptions import InvalidStateError
 
+
 class DummyCard:
     def __init__(self, **attrs):
         for k, v in attrs.items():
             setattr(self, k, v)
+
 
 def test_precondition_passes_when_attribute_true():
     @make_precondition('is_ready')
@@ -13,6 +15,7 @@ def test_precondition_passes_when_attribute_true():
         return "success"
     card = DummyCard(is_ready=True)
     assert do_something(card) == "success"
+
 
 def test_precondition_raises_when_attribute_false():
     @make_precondition('is_ready')
@@ -23,6 +26,7 @@ def test_precondition_raises_when_attribute_false():
         do_something(card)
     assert "Is Ready must be satisfied." in str(exc.value)
 
+
 def test_precondition_raises_when_attribute_missing():
     @make_precondition('is_ready')
     def do_something(card):
@@ -32,6 +36,7 @@ def test_precondition_raises_when_attribute_missing():
         do_something(card)
     assert "Is Ready must be satisfied." in str(exc.value)
 
+
 def test_precondition_custom_display_name():
     @make_precondition('is_ready', display_name="Custom Name")
     def do_something(card):
@@ -40,6 +45,7 @@ def test_precondition_custom_display_name():
     with pytest.raises(InvalidStateError) as exc:
         do_something(card)
     assert "Custom Name must be satisfied." in str(exc.value)
+
 
 def test_precondition_passes_args_kwargs():
     @make_precondition('is_ready')

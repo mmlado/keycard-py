@@ -40,7 +40,7 @@ class KeyCard:
             bool: True if a card is selected, False otherwise.
         '''
         return self.card_public_key is not None
-    
+
     @property
     def is_session_open(self) -> bool:
         '''
@@ -50,7 +50,7 @@ class KeyCard:
             bool: True if a secure session is established, False otherwise.
         '''
         return self.session is not None
-    
+
     @property
     def is_secure_channel_open(self) -> bool:
         '''
@@ -60,7 +60,7 @@ class KeyCard:
             bool: True if a secure channel is established, False otherwise.
         '''
         return self.session is not None and self.session.authenticated
-    
+
     @property
     def is_initialized(self) -> bool:
         '''
@@ -71,8 +71,7 @@ class KeyCard:
         '''
         return self._is_initialized
 
-
-    @property    
+    @property
     def is_pin_verified(self) -> bool:
         '''
         Checks if the user PIN has been verified.
@@ -235,6 +234,45 @@ class KeyCard:
             APDUError: If the response status word is not 0x9000
         '''
         return commands.generate_key(self)
+
+    def change_pin(self, new_value: str) -> None:
+        '''
+        Changes the user PIN on the card.
+
+        Args:
+            new_value (str): The new PIN value to set.
+
+        Raises:
+            ValueError: If input format is invalid.
+            APDUError: If the response status word is not 0x9000.
+        '''
+        commands.change_secret(self, new_value, constants.PinType.USER)
+
+    def change_puk(self, new_value: str) -> None:
+        '''
+        Changes the PUK on the card.
+
+        Args:
+            new_value (str): The new PUK value to set.
+
+        Raises:
+            ValueError: If input format is invalid.
+            APDUError: If the response status word is not 0x9000.
+        '''
+        commands.change_secret(self, new_value, constants.PinType.PUK)
+
+    def change_pairing_secret(self, new_value: str | bytes) -> None:
+        '''
+        Changes the pairing secret on the card.
+
+        Args:
+            new_value (str): The new pairing secret value to set.
+
+        Raises:
+            ValueError: If input format is invalid.
+            APDUError: If the response status word is not 0x9000.
+        '''
+        commands.change_secret(self, new_value, constants.PinType.PAIRING)
 
     def send_apdu(
         self,
