@@ -1,12 +1,16 @@
 from functools import wraps
 from .exceptions import InvalidStateError
 
+
 def make_precondition(attribute_name, display_name=None):
     def decorator(func):
         @wraps(func)
         def wrapper(card, *args, **kwargs):
             if not getattr(card, attribute_name, False):
-                readable = display_name or attribute_name.replace('_', ' ').title()
+                readable = (
+                    display_name or
+                    attribute_name.replace('_', ' ').title()
+                )
                 raise InvalidStateError(f'{readable} must be satisfied.')
             return func(card, *args, **kwargs)
         return wrapper

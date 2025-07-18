@@ -19,6 +19,7 @@ if __debug__:
 
 else:
     # Production mode: static imports for safety and stability
+    from .change_secret import change_secret
     from .factory_reset import factory_reset
     from .generate_key import generate_key
     from .ident import ident
@@ -32,6 +33,7 @@ else:
     from .unpair import unpair
 
     __all__ = [
+        'change_secret',
         'factory_reset',
         'generate_key',
         'ident',

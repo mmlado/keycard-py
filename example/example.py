@@ -50,6 +50,16 @@ with Transport() as transport:
     key = card.generate_key()
     print(f"Generated key: {key.hex()}")
 
+
+    card.change_pin(PIN)
+    print("PIN changed.")
+    
+    card.change_puk(PUK)
+    print("PUK changed.")
+    
+    card.change_secret(PAIRING_PASSWORD)
+    print("Pairing secret changed.")
+
     print("Unpairing...")
     card.unpair(pairing_index)
     print(f"Unpaired index {pairing_index}.")
