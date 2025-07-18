@@ -25,7 +25,6 @@ class Transport:
         self.connection.connect()
 
     def send_apdu(self, apdu: bytes) -> bytes:
-        print(f'Sending APDU: {apdu.hex()}')
         if not self.connection:
             self.connect()
 

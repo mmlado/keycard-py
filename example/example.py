@@ -31,13 +31,11 @@ with Transport() as transport:
         print('Card verification failed')
 
 
-    # # Step 4: PAIR (both steps handled internally)
     print('Pairing....')
     pairing_index, pairing_key = card.pair(PAIRING_PASSWORD)
     print(f"Paired. Index: {pairing_index}")
     print(f"{pairing_key.hex()=}")
 
-    # # Step 5: OPEN SECURE CHANNEL
     card.open_secure_channel(pairing_index, pairing_key)
     print("Secure channel established.")
 
@@ -45,10 +43,13 @@ with Transport() as transport:
 
     print(card.status)
 
-    # # Step 6: VERIFY PIN
     card.verify_pin(PIN)
     print("PIN verified.")
 
-    # # Step 7: UNPAIR
+    print("Generating key...")
+    key = card.generate_key()
+    print(f"Generated key: {key.hex()}")
+
+    print("Unpairing...")
     card.unpair(pairing_index)
     print(f"Unpaired index {pairing_index}.")
