@@ -181,6 +181,7 @@
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.require_secure_channel"><code class="docutils literal notranslate"><span class="pre">require_secure_channel()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.require_selected"><code class="docutils literal notranslate"><span class="pre">require_selected()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.select"><code class="docutils literal notranslate"><span class="pre">select()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.unblock_pin"><code class="docutils literal notranslate"><span class="pre">unblock_pin()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.unpair"><code class="docutils literal notranslate"><span class="pre">unpair()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.urandom"><code class="docutils literal notranslate"><span class="pre">urandom()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.verify_pin"><code class="docutils literal notranslate"><span class="pre">verify_pin()</span></code></a></li>
@@ -733,6 +734,27 @@ and card operations.</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>RuntimeError</strong> – If the secure session is not open.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.unblock_pin">
+<span class="sig-name descname"><span class="pre">unblock_pin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">puk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_pin</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.unblock_pin" title="Link to this definition">¶</a></dt>
+<dd><p>Unblocks the user PIN using the provided PUK and sets a new PIN.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>puk_and_pin</strong> (<em>str</em><em> | </em><em>bytes</em>) – Concatenation of PUK (12 digits) +
+new PIN (6 digits)</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the format is invalid.</p></li>
+<li><p><a class="reference internal" href="#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns an error.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
