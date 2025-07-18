@@ -2017,6 +2017,39 @@ associated with this VerifyingKey and allow_truncate was not set</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="keycard.commands.change_secret">
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">change_secret</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.change_secret" title="Link to this definition">¶</a></dt>
+<dd><p>Changes the specified secret (PIN, PUK, PAIRING) or secret on the card.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Preconditions:</dt><dd><ul class="simple">
+<li><p>Secure Channel must be opened</p></li>
+<li><p>User PIN must be verified</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>card</strong> – The card session object.</p></li>
+<li><p><strong>new_value</strong> (<em>bytes</em><em> | </em><em>str</em>) – The new PIN/PUK/secret.</p></li>
+<li><p><strong>pin_type</strong> (<a class="reference internal" href="keycard.html#keycard.constants.PinType" title="keycard.constants.PinType"><em>PinType</em></a>) – Type of PIN (USER, PUK, or PAIRING)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If input format is invalid.</p></li>
+<li><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – If the card returns an error status word.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.factory_reset">
 <span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">factory_reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.factory_reset" title="Link to this definition">¶</a></dt>
 <dd><p>Sends the FACTORY_RESET command to the card.</p>

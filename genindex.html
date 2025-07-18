@@ -94,14 +94,22 @@
         <li><a href="keycard.parsing.html#id0">(keycard.parsing.application_info.ApplicationInfo attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.capabilities">[1]</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.commands.html#keycard.commands.Identity.certificate">certificate (keycard.commands.Identity attribute)</a>
 
       <ul>
         <li><a href="keycard.parsing.html#keycard.parsing.identity.Identity.certificate">(keycard.parsing.identity.Identity attribute)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="index.html#keycard.keycard.KeyCard.change_pairing_secret">change_pairing_secret() (keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.change_pairing_secret">[1]</a>
+</li>
+      <li><a href="index.html#keycard.keycard.KeyCard.change_pin">change_pin() (keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.change_pin">[1]</a>
+</li>
+      <li><a href="index.html#keycard.keycard.KeyCard.change_puk">change_puk() (keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.change_puk">[1]</a>
+</li>
+      <li><a href="keycard.commands.html#keycard.commands.change_secret">change_secret() (in module keycard.commands)</a>
+</li>
       <li><a href="keycard.html#keycard.transport.Transport.connect">connect() (keycard.transport.Transport method)</a>
 </li>
       <li><a href="keycard.parsing.html#id6">CREDENTIALS_MANAGEMENT (keycard.parsing.capabilities.Capabilities attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.capabilities.Capabilities.CREDENTIALS_MANAGEMENT">[1]</a>
@@ -586,6 +594,8 @@
         <li><a href="index.html#keycard.keycard.KeyCard.pair">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.pair">[1]</a>
 </li>
       </ul></li>
+      <li><a href="keycard.html#keycard.constants.PinType.PAIRING">PAIRING (keycard.constants.PinType attribute)</a>
+</li>
       <li><a href="keycard.commands.html#keycard.commands.ApplicationInfo.parse">parse() (keycard.commands.ApplicationInfo static method)</a>
 
       <ul>
@@ -602,7 +612,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.parsing.html#keycard.parsing.tlv.parse_tlv">parse_tlv() (in module keycard.parsing.tlv)</a>
 </li>
+      <li><a href="keycard.html#keycard.constants.PinType">PinType (class in keycard.constants)</a>
+</li>
       <li><a href="keycard.commands.html#keycard.commands.VerifyingKey.precompute">precompute() (keycard.commands.VerifyingKey method)</a>
+</li>
+      <li><a href="keycard.html#keycard.constants.PinType.PUK">PUK (keycard.constants.PinType attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -727,6 +741,8 @@
       <li><a href="keycard.commands.html#keycard.commands.SecureSession.unwrap_response">unwrap_response() (keycard.commands.SecureSession method)</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.urandom">urandom() (in module keycard.commands)</a>
+</li>
+      <li><a href="keycard.html#keycard.constants.PinType.USER">USER (keycard.constants.PinType attribute)</a>
 </li>
   </ul></td>
 </tr></table>
