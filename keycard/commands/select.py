@@ -1,11 +1,9 @@
 from .. import constants
-from ..apdu import APDUResponse
-from ..exceptions import APDUError
 from ..parsing.application_info import ApplicationInfo
 
 
-def select(transport) -> ApplicationInfo:
-    """
+def select(card) -> ApplicationInfo:
+    '''
     Selects the Keycard application on the smart card and retrieves
     application information.
 
@@ -22,24 +20,13 @@ def select(transport) -> ApplicationInfo:
 
     Raises:
         APDUError: If the card returns a status word indicating failure.
-    """
-    P1: int = 0x04
-    P2: int = 0x00
-    aid: bytes = constants.KEYCARD_AID
-    apdu: bytes = (
-        bytes([
-            constants.CLAISO7816,
-            constants.INS_SELECT,
-            P1,
-            P2,
-            len(aid)
-        ]) + aid
+    '''
+    result = card.send_apdu(
+        cla=constants.CLAISO7816,
+        ins=constants.INS_SELECT,
+        p1=0x04,
+        p2=0x00,
+        data=constants.KEYCARD_AID
     )
-    response: APDUResponse = transport.send_apdu(apdu)
 
-    if response.status_word != constants.SW_SUCCESS:
-        raise APDUError(response.status_word)
-
-    info: ApplicationInfo = ApplicationInfo.parse(response.data)
-
-    return info
+    return ApplicationInfo.parse(result)

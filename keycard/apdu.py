@@ -1,34 +1,34 @@
-"""
+'''
 This module provides classes and functions for handling APDU (Application
 Protocol Data Unit) responses and encoding data in LV (Length-Value) format.
-"""
+'''
 
 from dataclasses import dataclass
 
 
 @dataclass
 class APDUResponse:
-    """
+    '''
     Represents a response to an APDU (Application Protocol Data Unit) command.
 
     Attributes:
         data (bytes): The response data returned from the APDU command.
         status_word (int): The status word indicating the result of the APDU
             command.
-    """
+    '''
     data: bytes
     status_word: int
-    
+
     def __str__(self) -> str:
         print(self.status_word)
         return (
-            f"APDUResponse(data={bytes(self.data).hex()}, "
-            f"status_word={hex(self.status_word)})"
+            f'APDUResponse(data={bytes(self.data).hex()}, '
+            f'status_word={hex(self.status_word)})'
         )
 
 
 def encode_lv(value: bytes) -> bytes:
-    """
+    '''
     Encodes the given bytes using LV (Length-Value) encoding.
 
     The function prepends the length of the input bytes as a single byte,
@@ -42,8 +42,8 @@ def encode_lv(value: bytes) -> bytes:
 
     Raises:
         ValueError: If the input exceeds 255 bytes in length.
-    """
+    '''
     if len(value) > 255:
-        raise ValueError("LV encoding supports up to 255 bytes")
+        raise ValueError('LV encoding supports up to 255 bytes')
 
     return bytes([len(value)]) + value

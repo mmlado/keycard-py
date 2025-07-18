@@ -97,7 +97,7 @@ class SecureSession:
 
         self.iv = enc_data[-16:]
 
-        return cla, ins, p1, p2, self.iv + encrypted
+        return self.iv + encrypted
 
     def unwrap_response(self, response: APDUResponse) -> tuple[bytes, int]:
         """

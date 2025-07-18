@@ -1,10 +1,16 @@
 from .. import constants
 from ..exceptions import APDUError
+from ..preconditions import require_secure_channel
 
 
-def verify_pin(transport, session, pin: str) -> bool:
-    """
+@require_secure_channel
+def verify_pin(card, pin: str) -> bool:
+    '''
     Verifies the user PIN with the card using a secure session.
+
+    Preconditions:
+        - Secure Channel must be opened
+        - PIN must be verified
 
     Sends the VERIFY PIN APDU command through the secure session. Returns
     True if the PIN is correct, False if incorrect with remaining attempts,
@@ -22,28 +28,18 @@ def verify_pin(transport, session, pin: str) -> bool:
         ValueError: If no secure session is provided.
         RuntimeError: If the PIN is blocked (no attempts remaining).
         APDUError: For other status word errors returned by the card.
-    """
-    if session is None:
-        raise ValueError(
-            "Secure session must be established before verifying PIN.")
+    '''
+    try:
+        card.send_secure_apdu(
+            ins=constants.INS_VERIFY_PIN,
+            data=pin
+        )
+    except APDUError as e:
+        if (e.sw & 0xFFF0) == 0x63C0:
+            attempts = e.sw & 0x000F
+            if attempts == 0:
+                raise RuntimeError('PIN is blocked')
+            return False
+        raise e
 
-    cla, ins, p1, p2, data = session.wrap_apdu(
-        cla=constants.CLA_PROPRIETARY,
-        ins=constants.INS_VERIFY_PIN,
-        p1=0x00,
-        p2=0x00,
-        data=pin
-    )
-
-    response = transport.send_apdu(bytes([cla, ins, p1, p2, len(data)]) + data)
-
-    if response.status_word == 0x9000:
-        return True
-
-    if (response.status_word & 0xFFF0) == 0x63C0:
-        attempts = response.status_word & 0x000F
-        if attempts == 0:
-            raise RuntimeError("PIN is blocked")
-        return False
-
-    raise APDUError(response.status_word)
+    return True

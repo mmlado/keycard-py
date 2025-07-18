@@ -20,7 +20,7 @@ class Transport:
     def connect(self, index=0):
         r = readers()
         if not r:
-            raise TransportError("No smart card readers found")
+            raise TransportError('No smart card readers found')
         self.connection = r[index].createConnection()
         self.connection.connect()
 

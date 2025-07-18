@@ -1,10 +1,11 @@
 from .. import constants
-from ..exceptions import APDUError
 from ..parsing.identity import Identity
+from ..preconditions import require_selected
 
 
-def ident(transport, challenge: bytes) -> Identity:
-    """
+@require_selected
+def ident(card, challenge: bytes) -> Identity:
+    '''
     Sends a challenge to the card to receive a signed identity response.
 
     Args:
@@ -17,19 +18,10 @@ def ident(transport, challenge: bytes) -> Identity:
 
     Raises:
         APDUError: If the response status word is not successful (0x9000).
-    """
-    apdu = (
-        bytes([
-            constants.CLA_PROPRIETARY,
-            constants.INS_IDENT,
-            0x00,
-            0x00,
-            len(challenge)
-        ]) + challenge
+    '''
+    response: bytes = card.send_apdu(
+        ins=constants.INS_IDENT,
+        data=challenge
     )
-    response = transport.send_apdu(apdu)
 
-    if response.status_word != 0x9000:
-        raise APDUError(response.status_word)
-
-    return Identity.parse(bytes(response.data))
+    return Identity.parse(response)

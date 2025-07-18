@@ -27,6 +27,17 @@ class ApplicationInfo:
     version_major: int
     version_minor: int
 
+    @property
+    def is_initialized(self) -> bool:
+        """
+        Checks if the application is initialized based on the presence of
+        the key_uid.
+
+        Returns:
+            bool: True if the key_uid is present, False otherwise.
+        """
+        return self.key_uid is not None
+
     @staticmethod
     def parse(data: bytes) -> "ApplicationInfo":
         """

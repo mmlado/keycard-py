@@ -1,6 +1,8 @@
 import pytest
 from unittest.mock import MagicMock, patch
 
+from keycard.apdu import APDUResponse
+from keycard.exceptions import APDUError
 from keycard.keycard import KeyCard
 from keycard.transport import Transport
 
@@ -9,8 +11,8 @@ def test_keycard_init_with_transport():
     transport = MagicMock(spec=Transport)
     kc = KeyCard(transport)
     assert kc.transport == transport
-    assert kc._card_public_key is None
-    assert kc.secure_session is None
+    assert kc.card_public_key is None
+    assert kc.session is None
 
 
 def test_keycard_init_without_transport_raises():
@@ -24,7 +26,7 @@ def test_select_sets_card_pubkey():
     with patch('keycard.keycard.commands.select', return_value=mock_info):
         kc = KeyCard(MagicMock())
         result = kc.select()
-        assert kc._card_public_key == b'pubkey'
+        assert kc.card_public_key == b'pubkey'
         assert result == mock_info
 
 
@@ -32,11 +34,9 @@ def test_init_calls_command():
     transport = MagicMock()
     with patch('keycard.keycard.commands.init') as mock_init:
         kc = KeyCard(transport)
-        kc._card_public_key = b'pub'
+        kc.card_public_key = b'pub'
         kc.init(b'pin', b'puk', b'secret')
-        mock_init.assert_called_once_with(
-            transport, b'pub', b'pin', b'puk', b'secret'
-        )
+        mock_init.assert_called_once_with(kc, b'pin', b'puk', b'secret')
 
 
 def test_ident_calls_command():
@@ -53,7 +53,7 @@ def test_open_secure_channel_sets_session():
         kc = KeyCard(MagicMock())
         kc._card_public_key = b'pub'
         kc.open_secure_channel(1, b'pairing_key')
-        assert kc.secure_session == 'session'
+        assert kc.session == 'session'
 
 
 def test_mutually_authenticate_calls_command():
@@ -79,7 +79,7 @@ def test_verify_pin_delegates_call_and_returns_result():
         kc = KeyCard(MagicMock())
         kc.secure_session = 'sess'
         result = kc.verify_pin('1234')
-        mock_cmd.assert_called_once_with(kc.transport, 'sess', '1234')
+        mock_cmd.assert_called_once_with(kc, '1234')
         assert result is True
 
 
@@ -89,4 +89,103 @@ def test_unpair_delegates_call():
         kc = KeyCard(transport)
         kc.secure_session = 'sess'
         kc.unpair(2)
-        mock_unpair.assert_called_once_with(kc.transport, 'sess', 2)
+        mock_unpair.assert_called_once_with(kc,  2)
+
+
+def test_send_secure_apdu_success():
+    mock_session = MagicMock()
+    mock_session.wrap_apdu.return_value = b'encrypted'
+    mock_session.unwrap_response.return_value = (b'plaintext', 0x9000)
+    mock_transport = MagicMock()
+    mock_response = MagicMock()
+    mock_response.status_word = 0x9000
+    mock_response.data = b'ciphertext'
+    mock_transport.send_apdu.return_value = mock_response
+
+    kc = KeyCard(mock_transport)
+    kc.session = mock_session
+
+    result = kc.send_secure_apdu(0xA4, 0x01, 0x02, b'data')
+
+    mock_session.wrap_apdu.assert_called_once_with(
+        cla=kc.transport.send_apdu.call_args[0][0][0],
+        ins=0xA4,
+        p1=0x01,
+        p2=0x02,
+        data=b'data'
+    )
+    mock_transport.send_apdu.assert_called_once()
+    mock_session.unwrap_response.assert_called_once_with(mock_response)
+    assert result == b'plaintext'
+
+
+def test_send_secure_apdu_raises_on_transport_status_word():
+    mock_session = MagicMock()
+    mock_session.wrap_apdu.return_value = b'encrypted'
+    mock_transport = MagicMock()
+    mock_transport.send_apdu.return_value = APDUResponse(
+        b'', status_word=0x6A82)
+
+    kc = KeyCard(mock_transport)
+    kc.session = mock_session
+
+    with pytest.raises(APDUError) as exc:
+        kc.send_secure_apdu(0xA4, 0x00, 0x00, b'data')
+    assert exc.value.args[0] == 'APDU failed with SW=6A82'
+
+
+def test_send_secure_apdu_raises_on_unwrap_status_word():
+    mock_session = MagicMock()
+    mock_session.wrap_apdu.return_value = b'encrypted'
+    mock_session.unwrap_response.return_value = (b'plaintext', 0x6A84)
+    mock_transport = MagicMock()
+    mock_transport.send_apdu.return_value = APDUResponse(
+        b'', status_word=0x9000)
+
+    kc = KeyCard(mock_transport)
+    kc.session = mock_session
+
+    with pytest.raises(APDUError) as exc:
+        kc.send_secure_apdu(0xA4, 0x00, 0x00, b'data')
+    assert exc.value.args[0] == 'APDU failed with SW=6A84'
+
+
+def test_send_apdu_success(monkeypatch):
+    mock_transport = MagicMock()
+    mock_response = MagicMock()
+    mock_response.status_word = 0x9000
+    mock_response.data = b'response'
+    mock_transport.send_apdu.return_value = mock_response
+
+    kc = KeyCard(mock_transport)
+
+    result = kc.send_apdu(ins=0xA4, p1=0x01, p2=0x02, data=b'data')
+    expected_apdu = bytes([0x80, 0xA4, 0x01, 0x02, 4]) + b'data'
+    mock_transport.send_apdu.assert_called_once_with(expected_apdu)
+    assert result == b'response'
+
+
+def test_send_apdu_raises_on_non_success_status(monkeypatch):
+    mock_transport = MagicMock()
+    mock_transport.send_apdu.return_value = APDUResponse(b'', 0x6A82)
+
+    kc = KeyCard(mock_transport)
+
+    with pytest.raises(APDUError) as exc:
+        kc.send_apdu(ins=0xA4, p1=0x00, p2=0x00, data=b'')
+    assert exc.value.args[0] == 'APDU failed with SW=6A82'
+
+
+def test_send_apdu_with_custom_cla(monkeypatch):
+    mock_transport = MagicMock()
+    mock_response = MagicMock()
+    mock_response.status_word = 0x9000
+    mock_response.data = b'abc'
+    mock_transport.send_apdu.return_value = mock_response
+
+    kc = KeyCard(mock_transport)
+
+    result = kc.send_apdu(ins=0xA4, p1=0x01, p2=0x02, data=b'data', cla=0x90)
+    expected_apdu = bytes([0x90, 0xA4, 0x01, 0x02, 4]) + b'data'
+    mock_transport.send_apdu.assert_called_once_with(expected_apdu)
+    assert result == b'abc'
