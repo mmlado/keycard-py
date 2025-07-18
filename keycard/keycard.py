@@ -246,7 +246,7 @@ class KeyCard:
             ValueError: If input format is invalid.
             APDUError: If the response status word is not 0x9000.
         '''
-        commands.change_pin(self, new_value, constants.PinType.USER)
+        commands.change_secret(self, new_value, constants.PinType.USER)
 
     def change_puk(self, new_value: str) -> None:
         '''
@@ -259,7 +259,7 @@ class KeyCard:
             ValueError: If input format is invalid.
             APDUError: If the response status word is not 0x9000.
         '''
-        commands.change_pin(self, new_value, constants.PinType.PUK)
+        commands.change_secret(self, new_value, constants.PinType.PUK)
 
     def change_pairing_secret(self, new_value: str | bytes) -> None:
         '''
@@ -272,7 +272,7 @@ class KeyCard:
             ValueError: If input format is invalid.
             APDUError: If the response status word is not 0x9000.
         '''
-        commands.change_pin(self, new_value, constants.PinType.PAIRING)
+        commands.change_secret(self, new_value, constants.PinType.PAIRING)
 
     def send_apdu(
         self,

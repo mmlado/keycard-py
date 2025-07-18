@@ -80,13 +80,18 @@ class ApplicationInfo:
                 capabilities += Capabilities.SECURE_CHANNEL
             capabilities = Capabilities.parse(capabilities)
         else:
-            tlvs = ApplicationInfo._parse_response(data)
+            tlv = parse_tlv(data)
+            if not 0xA4 in tlv:
+                raise InvalidResponseError(
+                    "Invalid top-level tag, expected 0xA4")
 
-            instance_uid = bytes(tlvs[0x8F][0])
-            ecc_public_key = bytes(tlvs[0x80][0])
-            key_uid = tlvs[0x8E][0]
-            capabilities = Capabilities.parse(tlvs[0x8D][0][0])
-            for value in tlvs[0x02]:
+            inner_tlv = parse_tlv(tlv[0xA4][0])
+
+            instance_uid = bytes(inner_tlv[0x8F][0])
+            ecc_public_key = bytes(inner_tlv[0x80][0])
+            key_uid = inner_tlv[0x8E][0]
+            capabilities = Capabilities.parse(inner_tlv[0x8D][0][0])
+            for value in inner_tlv[0x02]:
                 if len(value) == 2:
                     version_major, version_minor = value[0], value[1]
 
@@ -98,22 +103,6 @@ class ApplicationInfo:
             version_major=version_major,
             version_minor=version_minor,
         )
-
-    @staticmethod
-    def _parse_response(data: bytes) -> List[Tuple[int, bytes]]:
-        if len(data) < 2:
-            raise InvalidResponseError("Response too short")
-
-        if data[0] != 0xA4:
-            raise InvalidResponseError("Invalid top-level tag, expected 0xA4")
-
-        total_length = data[1]
-        if len(data) < 2 + total_length:
-            raise InvalidResponseError("Invalid total length in response")
-
-        inner_data = data[2:2 + total_length]
-
-        return parse_tlv(inner_data)
 
     def __str__(self) -> str:
         return (

@@ -57,7 +57,7 @@ with Transport() as transport:
     card.change_puk(PUK)
     print("PUK changed.")
     
-    card.change_secret(PAIRING_PASSWORD)
+    card.change_pairing_secret(PAIRING_PASSWORD)
     print("Pairing secret changed.")
 
     print("Unpairing...")
