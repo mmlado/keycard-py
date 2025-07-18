@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Optional, Tuple
+from typing import Optional
 
 from ..exceptions import InvalidResponseError
 from .capabilities import Capabilities
@@ -81,7 +81,7 @@ class ApplicationInfo:
             capabilities = Capabilities.parse(capabilities)
         else:
             tlv = parse_tlv(data)
-            if not 0xA4 in tlv:
+            if 0xA4 not in tlv:
                 raise InvalidResponseError(
                     "Invalid top-level tag, expected 0xA4")
 
