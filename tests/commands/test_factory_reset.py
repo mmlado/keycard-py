@@ -1,5 +1,5 @@
 import pytest
-import unittest.mock as Mock
+from unittest.mock import Mock
 from keycard import constants
 from keycard.commands.factory_reset import factory_reset
 from keycard.exceptions import APDUError

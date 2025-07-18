@@ -8,7 +8,7 @@ from keycard import constants
 
 def test_unpair_success():
     card = MagicMock()
-    card.send_secure_apdu.return_value = APDUResponse(b"", 0x9000)
+    card.send_secure_apdu.return_value = APDUResponse(b'', 0x9000)
 
     unpair(card, 1)
 
