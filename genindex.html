@@ -47,6 +47,7 @@
  | <a href="#N"><strong>N</strong></a>
  | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
@@ -70,18 +71,14 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.html#keycard.apdu.APDUResponse">APDUResponse (class in keycard.apdu)</a>
-
-      <ul>
-        <li><a href="keycard.commands.html#keycard.commands.APDUResponse">(class in keycard.commands)</a>
 </li>
-      </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.ApplicationInfo">ApplicationInfo (class in keycard.commands)</a>
 
       <ul>
         <li><a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo">(class in keycard.parsing.application_info)</a>
 </li>
       </ul></li>
-      <li><a href="keycard.commands.html#id8">authenticated (keycard.commands.SecureSession attribute)</a>, <a href="keycard.commands.html#keycard.commands.SecureSession.authenticated">[1]</a>
+      <li><a href="keycard.commands.html#id6">authenticated (keycard.commands.SecureSession attribute)</a>, <a href="keycard.commands.html#keycard.commands.SecureSession.authenticated">[1]</a>
 </li>
   </ul></td>
 </tr></table>
@@ -91,7 +88,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.parsing.html#keycard.parsing.capabilities.Capabilities">Capabilities (class in keycard.parsing.capabilities)</a>
 </li>
-      <li><a href="keycard.commands.html#id2">capabilities (keycard.commands.ApplicationInfo attribute)</a>, <a href="keycard.commands.html#keycard.commands.ApplicationInfo.capabilities">[1]</a>
+      <li><a href="keycard.commands.html#id0">capabilities (keycard.commands.ApplicationInfo attribute)</a>, <a href="keycard.commands.html#keycard.commands.ApplicationInfo.capabilities">[1]</a>
 
       <ul>
         <li><a href="keycard.parsing.html#id0">(keycard.parsing.application_info.ApplicationInfo attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.capabilities">[1]</a>
@@ -116,18 +113,14 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.html#id0">data (keycard.apdu.APDUResponse attribute)</a>, <a href="keycard.html#keycard.apdu.APDUResponse.data">[1]</a>
-
-      <ul>
-        <li><a href="keycard.commands.html#id0">(keycard.commands.APDUResponse attribute)</a>, <a href="keycard.commands.html#keycard.commands.APDUResponse.data">[1]</a>
 </li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="keycard.commands.html#id3">ecc_public_key (keycard.commands.ApplicationInfo attribute)</a>, <a href="keycard.commands.html#keycard.commands.ApplicationInfo.ecc_public_key">[1]</a>
+      <li><a href="keycard.commands.html#id1">ecc_public_key (keycard.commands.ApplicationInfo attribute)</a>, <a href="keycard.commands.html#keycard.commands.ApplicationInfo.ecc_public_key">[1]</a>
 
       <ul>
         <li><a href="keycard.parsing.html#id1">(keycard.parsing.application_info.ApplicationInfo attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.ecc_public_key">[1]</a>
@@ -137,7 +130,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.commands.html#keycard.commands.ECDH">ECDH (class in keycard.commands)</a>
 </li>
-      <li><a href="keycard.commands.html#id9">enc_key (keycard.commands.SecureSession attribute)</a>, <a href="keycard.commands.html#keycard.commands.SecureSession.enc_key">[1]</a>
+      <li><a href="keycard.commands.html#id7">enc_key (keycard.commands.SecureSession attribute)</a>, <a href="keycard.commands.html#keycard.commands.SecureSession.enc_key">[1]</a>
 </li>
       <li><a href="keycard.html#keycard.apdu.encode_lv">encode_lv() (in module keycard.apdu)</a>
 </li>
@@ -189,14 +182,20 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.commands.html#keycard.commands.SigningKey.generate">generate() (keycard.commands.SigningKey class method)</a>
 </li>
+      <li><a href="keycard.commands.html#keycard.commands.generate_key">generate_key() (in module keycard.commands)</a>
+
+      <ul>
+        <li><a href="index.html#keycard.keycard.KeyCard.generate_key">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.generate_key">[1]</a>
+</li>
+      </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.generate_pairing_token">generate_pairing_token() (in module keycard.commands)</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.ECDH.generate_private_key">generate_private_key() (keycard.commands.ECDH method)</a>
 </li>
-      <li><a href="keycard.commands.html#keycard.commands.ECDH.generate_sharedsecret">generate_sharedsecret() (keycard.commands.ECDH method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.commands.html#keycard.commands.ECDH.generate_sharedsecret">generate_sharedsecret() (keycard.commands.ECDH method)</a>
+</li>
       <li><a href="keycard.commands.html#keycard.commands.ECDH.generate_sharedsecret_bytes">generate_sharedsecret_bytes() (keycard.commands.ECDH method)</a>
 </li>
       <li><a href="index.html#keycard.keycard.KeyCard.get_key_path">get_key_path (keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.get_key_path">[1]</a>
@@ -235,9 +234,7 @@
         <li><a href="index.html#keycard.keycard.KeyCard.init">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.init">[1]</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="keycard.commands.html#id4">instance_uid (keycard.commands.ApplicationInfo attribute)</a>, <a href="keycard.commands.html#keycard.commands.ApplicationInfo.instance_uid">[1]</a>
+      <li><a href="keycard.commands.html#id2">instance_uid (keycard.commands.ApplicationInfo attribute)</a>, <a href="keycard.commands.html#keycard.commands.ApplicationInfo.instance_uid">[1]</a>
 
       <ul>
         <li><a href="keycard.parsing.html#id2">(keycard.parsing.application_info.ApplicationInfo attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.instance_uid">[1]</a>
@@ -245,11 +242,31 @@
       </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.InvalidResponseError">InvalidResponseError</a>, <a href="keycard.html#keycard.exceptions.InvalidResponseError">[1]</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.html#keycard.exceptions.InvalidStateError">InvalidStateError</a>
+</li>
+      <li><a href="keycard.commands.html#keycard.commands.ApplicationInfo.is_initialized">is_initialized (keycard.commands.ApplicationInfo property)</a>
+
+      <ul>
+        <li><a href="index.html#keycard.keycard.KeyCard.is_initialized">(keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.is_initialized">[1]</a>
+</li>
+        <li><a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.is_initialized">(keycard.parsing.application_info.ApplicationInfo property)</a>
+</li>
+      </ul></li>
+      <li><a href="index.html#keycard.keycard.KeyCard.is_pin_verified">is_pin_verified (keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.is_pin_verified">[1]</a>
+</li>
+      <li><a href="index.html#keycard.keycard.KeyCard.is_secure_channel_open">is_secure_channel_open (keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.is_secure_channel_open">[1]</a>
+</li>
+      <li><a href="index.html#keycard.keycard.KeyCard.is_selected">is_selected (keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.is_selected">[1]</a>
+</li>
+      <li><a href="index.html#keycard.keycard.KeyCard.is_session_open">is_session_open (keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.is_session_open">[1]</a>
+</li>
       <li><a href="keycard.crypto.html#keycard.crypto.padding.iso7816_pad">iso7816_pad() (in module keycard.crypto.padding)</a>
 </li>
       <li><a href="keycard.crypto.html#keycard.crypto.padding.iso7816_unpad">iso7816_unpad() (in module keycard.crypto.padding)</a>
 </li>
-      <li><a href="keycard.commands.html#id10">iv (keycard.commands.SecureSession attribute)</a>, <a href="keycard.commands.html#keycard.commands.SecureSession.iv">[1]</a>
+      <li><a href="keycard.commands.html#id8">iv (keycard.commands.SecureSession attribute)</a>, <a href="keycard.commands.html#keycard.commands.SecureSession.iv">[1]</a>
 </li>
   </ul></td>
 </tr></table>
@@ -259,7 +276,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.parsing.html#id7">KEY_MANAGEMENT (keycard.parsing.capabilities.Capabilities attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.capabilities.Capabilities.KEY_MANAGEMENT">[1]</a>
 </li>
-      <li><a href="keycard.commands.html#id5">key_uid (keycard.commands.ApplicationInfo attribute)</a>, <a href="keycard.commands.html#keycard.commands.ApplicationInfo.key_uid">[1]</a>
+      <li><a href="keycard.commands.html#id3">key_uid (keycard.commands.ApplicationInfo attribute)</a>, <a href="keycard.commands.html#keycard.commands.ApplicationInfo.key_uid">[1]</a>
 
       <ul>
         <li><a href="keycard.parsing.html#id3">(keycard.parsing.application_info.ApplicationInfo attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.key_uid">[1]</a>
@@ -462,7 +479,7 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="keycard.commands.html#id11">mac_key (keycard.commands.SecureSession attribute)</a>, <a href="keycard.commands.html#keycard.commands.SecureSession.mac_key">[1]</a>
+      <li><a href="keycard.commands.html#id9">mac_key (keycard.commands.SecureSession attribute)</a>, <a href="keycard.commands.html#keycard.commands.SecureSession.mac_key">[1]</a>
 </li>
       <li>
     module
@@ -590,6 +607,22 @@
   </ul></td>
 </tr></table>
 
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.commands.html#keycard.commands.require_initialized">require_initialized() (in module keycard.commands)</a>
+</li>
+      <li><a href="keycard.commands.html#keycard.commands.require_pin_verified">require_pin_verified() (in module keycard.commands)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.commands.html#keycard.commands.require_secure_channel">require_secure_channel() (in module keycard.commands)</a>
+</li>
+      <li><a href="keycard.commands.html#keycard.commands.require_selected">require_selected() (in module keycard.commands)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -605,16 +638,22 @@
         <li><a href="index.html#keycard.keycard.KeyCard.select">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.select">[1]</a>
 </li>
       </ul></li>
-      <li><a href="keycard.html#keycard.transport.Transport.send_apdu">send_apdu() (keycard.transport.Transport method)</a>
+      <li><a href="keycard.html#keycard.keycard.KeyCard.send_apdu">send_apdu() (keycard.keycard.KeyCard method)</a>
+
+      <ul>
+        <li><a href="keycard.html#keycard.transport.Transport.send_apdu">(keycard.transport.Transport method)</a>
+</li>
+      </ul></li>
+      <li><a href="keycard.html#keycard.keycard.KeyCard.send_secure_apdu">send_secure_apdu() (keycard.keycard.KeyCard method)</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.ECDH.set_curve">set_curve() (keycard.commands.ECDH method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.commands.html#keycard.commands.SigningKey.sign">sign() (keycard.commands.SigningKey method)</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.SigningKey.sign_deterministic">sign_deterministic() (keycard.commands.SigningKey method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.commands.html#keycard.commands.SigningKey.sign_digest">sign_digest() (keycard.commands.SigningKey method)</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.SigningKey.sign_digest_deterministic">sign_digest_deterministic() (keycard.commands.SigningKey method)</a>
@@ -632,11 +671,7 @@
       <li><a href="index.html#keycard.keycard.KeyCard.status">status (keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.status">[1]</a>
 </li>
       <li><a href="keycard.html#id1">status_word (keycard.apdu.APDUResponse attribute)</a>, <a href="keycard.html#keycard.apdu.APDUResponse.status_word">[1]</a>
-
-      <ul>
-        <li><a href="keycard.commands.html#id1">(keycard.commands.APDUResponse attribute)</a>, <a href="keycard.commands.html#keycard.commands.APDUResponse.status_word">[1]</a>
 </li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -721,13 +756,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.commands.html#keycard.commands.VerifyingKey">VerifyingKey (class in keycard.commands)</a>
 </li>
-      <li><a href="keycard.commands.html#id6">version_major (keycard.commands.ApplicationInfo attribute)</a>, <a href="keycard.commands.html#keycard.commands.ApplicationInfo.version_major">[1]</a>
+      <li><a href="keycard.commands.html#id4">version_major (keycard.commands.ApplicationInfo attribute)</a>, <a href="keycard.commands.html#keycard.commands.ApplicationInfo.version_major">[1]</a>
 
       <ul>
         <li><a href="keycard.parsing.html#id4">(keycard.parsing.application_info.ApplicationInfo attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.version_major">[1]</a>
 </li>
       </ul></li>
-      <li><a href="keycard.commands.html#id7">version_minor (keycard.commands.ApplicationInfo attribute)</a>, <a href="keycard.commands.html#keycard.commands.ApplicationInfo.version_minor">[1]</a>
+      <li><a href="keycard.commands.html#id5">version_minor (keycard.commands.ApplicationInfo attribute)</a>, <a href="keycard.commands.html#keycard.commands.ApplicationInfo.version_minor">[1]</a>
 
       <ul>
         <li><a href="keycard.parsing.html#id5">(keycard.parsing.application_info.ApplicationInfo attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.version_minor">[1]</a>

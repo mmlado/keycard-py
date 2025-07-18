@@ -42,7 +42,7 @@
 <span id="keycard-commands-ident-module"></span><h2>keycard.commands.ident module<a class="headerlink" href="#module-keycard.commands.ident" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.ident.ident">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.ident.</span></span><span class="sig-name descname"><span class="pre">ident</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">challenge</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ident.ident" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.ident.</span></span><span class="sig-name descname"><span class="pre">ident</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">challenge</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ident.ident" title="Link to this definition">¶</a></dt>
 <dd><p>Sends a challenge to the card to receive a signed identity response.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -72,7 +72,7 @@ the card.</p></li>
 <span id="keycard-commands-init-module"></span><h2>keycard.commands.init module<a class="headerlink" href="#module-keycard.commands.init" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.init.init">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.init.</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">card_public_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">puk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_secret</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.init.init" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.init.</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">puk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_secret</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.init.init" title="Link to this definition">¶</a></dt>
 <dd><p>Initializes a Keycard device with PIN, PUK, and pairing secret.</p>
 <p>Establishes an ephemeral ECDH key exchange and sends encrypted
 credentials to the card.</p>
@@ -106,26 +106,34 @@ will be converted into one.</p></li>
 <h2>keycard.commands.mutually_authenticate module<a class="headerlink" href="#keycard-commands-mutually-authenticate-module" title="Link to this heading">¶</a></h2>
 <dl class="py function" id="module-keycard.commands.mutually_authenticate">
 <dt class="sig sig-object py" id="keycard.commands.mutually_authenticate.mutually_authenticate">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.mutually_authenticate.</span></span><span class="sig-name descname"><span class="pre">mutually_authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_challenge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.mutually_authenticate.mutually_authenticate" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.mutually_authenticate.</span></span><span class="sig-name descname"><span class="pre">mutually_authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_challenge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.mutually_authenticate.mutually_authenticate" title="Link to this definition">¶</a></dt>
 <dd><p>Performs mutual authentication between the client and the Keycard.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Preconditions:</dt><dd><ul class="simple">
+<li><p>Secure Channel must be opened</p></li>
+</ul>
+</dd>
+</dl>
 <p>The card will respond with a cryptographic challenge. The secure
 session will verify the response. If the response is not exactly
 32 bytes, or if the response has an unexpected status word, the
 function raises an error.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
 <li><p><strong>transport</strong> – A Transport instance for sending APDUs.</p></li>
 <li><p><strong>session</strong> – A SecureSession instance used for wrapping/unwrapping.</p></li>
 <li><p><strong>client_challenge</strong> (<em>bytes</em><em>, </em><em>optional</em>) – Optional challenge bytes.
 If not provided, a random 32-byte value will be generated.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the response status word is not 0x9000.</p></li>
 <li><p><strong>ValueError</strong> – If the decrypted response is not exactly 32 bytes.</p></li>
 </ul>
@@ -138,7 +146,7 @@ If not provided, a random 32-byte value will be generated.</p></li>
 <h2>keycard.commands.open_secure_channel module<a class="headerlink" href="#keycard-commands-open-secure-channel-module" title="Link to this heading">¶</a></h2>
 <dl class="py function" id="module-keycard.commands.open_secure_channel">
 <dt class="sig sig-object py" id="keycard.commands.open_secure_channel.open_secure_channel">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.open_secure_channel.</span></span><span class="sig-name descname"><span class="pre">open_secure_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">card_public_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.open_secure_channel.open_secure_channel" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.open_secure_channel.</span></span><span class="sig-name descname"><span class="pre">open_secure_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.open_secure_channel.open_secure_channel" title="Link to this definition">¶</a></dt>
 <dd><p>Opens a secure session with the Keycard using ECDH and a pairing key.</p>
 <p>This function performs an ephemeral ECDH key exchange with the card,
 sends the ephemeral public key, and receives cryptographic material
@@ -177,7 +185,7 @@ pairing slot.</p></li>
 <span id="keycard-commands-pair-module"></span><h2>keycard.commands.pair module<a class="headerlink" href="#module-keycard.commands.pair" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.pair.pair">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.pair.</span></span><span class="sig-name descname"><span class="pre">pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shared_secret</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.pair.pair" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.pair.</span></span><span class="sig-name descname"><span class="pre">pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shared_secret</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.pair.pair" title="Link to this definition">¶</a></dt>
 <dd><p>Performs an ECDH-based pairing handshake with the card.</p>
 <p>This function initiates a mutual challenge-response authentication and
 derives a secure pairing key.</p>
@@ -214,7 +222,7 @@ pairing key.</p>
 <h2>keycard.commands.select module<a class="headerlink" href="#keycard-commands-select-module" title="Link to this heading">¶</a></h2>
 <dl class="py function" id="module-keycard.commands.select">
 <dt class="sig sig-object py" id="keycard.commands.select.select">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.select.</span></span><span class="sig-name descname"><span class="pre">select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.select.select" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.select.</span></span><span class="sig-name descname"><span class="pre">select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.select.select" title="Link to this definition">¶</a></dt>
 <dd><p>Selects the Keycard application on the smart card and retrieves
 application information.</p>
 <p>Sends a SELECT APDU command using the Keycard AID, checks for a
@@ -248,8 +256,15 @@ and returns it.</p>
 <h2>keycard.commands.unpair module<a class="headerlink" href="#keycard-commands-unpair-module" title="Link to this heading">¶</a></h2>
 <dl class="py function" id="module-keycard.commands.unpair">
 <dt class="sig sig-object py" id="keycard.commands.unpair.unpair">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.unpair.</span></span><span class="sig-name descname"><span class="pre">unpair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secure_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.unpair.unpair" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.unpair.</span></span><span class="sig-name descname"><span class="pre">unpair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.unpair.unpair" title="Link to this definition">¶</a></dt>
 <dd><p>Sends the UNPAIR command to remove a pairing index from the card.</p>
+<dl class="simple">
+<dt>Preconditions:</dt><dd><ul class="simple">
+<li><p>Secure Channel must be opened</p></li>
+<li><p>PIN must be verified</p></li>
+</ul>
+</dd>
+</dl>
 <p>This function securely communicates with the card using the established
 session to instruct it to forget a specific pairing index.</p>
 <dl class="field-list simple">
@@ -275,30 +290,39 @@ session to instruct it to forget a specific pairing index.</p>
 <h2>keycard.commands.verify_pin module<a class="headerlink" href="#keycard-commands-verify-pin-module" title="Link to this heading">¶</a></h2>
 <dl class="py function" id="module-keycard.commands.verify_pin">
 <dt class="sig sig-object py" id="keycard.commands.verify_pin.verify_pin">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.verify_pin.</span></span><span class="sig-name descname"><span class="pre">verify_pin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.verify_pin.verify_pin" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.verify_pin.</span></span><span class="sig-name descname"><span class="pre">verify_pin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.verify_pin.verify_pin" title="Link to this definition">¶</a></dt>
 <dd><p>Verifies the user PIN with the card using a secure session.</p>
-<p>Sends the VERIFY PIN APDU command through the secure session. Returns
-True if the PIN is correct, False if incorrect with remaining attempts,
-and raises an error if blocked or another APDU error occurs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
 </dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
+</dl>
+<dl class="simple">
+<dt>Preconditions:</dt><dd><ul class="simple">
+<li><p>Secure Channel must be opened</p></li>
+<li><p>PIN must be verified</p></li>
+</ul>
+</dd>
+</dl>
+<p>Sends the VERIFY PIN APDU command through the secure session. Returns
+True if the PIN is correct, False if incorrect with remaining attempts,
+and raises an error if blocked or another APDU error occurs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
 <li><p><strong>transport</strong> – The transport instance used to send the command.</p></li>
 <li><p><strong>session</strong> – An established SecureSession object.</p></li>
 <li><p><strong>pin</strong> (<em>str</em>) – The PIN string to be verified.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True if the PIN is correct, False if incorrect but still allowed.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the PIN is correct, False if incorrect but still allowed.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>ValueError</strong> – If no secure session is provided.</p></li>
 <li><p><strong>RuntimeError</strong> – If the PIN is blocked (no attempts remaining).</p></li>
 <li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – For other status word errors returned by the card.</p></li>
@@ -315,46 +339,6 @@ and raises an error if blocked or another APDU error occurs.</p>
 <em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">APDUError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.APDUError" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="keycard.html#keycard.exceptions.KeyCardError" title="keycard.exceptions.KeyCardError"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeyCardError</span></code></a></p>
 <p>Raised when APDU returns non-success status word.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="keycard.commands.APDUResponse">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">APDUResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_word</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.APDUResponse" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Represents a response to an APDU (Application Protocol Data Unit) command.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.APDUResponse.data">
-<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#keycard.commands.APDUResponse.data" title="Link to this definition">¶</a></dt>
-<dd><p>The response data returned from the APDU command.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bytes</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.APDUResponse.status_word">
-<span class="sig-name descname"><span class="pre">status_word</span></span><a class="headerlink" href="#keycard.commands.APDUResponse.status_word" title="Link to this definition">¶</a></dt>
-<dd><p>The status word indicating the result of the APDU
-command.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></em><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id1">
-<span class="sig-name descname"><span class="pre">status_word</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -430,23 +414,38 @@ instance, if present.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id2">
-<span class="sig-name descname"><span class="pre">capabilities</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><span class="pre">]</span></em><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">capabilities</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><span class="pre">]</span></em><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">ecc_public_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><span class="pre">]</span></em><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">instance_uid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><span class="pre">]</span></em><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.commands.ApplicationInfo.is_initialized">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_initialized</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#keycard.commands.ApplicationInfo.is_initialized" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if the application is initialized based on the presence of
+the key_uid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the key_uid is present, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id3">
-<span class="sig-name descname"><span class="pre">ecc_public_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><span class="pre">]</span></em><a class="headerlink" href="#id3" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id4">
-<span class="sig-name descname"><span class="pre">instance_uid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><span class="pre">]</span></em><a class="headerlink" href="#id4" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id5">
-<span class="sig-name descname"><span class="pre">key_uid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><span class="pre">]</span></em><a class="headerlink" href="#id5" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">key_uid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><span class="pre">]</span></em><a class="headerlink" href="#id3" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -498,13 +497,13 @@ and returns an ApplicationInfo instance.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id6">
-<span class="sig-name descname"><span class="pre">version_major</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#id6" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">version_major</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#id4" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id7">
-<span class="sig-name descname"><span class="pre">version_minor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#id7" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">version_minor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#id5" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -876,23 +875,23 @@ and MAC authentication.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">authenticated</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#id6" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">enc_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></em><a class="headerlink" href="#id7" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="id8">
-<span class="sig-name descname"><span class="pre">authenticated</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#id8" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">iv</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></em><a class="headerlink" href="#id8" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id9">
-<span class="sig-name descname"><span class="pre">enc_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></em><a class="headerlink" href="#id9" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id10">
-<span class="sig-name descname"><span class="pre">iv</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></em><a class="headerlink" href="#id10" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id11">
-<span class="sig-name descname"><span class="pre">mac_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></em><a class="headerlink" href="#id11" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mac_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></em><a class="headerlink" href="#id9" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -2019,8 +2018,43 @@ associated with this VerifyingKey and allow_truncate was not set</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.factory_reset">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">factory_reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.factory_reset" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">factory_reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.factory_reset" title="Link to this definition">¶</a></dt>
 <dd><p>Sends the FACTORY_RESET command to the card.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="keycard.commands.generate_key">
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">generate_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.generate_key" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a new key on the card and returns the key UID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Preconditions:</dt><dd><ul class="simple">
+<li><p>Secure Channel must be opened</p></li>
+<li><p>PIN must be verified</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>transport</strong> – Transport instance for APDU communication</p></li>
+<li><p><strong>session</strong> – SecureSession instance for wrapping/unwrapping</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Key UID (SHA-256 of the public key)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – If the response status word is not 0x9000</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -2035,7 +2069,7 @@ associated with this VerifyingKey and allow_truncate was not set</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.get_status">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">get_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.get_status" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">get_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.get_status" title="Link to this definition">¶</a></dt>
 <dd><p>Query the application status or key path from the Keycard.</p>
 <p>Requires an open Secure Channel.</p>
 <dl class="field-list simple">
@@ -2078,7 +2112,7 @@ If False (default), returns application status.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.ident">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">ident</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">challenge</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ident" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">ident</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">challenge</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ident" title="Link to this definition">¶</a></dt>
 <dd><p>Sends a challenge to the card to receive a signed identity response.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -2105,7 +2139,7 @@ the card.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.init">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">card_public_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">puk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_secret</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.init" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">puk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_secret</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.init" title="Link to this definition">¶</a></dt>
 <dd><p>Initializes a Keycard device with PIN, PUK, and pairing secret.</p>
 <p>Establishes an ephemeral ECDH key exchange and sends encrypted
 credentials to the card.</p>
@@ -2136,26 +2170,34 @@ will be converted into one.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.mutually_authenticate">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">mutually_authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_challenge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.mutually_authenticate" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">mutually_authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_challenge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.mutually_authenticate" title="Link to this definition">¶</a></dt>
 <dd><p>Performs mutual authentication between the client and the Keycard.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Preconditions:</dt><dd><ul class="simple">
+<li><p>Secure Channel must be opened</p></li>
+</ul>
+</dd>
+</dl>
 <p>The card will respond with a cryptographic challenge. The secure
 session will verify the response. If the response is not exactly
 32 bytes, or if the response has an unexpected status word, the
 function raises an error.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
 <li><p><strong>transport</strong> – A Transport instance for sending APDUs.</p></li>
 <li><p><strong>session</strong> – A SecureSession instance used for wrapping/unwrapping.</p></li>
 <li><p><strong>client_challenge</strong> (<em>bytes</em><em>, </em><em>optional</em>) – Optional challenge bytes.
 If not provided, a random 32-byte value will be generated.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – If the response status word is not 0x9000.</p></li>
 <li><p><strong>ValueError</strong> – If the decrypted response is not exactly 32 bytes.</p></li>
 </ul>
@@ -2165,7 +2207,7 @@ If not provided, a random 32-byte value will be generated.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.open_secure_channel">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">open_secure_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">card_public_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.open_secure_channel" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">open_secure_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.open_secure_channel" title="Link to this definition">¶</a></dt>
 <dd><p>Opens a secure session with the Keycard using ECDH and a pairing key.</p>
 <p>This function performs an ephemeral ECDH key exchange with the card,
 sends the ephemeral public key, and receives cryptographic material
@@ -2201,7 +2243,7 @@ pairing slot.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.pair">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shared_secret</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.pair" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shared_secret</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.pair" title="Link to this definition">¶</a></dt>
 <dd><p>Performs an ECDH-based pairing handshake with the card.</p>
 <p>This function initiates a mutual challenge-response authentication and
 derives a secure pairing key.</p>
@@ -2234,8 +2276,28 @@ pairing key.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="keycard.commands.require_initialized">
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">require_initialized</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.require_initialized" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="keycard.commands.require_pin_verified">
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">require_pin_verified</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.require_pin_verified" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="keycard.commands.require_secure_channel">
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">require_secure_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.require_secure_channel" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="keycard.commands.require_selected">
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">require_selected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.require_selected" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.select">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.select" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.select" title="Link to this definition">¶</a></dt>
 <dd><p>Selects the Keycard application on the smart card and retrieves
 application information.</p>
 <p>Sends a SELECT APDU command using the Keycard AID, checks for a
@@ -2266,8 +2328,15 @@ and returns it.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.unpair">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">unpair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secure_session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.unpair" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">unpair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.unpair" title="Link to this definition">¶</a></dt>
 <dd><p>Sends the UNPAIR command to remove a pairing index from the card.</p>
+<dl class="simple">
+<dt>Preconditions:</dt><dd><ul class="simple">
+<li><p>Secure Channel must be opened</p></li>
+<li><p>PIN must be verified</p></li>
+</ul>
+</dd>
+</dl>
 <p>This function securely communicates with the card using the established
 session to instruct it to forget a specific pairing index.</p>
 <dl class="field-list simple">
@@ -2296,30 +2365,39 @@ session to instruct it to forget a specific pairing index.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.verify_pin">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">verify_pin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.verify_pin" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">verify_pin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.verify_pin" title="Link to this definition">¶</a></dt>
 <dd><p>Verifies the user PIN with the card using a secure session.</p>
-<p>Sends the VERIFY PIN APDU command through the secure session. Returns
-True if the PIN is correct, False if incorrect with remaining attempts,
-and raises an error if blocked or another APDU error occurs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
 </dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
+</dl>
+<dl class="simple">
+<dt>Preconditions:</dt><dd><ul class="simple">
+<li><p>Secure Channel must be opened</p></li>
+<li><p>PIN must be verified</p></li>
+</ul>
+</dd>
+</dl>
+<p>Sends the VERIFY PIN APDU command through the secure session. Returns
+True if the PIN is correct, False if incorrect with remaining attempts,
+and raises an error if blocked or another APDU error occurs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
 <li><p><strong>transport</strong> – The transport instance used to send the command.</p></li>
 <li><p><strong>session</strong> – An established SecureSession object.</p></li>
 <li><p><strong>pin</strong> (<em>str</em>) – The PIN string to be verified.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True if the PIN is correct, False if incorrect but still allowed.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the PIN is correct, False if incorrect but still allowed.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>ValueError</strong> – If no secure session is provided.</p></li>
 <li><p><strong>RuntimeError</strong> – If the PIN is blocked (no attempts remaining).</p></li>
 <li><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – For other status word errors returned by the card.</p></li>
