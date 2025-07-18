@@ -189,3 +189,33 @@ def test_send_apdu_with_custom_cla(monkeypatch):
     expected_apdu = bytes([0x90, 0xA4, 0x01, 0x02, 4]) + b'data'
     mock_transport.send_apdu.assert_called_once_with(expected_apdu)
     assert result == b'abc'
+
+
+def test_unblock_pin_calls_command_with_bytes():
+    with patch('keycard.keycard.commands.unblock_pin') as mock_unblock:
+        kc = KeyCard(MagicMock())
+        puk = b'123456789012'
+        new_pin = b'654321'
+        kc.unblock_pin(puk, new_pin)
+        mock_unblock.assert_called_once_with(kc, puk + new_pin)
+
+
+def test_unblock_pin_calls_command_with_str():
+    with patch('keycard.keycard.commands.unblock_pin') as mock_unblock:
+        kc = KeyCard(MagicMock())
+        puk = '123456789012'
+        new_pin = '654321'
+        kc.unblock_pin(puk, new_pin)
+        mock_unblock.assert_called_once_with(
+            kc,
+            (puk + new_pin).encode('utf-8')
+        )
+
+
+def test_unblock_pin_calls_command_with_mixed_types():
+    with patch('keycard.keycard.commands.unblock_pin') as mock_unblock:
+        kc = KeyCard(MagicMock())
+        puk = '123456789012'
+        new_pin = b'654321'
+        kc.unblock_pin(puk, new_pin)
+        mock_unblock.assert_called_once_with(kc, puk.encode('utf-8') + new_pin)

@@ -25,6 +25,7 @@ INS_GET_STATUS: int = 0xF2
 INS_FACTORY_RESET: int = 0xFD
 INS_GENERATE_KEY: int = 0xD4
 INS_CHANGE_SECRET: int = 0x21
+INS_UNBLOCK_PIN: int = 0x22
 
 # Status words
 SW_SUCCESS: int = 0x9000

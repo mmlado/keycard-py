@@ -17,8 +17,8 @@ APDU commands are being implemented one by one.
 - [x] UNPAIR
 - [x] GET STATUS
 - [x] VERIFY PIN
-- [ ] CHANGE PIN
-- [ ] UNBLOCK PIN
+- [x] CHANGE PIN
+- [x] UNBLOCK PIN
 - [ ] LOAD KEY
 - [ ] DERIVE KEY
 - [ ] GENERATE MNEMONIC

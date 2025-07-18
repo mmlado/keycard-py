@@ -30,6 +30,7 @@ else:
     from .pair import pair
     from .select import select
     from .verify_pin import verify_pin
+    from .unblock_pin import unblock_pin
     from .unpair import unpair
 
     __all__ = [
@@ -44,5 +45,6 @@ else:
         'pair',
         'select',
         'verify_pin',
+        'ublock_pin',
         'unpair',
     ]
