@@ -1,6 +1,8 @@
 from .. import constants
+from ..preconditions import require_selected
 
 
+@require_selected
 def factory_reset(card):
     '''
     Sends the FACTORY_RESET command to the card.

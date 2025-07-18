@@ -4,8 +4,10 @@ from os import urandom
 from .. import constants
 from ..crypto.generate_pairing_token import generate_pairing_token
 from ..exceptions import InvalidResponseError
+from ..preconditions import require_initialized
 
 
+@require_initialized
 def pair(card, shared_secret: bytes) -> tuple[int, bytes]:
     '''
     Performs an ECDH-based pairing handshake with the card.

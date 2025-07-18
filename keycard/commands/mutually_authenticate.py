@@ -1,7 +1,9 @@
 import os
 from .. import constants
+from ..preconditions import require_secure_channel
 
 
+@require_secure_channel
 def mutually_authenticate(card, client_challenge=None) -> None:
     '''
     Performs mutual authentication between the client and the Keycard.

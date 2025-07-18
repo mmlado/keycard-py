@@ -5,8 +5,10 @@ from .. import constants
 from ..crypto.aes import aes_cbc_encrypt
 from ..crypto.generate_pairing_token import generate_pairing_token
 from ..exceptions import NotSelectedError
+from ..preconditions import require_selected
 
 
+@require_selected
 def init(
     card,
     pin: bytes,

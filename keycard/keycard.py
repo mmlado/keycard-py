@@ -29,6 +29,58 @@ class KeyCard:
         self.transport = transport
         self.card_public_key = None
         self.session = None
+        self._is_pin_verified = False
+
+    @property
+    def is_selected(self) -> bool:
+        '''
+        Checks if a card is selected and has a public key.
+
+        Returns:
+            bool: True if a card is selected, False otherwise.
+        '''
+        return self.card_public_key is not None
+    
+    @property
+    def is_session_open(self) -> bool:
+        '''
+        Checks if a secure session is currently open.
+
+        Returns:
+            bool: True if a secure session is established, False otherwise.
+        '''
+        return self.session is not None
+    
+    @property
+    def is_secure_channel_open(self) -> bool:
+        '''
+        Checks if a secure channel is currently open.
+
+        Returns:
+            bool: True if a secure channel is established, False otherwise.
+        '''
+        return self.session is not None and self.session.authenticated
+    
+    @property
+    def is_initialized(self) -> bool:
+        '''
+        Checks if the Keycard is initialized.
+
+        Returns:
+            bool: True if the Keycard is initialized, False otherwise.
+        '''
+        return self._is_initialized
+
+
+    @property    
+    def is_pin_verified(self) -> bool:
+        '''
+        Checks if the user PIN has been verified.
+
+        Returns:
+            bool: True if the PIN is verified, False otherwise.
+        '''
+        return self._is_pin_verified
 
     def select(self):
         '''
@@ -39,6 +91,7 @@ class KeyCard:
         '''
         info = commands.select(self)
         self.card_public_key = info.ecc_public_key
+        self._is_initialized = info.is_initialized
         return info
 
     def init(self, pin: bytes, puk: bytes, pairing_secret: bytes):
@@ -114,7 +167,9 @@ class KeyCard:
         Returns:
             bool: True if PIN is valid, otherwise False.
         '''
-        return commands.verify_pin(self, pin)
+        result = commands.verify_pin(self, pin)
+        self._is_pin_verified = True
+        return result
 
     @property
     def status(self):

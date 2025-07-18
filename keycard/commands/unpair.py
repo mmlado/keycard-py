@@ -1,6 +1,8 @@
 from .. import constants
+from ..preconditions import require_pin_verified
 
 
+@require_pin_verified
 def unpair(card, index: int):
     '''
     Sends the UNPAIR command to remove a pairing index from the card.

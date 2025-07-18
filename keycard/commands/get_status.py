@@ -1,7 +1,9 @@
 from .. import constants
 from ..parsing import tlv
+from ..preconditions import require_secure_channel
 
 
+@require_secure_channel
 def get_status(card, key_path=False):
     '''
     Query the application status or key path from the Keycard.

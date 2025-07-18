@@ -3,8 +3,10 @@ from ecdsa import SigningKey, VerifyingKey, SECP256k1, ECDH
 from .. import constants
 from ..exceptions import NotSelectedError
 from ..secure_channel import SecureSession
+from ..preconditions import require_initialized
 
 
+@require_initialized
 def open_secure_channel(
     card,
     pairing_index: int,

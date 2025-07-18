@@ -33,3 +33,9 @@ class NotSelectedError(KeyCardError):
 class TransportError(KeyCardError):
     """Raised there are no readers"""
     pass
+
+class InvalidStateError(KeyCardError):
+    """Raised when a precondition is not met."""
+    
+    def __init__(self, message: str):
+        super().__init__(message)

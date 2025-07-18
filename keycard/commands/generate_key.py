@@ -1,6 +1,8 @@
 from .. import constants
+from ..preconditions import require_secure_channel
 
 
+@require_secure_channel
 def generate_key(card) -> bytes:
     '''
     Generates a new key on the card and returns the key UID.

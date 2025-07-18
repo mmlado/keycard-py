@@ -1,7 +1,9 @@
 from .. import constants
 from ..parsing.identity import Identity
+from ..preconditions import require_selected
 
 
+@require_selected
 def ident(card, challenge: bytes) -> Identity:
     '''
     Sends a challenge to the card to receive a signed identity response.

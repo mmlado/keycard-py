@@ -1,7 +1,9 @@
 from .. import constants
 from ..exceptions import APDUError
+from ..preconditions import require_secure_channel
 
 
+@require_secure_channel
 def verify_pin(card, pin: str) -> bool:
     '''
     Verifies the user PIN with the card using a secure session.
