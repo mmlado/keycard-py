@@ -1,20 +1,19 @@
 import pytest
 from unittest.mock import MagicMock, patch
 from keycard.commands.select import select
-from keycard.apdu import APDUResponse
 from keycard.exceptions import APDUError
 from keycard import constants
 
 
 def test_select_success():
     dummy_info = MagicMock()
-    response_data = b"\x01\x02\x03\x04"
+    response_data = b'\x01\x02\x03\x04'
 
     card = MagicMock()
     card.send_apdu.return_value = response_data
 
     with patch(
-        "keycard.commands.select.ApplicationInfo.parse",
+        'keycard.commands.select.ApplicationInfo.parse',
         return_value=dummy_info
     ) as mock_parse:
         result = select(card)

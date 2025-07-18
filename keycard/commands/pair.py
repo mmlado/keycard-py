@@ -3,11 +3,11 @@ from os import urandom
 
 from .. import constants
 from ..crypto.generate_pairing_token import generate_pairing_token
-from ..exceptions import APDUError, InvalidResponseError
+from ..exceptions import InvalidResponseError
 
 
 def pair(card, shared_secret: bytes) -> tuple[int, bytes]:
-    """
+    '''
     Performs an ECDH-based pairing handshake with the card.
 
     This function initiates a mutual challenge-response authentication and
@@ -26,12 +26,12 @@ def pair(card, shared_secret: bytes) -> tuple[int, bytes]:
         ValueError: If the shared secret is not 32 bytes.
         APDUError: If the card returns a non-success status word.
         InvalidResponseError: If response lengths or values are unexpected.
-    """
+    '''
     if not isinstance(shared_secret, bytes):
         shared_secret: bytes = generate_pairing_token(shared_secret)
 
     if len(shared_secret) != 32:
-        raise ValueError("Shared secret must be 32 bytes")
+        raise ValueError('Shared secret must be 32 bytes')
 
     client_challenge = urandom(32)
 
@@ -41,7 +41,7 @@ def pair(card, shared_secret: bytes) -> tuple[int, bytes]:
     )
 
     if len(response) != 64:
-        raise InvalidResponseError("Unexpected response length")
+        raise InvalidResponseError('Unexpected response length')
 
     card_cryptogram = bytes(response[:32])
     card_challenge = bytes(response[32:])
@@ -49,18 +49,18 @@ def pair(card, shared_secret: bytes) -> tuple[int, bytes]:
     expected = hashlib.sha256(shared_secret + client_challenge).digest()
 
     if card_cryptogram != expected:
-        raise InvalidResponseError("Card cryptogram mismatch")
+        raise InvalidResponseError('Card cryptogram mismatch')
 
     client_cryptogram = hashlib.sha256(shared_secret + card_challenge).digest()
     print(client_cryptogram.hex())
     response = card.send_apdu(
         ins=constants.INS_PAIR,
-        p1=0x01,        
+        p1=0x01,
         data=client_cryptogram
     )
 
     if len(response) != 33:
-        raise InvalidResponseError("Unexpected response length")
+        raise InvalidResponseError('Unexpected response length')
 
     pairing_index = response[0]
     salt = bytes(response[1:])

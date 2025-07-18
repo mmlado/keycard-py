@@ -1,9 +1,8 @@
 from .. import constants
-from ..exceptions import APDUError
 
 
 def unpair(card, index: int):
-    """
+    '''
     Sends the UNPAIR command to remove a pairing index from the card.
 
     Preconditions:
@@ -22,7 +21,7 @@ def unpair(card, index: int):
         ValueError: If transport or secure_session is not provided, or if
             the session is not authenticated.
         APDUError: If the response status word indicates an error.
-    """
+    '''
     card.send_secure_apdu(
         ins=constants.INS_UNPAIR,
         p1=index,

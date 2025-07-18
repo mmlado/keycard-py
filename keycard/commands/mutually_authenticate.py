@@ -1,11 +1,9 @@
 import os
 from .. import constants
-from ..apdu import APDUResponse
-from ..exceptions import APDUError
 
 
 def mutually_authenticate(card, client_challenge=None) -> None:
-    """
+    '''
     Performs mutual authentication between the client and the Keycard.
 
     Preconditions:
@@ -25,7 +23,7 @@ def mutually_authenticate(card, client_challenge=None) -> None:
     Raises:
         APDUError: If the response status word is not 0x9000.
         ValueError: If the decrypted response is not exactly 32 bytes.
-    """
+    '''
     client_challenge = client_challenge or os.urandom(32)
 
     response: bytes = card.send_secure_apdu(

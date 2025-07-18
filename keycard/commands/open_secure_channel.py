@@ -1,8 +1,7 @@
 from ecdsa import SigningKey, VerifyingKey, SECP256k1, ECDH
 
-from ..apdu import APDUResponse
 from .. import constants
-from ..exceptions import APDUError, NotSelectedError
+from ..exceptions import NotSelectedError
 from ..secure_channel import SecureSession
 
 
@@ -11,7 +10,7 @@ def open_secure_channel(
     pairing_index: int,
     pairing_key: bytes
 ) -> SecureSession:
-    """
+    '''
     Opens a secure session with the Keycard using ECDH and a pairing key.
 
     This function performs an ephemeral ECDH key exchange with the card,
@@ -32,12 +31,12 @@ def open_secure_channel(
     Raises:
         NotSelectedError: If no card public key is provided.
         APDUError: If the card returns a failure status word.
-    """
+    '''
     if not card.card_public_key:
-        raise NotSelectedError("Card not selected or missing public key")
+        raise NotSelectedError('Card not selected or missing public key')
 
     ephemeral_key = SigningKey.generate(curve=SECP256k1)
-    eph_pub_bytes = ephemeral_key.verifying_key.to_string("uncompressed")
+    eph_pub_bytes = ephemeral_key.verifying_key.to_string('uncompressed')
     response: bytes = card.send_apdu(
         ins=constants.INS_OPEN_SECURE_CHANNEL,
         p1=pairing_index,
@@ -47,7 +46,10 @@ def open_secure_channel(
     salt = bytes(response[:32])
     seed_iv = bytes(response[32:])
 
-    public_key = VerifyingKey.from_string(card.card_public_key, curve=SECP256k1)
+    public_key = VerifyingKey.from_string(
+        card.card_public_key,
+        curve=SECP256k1
+    )
     ecdh = ECDH(
         curve=SECP256k1,
         private_key=ephemeral_key,

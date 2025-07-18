@@ -123,7 +123,8 @@ def test_send_secure_apdu_raises_on_transport_status_word():
     mock_session = MagicMock()
     mock_session.wrap_apdu.return_value = b'encrypted'
     mock_transport = MagicMock()
-    mock_transport.send_apdu.return_value = APDUResponse(b'', status_word=0x6A82)
+    mock_transport.send_apdu.return_value = APDUResponse(
+        b'', status_word=0x6A82)
 
     kc = KeyCard(mock_transport)
     kc.session = mock_session
@@ -138,7 +139,8 @@ def test_send_secure_apdu_raises_on_unwrap_status_word():
     mock_session.wrap_apdu.return_value = b'encrypted'
     mock_session.unwrap_response.return_value = (b'plaintext', 0x6A84)
     mock_transport = MagicMock()
-    mock_transport.send_apdu.return_value = APDUResponse(b'', status_word=0x9000)
+    mock_transport.send_apdu.return_value = APDUResponse(
+        b'', status_word=0x9000)
 
     kc = KeyCard(mock_transport)
     kc.session = mock_session
@@ -187,5 +189,3 @@ def test_send_apdu_with_custom_cla(monkeypatch):
     expected_apdu = bytes([0x90, 0xA4, 0x01, 0x02, 4]) + b'data'
     mock_transport.send_apdu.assert_called_once_with(expected_apdu)
     assert result == b'abc'
-
-

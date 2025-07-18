@@ -1,10 +1,9 @@
 from .. import constants
-from ..exceptions import APDUError
 from ..parsing.identity import Identity
 
 
 def ident(card, challenge: bytes) -> Identity:
-    """
+    '''
     Sends a challenge to the card to receive a signed identity response.
 
     Args:
@@ -17,10 +16,10 @@ def ident(card, challenge: bytes) -> Identity:
 
     Raises:
         APDUError: If the response status word is not successful (0x9000).
-    """
+    '''
     response: bytes = card.send_apdu(
         ins=constants.INS_IDENT,
         data=challenge
     )
-    
+
     return Identity.parse(response)

@@ -3,7 +3,7 @@ from ..exceptions import APDUError
 
 
 def verify_pin(card, pin: str) -> bool:
-    """
+    '''
     Verifies the user PIN with the card using a secure session.
 
     Preconditions:
@@ -26,7 +26,7 @@ def verify_pin(card, pin: str) -> bool:
         ValueError: If no secure session is provided.
         RuntimeError: If the PIN is blocked (no attempts remaining).
         APDUError: For other status word errors returned by the card.
-    """
+    '''
     try:
         card.send_secure_apdu(
             ins=constants.INS_VERIFY_PIN,
@@ -36,8 +36,8 @@ def verify_pin(card, pin: str) -> bool:
         if (e.sw & 0xFFF0) == 0x63C0:
             attempts = e.sw & 0x000F
             if attempts == 0:
-                raise RuntimeError("PIN is blocked")
+                raise RuntimeError('PIN is blocked')
             return False
         raise e
-        
+
     return True

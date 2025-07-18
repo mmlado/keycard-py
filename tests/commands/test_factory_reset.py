@@ -3,7 +3,7 @@ import unittest.mock as Mock
 from keycard import constants
 from keycard.commands.factory_reset import factory_reset
 from keycard.exceptions import APDUError
-from unittest.mock import Mock
+
 
 def test_factory_reset_success():
     card = Mock()
@@ -17,6 +17,7 @@ def test_factory_reset_success():
         p1=0xAA,
         p2=0x55
     )
+
 
 def test_factory_reset_failure():
     card = Mock()

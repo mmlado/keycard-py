@@ -4,12 +4,10 @@ from unittest.mock import MagicMock
 from keycard import constants
 from keycard.commands.mutually_authenticate import mutually_authenticate
 from keycard.exceptions import APDUError
-from keycard.apdu import APDUResponse
 
 
 def test_mutually_authenticate_success():
     card = MagicMock()
-    session = MagicMock()
 
     client_challenge = bytes(32)
     card.send_secure_apdu.return_value = bytes(32)
@@ -20,7 +18,7 @@ def test_mutually_authenticate_success():
         ins=constants.INS_MUTUALLY_AUTHENTICATE,
         data=client_challenge
     )
-    
+
 
 def test_mutually_authenticate_invalid_status_word():
     card = MagicMock()
@@ -34,8 +32,8 @@ def test_mutually_authenticate_invalid_status_word():
 def test_mutually_authenticate_invalid_response_length():
     card = MagicMock()
 
-    client_challenge = b"\xAA" * 32
-    response = b"\xBB" * 16  # Invalid length
+    client_challenge = b'\xAA' * 32
+    response = b'\xBB' * 16  # Invalid length
 
     card.send_secure_apdu.return_value = response
 
@@ -49,9 +47,8 @@ def test_mutually_authenticate_invalid_response_length():
 def test_mutually_authenticate_auto_challenge(monkeypatch):
     card = MagicMock()
 
-    fake_challenge = b"\xCC" * 32
-    monkeypatch.setattr("os.urandom", lambda n: fake_challenge)
-
+    fake_challenge = b'\xCC' * 32
+    monkeypatch.setattr('os.urandom', lambda n: fake_challenge)
 
     card.send_secure_apdu.return_value = fake_challenge
 

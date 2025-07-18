@@ -1,8 +1,7 @@
 import pytest
 from unittest.mock import MagicMock, patch
 from keycard.commands.init import init
-from keycard.exceptions import NotSelectedError, APDUError
-from keycard.apdu import APDUResponse
+from keycard.exceptions import APDUError
 from keycard import constants
 
 

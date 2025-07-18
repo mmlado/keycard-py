@@ -1,10 +1,8 @@
 from .. import constants
-from ..apdu import APDUResponse
-from ..exceptions import APDUError
 
 
 def generate_key(card) -> bytes:
-    """
+    '''
     Generates a new key on the card and returns the key UID.
 
     Preconditions:
@@ -20,7 +18,7 @@ def generate_key(card) -> bytes:
 
     Raises:
         APDUError: If the response status word is not 0x9000
-    """
+    '''
     return card.send_secure_apdu(
         ins=constants.INS_GENERATE_KEY
     )

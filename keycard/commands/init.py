@@ -1,11 +1,10 @@
 from os import urandom
 from ecdsa import SigningKey, VerifyingKey, ECDH, SECP256k1
 
-from ..apdu import APDUResponse
 from .. import constants
 from ..crypto.aes import aes_cbc_encrypt
 from ..crypto.generate_pairing_token import generate_pairing_token
-from ..exceptions import APDUError, NotSelectedError
+from ..exceptions import NotSelectedError
 
 
 def init(
@@ -14,7 +13,7 @@ def init(
     puk: bytes,
     pairing_secret: bytes
 ) -> None:
-    """
+    '''
     Initializes a Keycard device with PIN, PUK, and pairing secret.
 
     Establishes an ephemeral ECDH key exchange and sends encrypted
@@ -33,17 +32,20 @@ def init(
         NotSelectedError: If no card public key is provided.
         ValueError: If the encrypted data exceeds a single APDU length.
         APDUError: If the card returns a failure status word.
-    """
+    '''
     if card.card_public_key is None:
-        raise NotSelectedError("Card not selected. Call select() first.")
+        raise NotSelectedError('Card not selected. Call select() first.')
 
     if not isinstance(pairing_secret, bytes):
         pairing_secret = generate_pairing_token(pairing_secret)
 
     ephemeral_key = SigningKey.generate(curve=SECP256k1)
     our_pubkey_bytes: bytes = \
-        ephemeral_key.verifying_key.to_string("uncompressed")
-    card_pubkey = VerifyingKey.from_string(card.card_public_key, curve=SECP256k1)
+        ephemeral_key.verifying_key.to_string('uncompressed')
+    card_pubkey = VerifyingKey.from_string(
+        card.card_public_key,
+        curve=SECP256k1
+    )
     ecdh = ECDH(
         curve=SECP256k1,
         private_key=ephemeral_key,
@@ -62,7 +64,7 @@ def init(
     )
 
     if len(data) > 255:
-        raise ValueError("Data too long for single APDU")
+        raise ValueError('Data too long for single APDU')
 
     card.send_apdu(
         ins=constants.INS_INIT,
