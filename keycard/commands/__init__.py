@@ -28,10 +28,11 @@ else:
     from .mutually_authenticate import mutually_authenticate
     from .open_secure_channel import open_secure_channel
     from .pair import pair
+    from .remove_key import remove_key
     from .select import select
-    from .verify_pin import verify_pin
     from .unblock_pin import unblock_pin
     from .unpair import unpair
+    from .verify_pin import verify_pin
 
     __all__ = [
         'change_secret',
@@ -43,8 +44,9 @@ else:
         'mutually_authenticate',
         'open_secure_channel',
         'pair',
+        'remove_key',
         'select',
-        'verify_pin',
-        'ublock_pin',
+        'unblock_pin',
         'unpair',
+        'verify_pin',
     ]

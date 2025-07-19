@@ -292,6 +292,15 @@ class KeyCard:
             new_pin = new_pin.encode("utf-8")
 
         commands.unblock_pin(self, puk + new_pin)
+        
+    def remove_key(self) -> None:
+        '''
+        Removes the current key from the card.
+
+        Raises:
+            APDUError: If the response status word is not 0x9000.
+        '''
+        commands.remove_key(self)
 
     def send_apdu(
         self,
