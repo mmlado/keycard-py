@@ -22,12 +22,13 @@ APDU commands are being implemented one by one.
 - [ ] LOAD KEY
 - [ ] DERIVE KEY
 - [ ] GENERATE MNEMONIC
-- [ ] REMOVE KEY
+- [x] REMOVE KEY
 - [x] GENERATE KEY
 - [ ] SIGN
 - [ ] SET PINLESS PATH
 - [ ] EXPORT KEY
 - [ ] STORE DATA
+- [ ] GET DATA
 - [x] FACTORY RESET
 
 ## Goals
