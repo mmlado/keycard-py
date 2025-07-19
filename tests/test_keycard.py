@@ -219,3 +219,11 @@ def test_unblock_pin_calls_command_with_mixed_types():
         new_pin = b'654321'
         kc.unblock_pin(puk, new_pin)
         mock_unblock.assert_called_once_with(kc, puk.encode('utf-8') + new_pin)
+
+
+def test_remove_key_calls_command():
+    with patch('keycard.keycard.commands.remove_key') as mock_remove_key:
+        kc = KeyCard(MagicMock())
+        kc.remove_key()
+        mock_remove_key.assert_called_once_with(kc)
+
