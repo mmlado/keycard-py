@@ -176,6 +176,7 @@
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.mutually_authenticate"><code class="docutils literal notranslate"><span class="pre">mutually_authenticate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.open_secure_channel"><code class="docutils literal notranslate"><span class="pre">open_secure_channel()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.pair"><code class="docutils literal notranslate"><span class="pre">pair()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.remove_key"><code class="docutils literal notranslate"><span class="pre">remove_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.require_initialized"><code class="docutils literal notranslate"><span class="pre">require_initialized()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.require_pin_verified"><code class="docutils literal notranslate"><span class="pre">require_pin_verified()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.require_secure_channel"><code class="docutils literal notranslate"><span class="pre">require_secure_channel()</span></code></a></li>
@@ -675,6 +676,20 @@ and card operations.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>tuple[int, bytes]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.remove_key">
+<span class="sig-name descname"><span class="pre">remove_key</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.remove_key" title="Link to this definition">¶</a></dt>
+<dd><p>Removes the current key from the card.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the response status word is not 0x9000.</p>
 </dd>
 </dl>
 </dd></dl>
