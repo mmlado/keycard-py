@@ -78,7 +78,7 @@
         <li><a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo">(class in keycard.parsing.application_info)</a>
 </li>
       </ul></li>
-      <li><a href="keycard.commands.html#id6">authenticated (keycard.commands.SecureSession attribute)</a>, <a href="keycard.commands.html#keycard.commands.SecureSession.authenticated">[1]</a>
+      <li><a href="keycard.commands.html#id6">authenticated (keycard.commands.SecureChannel attribute)</a>, <a href="keycard.commands.html#keycard.commands.SecureChannel.authenticated">[1]</a>
 </li>
   </ul></td>
 </tr></table>
@@ -94,6 +94,12 @@
         <li><a href="keycard.parsing.html#id0">(keycard.parsing.application_info.ApplicationInfo attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.capabilities">[1]</a>
 </li>
       </ul></li>
+      <li><a href="keycard.commands.html#keycard.commands.CardInterface.card_public_key">card_public_key (keycard.commands.CardInterface attribute)</a>
+</li>
+      <li><a href="keycard.commands.html#keycard.commands.CardInterface">CardInterface (class in keycard.commands)</a>
+</li>
+      <li><a href="keycard.html#keycard.constants.StorageSlot.CASH">CASH (keycard.constants.StorageSlot attribute)</a>
+</li>
       <li><a href="keycard.commands.html#keycard.commands.Identity.certificate">certificate (keycard.commands.Identity attribute)</a>
 
       <ul>
@@ -138,7 +144,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.commands.html#keycard.commands.ECDH">ECDH (class in keycard.commands)</a>
 </li>
-      <li><a href="keycard.commands.html#id7">enc_key (keycard.commands.SecureSession attribute)</a>, <a href="keycard.commands.html#keycard.commands.SecureSession.enc_key">[1]</a>
+      <li><a href="keycard.commands.html#id7">enc_key (keycard.commands.SecureChannel attribute)</a>, <a href="keycard.commands.html#keycard.commands.SecureChannel.enc_key">[1]</a>
 </li>
       <li><a href="keycard.html#keycard.apdu.encode_lv">encode_lv() (in module keycard.apdu)</a>
 </li>
@@ -250,31 +256,45 @@
       </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.InvalidResponseError">InvalidResponseError</a>, <a href="keycard.html#keycard.exceptions.InvalidResponseError">[1]</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.html#keycard.exceptions.InvalidStateError">InvalidStateError</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.ApplicationInfo.is_initialized">is_initialized (keycard.commands.ApplicationInfo property)</a>
 
       <ul>
+        <li><a href="keycard.commands.html#keycard.commands.CardInterface.is_initialized">(keycard.commands.CardInterface property)</a>
+</li>
         <li><a href="index.html#keycard.keycard.KeyCard.is_initialized">(keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.is_initialized">[1]</a>
 </li>
         <li><a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.is_initialized">(keycard.parsing.application_info.ApplicationInfo property)</a>
 </li>
       </ul></li>
-      <li><a href="index.html#keycard.keycard.KeyCard.is_pin_verified">is_pin_verified (keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.is_pin_verified">[1]</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.commands.html#keycard.commands.CardInterface.is_pin_verified">is_pin_verified (keycard.commands.CardInterface property)</a>
+
+      <ul>
+        <li><a href="index.html#keycard.keycard.KeyCard.is_pin_verified">(keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.is_pin_verified">[1]</a>
 </li>
-      <li><a href="index.html#keycard.keycard.KeyCard.is_secure_channel_open">is_secure_channel_open (keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.is_secure_channel_open">[1]</a>
+      </ul></li>
+      <li><a href="keycard.commands.html#keycard.commands.CardInterface.is_secure_channel_open">is_secure_channel_open (keycard.commands.CardInterface property)</a>
+
+      <ul>
+        <li><a href="index.html#keycard.keycard.KeyCard.is_secure_channel_open">(keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.is_secure_channel_open">[1]</a>
 </li>
-      <li><a href="index.html#keycard.keycard.KeyCard.is_selected">is_selected (keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.is_selected">[1]</a>
+      </ul></li>
+      <li><a href="keycard.commands.html#keycard.commands.CardInterface.is_selected">is_selected (keycard.commands.CardInterface property)</a>
+
+      <ul>
+        <li><a href="index.html#keycard.keycard.KeyCard.is_selected">(keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.is_selected">[1]</a>
 </li>
+      </ul></li>
       <li><a href="index.html#keycard.keycard.KeyCard.is_session_open">is_session_open (keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.is_session_open">[1]</a>
 </li>
       <li><a href="keycard.crypto.html#keycard.crypto.padding.iso7816_pad">iso7816_pad() (in module keycard.crypto.padding)</a>
 </li>
       <li><a href="keycard.crypto.html#keycard.crypto.padding.iso7816_unpad">iso7816_unpad() (in module keycard.crypto.padding)</a>
 </li>
-      <li><a href="keycard.commands.html#id8">iv (keycard.commands.SecureSession attribute)</a>, <a href="keycard.commands.html#keycard.commands.SecureSession.iv">[1]</a>
+      <li><a href="keycard.commands.html#id8">iv (keycard.commands.SecureChannel attribute)</a>, <a href="keycard.commands.html#keycard.commands.SecureChannel.iv">[1]</a>
 </li>
   </ul></td>
 </tr></table>
@@ -487,7 +507,7 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="keycard.commands.html#id9">mac_key (keycard.commands.SecureSession attribute)</a>, <a href="keycard.commands.html#keycard.commands.SecureSession.mac_key">[1]</a>
+      <li><a href="keycard.commands.html#id9">mac_key (keycard.commands.SecureChannel attribute)</a>, <a href="keycard.commands.html#keycard.commands.SecureChannel.mac_key">[1]</a>
 </li>
       <li>
     module
@@ -556,8 +576,12 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="keycard.parsing.html#id8">NDEF (keycard.parsing.capabilities.Capabilities attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.capabilities.Capabilities.NDEF">[1]</a>
+      <li><a href="keycard.html#keycard.constants.StorageSlot.NDEF">NDEF (keycard.constants.StorageSlot attribute)</a>
+
+      <ul>
+        <li><a href="keycard.parsing.html#id8">(keycard.parsing.capabilities.Capabilities attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.capabilities.Capabilities.NDEF">[1]</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.html#keycard.exceptions.NotInitializedError">NotInitializedError</a>
@@ -570,7 +594,7 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="keycard.commands.html#keycard.commands.SecureSession.open">open() (keycard.commands.SecureSession class method)</a>
+      <li><a href="keycard.commands.html#keycard.commands.SecureChannel.open">open() (keycard.commands.SecureChannel class method)</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.open_secure_channel">open_secure_channel() (in module keycard.commands)</a>
 
@@ -616,6 +640,8 @@
 </li>
       <li><a href="keycard.commands.html#keycard.commands.VerifyingKey.precompute">precompute() (keycard.commands.VerifyingKey method)</a>
 </li>
+      <li><a href="keycard.html#keycard.constants.StorageSlot.PUBLIC">PUBLIC (keycard.constants.StorageSlot attribute)</a>
+</li>
       <li><a href="keycard.html#keycard.constants.PinType.PUK">PUK (keycard.constants.PinType attribute)</a>
 </li>
   </ul></td>
@@ -648,7 +674,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.parsing.html#id9">SECURE_CHANNEL (keycard.parsing.capabilities.Capabilities attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.capabilities.Capabilities.SECURE_CHANNEL">[1]</a>
 </li>
-      <li><a href="keycard.commands.html#keycard.commands.SecureSession">SecureSession (class in keycard.commands)</a>
+      <li><a href="keycard.commands.html#keycard.commands.SecureChannel">SecureChannel (class in keycard.commands)</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.select">select() (in module keycard.commands)</a>
 
@@ -658,14 +684,20 @@
         <li><a href="index.html#keycard.keycard.KeyCard.select">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.select">[1]</a>
 </li>
       </ul></li>
-      <li><a href="keycard.html#keycard.keycard.KeyCard.send_apdu">send_apdu() (keycard.keycard.KeyCard method)</a>
+      <li><a href="keycard.commands.html#keycard.commands.CardInterface.send_apdu">send_apdu() (keycard.commands.CardInterface method)</a>
 
       <ul>
+        <li><a href="index.html#keycard.keycard.KeyCard.send_apdu">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.send_apdu">[1]</a>
+</li>
         <li><a href="keycard.html#keycard.transport.Transport.send_apdu">(keycard.transport.Transport method)</a>
 </li>
       </ul></li>
-      <li><a href="keycard.html#keycard.keycard.KeyCard.send_secure_apdu">send_secure_apdu() (keycard.keycard.KeyCard method)</a>
+      <li><a href="keycard.commands.html#keycard.commands.CardInterface.send_secure_apdu">send_secure_apdu() (keycard.commands.CardInterface method)</a>
+
+      <ul>
+        <li><a href="index.html#keycard.keycard.KeyCard.send_secure_apdu">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.send_secure_apdu">[1]</a>
 </li>
+      </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.ECDH.set_curve">set_curve() (keycard.commands.ECDH method)</a>
 </li>
   </ul></td>
@@ -691,6 +723,10 @@
       <li><a href="index.html#keycard.keycard.KeyCard.status">status (keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.status">[1]</a>
 </li>
       <li><a href="keycard.html#id1">status_word (keycard.apdu.APDUResponse attribute)</a>, <a href="keycard.html#keycard.apdu.APDUResponse.status_word">[1]</a>
+</li>
+      <li><a href="keycard.html#keycard.constants.StorageSlot">StorageSlot (class in keycard.constants)</a>
+</li>
+      <li><a href="keycard.commands.html#keycard.commands.store_data">store_data() (in module keycard.commands)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -750,7 +786,7 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="keycard.commands.html#keycard.commands.SecureSession.unwrap_response">unwrap_response() (keycard.commands.SecureSession method)</a>
+      <li><a href="keycard.commands.html#keycard.commands.SecureChannel.unwrap_response">unwrap_response() (keycard.commands.SecureChannel method)</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.urandom">urandom() (in module keycard.commands)</a>
 </li>
@@ -802,7 +838,7 @@
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="keycard.commands.html#keycard.commands.SecureSession.wrap_apdu">wrap_apdu() (keycard.commands.SecureSession method)</a>
+      <li><a href="keycard.commands.html#keycard.commands.SecureChannel.wrap_apdu">wrap_apdu() (keycard.commands.SecureChannel method)</a>
 </li>
   </ul></td>
 </tr></table>
