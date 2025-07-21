@@ -1,9 +1,10 @@
 from .. import constants
+from ..card_interface import CardInterface
 from ..preconditions import require_secure_channel
 
 
 @require_secure_channel
-def unblock_pin(card, puk_and_pin: bytes | str) -> None:
+def unblock_pin(card: CardInterface, puk_and_pin: bytes | str) -> None:
     """
     Unblocks the user PIN using the provided PUK and sets a new PIN.
 

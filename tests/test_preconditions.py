@@ -1,9 +1,10 @@
 import pytest
+from keycard.card_interface import CardInterface
 from keycard.preconditions import make_precondition
 from keycard.exceptions import InvalidStateError
 
 
-class DummyCard:
+class DummyCard(CardInterface):
     def __init__(self, **attrs):
         for k, v in attrs.items():
             setattr(self, k, v)

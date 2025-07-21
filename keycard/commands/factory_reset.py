@@ -1,9 +1,10 @@
 from .. import constants
+from ..card_interface import CardInterface
 from ..preconditions import require_selected
 
 
 @require_selected
-def factory_reset(card):
+def factory_reset(card: CardInterface) -> None:
     '''
     Sends the FACTORY_RESET command to the card.
     '''

@@ -1,13 +1,14 @@
 import pytest
 from unittest.mock import Mock, patch
 from keycard import constants
+from keycard.card_interface import CardInterface
 from keycard.exceptions import APDUError
 from keycard.commands.change_secret import change_secret
 
 
 @pytest.fixture
 def mock_card():
-    card = Mock()
+    card = Mock(spec=CardInterface)
     card.send_secure_apdu = Mock()
     return card
 

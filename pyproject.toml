@@ -23,5 +23,6 @@ dev = [
     "coverage",
     "sphinx",
     "sphinx-autodoc-typehints",
-    "flake8"
+    "flake8",
+    "mypy",
 ]

@@ -4,8 +4,8 @@ from keycard.exceptions import APDUError
 from keycard.keycard import KeyCard
 from keycard.transport import Transport
 
-PIN = bytes('123456', 'ascii')
-PUK = bytes('123456123456', 'ascii')
+PIN = '123456'
+PUK = '123456123456'
 PAIRING_PASSWORD = 'KeycardTest'
 
 with Transport() as transport:
@@ -45,10 +45,10 @@ with Transport() as transport:
     print(card.status)
 
     print('Unblocking PIN...')
-    card.verify_pin(b'654321')
-    card.verify_pin(b'654321')
+    card.verify_pin('654321')
+    card.verify_pin('654321')
     try:
-        card.verify_pin(b'654321')
+        card.verify_pin('654321')
     except RuntimeError as e:
         print(f'PIN verification failed: {e}')
     card.unblock_pin(PUK, PIN)

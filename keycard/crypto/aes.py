@@ -7,7 +7,7 @@ def aes_cbc_encrypt(
     key: bytes,
     iv: bytes,
     data: bytes,
-    padding=True
+    padding: bool = True
 ) -> bytes:
     if padding:
         data = iso7816_pad(data, 16)

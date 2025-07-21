@@ -79,7 +79,7 @@ def test_verify_pin_delegates_call_and_returns_result():
         kc = KeyCard(MagicMock())
         kc.secure_session = 'sess'
         result = kc.verify_pin('1234')
-        mock_cmd.assert_called_once_with(kc, '1234')
+        mock_cmd.assert_called_once_with(kc, b'1234')
         assert result is True
 
 
@@ -226,4 +226,3 @@ def test_remove_key_calls_command():
         kc = KeyCard(MagicMock())
         kc.remove_key()
         mock_remove_key.assert_called_once_with(kc)
-

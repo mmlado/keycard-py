@@ -1,13 +1,11 @@
 import pytest
-from unittest.mock import MagicMock
 from keycard.commands.unpair import unpair
 from keycard.apdu import APDUResponse
 from keycard.exceptions import APDUError
 from keycard import constants
 
 
-def test_unpair_success():
-    card = MagicMock()
+def test_unpair_success(card):
     card.send_secure_apdu.return_value = APDUResponse(b'', 0x9000)
 
     unpair(card, 1)
@@ -18,8 +16,7 @@ def test_unpair_success():
     )
 
 
-def test_unpair_apdu_error():
-    card = MagicMock()
+def test_unpair_apdu_error(card):
     card.send_secure_apdu.side_effect = APDUError(0x6A84)
 
     with pytest.raises(APDUError) as excinfo:

@@ -1,9 +1,10 @@
 from .. import constants
+from ..card_interface import CardInterface
 from ..preconditions import require_secure_channel
 
 
 @require_secure_channel
-def generate_key(card) -> bytes:
+def generate_key(card: CardInterface) -> bytes:
     '''
     Generates a new key on the card and returns the key UID.
 
@@ -13,7 +14,7 @@ def generate_key(card) -> bytes:
 
     Args:
         transport: Transport instance for APDU communication
-        session: SecureSession instance for wrapping/unwrapping
+        session: SecureChannel instance for wrapping/unwrapping
 
     Returns:
         bytes: Key UID (SHA-256 of the public key)

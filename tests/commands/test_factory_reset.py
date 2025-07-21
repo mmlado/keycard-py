@@ -5,8 +5,7 @@ from keycard.commands.factory_reset import factory_reset
 from keycard.exceptions import APDUError
 
 
-def test_factory_reset_success():
-    card = Mock()
+def test_factory_reset_success(card):
     mock_response = Mock()
     mock_response.status_word = 0x9000
     card.send_apdu.return_value = mock_response
@@ -19,8 +18,7 @@ def test_factory_reset_success():
     )
 
 
-def test_factory_reset_failure():
-    card = Mock()
+def test_factory_reset_failure(card):
     card.send_apdu.side_effect = APDUError(0x6A80)
 
     with pytest.raises(APDUError):

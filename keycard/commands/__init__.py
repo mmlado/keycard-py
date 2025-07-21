@@ -1,9 +1,9 @@
 # flake8: noqa: F401
 
 if __debug__:
-    # Development mode: dynamically import all public symbols
     import importlib
     import pkgutil
+    from typing import cast
 
     __all__ = []
 
@@ -18,7 +18,6 @@ if __debug__:
                 __all__.append(attr)
 
 else:
-    # Production mode: static imports for safety and stability
     from .change_secret import change_secret
     from .factory_reset import factory_reset
     from .generate_key import generate_key

@@ -1,11 +1,17 @@
+from typing import Optional
+
 from . import constants
 from . import commands
 from .apdu import APDUResponse
+from .card_interface import CardInterface
 from .exceptions import APDUError
+from .parsing.application_info import ApplicationInfo
+from .parsing.identity import Identity
 from .transport import Transport
+from .secure_channel import SecureChannel
 
 
-class KeyCard:
+class KeyCard(CardInterface):
     '''
     High-level interface for interacting with a Keycard device.
 
@@ -27,9 +33,9 @@ class KeyCard:
             raise ValueError('Transport not initialized')
 
         self.transport = transport
-        self.card_public_key = None
-        self.session = None
-        self._is_pin_verified = False
+        self.card_public_key: Optional[bytes] = None
+        self.session: Optional[SecureChannel] = None
+        self._is_pin_verified: bool = False
 
     @property
     def is_selected(self) -> bool:
@@ -81,7 +87,7 @@ class KeyCard:
         '''
         return self._is_pin_verified
 
-    def select(self):
+    def select(self) -> 'ApplicationInfo':
         '''
         Selects the Keycard applet and retrieves application metadata.
 
@@ -93,7 +99,7 @@ class KeyCard:
         self._is_initialized = info.is_initialized
         return info
 
-    def init(self, pin: bytes, puk: bytes, pairing_secret: bytes):
+    def init(self, pin: str, puk: str, pairing_secret: str) -> None:
         '''
         Initializes the card with security credentials.
 
@@ -109,7 +115,7 @@ class KeyCard:
             pairing_secret,
         )
 
-    def ident(self, challenge: bytes) -> bytes:
+    def ident(self, challenge: bytes) -> Identity:
         '''
         Sends an identity challenge to the card.
 
@@ -121,7 +127,11 @@ class KeyCard:
         '''
         return commands.ident(self, challenge)
 
-    def open_secure_channel(self, pairing_index: int, pairing_key: bytes):
+    def open_secure_channel(
+        self,
+        pairing_index: int,
+        pairing_key: bytes
+    ) -> None:
         '''
         Opens a secure session with the card.
 
@@ -135,7 +145,7 @@ class KeyCard:
             pairing_key,
         )
 
-    def mutually_authenticate(self):
+    def mutually_authenticate(self) -> None:
         '''
         Performs mutual authentication between host and card.
 
@@ -166,12 +176,12 @@ class KeyCard:
         Returns:
             bool: True if PIN is valid, otherwise False.
         '''
-        result = commands.verify_pin(self, pin)
+        result = commands.verify_pin(self, pin.encode('utf-8'))
         self._is_pin_verified = True
         return result
 
     @property
-    def status(self):
+    def status(self) -> dict[str, int | bool] | list[int]:
         '''
         Retrieves the application status using the secure session.
 
@@ -190,7 +200,7 @@ class KeyCard:
         return commands.get_status(self)
 
     @property
-    def get_key_path(self):
+    def get_key_path(self) -> dict[str, int | bool] | list[int]:
         '''
         Returns the current key derivation path from the card.
 
@@ -205,7 +215,7 @@ class KeyCard:
 
         return commands.get_status(self, key_path=True)
 
-    def unpair(self, index: int):
+    def unpair(self, index: int) -> None:
         '''
         Removes a pairing slot from the card.
 
@@ -214,7 +224,7 @@ class KeyCard:
         '''
         commands.unpair(self, index)
 
-    def factory_reset(self):
+    def factory_reset(self) -> None:
         '''
         Sends the FACTORY_RESET command to the card.
 
@@ -292,7 +302,7 @@ class KeyCard:
             new_pin = new_pin.encode("utf-8")
 
         commands.unblock_pin(self, puk + new_pin)
-        
+
     def remove_key(self) -> None:
         '''
         Removes the current key from the card.
@@ -308,7 +318,7 @@ class KeyCard:
         p1: int = 0x00,
         p2: int = 0x00,
         data: bytes = b'',
-        cla: int = None
+        cla: Optional[int] = None
     ) -> bytes:
         if cla is None:
             cla = constants.CLA_PROPRIETARY
@@ -329,6 +339,9 @@ class KeyCard:
         p2: int = 0x00,
         data: bytes = b''
     ) -> bytes:
+        if not self.session or not self.session.authenticated:
+            raise RuntimeError('Secure channel not established')
+
         encrypted = self.session.wrap_apdu(
             cla=constants.CLA_PROPRIETARY,
             ins=ins,

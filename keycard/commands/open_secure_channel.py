@@ -1,17 +1,18 @@
 from ecdsa import SigningKey, VerifyingKey, SECP256k1, ECDH
 
 from .. import constants
+from ..card_interface import CardInterface
 from ..exceptions import NotSelectedError
-from ..secure_channel import SecureSession
+from ..secure_channel import SecureChannel
 from ..preconditions import require_initialized
 
 
 @require_initialized
 def open_secure_channel(
-    card,
+    card: CardInterface,
     pairing_index: int,
     pairing_key: bytes
-) -> SecureSession:
+) -> SecureChannel:
     '''
     Opens a secure session with the Keycard using ECDH and a pairing key.
 
@@ -28,7 +29,7 @@ def open_secure_channel(
         pairing_key (bytes): The shared 32-byte pairing key.
 
     Returns:
-        SecureSession: A newly established secure session with the card.
+        SecureChannel: A newly established secure session with the card.
 
     Raises:
         NotSelectedError: If no card public key is provided.
@@ -59,7 +60,7 @@ def open_secure_channel(
     )
     shared_secret = ecdh.generate_sharedsecret_bytes()
 
-    return SecureSession.open(
+    return SecureChannel.open(
         shared_secret,
         pairing_key,
         salt,
