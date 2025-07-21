@@ -1,5 +1,4 @@
 from collections import defaultdict
-from typing import Tuple
 
 from keycard.exceptions import InvalidResponseError
 
@@ -39,7 +38,7 @@ def _parse_ber_length(data: bytes, index: int) -> tuple[int, int]:
     return length, 1 + num_bytes
 
 
-def parse_tlv(data: bytes) -> defaultdict[Tuple[int, bytes]]:
+def parse_tlv(data: bytes) -> defaultdict[int, list[bytes]]:
     """
     Parses a byte sequence containing TLV (Tag-Length-Value) encoded data.
 

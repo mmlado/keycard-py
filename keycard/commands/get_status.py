@@ -1,10 +1,14 @@
 from .. import constants
+from ..card_interface import CardInterface
 from ..parsing import tlv
 from ..preconditions import require_secure_channel
 
 
 @require_secure_channel
-def get_status(card, key_path=False):
+def get_status(
+    card: CardInterface,
+    key_path: bool = False
+) -> dict[str, int | bool] | list[int]:
     '''
     Query the application status or key path from the Keycard.
 
@@ -12,7 +16,7 @@ def get_status(card, key_path=False):
 
     Args:
         transport: Transport instance used to send APDU bytes.
-        session: An established SecureSession instance.
+        session: An established SecureChannel instance.
         key_path (bool): If True, returns the current key path.
             If False (default), returns application status.
 

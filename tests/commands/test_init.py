@@ -36,8 +36,7 @@ def ecc_patches():
         yield
 
 
-def test_init_success(ecc_patches):
-    card = MagicMock()
+def test_init_success(card, ecc_patches):
     card.send_apdu.return_value = b''
 
     init(card, PIN, PUK, PAIRING_SECRET)
@@ -53,8 +52,7 @@ def test_init_success(ecc_patches):
 
 
 @pytest.mark.parametrize('secret_length', [10, 240])
-def test_init_data_length(ecc_patches, secret_length):
-    card = MagicMock()
+def test_init_data_length(card, ecc_patches, secret_length):
     card.send_apdu.return_value = b''
 
     pairing_secret = b'x' * secret_length
@@ -69,8 +67,7 @@ def test_init_data_length(ecc_patches, secret_length):
         assert card.send_apdu.call_count == 1
 
 
-def test_init_apdu_error(ecc_patches):
-    card = MagicMock()
+def test_init_apdu_error(card, ecc_patches):
     card.send_apdu.side_effect = APDUError(0x6A84)
 
     with pytest.raises(APDUError) as excinfo:

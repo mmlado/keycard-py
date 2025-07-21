@@ -1,14 +1,11 @@
 import pytest
 
-from unittest.mock import MagicMock
 from keycard import constants
 from keycard.commands.mutually_authenticate import mutually_authenticate
 from keycard.exceptions import APDUError
 
 
-def test_mutually_authenticate_success():
-    card = MagicMock()
-
+def test_mutually_authenticate_success(card):
     client_challenge = bytes(32)
     card.send_secure_apdu.return_value = bytes(32)
 
@@ -20,18 +17,14 @@ def test_mutually_authenticate_success():
     )
 
 
-def test_mutually_authenticate_invalid_status_word():
-    card = MagicMock()
-
+def test_mutually_authenticate_invalid_status_word(card):
     card.send_secure_apdu.side_effect = APDUError(0x6F00)
 
     with pytest.raises(APDUError, match='APDU failed with SW=6F00'):
         mutually_authenticate(card, bytes(32))
 
 
-def test_mutually_authenticate_invalid_response_length():
-    card = MagicMock()
-
+def test_mutually_authenticate_invalid_response_length(card):
     client_challenge = b'\xAA' * 32
     response = b'\xBB' * 16  # Invalid length
 
@@ -44,9 +37,7 @@ def test_mutually_authenticate_invalid_response_length():
         mutually_authenticate(card, client_challenge)
 
 
-def test_mutually_authenticate_auto_challenge(monkeypatch):
-    card = MagicMock()
-
+def test_mutually_authenticate_auto_challenge(card, monkeypatch):
     fake_challenge = b'\xCC' * 32
     monkeypatch.setattr('os.urandom', lambda n: fake_challenge)
 

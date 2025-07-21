@@ -1,11 +1,12 @@
 from .. import constants
+from ..card_interface import CardInterface
 from ..preconditions import require_pin_verified
 from ..crypto.generate_pairing_token import generate_pairing_token
 
 
 @require_pin_verified
 def change_secret(
-    card,
+    card: CardInterface,
     new_value: bytes | str,
     pin_type: constants.PinType
 ) -> None:

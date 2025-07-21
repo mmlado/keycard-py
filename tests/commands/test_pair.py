@@ -1,6 +1,6 @@
 import pytest
 import hashlib
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 from keycard.commands.pair import pair
 from keycard.exceptions import APDUError, InvalidResponseError
 
@@ -11,7 +11,7 @@ def mock_urandom():
         yield
 
 
-def test_pair_success(mock_urandom):
+def test_pair_success(card, mock_urandom):
     shared_secret = b'\xAA' * 32
     client_challenge = b'\x01' * 32
     card_challenge = b'\x02' * 32
@@ -23,7 +23,6 @@ def test_pair_success(mock_urandom):
     first_response = expected_card_cryptogram + card_challenge
     second_response = b'\x05' + card_challenge
 
-    card = MagicMock()
     card.send_apdu.side_effect = [first_response, second_response]
 
     result = pair(card, shared_secret)
@@ -32,22 +31,19 @@ def test_pair_success(mock_urandom):
     assert card.send_apdu.call_count == 2
 
 
-def test_pair_invalid_shared_secret(mock_urandom):
-    card = MagicMock()
+def test_pair_invalid_shared_secret(card, mock_urandom):
     with pytest.raises(ValueError, match='Shared secret must be 32 bytes'):
         pair(card, b'short')
 
 
-def test_pair_apdu_error_on_first(mock_urandom):
-    card = MagicMock()
+def test_pair_apdu_error_on_first(card, mock_urandom):
     card.send_apdu.side_effect = APDUError(0x6A82)
 
     with pytest.raises(APDUError):
         pair(card, b'\x00' * 32)
 
 
-def test_pair_invalid_response_length_first(mock_urandom):
-    card = MagicMock()
+def test_pair_invalid_response_length_first(card, mock_urandom):
     card.send_apdu.return_value = bytes(10)
 
     with pytest.raises(
@@ -57,19 +53,18 @@ def test_pair_invalid_response_length_first(mock_urandom):
         pair(card, b'\x00' * 32)
 
 
-def test_pair_cryptogram_mismatch(mock_urandom):
+def test_pair_cryptogram_mismatch(card, mock_urandom):
     wrong_card_cryptogram = b'\xAB' * 32
     card_challenge = b'\x02' * 32
     response = wrong_card_cryptogram + card_challenge
 
-    card = MagicMock()
     card.send_apdu.side_effect = [response]
 
     with pytest.raises(InvalidResponseError, match='Card cryptogram mismatch'):
         pair(card, b'\xAA' * 32)
 
 
-def test_pair_invalid_response_second_apdu(mock_urandom):
+def test_pair_invalid_response_second_apdu(card, mock_urandom):
     shared_secret = b'\xAA' * 32
     client_challenge = b'\x01' * 32
     card_challenge = b'\x02' * 32
@@ -78,7 +73,6 @@ def test_pair_invalid_response_second_apdu(mock_urandom):
     first_response = card_cryptogram + card_challenge
     second_response = b'\x00' * 10
 
-    card = MagicMock()
     card.send_apdu.side_effect = [first_response, second_response]
 
     with pytest.raises(

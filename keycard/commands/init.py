@@ -2,6 +2,7 @@ from os import urandom
 from ecdsa import SigningKey, VerifyingKey, ECDH, SECP256k1
 
 from .. import constants
+from ..card_interface import CardInterface
 from ..crypto.aes import aes_cbc_encrypt
 from ..crypto.generate_pairing_token import generate_pairing_token
 from ..exceptions import NotSelectedError
@@ -10,10 +11,10 @@ from ..preconditions import require_selected
 
 @require_selected
 def init(
-    card,
-    pin: bytes,
-    puk: bytes,
-    pairing_secret: bytes
+    card: CardInterface,
+    pin: str | bytes,
+    puk: str | bytes,
+    pairing_secret: str | bytes
 ) -> None:
     '''
     Initializes a Keycard device with PIN, PUK, and pairing secret.
@@ -38,6 +39,10 @@ def init(
     if card.card_public_key is None:
         raise NotSelectedError('Card not selected. Call select() first.')
 
+    if not isinstance(pin, bytes):
+        pin = pin.encode('ascii')
+    if not isinstance(puk, bytes):
+        puk = puk.encode('ascii')
     if not isinstance(pairing_secret, bytes):
         pairing_secret = generate_pairing_token(pairing_secret)
 

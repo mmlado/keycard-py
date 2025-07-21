@@ -35,3 +35,9 @@ class PinType(IntEnum):
     USER = 0x00
     PUK = 0x01
     PAIRING = 0x02
+
+
+class StorageSlot(IntEnum):
+    PUBLIC = 0x00
+    NDEF = 0x01
+    CASH = 0x02
