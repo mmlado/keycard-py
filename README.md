@@ -27,7 +27,7 @@ APDU commands are being implemented one by one.
 - [ ] SIGN
 - [ ] SET PINLESS PATH
 - [ ] EXPORT KEY
-- [ ] STORE DATA
+- [x] STORE DATA
 - [ ] GET DATA
 - [x] FACTORY RESET
 
