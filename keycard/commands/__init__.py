@@ -21,6 +21,7 @@ else:
     from .change_secret import change_secret
     from .factory_reset import factory_reset
     from .generate_key import generate_key
+    from .get_data import get_data
     from .ident import ident
     from .init import init
     from .get_status import get_status
@@ -29,6 +30,7 @@ else:
     from .pair import pair
     from .remove_key import remove_key
     from .select import select
+    from .store_data import store_data
     from .unblock_pin import unblock_pin
     from .unpair import unpair
     from .verify_pin import verify_pin
@@ -37,6 +39,7 @@ else:
         'change_secret',
         'factory_reset',
         'generate_key',
+        'get_data',
         'ident',
         'init',
         'get_status',
@@ -45,6 +48,7 @@ else:
         'pair',
         'remove_key',
         'select',
+        'store_data',
         'unblock_pin',
         'unpair',
         'verify_pin',
