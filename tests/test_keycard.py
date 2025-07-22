@@ -1,6 +1,7 @@
 import pytest
 from unittest.mock import MagicMock, patch
 
+from keycard import constants
 from keycard.apdu import APDUResponse
 from keycard.exceptions import APDUError
 from keycard.keycard import KeyCard
@@ -226,3 +227,66 @@ def test_remove_key_calls_command():
         kc = KeyCard(MagicMock())
         kc.remove_key()
         mock_remove_key.assert_called_once_with(kc)
+
+
+def test_store_data_calls_command_with_default_slot():
+    with patch('keycard.keycard.commands.store_data') as mock_store_data:
+        kc = KeyCard(MagicMock())
+        data = b'testdata'
+        kc.store_data(data)
+        mock_store_data.assert_called_once_with(
+            kc, data, constants.StorageSlot.PUBLIC
+        )
+
+
+def test_store_data_calls_command_with_custom_slot():
+    with patch('keycard.keycard.commands.store_data') as mock_store_data:
+        kc = KeyCard(MagicMock())
+        data = b'testdata'
+        slot = MagicMock()
+        kc.store_data(data, slot)
+        mock_store_data.assert_called_once_with(kc, data, slot)
+
+
+def test_store_data_raises_value_error_on_invalid_slot():
+    with patch(
+        'keycard.keycard.commands.store_data',
+        side_effect=ValueError("Invalid slot")
+    ):
+        kc = KeyCard(MagicMock())
+        with pytest.raises(ValueError, match="Invalid slot"):
+            kc.store_data(b'testdata', slot="INVALID")
+
+
+def test_store_data_raises_value_error_on_data_too_long():
+    with patch(
+        'keycard.keycard.commands.store_data',
+        side_effect=ValueError("data is too long")
+    ):
+        kc = KeyCard(MagicMock())
+        long_data = b'a' * 128
+        with pytest.raises(ValueError, match="data is too long"):
+            kc.store_data(long_data)
+
+
+def test_get_data_calls_command_with_default_slot():
+    with patch(
+        'keycard.keycard.commands.get_data',
+        return_value=b'data'
+    ) as mock_get_data:
+        kc = KeyCard(MagicMock())
+        result = kc.get_data()
+        mock_get_data.assert_called_once_with(kc, constants.StorageSlot.PUBLIC)
+        assert result == b'data'
+
+
+def test_get_data_calls_command_with_custom_slot():
+    with patch(
+        'keycard.keycard.commands.get_data',
+        return_value=b'data'
+    ) as mock_get_data:
+        kc = KeyCard(MagicMock())
+        slot = MagicMock()
+        result = kc.get_data(slot)
+        mock_get_data.assert_called_once_with(kc, slot)
+        assert result == b'data'
