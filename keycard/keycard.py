@@ -311,6 +311,39 @@ class KeyCard(CardInterface):
             APDUError: If the response status word is not 0x9000.
         '''
         commands.remove_key(self)
+        
+    def store_data(
+        self,
+        data: bytes,
+        slot: constants.StorageSlot = constants.StorageSlot.PUBLIC
+    ) -> None:
+        """
+        Stores data on the card in the specified slot.
+
+        Args:
+            data (bytes): The data to store (max 127 bytes).
+            slot (StorageSlot): Where to store the data (PUBLIC, NDEF, CASH)
+
+        Raises:
+            ValueError: If slot is invalid or data is too long.
+        """
+        commands.store_data(self, data, slot)
+        
+    def get_data(
+        self,
+        slot: constants.StorageSlot = constants.StorageSlot.PUBLIC
+    ) -> bytes:
+        """
+        Gets the data on the card previously stored with the store data command
+        in the specified slot.
+
+        Args:
+            slot (StorageSlot): Where to retrieve the data (PUBLIC, NDEF, CASH)
+
+        Raises:
+            ValueError: If slot is invalid or data is too long.
+        """
+        return commands.get_data(self, slot)
 
     def send_apdu(
         self,

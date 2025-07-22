@@ -24,7 +24,7 @@ def store_data(
         raise ValueError("Data too long. Maximum allowed is 127 bytes.")
 
     card.send_secure_apdu(
-        ins=0xE2,
+        ins=constants.INS_STORE_DATA,
         p1=slot.value,
         data=data
     )

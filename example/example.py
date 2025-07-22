@@ -1,5 +1,6 @@
 import os
 
+from keycard import constants
 from keycard.exceptions import APDUError
 from keycard.keycard import KeyCard
 from keycard.transport import Transport
@@ -11,6 +12,9 @@ PAIRING_PASSWORD = 'KeycardTest'
 with Transport() as transport:
     card = KeyCard(transport)
     card.select()
+    print('Retrieving data...')
+    retrieved_data = card.get_data(slot=constants.StorageSlot.PUBLIC)
+    print(f'Retrieved data: {retrieved_data}')
     try:
         print('Factory resetting card...')
         card.factory_reset()
@@ -69,6 +73,15 @@ with Transport() as transport:
     
     card.change_pairing_secret(PAIRING_PASSWORD)
     print('Pairing secret changed.')
+    
+    print('Storing data...')
+    data = b'This is some test data.'
+    card.store_data(data, slot=constants.StorageSlot.PUBLIC)
+    print('Data stored.')
+    
+    print('Retrieving data...')
+    retrieved_data = card.get_data(slot=constants.StorageSlot.PUBLIC)
+    print(f'Retrieved data: {retrieved_data}')
 
     print('Removing key...')
     card.remove_key()
