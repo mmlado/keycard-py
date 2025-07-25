@@ -28,6 +28,7 @@ INS_CHANGE_SECRET: int = 0x21
 INS_UNBLOCK_PIN: int = 0x22
 INS_STORE_DATA: int = 0xE2
 INS_GET_DATA: int = 0xCA
+INS_SIGN: int = 0xC0
 
 # Status words
 SW_SUCCESS: int = 0x9000
@@ -43,3 +44,17 @@ class StorageSlot(IntEnum):
     PUBLIC = 0x00
     NDEF = 0x01
     CASH = 0x02
+
+
+class DerivationOption(IntEnum):
+    CURRENT = 0x00
+    DERIVE = 0x01
+    DERIVE_AND_MAKE_CURRENT = 0x02
+    PINLESS = 0x03
+
+
+class SigningAlgorithm(IntEnum):
+    ECDSA_SECP256K1 = 0x00
+    EDDSA_ED25519 = 0x01
+    BLS12_381 = 0x02
+    SCHNORR_BIP340 = 0x03

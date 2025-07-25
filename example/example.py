@@ -1,5 +1,8 @@
 import os
 
+from ecdsa import VerifyingKey, SECP256k1
+from hashlib import sha256
+
 from keycard import constants
 from keycard.exceptions import APDUError
 from keycard.keycard import KeyCard
@@ -8,6 +11,16 @@ from keycard.transport import Transport
 PIN = '123456'
 PUK = '123456123456'
 PAIRING_PASSWORD = 'KeycardTest'
+
+
+def verify_ecdsa_secp256k1(
+    digest: bytes, signature: bytes, public_key: bytes) -> bool:
+    vk = VerifyingKey.from_string(public_key, curve=SECP256k1)
+    try:
+        return vk.verify(signature[:64], digest, sigdecode=sigdecode_string)
+    except Exception:
+        return False
+
 
 with Transport() as transport:
     card = KeyCard(transport)
@@ -62,8 +75,15 @@ with Transport() as transport:
     print('PIN verified.')
 
     print('Generating key...')
-    key = card.generate_key()
+    key = b'0x04' + card.generate_key()
     print(f'Generated key: {key.hex()}')
+
+    digest = sha256(b'This is a test message.').digest()
+    print(f'Digest: {digest.hex()}')
+    signature = card.sign(digest)
+    print(f'Signature: {signature['signature'].hex()}')
+    verify_ecdsa_secp256k1(digest, signature['signature'], key)
+
 
     card.change_pin(PIN)
     print('PIN changed.')
