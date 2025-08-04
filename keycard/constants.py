@@ -57,3 +57,9 @@ class KeyExportOption(IntEnum):
     PRIVATE_AND_PUBLIC = 0x00
     PUBLIC_ONLY = 0x01
     EXTENDED_PUBLIC = 0x02
+
+
+class DerivationSource(IntEnum):
+    MASTER = 0x00
+    PARENT = 0x40
+    CURRENT = 0x80

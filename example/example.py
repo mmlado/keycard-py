@@ -60,10 +60,18 @@ with Transport() as transport:
 
     card.verify_pin(PIN)
     print('PIN verified.')
-
+    
     print('Generating key...')
     key = card.generate_key()
     print(f'Generated key: {key.hex()}')
+
+    print('Exporting key...')
+    exported_key = card.export_current_key(True)
+    print(f'Exported key: {exported_key.public_key.hex()}')
+    if exported_key.private_key:
+        print(f'Private key: {exported_key.private_key.hex()}')
+    if exported_key.chain_code:
+        print(f'Chain code: {exported_key.chain_code.hex()}')
 
     card.change_pin(PIN)
     print('PIN changed.')

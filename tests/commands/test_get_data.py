@@ -13,6 +13,7 @@ def test_get_data_secure_channel(card):
     )
     assert result == card.send_secure_apdu.return_value
 
+
 def test_get_data_proprietary_channel(card):
     card.is_secure_channel_open = False
     card.send_apdu.return_value = b"proprietary_data"
@@ -23,6 +24,7 @@ def test_get_data_proprietary_channel(card):
         cla=constants.CLA_PROPRIETARY
     )
     assert result == card.send_apdu.return_value
+
 
 def test_get_data_invalid_slot(card):
     with pytest.raises(AttributeError):

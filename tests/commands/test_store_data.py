@@ -1,8 +1,7 @@
 import pytest
-from unittest.mock import patch
+
 from keycard.commands import store_data
 from keycard import constants
-from keycard.commands.store_data import store_data
 
 
 def test_store_data_calls_send_secure_apdu_with_correct_args(card):
@@ -14,6 +13,7 @@ def test_store_data_calls_send_secure_apdu_with_correct_args(card):
         data=b'hello'
     )
 
+
 def test_store_data_uses_default_slot(card):
     store_data(card, b'world')
 
@@ -22,6 +22,7 @@ def test_store_data_uses_default_slot(card):
         p1=constants.StorageSlot.PUBLIC,
         data=b'world'
     )
+
 
 def test_store_data_raises_value_error_on_too_long_data(card):
     with pytest.raises(ValueError, match="Data too long"):

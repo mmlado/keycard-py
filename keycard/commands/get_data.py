@@ -11,7 +11,7 @@ def get_data(
     """
     Gets the data on the card previously stored with the store data command
     in the specified slot.
-    
+
     If the secure channel is open, it uses the secure APDU command.
     Otherwise, it uses the proprietary APDU command.
 
