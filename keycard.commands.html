@@ -2505,6 +2505,30 @@ will be converted into one.</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="keycard.commands.load_key">
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">load_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">private_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chain_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bip39_seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.load_key" title="Link to this definition">¶</a></dt>
+<dd><p>Load a key into the card for signing purposes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>card</strong> – The card interface.</p></li>
+<li><p><strong>key_type</strong> – Key type</p></li>
+<li><p><strong>public_key</strong> – Optional ECC public key (tag 0x80).</p></li>
+<li><p><strong>private_key</strong> – ECC private key (tag 0x81).</p></li>
+<li><p><strong>chain_code</strong> – Optional chain code (tag 0x82, only for extended key).</p></li>
+<li><p><strong>bip39_seed</strong> – 64-byte BIP39 seed (only for key_type=BIP39_SEED).</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>UID of the loaded key (SHA-256 of public key).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.mutually_authenticate">
 <span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">mutually_authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_challenge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.mutually_authenticate" title="Link to this definition">¶</a></dt>
 <dd><p>Performs mutual authentication between the client and the Keycard.</p>

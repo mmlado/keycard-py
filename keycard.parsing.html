@@ -350,6 +350,29 @@ to the given value.</p>
 <section id="module-keycard.parsing.tlv">
 <span id="keycard-parsing-tlv-module"></span><h2>keycard.parsing.tlv module<a class="headerlink" href="#module-keycard.parsing.tlv" title="Link to this heading">¶</a></h2>
 <dl class="py function">
+<dt class="sig sig-object py" id="keycard.parsing.tlv.encode_tlv">
+<span class="sig-prename descclassname"><span class="pre">keycard.parsing.tlv.</span></span><span class="sig-name descname"><span class="pre">encode_tlv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.tlv.encode_tlv" title="Link to this definition">¶</a></dt>
+<dd><p>Encode a tag-length-value (TLV) structure using BER-TLV rules.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>tag</strong> (<em>int</em>) – A single-byte tag (0x00 - 0xFF).</p></li>
+<li><p><strong>value</strong> (<em>bytes</em>) – Value to encode.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Encoded TLV.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="keycard.parsing.tlv.parse_tlv">
 <span class="sig-prename descclassname"><span class="pre">keycard.parsing.tlv.</span></span><span class="sig-name descname"><span class="pre">parse_tlv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.tlv.parse_tlv" title="Link to this definition">¶</a></dt>
 <dd><p>Parses a byte sequence containing TLV (Tag-Length-Value) encoded data.</p>
