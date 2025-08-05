@@ -113,6 +113,81 @@ and card operations.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.export_current_key">
+<span class="sig-name descname"><span class="pre">export_current_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">public_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.export_current_key" title="Link to this definition">¶</a></dt>
+<dd><p>Exports the current key from the card.</p>
+<p>This is a convenience method that uses the CURRENT derivation option
+and does not require a keypath.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="keycard.commands.html#keycard.commands.ExportedKey" title="keycard.parsing.exported_key.ExportedKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExportedKey</span></code></a></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>public_only</strong> (<em>bool</em>) – If True, only the public key will be returned.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>An object containing the public key, and optionally</dt><dd><p>the private key and chain code.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="keycard.commands.html#keycard.commands.ExportedKey" title="keycard.commands.ExportedKey">ExportedKey</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.export_key">
+<span class="sig-name descname"><span class="pre">export_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">derivation_option</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_only</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keypath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_current</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">DerivationSource.MASTER</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.export_key" title="Link to this definition">¶</a></dt>
+<dd><p>Export a key from the card.</p>
+<p>This is a proxy for <a class="reference internal" href="keycard.commands.html#keycard.commands.export_key" title="keycard.commands.export_key"><code class="xref py py-func docutils literal notranslate"><span class="pre">keycard.commands.export_key()</span></code></a>, provided here
+for convenience.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="keycard.commands.html#keycard.commands.ExportedKey" title="keycard.parsing.exported_key.ExportedKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExportedKey</span></code></a></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>derivation_option</strong> – One of the derivation options
+(CURRENT, DERIVE, DERIVE_AND_MAKE_CURRENT).</p></li>
+<li><p><strong>public_only</strong> – If True, only the public key will be returned.</p></li>
+<li><p><strong>keypath</strong> – BIP32-style string (e.g. “m/44’/60’/0’/0/0”) or packed
+bytes. If derivation_option is CURRENT, this can be omitted.</p></li>
+<li><p><strong>make_current</strong> – If True, updates the card’s current derivation path.</p></li>
+<li><p><strong>source</strong> – Which node to derive from: MASTER, PARENT, or CURRENT.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>An object containing the public key, and optionally</dt><dd><p>the private key and chain code.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="keycard.commands.html#keycard.commands.ExportedKey" title="keycard.commands.ExportedKey">ExportedKey</a></p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference internal" href="keycard.commands.html#keycard.commands.export_key" title="keycard.commands.export_key"><code class="xref py py-func docutils literal notranslate"><span class="pre">keycard.commands.export_key()</span></code></a> – for the lower-level</dt><dd><p>implementation</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">keycard.types.ExportedKey</span></code> – return value</dt><dd><p>structure</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.factory_reset">
 <span class="sig-name descname"><span class="pre">factory_reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.factory_reset" title="Link to this definition">¶</a></dt>
 <dd><p>Sends the FACTORY_RESET command to the card.</p>
