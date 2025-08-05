@@ -9,6 +9,7 @@ from .exceptions import APDUError
 from .parsing.application_info import ApplicationInfo
 from .parsing.identity import Identity
 from .parsing.exported_key import ExportedKey
+from .parsing.signature_result import SignatureResult
 from .transport import Transport
 from .secure_channel import SecureChannel
 
@@ -375,13 +376,13 @@ class KeyCard(CardInterface):
                 the private key and chain code.
 
         See Also:
-            - :func:`keycard.commands.export_key` – for the lower-level
+            - :func:`keycard.commands.export_key` - for the lower-level
                 implementation
-            - :class:`keycard.types.ExportedKey` – return value
+            - :class:`keycard.types.ExportedKey` - return value
                 structure
         """
         return commands.export_key(
-            card=self,
+            self,
             derivation_option=derivation_option,
             public_only=public_only,
             keypath=keypath,
@@ -412,7 +413,7 @@ class KeyCard(CardInterface):
         self,
         digest: bytes,
         algo: SigningAlgorithm = SigningAlgorithm.ECDSA_SECP256K1
-    ) -> dict:
+    ) -> SignatureResult:
         """
         Sign using the currently loaded keypair.
         Requires PIN verification and secure channel.
@@ -422,17 +423,19 @@ class KeyCard(CardInterface):
             algo (SigningAlgorithm): algorithm to use (default ECDSA/secp256k1)
 
         Returns:
-            dict with 'signature', 'format', and optional 'public_key'
+            SignatureResult: Parsed signature result, including the signature
+                (DER or raw), algorithm, and optional recovery ID or
+                public key.
         """
         return commands.sign(self, digest, DerivationOption.CURRENT, algo)
-
 
     def sign_with_path(
         self,
         digest: bytes,
-        path: list[int],
+        path: str,
         make_current: bool = False,
-        algo: SigningAlgorithm = SigningAlgorithm.ECDSA_SECP256K1) -> dict:
+        algo: SigningAlgorithm = SigningAlgorithm.ECDSA_SECP256K1
+    ) -> SignatureResult:
         """
         Sign using a derived keypath. Optionally updates the current path.
 
@@ -443,7 +446,9 @@ class KeyCard(CardInterface):
             algo (SigningAlgorithm): signature algorithm
 
         Returns:
-            dict with 'signature', 'format', and optional 'public_key'
+            SignatureResult: Parsed signature result, including the signature
+                (DER or raw), algorithm, and optional recovery ID or
+                public key.
         """
         p1 = (
             DerivationOption.DERIVE_AND_MAKE_CURRENT
@@ -451,12 +456,11 @@ class KeyCard(CardInterface):
         )
         return commands.sign(self, digest, p1, algo, derivation_path=path)
 
-
     def sign_pinless(
         self,
         digest: bytes,
         algo: SigningAlgorithm = SigningAlgorithm.ECDSA_SECP256K1
-    ) -> dict:
+    ) -> SignatureResult:
         """
         Sign using the predefined PIN-less path.
         Does not require secure channel or PIN.
@@ -466,13 +470,14 @@ class KeyCard(CardInterface):
             algo (SigningAlgorithm): signature algorithm
 
         Returns:
-            dict with 'signature', 'format', and optional 'public_key'
+            SignatureResult: Parsed signature result, including the signature
+                (DER or raw), algorithm, and optional recovery ID or
+                public key.
 
         Raises:
             APDUError: if no PIN-less path is set
         """
         return commands.sign(self, digest, DerivationOption.PINLESS, algo)
-
 
     def send_apdu(
         self,

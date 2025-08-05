@@ -25,7 +25,7 @@ APDU commands are being implemented one by one.
 - [ ] GENERATE MNEMONIC
 - [x] REMOVE KEY
 - [x] GENERATE KEY
-- [ ] SIGN
+- [x] SIGN
 - [ ] SET PINLESS PATH
 - [x] EXPORT KEY
 - [x] STORE DATA

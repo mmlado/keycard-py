@@ -12,6 +12,8 @@ class KeyPath:
         source: DerivationSource = DerivationSource.MASTER
     ):
         if isinstance(path, str):
+            if path == '':
+                raise ValueError("Empty path")
             self.source, components = self._parse_path_string(path)
             if len(components) > self.MAX_COMPONENTS:
                 raise ValueError("Too many components in derivation path")

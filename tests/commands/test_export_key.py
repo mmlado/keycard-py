@@ -45,7 +45,10 @@ def test_export_key_with_path_string(card):
 
 
 def test_export_key_invalid_keypath_length_bytes(card):
-    with pytest.raises(ValueError, match="Byte keypath must be a multiple of 4"):
+    with pytest.raises(
+        ValueError,
+        match="Byte keypath must be a multiple of 4"
+    ):
         export_key(
             card,
             derivation_option=DerivationOption.DERIVE,
@@ -57,7 +60,10 @@ def test_export_key_invalid_keypath_length_bytes(card):
 
 
 def test_export_key_requires_keypath_if_not_current(card):
-    with pytest.raises(ValueError, match="Keypath required unless using CURRENT derivation"):
+    with pytest.raises(
+        ValueError,
+        match="Keypath required unless using CURRENT derivation"
+    ):
         export_key(
             card,
             derivation_option=DerivationOption.DERIVE,

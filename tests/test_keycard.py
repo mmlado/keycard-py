@@ -309,7 +309,7 @@ def test_export_key_delegates_and_returns_result():
         )
 
         mock_cmd.assert_called_once_with(
-            card=kc,
+            kc,
             derivation_option=constants.DerivationOption.DERIVE,
             public_only=True,
             keypath="m/44'/60'/0'/0/0",
@@ -329,7 +329,7 @@ def test_export_current_key_delegates_and_returns_result():
         result = kc.export_current_key(public_only=False)
 
         mock_cmd.assert_called_once_with(
-            card=kc,
+            kc,
             derivation_option=constants.DerivationOption.CURRENT,
             public_only=False,
             keypath=None,

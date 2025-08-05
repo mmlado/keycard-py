@@ -1,6 +1,6 @@
 import os
 
-from ecdsa import VerifyingKey, SECP256k1
+from ecdsa import VerifyingKey, SECP256k1, util
 from hashlib import sha256
 
 from keycard import constants
@@ -78,7 +78,6 @@ with Transport() as transport:
     key = b'0x04' + card.generate_key()
     print(f'Generated key: {key.hex()}')
 
-
     print('Exporting key...')
     exported_key = card.export_current_key(True)
     print(f'Exported key: {exported_key.public_key.hex()}')
@@ -87,12 +86,18 @@ with Transport() as transport:
     if exported_key.chain_code:
         print(f'Chain code: {exported_key.chain_code.hex()}')
 
+
     digest = sha256(b'This is a test message.').digest()
     print(f'Digest: {digest.hex()}')
     signature = card.sign(digest)
-    print(f'Signature: {signature['signature'].hex()}')
-    verify_ecdsa_secp256k1(digest, signature['signature'], key)
+    print(f'Signature: {signature.signature.hex()}')
 
+    vk = VerifyingKey.from_string(exported_key.public_key, curve=SECP256k1)
+    try:
+        vk.verify_digest(signature.signature, digest, sigdecode=util.sigdecode_der)
+        print('Signature verified successfully.')
+    except Exception as e:
+        print(f"Signature verification failed: {e}")
 
     card.change_pin(PIN)
     print('PIN changed.')
