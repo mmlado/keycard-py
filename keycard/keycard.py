@@ -509,6 +509,17 @@ class KeyCard(CardInterface):
             bip39_seed=bip39_seed
         )
 
+    def set_pinless_path(self, path: str) -> None:
+        """
+        Set a PIN-less path on the card. Allows signing without PIN/auth if the
+        current derived key matches this path.
+
+        Args:
+            path (str): BIP-32-style path (e.g., "m/44'/60'/0'/0/0"). An empty
+                        string disables the pinless path.
+        """
+        commands.set_pinless_path(self, path)
+
     def send_apdu(
         self,
         ins: int,

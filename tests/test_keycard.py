@@ -481,3 +481,11 @@ def test_load_key_extended():
             bip39_seed=None
         )
         assert result == b"uid"
+
+
+def test_keycard_set_pinless_path():
+    with patch("keycard.keycard.commands.set_pinless_path") as mock_cmd:
+        card = KeyCard(MagicMock())
+        card.set_pinless_path("m/44'/60'/0'/0/0")
+
+        mock_cmd.assert_called_once_with(card, "m/44'/60'/0'/0/0")
