@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 from . import constants
 from . import commands
@@ -8,6 +8,7 @@ from .card_interface import CardInterface
 from .exceptions import APDUError
 from .parsing.application_info import ApplicationInfo
 from .parsing.identity import Identity
+from .parsing.exported_key import ExportedKey
 from .transport import Transport
 from .secure_channel import SecureChannel
 
@@ -312,7 +313,7 @@ class KeyCard(CardInterface):
             APDUError: If the response status word is not 0x9000.
         '''
         commands.remove_key(self)
-        
+
     def store_data(
         self,
         data: bytes,
@@ -329,7 +330,7 @@ class KeyCard(CardInterface):
             ValueError: If slot is invalid or data is too long.
         """
         commands.store_data(self, data, slot)
-        
+
     def get_data(
         self,
         slot: constants.StorageSlot = constants.StorageSlot.PUBLIC
@@ -345,6 +346,67 @@ class KeyCard(CardInterface):
             ValueError: If slot is invalid or data is too long.
         """
         return commands.get_data(self, slot)
+
+    def export_key(
+        self,
+        derivation_option: constants.DerivationOption,
+        public_only: bool,
+        keypath: Optional[Union[str, bytes, bytearray]] = None,
+        make_current: bool = False,
+        source: constants.DerivationSource = constants.DerivationSource.MASTER
+    ) -> ExportedKey:
+        """
+        Export a key from the card.
+
+        This is a proxy for :func:`keycard.commands.export_key`, provided here
+        for convenience.
+
+        Args:
+            derivation_option: One of the derivation options
+                (CURRENT, DERIVE, DERIVE_AND_MAKE_CURRENT).
+            public_only: If True, only the public key will be returned.
+            keypath: BIP32-style string (e.g. "m/44'/60'/0'/0/0") or packed
+                bytes. If derivation_option is CURRENT, this can be omitted.
+            make_current: If True, updates the card’s current derivation path.
+            source: Which node to derive from: MASTER, PARENT, or CURRENT.
+
+        Returns:
+            ExportedKey: An object containing the public key, and optionally
+                the private key and chain code.
+
+        See Also:
+            - :func:`keycard.commands.export_key` – for the lower-level
+                implementation
+            - :class:`keycard.types.ExportedKey` – return value
+                structure
+        """
+        return commands.export_key(
+            card=self,
+            derivation_option=derivation_option,
+            public_only=public_only,
+            keypath=keypath,
+            make_current=make_current,
+            source=source
+        )
+
+    def export_current_key(self, public_only: bool = False) -> ExportedKey:
+        """
+        Exports the current key from the card.
+
+        This is a convenience method that uses the CURRENT derivation option
+        and does not require a keypath.
+
+        Args:
+            public_only (bool): If True, only the public key will be returned.
+
+        Returns:
+            ExportedKey: An object containing the public key, and optionally
+                the private key and chain code.
+        """
+        return self.export_key(
+            derivation_option=constants.DerivationOption.CURRENT,
+            public_only=public_only
+        )
 
     def sign(
         self,

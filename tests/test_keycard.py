@@ -4,6 +4,7 @@ from unittest.mock import MagicMock, patch
 from keycard import constants
 from keycard.apdu import APDUResponse
 from keycard.exceptions import APDUError
+from keycard.parsing.exported_key import ExportedKey
 from keycard.keycard import KeyCard
 from keycard.transport import Transport
 
@@ -290,3 +291,49 @@ def test_get_data_calls_command_with_custom_slot():
         result = kc.get_data(slot)
         mock_get_data.assert_called_once_with(kc, slot)
         assert result == b'data'
+
+
+def test_export_key_delegates_and_returns_result():
+    mock_exported = MagicMock(spec=ExportedKey)
+    with patch(
+        'keycard.keycard.commands.export_key',
+        return_value=mock_exported
+    ) as mock_cmd:
+        kc = KeyCard(MagicMock())
+        result = kc.export_key(
+            derivation_option=constants.DerivationOption.DERIVE,
+            public_only=True,
+            keypath="m/44'/60'/0'/0/0",
+            make_current=True,
+            source=constants.DerivationSource.PARENT
+        )
+
+        mock_cmd.assert_called_once_with(
+            card=kc,
+            derivation_option=constants.DerivationOption.DERIVE,
+            public_only=True,
+            keypath="m/44'/60'/0'/0/0",
+            make_current=True,
+            source=constants.DerivationSource.PARENT
+        )
+        assert result is mock_exported
+
+
+def test_export_current_key_delegates_and_returns_result():
+    mock_exported = MagicMock(spec=ExportedKey)
+    with patch(
+        'keycard.keycard.commands.export_key',
+        return_value=mock_exported
+    ) as mock_cmd:
+        kc = KeyCard(MagicMock())
+        result = kc.export_current_key(public_only=False)
+
+        mock_cmd.assert_called_once_with(
+            card=kc,
+            derivation_option=constants.DerivationOption.CURRENT,
+            public_only=False,
+            keypath=None,
+            make_current=False,
+            source=constants.DerivationSource.MASTER
+        )
+        assert result is mock_exported

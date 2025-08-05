@@ -29,6 +29,7 @@ INS_UNBLOCK_PIN: int = 0x22
 INS_STORE_DATA: int = 0xE2
 INS_GET_DATA: int = 0xCA
 INS_SIGN: int = 0xC0
+INS_EXPORT_KEY: int = 0xC2
 
 # Status words
 SW_SUCCESS: int = 0x9000
@@ -51,6 +52,18 @@ class DerivationOption(IntEnum):
     DERIVE = 0x01
     DERIVE_AND_MAKE_CURRENT = 0x02
     PINLESS = 0x03
+
+
+class KeyExportOption(IntEnum):
+    PRIVATE_AND_PUBLIC = 0x00
+    PUBLIC_ONLY = 0x01
+    EXTENDED_PUBLIC = 0x02
+
+
+class DerivationSource(IntEnum):
+    MASTER = 0x00
+    PARENT = 0x40
+    CURRENT = 0x80
 
 
 class SigningAlgorithm(IntEnum):
