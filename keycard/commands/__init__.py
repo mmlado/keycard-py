@@ -32,6 +32,7 @@ else:
     from .pair import pair
     from .remove_key import remove_key
     from .select import select
+    from .set_pinless_path import set_pinless_path
     from .sign import sign
     from .store_data import store_data
     from .unblock_pin import unblock_pin
@@ -53,6 +54,7 @@ else:
         'pair',
         'remove_key',
         'select',
+        'set_pinless_path',
         'sign',
         'store_data',
         'unblock_pin',

@@ -20,13 +20,13 @@ APDU commands are being implemented one by one.
 - [x] VERIFY PIN
 - [x] CHANGE PIN
 - [x] UNBLOCK PIN
-- [ ] LOAD KEY
+- [x] LOAD KEY
 - [ ] DERIVE KEY
 - [ ] GENERATE MNEMONIC
 - [x] REMOVE KEY
 - [x] GENERATE KEY
 - [x] SIGN
-- [ ] SET PINLESS PATH
+- [x] SET PINLESS PATH
 - [x] EXPORT KEY
 - [x] STORE DATA
 - [x] GET DATA

@@ -103,6 +103,26 @@ with Transport() as transport:
     except Exception as e:
         print(f"Signature verification failed: {e}")
 
+    print("Set pinless path...")
+    card.set_pinless_path("m/44'/60'/0'/0/0")
+    
+    print("Sign with pinless path...")
+    signature = card.sign_pinless(digest)
+    
+    exported_key = card.export_key(
+        derivation_option=constants.DerivationOption.DERIVE,
+        public_only=True,
+        keypath="m/44'/60'/0'/0/0"
+    )
+
+    vk = VerifyingKey.from_string(exported_key.public_key, curve=SECP256k1)
+    try:
+        vk.verify_digest(signature.signature, digest, sigdecode=util.sigdecode_der)
+        print('Signature verified successfully.')
+    except Exception as e:
+        print(f"Signature verification failed: {e}")
+
+
     print("Load key...")
     sk = SigningKey.generate(curve=SECP256k1)
     vk = sk.verifying_key
@@ -142,7 +162,7 @@ with Transport() as transport:
         print("Received public key hash is the same")
     else:
         print("Received public key hash is not the same")
-    
+
     card.change_pin(PIN)
     print('PIN changed.')
     
