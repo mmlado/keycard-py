@@ -479,6 +479,36 @@ class KeyCard(CardInterface):
         """
         return commands.sign(self, digest, DerivationOption.PINLESS, algo)
 
+    def load_key(
+        self,
+        key_type: constants.LoadKeyType,
+        public_key: Optional[bytes] = None,
+        private_key: Optional[bytes] = None,
+        chain_code: Optional[bytes] = None,
+        bip39_seed: Optional[bytes] = None
+    ) -> bytes:
+        """
+        Load a key into the card for signing purposes.
+
+        Args:
+            key_type: Key type
+            public_key: Optional ECC public key (tag 0x80).
+            private_key: ECC private key (tag 0x81).
+            chain_code: Optional chain code (tag 0x82, only for extended key).
+            bip39_seed: 64-byte BIP39 seed (only for key_type=BIP39_SEED).
+
+        Returns:
+            UID of the loaded key (SHA-256 of public key).
+        """
+        return commands.load_key(
+            self,
+            key_type=key_type,
+            public_key=public_key,
+            private_key=private_key,
+            chain_code=chain_code,
+            bip39_seed=bip39_seed
+        )
+
     def send_apdu(
         self,
         ins: int,

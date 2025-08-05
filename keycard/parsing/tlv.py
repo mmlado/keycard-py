@@ -73,3 +73,30 @@ def parse_tlv(data: bytes) -> defaultdict[int, list[bytes]]:
         result[tag].append(value)
 
     return result
+
+
+def encode_tlv(tag: int, value: bytes) -> bytes:
+    """
+    Encode a tag-length-value (TLV) structure using BER-TLV rules.
+
+    Args:
+        tag (int): A single-byte tag (0x00 - 0xFF).
+        value (bytes): Value to encode.
+
+    Returns:
+        bytes: Encoded TLV.
+    """
+    if not (0 <= tag <= 0xFF):
+        raise ValueError("Tag must fit in a single byte")
+
+    length = len(value)
+
+    if length < 0x80:
+        length_bytes = bytes([length])
+    else:
+        len_len = (length.bit_length() + 7) // 8
+        length_bytes = (
+            bytes([0x80 | len_len]) + length.to_bytes(len_len, 'big')
+        )
+
+    return bytes([tag]) + length_bytes + value

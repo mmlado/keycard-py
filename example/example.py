@@ -1,7 +1,10 @@
+import hashlib
+import hmac
 import os
 
-from ecdsa import VerifyingKey, SECP256k1, util
+from ecdsa import SigningKey, VerifyingKey, SECP256k1, util
 from hashlib import sha256
+from mnemonic import Mnemonic
 
 from keycard import constants
 from keycard.exceptions import APDUError
@@ -12,14 +15,17 @@ PIN = '123456'
 PUK = '123456123456'
 PAIRING_PASSWORD = 'KeycardTest'
 
+def bip32_master_key(seed: bytes):
+    I = hmac.new(b"Bitcoin seed", seed, hashlib.sha512).digest()
+    master_priv_key = I[:32]
+    master_chain_code = I[32:]
+    return master_priv_key, master_chain_code
 
-def verify_ecdsa_secp256k1(
-    digest: bytes, signature: bytes, public_key: bytes) -> bool:
-    vk = VerifyingKey.from_string(public_key, curve=SECP256k1)
-    try:
-        return vk.verify(signature[:64], digest, sigdecode=sigdecode_string)
-    except Exception:
-        return False
+
+def get_uncompressed_pubkey(priv_key_bytes: bytes):
+    sk = SigningKey.from_string(priv_key_bytes, curve=SECP256k1)
+    vk = sk.verifying_key
+    return b'\x04' + vk.to_string()
 
 
 with Transport() as transport:
@@ -48,8 +54,7 @@ with Transport() as transport:
     else:
         print('Card verification failed')
 
-
-    print('Pairing....')
+    print('Pairing...')
     pairing_index, pairing_key = card.pair(PAIRING_PASSWORD)
     print(f'Paired. Index: {pairing_index}')
     print(f'{pairing_key.hex()=}')
@@ -86,7 +91,6 @@ with Transport() as transport:
     if exported_key.chain_code:
         print(f'Chain code: {exported_key.chain_code.hex()}')
 
-
     digest = sha256(b'This is a test message.').digest()
     print(f'Digest: {digest.hex()}')
     signature = card.sign(digest)
@@ -99,6 +103,46 @@ with Transport() as transport:
     except Exception as e:
         print(f"Signature verification failed: {e}")
 
+    print("Load key...")
+    sk = SigningKey.generate(curve=SECP256k1)
+    vk = sk.verifying_key
+    public_key = b'\x04' + vk.to_string()
+    
+    result = card.load_key(
+        key_type=constants.LoadKeyType.ECC,
+        public_key=public_key,
+        private_key=sk.to_string()
+    )
+
+    uid = sha256(public_key).digest()
+    if (result == uid):
+        print("Received public key hash is the same")
+    else:
+        print("Received public key hash is not the same")
+    
+    print("Loading key from mnemonic...")
+    mnemonic = ( 
+        "gravity machine north sort system female "
+        "filter attitude volume fold club stay"
+    )
+    passphrase = ""
+    mnemo = Mnemonic("english")
+    seed = mnemo.to_seed(mnemonic, passphrase)
+
+    master_priv_key, master_chain_code = bip32_master_key(seed)
+    pubkey = get_uncompressed_pubkey(master_priv_key)
+    uid = hashlib.sha256(pubkey).digest()
+
+    result = card.load_key(
+        key_type=constants.LoadKeyType.BIP39_SEED,
+        bip39_seed=seed
+    )
+    
+    if (result == uid):
+        print("Received public key hash is the same")
+    else:
+        print("Received public key hash is not the same")
+    
     card.change_pin(PIN)
     print('PIN changed.')
     

@@ -25,6 +25,7 @@ dev = [
     "sphinx-autodoc-typehints",
     "flake8",
     "mypy",
+    "mnemonic"
 ]
 
 [project.urls]
