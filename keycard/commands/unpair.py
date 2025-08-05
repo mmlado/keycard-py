@@ -1,9 +1,10 @@
 from .. import constants
+from ..card_interface import CardInterface
 from ..preconditions import require_pin_verified
 
 
 @require_pin_verified
-def unpair(card, index: int):
+def unpair(card: CardInterface, index: int) -> None:
     '''
     Sends the UNPAIR command to remove a pairing index from the card.
 
@@ -16,7 +17,7 @@ def unpair(card, index: int):
 
     Args:
         transport: The transport interface used to send APDUs.
-        secure_session: The active SecureSession object used to wrap APDUs.
+        secure_session: The active SecureChannel object used to wrap APDUs.
         index (int): The pairing index (0–15) to unpair from the card.
 
     Raises:

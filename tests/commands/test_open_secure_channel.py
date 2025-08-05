@@ -2,21 +2,22 @@ import pytest
 from unittest.mock import MagicMock, patch
 from ecdsa import SECP256k1
 
+from keycard.card_interface import CardInterface
 from keycard.commands.open_secure_channel import open_secure_channel
 from keycard.exceptions import APDUError
 
 
-@patch('keycard.commands.open_secure_channel.SecureSession')
+@patch('keycard.commands.open_secure_channel.SecureChannel')
 @patch('keycard.commands.open_secure_channel.VerifyingKey')
 @patch('keycard.commands.open_secure_channel.ECDH')
 def test_open_secure_channel_success(
     mock_ecdh,
     mock_verifying_key,
-    mock_secure_session
+    mock_secure_channel
 ):
-    card = MagicMock()
     pairing_index = 1
     pairing_key = b'pairing_key'
+    card = MagicMock(spec=CardInterface)
     card.card_public_key = b'\x04' + b'\x01' * 64
 
     salt = b'A' * 32
@@ -30,7 +31,7 @@ def test_open_secure_channel_success(
     mock_ecdh_instance.generate_sharedsecret_bytes.return_value = (
         b'shared_secret'
     )
-    mock_secure_session.open.return_value = 'secure_session'
+    mock_secure_channel.open.return_value = 'secure_session'
 
     result = open_secure_channel(
         card,
@@ -44,14 +45,13 @@ def test_open_secure_channel_success(
     )
     mock_ecdh.assert_called_once()
     mock_ecdh_instance.generate_sharedsecret_bytes.assert_called_once()
-    mock_secure_session.open.assert_called_once_with(
+    mock_secure_channel.open.assert_called_once_with(
         b'shared_secret', pairing_key, salt, seed_iv
     )
     assert result == 'secure_session'
 
 
-def test_open_secure_channel_raises_apdu_error():
-    card = MagicMock()
+def test_open_secure_channel_raises_apdu_error(card):
     pairing_index = 1
     pairing_key = b'pairing_key'
     card.card_public_key = b'\x04' + b'\x01' * 64

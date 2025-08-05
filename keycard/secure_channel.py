@@ -10,9 +10,9 @@ from dataclasses import dataclass
 
 
 @dataclass
-class SecureSession:
+class SecureChannel:
     """
-    SecureSession manages a secure communication channel using AES encryption
+    SecureChannel manages a secure communication channel using AES encryption
     and MAC authentication.
 
     Attributes:
@@ -33,9 +33,9 @@ class SecureSession:
         pairing_key: bytes,
         salt: bytes,
         seed_iv: bytes
-    ) -> "SecureSession":
+    ) -> "SecureChannel":
         """
-        Opens a new SecureSession using the provided cryptographic parameters.
+        Opens a new SecureChannel using the provided cryptographic parameters.
 
         Args:
             shared_secret (bytes): The shared secret used for key derivation.
@@ -45,7 +45,7 @@ class SecureSession:
                 session.
 
         Returns:
-            SecureSession: An instance of SecureSession initialized with
+            SecureChannel: An instance of SecureChannel initialized with
                 derived encryption and MAC keys, and the provided IV.
         """
         digest = sha512(shared_secret + pairing_key + salt).digest()
@@ -64,7 +64,7 @@ class SecureSession:
         p1: int,
         p2: int,
         data: bytes
-    ) -> tuple[int, int, int, int, bytes]:
+    ) -> bytes:
         """
         Wraps an APDU command with secure channel encryption and MAC.
 

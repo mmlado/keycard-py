@@ -1,10 +1,15 @@
 import os
+from ..card_interface import CardInterface
 from .. import constants
 from ..preconditions import require_secure_channel
+from typing import Optional
 
 
 @require_secure_channel
-def mutually_authenticate(card, client_challenge=None) -> None:
+def mutually_authenticate(
+    card: CardInterface,
+    client_challenge: Optional[bytes] = None
+) -> None:
     '''
     Performs mutual authentication between the client and the Keycard.
 
@@ -18,7 +23,7 @@ def mutually_authenticate(card, client_challenge=None) -> None:
 
     Args:
         transport: A Transport instance for sending APDUs.
-        session: A SecureSession instance used for wrapping/unwrapping.
+        session: A SecureChannel instance used for wrapping/unwrapping.
         client_challenge (bytes, optional): Optional challenge bytes.
             If not provided, a random 32-byte value will be generated.
 

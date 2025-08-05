@@ -1,8 +1,9 @@
 from .. import constants
+from ..card_interface import CardInterface
 from ..parsing.application_info import ApplicationInfo
 
 
-def select(card) -> ApplicationInfo:
+def select(card: CardInterface) -> ApplicationInfo:
     '''
     Selects the Keycard application on the smart card and retrieves
     application information.

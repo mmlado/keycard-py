@@ -54,6 +54,11 @@ def lint(c):
     c.run("flake8 keycard tests", pty=True)
 
 
+@task
+def typecheck(c):
+    """Run mypy type checking."""
+    c.run("mypy keycard")
+
 
 @task
 def docs(ctx, clean=False, open=False):

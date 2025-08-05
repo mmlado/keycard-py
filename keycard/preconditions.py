@@ -1,19 +1,32 @@
 from functools import wraps
+from typing import Callable, TypeVar, ParamSpec, cast
+
 from .exceptions import InvalidStateError
+from .card_interface import CardInterface
+
+P = ParamSpec("P")
+R = TypeVar("R")
 
 
-def make_precondition(attribute_name, display_name=None):
-    def decorator(func):
+def make_precondition(
+    attribute_name: str,
+    display_name: str | None = None
+) -> Callable[[Callable[P, R]], Callable[P, R]]:
+    def decorator(func: Callable[P, R]) -> Callable[P, R]:
         @wraps(func)
-        def wrapper(card, *args, **kwargs):
+        def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
+            card = args[0]
+            if not isinstance(card, CardInterface):
+                raise TypeError("First argument must be a CardInterface")
             if not getattr(card, attribute_name, False):
                 readable = (
-                    display_name or
-                    attribute_name.replace('_', ' ').title()
+                    display_name
+                    if display_name is not None
+                    else attribute_name.replace('_', ' ').title()
                 )
-                raise InvalidStateError(f'{readable} must be satisfied.')
-            return func(card, *args, **kwargs)
-        return wrapper
+                raise InvalidStateError(f"{readable} must be satisfied.")
+            return func(*args, **kwargs)
+        return cast(Callable[P, R], wrapper)
     return decorator
 
 

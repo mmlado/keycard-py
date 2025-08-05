@@ -26,6 +26,10 @@ INS_FACTORY_RESET: int = 0xFD
 INS_GENERATE_KEY: int = 0xD4
 INS_CHANGE_SECRET: int = 0x21
 INS_UNBLOCK_PIN: int = 0x22
+INS_STORE_DATA: int = 0xE2
+INS_GET_DATA: int = 0xCA
+INS_SIGN: int = 0xC0
+INS_EXPORT_KEY: int = 0xC2
 
 # Status words
 SW_SUCCESS: int = 0x9000
@@ -35,3 +39,35 @@ class PinType(IntEnum):
     USER = 0x00
     PUK = 0x01
     PAIRING = 0x02
+
+
+class StorageSlot(IntEnum):
+    PUBLIC = 0x00
+    NDEF = 0x01
+    CASH = 0x02
+
+
+class DerivationOption(IntEnum):
+    CURRENT = 0x00
+    DERIVE = 0x01
+    DERIVE_AND_MAKE_CURRENT = 0x02
+    PINLESS = 0x03
+
+
+class KeyExportOption(IntEnum):
+    PRIVATE_AND_PUBLIC = 0x00
+    PUBLIC_ONLY = 0x01
+    EXTENDED_PUBLIC = 0x02
+
+
+class DerivationSource(IntEnum):
+    MASTER = 0x00
+    PARENT = 0x40
+    CURRENT = 0x80
+
+
+class SigningAlgorithm(IntEnum):
+    ECDSA_SECP256K1 = 0x00
+    EDDSA_ED25519 = 0x01
+    BLS12_381 = 0x02
+    SCHNORR_BIP340 = 0x03

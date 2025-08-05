@@ -1,6 +1,7 @@
 # KeyCard Python SDK
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Python](https://img.shields.io/badge/python-3.13.3-blue.svg)](https://www.python.org/downloads/) [![codecov](https://codecov.io/gh/mmlado/keycard-py/branch/main/graph/badge.svg)](https://codecov.io/gh/mmlado/keycard-py) ![stars](https://img.shields.io/github/stars/mmlado/keycard-py.svg?style=social) ![lastcommit](https://img.shields.io/github/last-commit/mmlado/keycard-py.svg) ![numcontributors](https://img.shields.io/github/contributors-anon/mmlado/keycard-py.svg) 
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Python](https://img.shields.io/badge/python-3.13.3-blue.svg)](https://www.python.org/downloads/) [![codecov](https://codecov.io/gh/mmlado/keycard-py/branch/main/graph/badge.svg)](https://codecov.io/gh/mmlado/keycard-py) [![PyPI version](https://img.shields.io/pypi/v/keycard.svg)](https://pypi.org/project/keycard/) [![Build status](https://github.com/mmlado/keycard-py/actions/workflows/publish.yml/badge.svg)](https://github.com/mmlado/keycard-py/actions/workflows/publish.yml) [![Documentation](https://img.shields.io/badge/docs-gh--pages-blue.svg)](https://mmlado.github.io/keycard-py/) ![stars](https://img.shields.io/github/stars/mmlado/keycard-py.svg?style=social) ![lastcommit](https://img.shields.io/github/last-commit/mmlado/keycard-py.svg) ![numcontributors](https://img.shields.io/github/contributors-anon/mmlado/keycard-py.svg) 
+
 A minimal, clean, fully native Python SDK for communicating with [Keycard](https://keycard.tech) smart cards.
 
 This SDK is under active development.  
@@ -22,12 +23,13 @@ APDU commands are being implemented one by one.
 - [ ] LOAD KEY
 - [ ] DERIVE KEY
 - [ ] GENERATE MNEMONIC
-- [ ] REMOVE KEY
+- [x] REMOVE KEY
 - [x] GENERATE KEY
-- [ ] SIGN
+- [x] SIGN
 - [ ] SET PINLESS PATH
-- [ ] EXPORT KEY
-- [ ] STORE DATA
+- [x] EXPORT KEY
+- [x] STORE DATA
+- [x] GET DATA
 - [x] FACTORY RESET
 
 ## Goals

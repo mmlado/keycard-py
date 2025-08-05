@@ -1,11 +1,20 @@
+from typing import Optional, Union
+
 from . import constants
 from . import commands
 from .apdu import APDUResponse
+from .constants import DerivationOption, SigningAlgorithm
+from .card_interface import CardInterface
 from .exceptions import APDUError
+from .parsing.application_info import ApplicationInfo
+from .parsing.identity import Identity
+from .parsing.exported_key import ExportedKey
+from .parsing.signature_result import SignatureResult
 from .transport import Transport
+from .secure_channel import SecureChannel
 
 
-class KeyCard:
+class KeyCard(CardInterface):
     '''
     High-level interface for interacting with a Keycard device.
 
@@ -27,9 +36,9 @@ class KeyCard:
             raise ValueError('Transport not initialized')
 
         self.transport = transport
-        self.card_public_key = None
-        self.session = None
-        self._is_pin_verified = False
+        self.card_public_key: Optional[bytes] = None
+        self.session: Optional[SecureChannel] = None
+        self._is_pin_verified: bool = False
 
     @property
     def is_selected(self) -> bool:
@@ -81,7 +90,7 @@ class KeyCard:
         '''
         return self._is_pin_verified
 
-    def select(self):
+    def select(self) -> 'ApplicationInfo':
         '''
         Selects the Keycard applet and retrieves application metadata.
 
@@ -93,7 +102,7 @@ class KeyCard:
         self._is_initialized = info.is_initialized
         return info
 
-    def init(self, pin: bytes, puk: bytes, pairing_secret: bytes):
+    def init(self, pin: str, puk: str, pairing_secret: str) -> None:
         '''
         Initializes the card with security credentials.
 
@@ -109,7 +118,7 @@ class KeyCard:
             pairing_secret,
         )
 
-    def ident(self, challenge: bytes) -> bytes:
+    def ident(self, challenge: bytes) -> Identity:
         '''
         Sends an identity challenge to the card.
 
@@ -121,7 +130,11 @@ class KeyCard:
         '''
         return commands.ident(self, challenge)
 
-    def open_secure_channel(self, pairing_index: int, pairing_key: bytes):
+    def open_secure_channel(
+        self,
+        pairing_index: int,
+        pairing_key: bytes
+    ) -> None:
         '''
         Opens a secure session with the card.
 
@@ -135,7 +148,7 @@ class KeyCard:
             pairing_key,
         )
 
-    def mutually_authenticate(self):
+    def mutually_authenticate(self) -> None:
         '''
         Performs mutual authentication between host and card.
 
@@ -166,12 +179,12 @@ class KeyCard:
         Returns:
             bool: True if PIN is valid, otherwise False.
         '''
-        result = commands.verify_pin(self, pin)
+        result = commands.verify_pin(self, pin.encode('utf-8'))
         self._is_pin_verified = True
         return result
 
     @property
-    def status(self):
+    def status(self) -> dict[str, int | bool] | list[int]:
         '''
         Retrieves the application status using the secure session.
 
@@ -190,7 +203,7 @@ class KeyCard:
         return commands.get_status(self)
 
     @property
-    def get_key_path(self):
+    def get_key_path(self) -> dict[str, int | bool] | list[int]:
         '''
         Returns the current key derivation path from the card.
 
@@ -205,7 +218,7 @@ class KeyCard:
 
         return commands.get_status(self, key_path=True)
 
-    def unpair(self, index: int):
+    def unpair(self, index: int) -> None:
         '''
         Removes a pairing slot from the card.
 
@@ -214,7 +227,7 @@ class KeyCard:
         '''
         commands.unpair(self, index)
 
-    def factory_reset(self):
+    def factory_reset(self) -> None:
         '''
         Sends the FACTORY_RESET command to the card.
 
@@ -293,13 +306,186 @@ class KeyCard:
 
         commands.unblock_pin(self, puk + new_pin)
 
+    def remove_key(self) -> None:
+        '''
+        Removes the current key from the card.
+
+        Raises:
+            APDUError: If the response status word is not 0x9000.
+        '''
+        commands.remove_key(self)
+
+    def store_data(
+        self,
+        data: bytes,
+        slot: constants.StorageSlot = constants.StorageSlot.PUBLIC
+    ) -> None:
+        """
+        Stores data on the card in the specified slot.
+
+        Args:
+            data (bytes): The data to store (max 127 bytes).
+            slot (StorageSlot): Where to store the data (PUBLIC, NDEF, CASH)
+
+        Raises:
+            ValueError: If slot is invalid or data is too long.
+        """
+        commands.store_data(self, data, slot)
+
+    def get_data(
+        self,
+        slot: constants.StorageSlot = constants.StorageSlot.PUBLIC
+    ) -> bytes:
+        """
+        Gets the data on the card previously stored with the store data command
+        in the specified slot.
+
+        Args:
+            slot (StorageSlot): Where to retrieve the data (PUBLIC, NDEF, CASH)
+
+        Raises:
+            ValueError: If slot is invalid or data is too long.
+        """
+        return commands.get_data(self, slot)
+
+    def export_key(
+        self,
+        derivation_option: constants.DerivationOption,
+        public_only: bool,
+        keypath: Optional[Union[str, bytes, bytearray]] = None,
+        make_current: bool = False,
+        source: constants.DerivationSource = constants.DerivationSource.MASTER
+    ) -> ExportedKey:
+        """
+        Export a key from the card.
+
+        This is a proxy for :func:`keycard.commands.export_key`, provided here
+        for convenience.
+
+        Args:
+            derivation_option: One of the derivation options
+                (CURRENT, DERIVE, DERIVE_AND_MAKE_CURRENT).
+            public_only: If True, only the public key will be returned.
+            keypath: BIP32-style string (e.g. "m/44'/60'/0'/0/0") or packed
+                bytes. If derivation_option is CURRENT, this can be omitted.
+            make_current: If True, updates the card’s current derivation path.
+            source: Which node to derive from: MASTER, PARENT, or CURRENT.
+
+        Returns:
+            ExportedKey: An object containing the public key, and optionally
+                the private key and chain code.
+
+        See Also:
+            - :func:`keycard.commands.export_key` - for the lower-level
+                implementation
+            - :class:`keycard.types.ExportedKey` - return value
+                structure
+        """
+        return commands.export_key(
+            self,
+            derivation_option=derivation_option,
+            public_only=public_only,
+            keypath=keypath,
+            make_current=make_current,
+            source=source
+        )
+
+    def export_current_key(self, public_only: bool = False) -> ExportedKey:
+        """
+        Exports the current key from the card.
+
+        This is a convenience method that uses the CURRENT derivation option
+        and does not require a keypath.
+
+        Args:
+            public_only (bool): If True, only the public key will be returned.
+
+        Returns:
+            ExportedKey: An object containing the public key, and optionally
+                the private key and chain code.
+        """
+        return self.export_key(
+            derivation_option=constants.DerivationOption.CURRENT,
+            public_only=public_only
+        )
+
+    def sign(
+        self,
+        digest: bytes,
+        algo: SigningAlgorithm = SigningAlgorithm.ECDSA_SECP256K1
+    ) -> SignatureResult:
+        """
+        Sign using the currently loaded keypair.
+        Requires PIN verification and secure channel.
+
+        Args:
+            digest (bytes): 32-byte hash to sign
+            algo (SigningAlgorithm): algorithm to use (default ECDSA/secp256k1)
+
+        Returns:
+            SignatureResult: Parsed signature result, including the signature
+                (DER or raw), algorithm, and optional recovery ID or
+                public key.
+        """
+        return commands.sign(self, digest, DerivationOption.CURRENT, algo)
+
+    def sign_with_path(
+        self,
+        digest: bytes,
+        path: str,
+        make_current: bool = False,
+        algo: SigningAlgorithm = SigningAlgorithm.ECDSA_SECP256K1
+    ) -> SignatureResult:
+        """
+        Sign using a derived keypath. Optionally updates the current path.
+
+        Args:
+            digest (bytes): 32-byte hash to sign
+            path (list[int]): list of 32-bit integers
+            make_current (bool): whether to update current path on card
+            algo (SigningAlgorithm): signature algorithm
+
+        Returns:
+            SignatureResult: Parsed signature result, including the signature
+                (DER or raw), algorithm, and optional recovery ID or
+                public key.
+        """
+        p1 = (
+            DerivationOption.DERIVE_AND_MAKE_CURRENT
+            if make_current else DerivationOption.DERIVE
+        )
+        return commands.sign(self, digest, p1, algo, derivation_path=path)
+
+    def sign_pinless(
+        self,
+        digest: bytes,
+        algo: SigningAlgorithm = SigningAlgorithm.ECDSA_SECP256K1
+    ) -> SignatureResult:
+        """
+        Sign using the predefined PIN-less path.
+        Does not require secure channel or PIN.
+
+        Args:
+            digest (bytes): 32-byte hash to sign
+            algo (SigningAlgorithm): signature algorithm
+
+        Returns:
+            SignatureResult: Parsed signature result, including the signature
+                (DER or raw), algorithm, and optional recovery ID or
+                public key.
+
+        Raises:
+            APDUError: if no PIN-less path is set
+        """
+        return commands.sign(self, digest, DerivationOption.PINLESS, algo)
+
     def send_apdu(
         self,
         ins: int,
         p1: int = 0x00,
         p2: int = 0x00,
         data: bytes = b'',
-        cla: int = None
+        cla: Optional[int] = None
     ) -> bytes:
         if cla is None:
             cla = constants.CLA_PROPRIETARY
@@ -320,6 +506,9 @@ class KeyCard:
         p2: int = 0x00,
         data: bytes = b''
     ) -> bytes:
+        if not self.session or not self.session.authenticated:
+            raise RuntimeError('Secure channel not established')
+
         encrypted = self.session.wrap_apdu(
             cla=constants.CLA_PROPRIETARY,
             ins=ins,

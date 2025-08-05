@@ -1,8 +1,10 @@
 import pytest
 from unittest.mock import MagicMock, patch
 
+from keycard import constants
 from keycard.apdu import APDUResponse
 from keycard.exceptions import APDUError
+from keycard.parsing.exported_key import ExportedKey
 from keycard.keycard import KeyCard
 from keycard.transport import Transport
 
@@ -79,7 +81,7 @@ def test_verify_pin_delegates_call_and_returns_result():
         kc = KeyCard(MagicMock())
         kc.secure_session = 'sess'
         result = kc.verify_pin('1234')
-        mock_cmd.assert_called_once_with(kc, '1234')
+        mock_cmd.assert_called_once_with(kc, b'1234')
         assert result is True
 
 
@@ -219,3 +221,119 @@ def test_unblock_pin_calls_command_with_mixed_types():
         new_pin = b'654321'
         kc.unblock_pin(puk, new_pin)
         mock_unblock.assert_called_once_with(kc, puk.encode('utf-8') + new_pin)
+
+
+def test_remove_key_calls_command():
+    with patch('keycard.keycard.commands.remove_key') as mock_remove_key:
+        kc = KeyCard(MagicMock())
+        kc.remove_key()
+        mock_remove_key.assert_called_once_with(kc)
+
+
+def test_store_data_calls_command_with_default_slot():
+    with patch('keycard.keycard.commands.store_data') as mock_store_data:
+        kc = KeyCard(MagicMock())
+        data = b'testdata'
+        kc.store_data(data)
+        mock_store_data.assert_called_once_with(
+            kc, data, constants.StorageSlot.PUBLIC
+        )
+
+
+def test_store_data_calls_command_with_custom_slot():
+    with patch('keycard.keycard.commands.store_data') as mock_store_data:
+        kc = KeyCard(MagicMock())
+        data = b'testdata'
+        slot = MagicMock()
+        kc.store_data(data, slot)
+        mock_store_data.assert_called_once_with(kc, data, slot)
+
+
+def test_store_data_raises_value_error_on_invalid_slot():
+    with patch(
+        'keycard.keycard.commands.store_data',
+        side_effect=ValueError("Invalid slot")
+    ):
+        kc = KeyCard(MagicMock())
+        with pytest.raises(ValueError, match="Invalid slot"):
+            kc.store_data(b'testdata', slot="INVALID")
+
+
+def test_store_data_raises_value_error_on_data_too_long():
+    with patch(
+        'keycard.keycard.commands.store_data',
+        side_effect=ValueError("data is too long")
+    ):
+        kc = KeyCard(MagicMock())
+        long_data = b'a' * 128
+        with pytest.raises(ValueError, match="data is too long"):
+            kc.store_data(long_data)
+
+
+def test_get_data_calls_command_with_default_slot():
+    with patch(
+        'keycard.keycard.commands.get_data',
+        return_value=b'data'
+    ) as mock_get_data:
+        kc = KeyCard(MagicMock())
+        result = kc.get_data()
+        mock_get_data.assert_called_once_with(kc, constants.StorageSlot.PUBLIC)
+        assert result == b'data'
+
+
+def test_get_data_calls_command_with_custom_slot():
+    with patch(
+        'keycard.keycard.commands.get_data',
+        return_value=b'data'
+    ) as mock_get_data:
+        kc = KeyCard(MagicMock())
+        slot = MagicMock()
+        result = kc.get_data(slot)
+        mock_get_data.assert_called_once_with(kc, slot)
+        assert result == b'data'
+
+
+def test_export_key_delegates_and_returns_result():
+    mock_exported = MagicMock(spec=ExportedKey)
+    with patch(
+        'keycard.keycard.commands.export_key',
+        return_value=mock_exported
+    ) as mock_cmd:
+        kc = KeyCard(MagicMock())
+        result = kc.export_key(
+            derivation_option=constants.DerivationOption.DERIVE,
+            public_only=True,
+            keypath="m/44'/60'/0'/0/0",
+            make_current=True,
+            source=constants.DerivationSource.PARENT
+        )
+
+        mock_cmd.assert_called_once_with(
+            kc,
+            derivation_option=constants.DerivationOption.DERIVE,
+            public_only=True,
+            keypath="m/44'/60'/0'/0/0",
+            make_current=True,
+            source=constants.DerivationSource.PARENT
+        )
+        assert result is mock_exported
+
+
+def test_export_current_key_delegates_and_returns_result():
+    mock_exported = MagicMock(spec=ExportedKey)
+    with patch(
+        'keycard.keycard.commands.export_key',
+        return_value=mock_exported
+    ) as mock_cmd:
+        kc = KeyCard(MagicMock())
+        result = kc.export_current_key(public_only=False)
+
+        mock_cmd.assert_called_once_with(
+            kc,
+            derivation_option=constants.DerivationOption.CURRENT,
+            public_only=False,
+            keypath=None,
+            make_current=False,
+            source=constants.DerivationSource.MASTER
+        )
+        assert result is mock_exported

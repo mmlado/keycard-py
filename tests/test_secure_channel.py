@@ -1,7 +1,7 @@
 import pytest
 
 from keycard.apdu import APDUResponse
-from keycard.secure_channel import SecureSession
+from keycard.secure_channel import SecureChannel
 
 
 @pytest.fixture
@@ -15,7 +15,7 @@ def session_params():
 
 
 def test_open_sets_authenticated_and_keys(session_params):
-    session = SecureSession.open(**session_params)
+    session = SecureChannel.open(**session_params)
     assert session.authenticated is True
     assert isinstance(session.enc_key, bytes) and len(session.enc_key) == 32
     assert isinstance(session.mac_key, bytes) and len(session.mac_key) == 32
@@ -23,7 +23,7 @@ def test_open_sets_authenticated_and_keys(session_params):
 
 
 def test_wrap_apdu_authenticated(session_params):
-    session = SecureSession.open(**session_params)
+    session = SecureChannel.open(**session_params)
     wrapped = session.wrap_apdu(
         0x80,
         0xCA,
@@ -40,7 +40,7 @@ def test_wrap_apdu_authenticated(session_params):
     (0xCA, True),
 ])
 def test_wrap_apdu_auth_check(ins, should_raise):
-    session = SecureSession(
+    session = SecureChannel(
         b'\x01' * 32,
         b'\x02' * 32,
         bytes(16),
@@ -55,7 +55,7 @@ def test_wrap_apdu_auth_check(ins, should_raise):
 
 def test_unwrap_response_authenticated_and_mac(monkeypatch, session_params):
     # Patch aes_cbc_encrypt and aes_cbc_decrypt to simulate expected behavior
-    session = SecureSession.open(**session_params)
+    session = SecureChannel.open(**session_params)
     plaintext = b"hello world" + b'\x90\x00'  # status word 0x9000
 
     # Simulate encryption and MAC
@@ -80,7 +80,7 @@ def test_unwrap_response_authenticated_and_mac(monkeypatch, session_params):
 
 
 def test_unwrap_response_not_authenticated_raises(session_params):
-    session = SecureSession.open(**session_params)
+    session = SecureChannel.open(**session_params)
     session.authenticated = False
     response = APDUResponse(bytes(32), 0x900)
     with pytest.raises(ValueError, match="not authenticated"):
@@ -88,7 +88,7 @@ def test_unwrap_response_not_authenticated_raises(session_params):
 
 
 def test_unwrap_response_invalid_length_raises(session_params):
-    session = SecureSession.open(**session_params)
+    session = SecureChannel.open(**session_params)
     session.authenticated = True
     response = APDUResponse(bytes(10), 0x900)
     with pytest.raises(ValueError, match="Invalid secure response length"):
@@ -96,7 +96,7 @@ def test_unwrap_response_invalid_length_raises(session_params):
 
 
 def test_unwrap_response_invalid_mac_raises(monkeypatch, session_params):
-    session = SecureSession.open(**session_params)
+    session = SecureChannel.open(**session_params)
     # Patch aes_cbc_encrypt to return a different MAC
 
     def fake_encrypt(key, iv, data, padding=True):
@@ -114,7 +114,7 @@ def test_unwrap_response_invalid_mac_raises(monkeypatch, session_params):
 
 
 def test_unwrap_response_missing_status_word(monkeypatch, session_params):
-    session = SecureSession.open(**session_params)
+    session = SecureChannel.open(**session_params)
 
     def fake_decrypt(key, iv, data):
         return b'\x01'

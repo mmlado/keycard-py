@@ -1,10 +1,11 @@
 from .. import constants
+from ..card_interface import CardInterface
 from ..exceptions import APDUError
 from ..preconditions import require_secure_channel
 
 
 @require_secure_channel
-def verify_pin(card, pin: str) -> bool:
+def verify_pin(card: CardInterface, pin: str | bytes) -> bool:
     '''
     Verifies the user PIN with the card using a secure session.
 
@@ -18,7 +19,7 @@ def verify_pin(card, pin: str) -> bool:
 
     Args:
         transport: The transport instance used to send the command.
-        session: An established SecureSession object.
+        session: An established SecureChannel object.
         pin (str): The PIN string to be verified.
 
     Returns:
@@ -29,6 +30,9 @@ def verify_pin(card, pin: str) -> bool:
         RuntimeError: If the PIN is blocked (no attempts remaining).
         APDUError: For other status word errors returned by the card.
     '''
+    if not isinstance(pin, bytes):
+        pin = pin.encode('ascii')
+
     try:
         card.send_secure_apdu(
             ins=constants.INS_VERIFY_PIN,
