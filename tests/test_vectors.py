@@ -3,7 +3,6 @@ from ecdsa import ECDH, SigningKey, SECP256k1, VerifyingKey
 from keycard.crypto.aes import aes_cbc_encrypt
 
 
-@pytest.mark.slow
 def test_full_crypto_vector():
     card_pubkey_bytes = bytes.fromhex(
         '04525481c70263f79c29092e95cfc972e0eb427ea31fe6cc6c96787eb12205737'
