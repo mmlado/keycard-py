@@ -174,12 +174,12 @@ bytes. If derivation_option is CURRENT, this can be omitted.</p></li>
 <p class="admonition-title">See also</p>
 <ul class="simple">
 <li><dl class="simple">
-<dt><a class="reference internal" href="keycard.commands.html#keycard.commands.export_key" title="keycard.commands.export_key"><code class="xref py py-func docutils literal notranslate"><span class="pre">keycard.commands.export_key()</span></code></a> – for the lower-level</dt><dd><p>implementation</p>
+<dt><a class="reference internal" href="keycard.commands.html#keycard.commands.export_key" title="keycard.commands.export_key"><code class="xref py py-func docutils literal notranslate"><span class="pre">keycard.commands.export_key()</span></code></a> - for the lower-level</dt><dd><p>implementation</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">keycard.types.ExportedKey</span></code> – return value</dt><dd><p>structure</p>
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">keycard.types.ExportedKey</span></code> - return value</dt><dd><p>structure</p>
 </dd>
 </dl>
 </li>
@@ -442,6 +442,97 @@ in the specified slot.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="keycard.commands.html#keycard.commands.ApplicationInfo" title="keycard.commands.ApplicationInfo">ApplicationInfo</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.sign">
+<span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SigningAlgorithm.ECDSA_SECP256K1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.sign" title="Link to this definition">¶</a></dt>
+<dd><p>Sign using the currently loaded keypair.
+Requires PIN verification and secure channel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="keycard.commands.html#keycard.commands.SignatureResult" title="keycard.parsing.signature_result.SignatureResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignatureResult</span></code></a></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to sign</p></li>
+<li><p><strong>algo</strong> (<a class="reference internal" href="keycard.html#keycard.constants.SigningAlgorithm" title="keycard.constants.SigningAlgorithm"><em>SigningAlgorithm</em></a>) – algorithm to use (default ECDSA/secp256k1)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>Parsed signature result, including the signature</dt><dd><p>(DER or raw), algorithm, and optional recovery ID or
+public key.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="keycard.commands.html#keycard.commands.SignatureResult" title="keycard.commands.SignatureResult">SignatureResult</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.sign_pinless">
+<span class="sig-name descname"><span class="pre">sign_pinless</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SigningAlgorithm.ECDSA_SECP256K1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.sign_pinless" title="Link to this definition">¶</a></dt>
+<dd><p>Sign using the predefined PIN-less path.
+Does not require secure channel or PIN.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="keycard.commands.html#keycard.commands.SignatureResult" title="keycard.parsing.signature_result.SignatureResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignatureResult</span></code></a></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to sign</p></li>
+<li><p><strong>algo</strong> (<a class="reference internal" href="keycard.html#keycard.constants.SigningAlgorithm" title="keycard.constants.SigningAlgorithm"><em>SigningAlgorithm</em></a>) – signature algorithm</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>Parsed signature result, including the signature</dt><dd><p>(DER or raw), algorithm, and optional recovery ID or
+public key.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="keycard.commands.html#keycard.commands.SignatureResult" title="keycard.commands.SignatureResult">SignatureResult</a></p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – if no PIN-less path is set</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.sign_with_path">
+<span class="sig-name descname"><span class="pre">sign_with_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_current</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SigningAlgorithm.ECDSA_SECP256K1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.sign_with_path" title="Link to this definition">¶</a></dt>
+<dd><p>Sign using a derived keypath. Optionally updates the current path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="keycard.commands.html#keycard.commands.SignatureResult" title="keycard.parsing.signature_result.SignatureResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignatureResult</span></code></a></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to sign</p></li>
+<li><p><strong>path</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – list of 32-bit integers</p></li>
+<li><p><strong>make_current</strong> (<em>bool</em>) – whether to update current path on card</p></li>
+<li><p><strong>algo</strong> (<a class="reference internal" href="keycard.html#keycard.constants.SigningAlgorithm" title="keycard.constants.SigningAlgorithm"><em>SigningAlgorithm</em></a>) – signature algorithm</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>Parsed signature result, including the signature</dt><dd><p>(DER or raw), algorithm, and optional recovery ID or
+public key.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="keycard.commands.html#keycard.commands.SignatureResult" title="keycard.commands.SignatureResult">SignatureResult</a></p>
 </dd>
 </dl>
 </dd></dl>

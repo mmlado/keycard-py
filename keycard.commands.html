@@ -948,6 +948,13 @@ Look at keys.py:VerifyingKey.from_pem()</p>
 <p>Raised when response parsing fails.</p>
 </dd></dl>
 
+<dl class="py exception">
+<dt class="sig sig-object py" id="keycard.commands.InvalidStateError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">InvalidStateError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.InvalidStateError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="keycard.html#keycard.exceptions.KeyCardError" title="keycard.exceptions.KeyCardError"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeyCardError</span></code></a></p>
+<p>Raised when a precondition is not met.</p>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="keycard.commands.KeyExportOption">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">KeyExportOption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.KeyExportOption" title="Link to this definition">¶</a></dt>
@@ -1164,6 +1171,73 @@ and the concatenated MAC and encrypted data.</p>
 </dd>
 </dl>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="keycard.commands.SignatureResult">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">SignatureResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recovery_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SignatureResult" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.commands.SignatureResult.algo">
+<span class="sig-name descname"><span class="pre">algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="keycard.html#keycard.constants.SigningAlgorithm" title="keycard.constants.SigningAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">SigningAlgorithm</span></code></a></em><a class="headerlink" href="#keycard.commands.SignatureResult.algo" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.commands.SignatureResult.format">
+<span class="sig-name descname"><span class="pre">format</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></em><a class="headerlink" href="#keycard.commands.SignatureResult.format" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.commands.SignatureResult.from_r_s">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_r_s</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recovery_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SignatureResult.from_r_s" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#keycard.commands.SignatureResult" title="keycard.parsing.signature_result.SignatureResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignatureResult</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.commands.SignatureResult.public_key">
+<span class="sig-name descname"><span class="pre">public_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#keycard.commands.SignatureResult.public_key" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.commands.SignatureResult.recovery_id">
+<span class="sig-name descname"><span class="pre">recovery_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#keycard.commands.SignatureResult.recovery_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.commands.SignatureResult.signature">
+<span class="sig-name descname"><span class="pre">signature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></em><a class="headerlink" href="#keycard.commands.SignatureResult.signature" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="keycard.commands.SigningAlgorithm">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">SigningAlgorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningAlgorithm" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.commands.SigningAlgorithm.BLS12_381">
+<span class="sig-name descname"><span class="pre">BLS12_381</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#keycard.commands.SigningAlgorithm.BLS12_381" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.commands.SigningAlgorithm.ECDSA_SECP256K1">
+<span class="sig-name descname"><span class="pre">ECDSA_SECP256K1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#keycard.commands.SigningAlgorithm.ECDSA_SECP256K1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.commands.SigningAlgorithm.EDDSA_ED25519">
+<span class="sig-name descname"><span class="pre">EDDSA_ED25519</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#keycard.commands.SigningAlgorithm.EDDSA_ED25519" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.commands.SigningAlgorithm.SCHNORR_BIP340">
+<span class="sig-name descname"><span class="pre">SCHNORR_BIP340</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#keycard.commands.SigningAlgorithm.SCHNORR_BIP340" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -2611,6 +2685,62 @@ and returns it.</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – If the card returns a status word indicating failure.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="keycard.commands.sign">
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">DerivationOption.CURRENT</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SigningAlgorithm.ECDSA_SECP256K1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">derivation_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.sign" title="Link to this definition">¶</a></dt>
+<dd><p>Sign a 32-byte digest using the specified key and signing algorithm.</p>
+<p>This command sends the SIGN APDU to the Keycard and parses the response,
+returning a structured <cite>SignatureResult</cite> object. The signature may be
+returned as a DER-encoded structure, a raw 65-byte format including
+the recovery ID, or an ECDSA template depending on card behavior.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#keycard.commands.SignatureResult" title="keycard.parsing.signature_result.SignatureResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignatureResult</span></code></a></span></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Preconditions:</dt><dd><ul class="simple">
+<li><p>Secure Channel must be opened (unless using PINLESS)</p></li>
+<li><p>PIN must be verified (unless using PINLESS)</p></li>
+<li><p>A valid keypair must be loaded on the card</p></li>
+<li><p>If P1=PINLESS, a PIN-less path must be configured</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>card</strong> (<a class="reference internal" href="#keycard.commands.CardInterface" title="keycard.commands.CardInterface"><em>CardInterface</em></a>) – Active Keycard transport session.</p></li>
+<li><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to be signed.</p></li>
+<li><p><strong>p1</strong> (<a class="reference internal" href="#keycard.commands.DerivationOption" title="keycard.commands.DerivationOption"><em>DerivationOption</em></a>) – Key derivation option. One of:
+- CURRENT: Sign with the currently loaded key
+- DERIVE: Derive key for signing without changing current
+- DERIVE_AND_MAKE_CURRENT: Derive and load for future use
+- PINLESS: Use pre-defined PIN-less key without SC/PIN</p></li>
+<li><p><strong>p2</strong> (<a class="reference internal" href="#keycard.commands.SigningAlgorithm" title="keycard.commands.SigningAlgorithm"><em>SigningAlgorithm</em></a>) – Signing algorithm (e.g. ECDSA_SECP256K1).</p></li>
+<li><p><strong>derivation_path</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – String-formatted BIP32 path
+(e.g. “m/44’/60’/0’/0/0”). Required if <cite>p1</cite> uses derivation.
+The source (master/parent/current) is inferred from the path
+prefix.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Parsed signature result, including the signature
+(DER or raw), algorithm, and optional recovery ID or public key.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#keycard.commands.SignatureResult" title="keycard.commands.SignatureResult">SignatureResult</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the digest is not 32 bytes or path is invalid.</p></li>
+<li><p><a class="reference internal" href="#keycard.commands.InvalidStateError" title="keycard.commands.InvalidStateError"><strong>InvalidStateError</strong></a> – If preconditions (PIN, SC) are not met.</p></li>
+<li><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – If the card returns an error (e.g., SW=0x6985).</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

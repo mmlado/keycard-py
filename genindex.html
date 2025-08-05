@@ -35,6 +35,7 @@
 
 <div class="genindex-jumpbox">
  <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
@@ -67,10 +68,12 @@
         <li><a href="keycard.crypto.html#keycard.crypto.aes.aes_cbc_encrypt">(in module keycard.crypto.aes)</a>
 </li>
       </ul></li>
-      <li><a href="keycard.commands.html#keycard.commands.APDUError">APDUError</a>, <a href="keycard.html#keycard.exceptions.APDUError">[1]</a>
+      <li><a href="keycard.commands.html#keycard.commands.SignatureResult.algo">algo (keycard.commands.SignatureResult attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.commands.html#keycard.commands.APDUError">APDUError</a>, <a href="keycard.html#keycard.exceptions.APDUError">[1]</a>
+</li>
       <li><a href="keycard.html#keycard.apdu.APDUResponse">APDUResponse (class in keycard.apdu)</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.ApplicationInfo">ApplicationInfo (class in keycard.commands)</a>
@@ -81,6 +84,18 @@
       </ul></li>
       <li><a href="keycard.commands.html#id6">authenticated (keycard.commands.SecureChannel attribute)</a>, <a href="keycard.commands.html#keycard.commands.SecureChannel.authenticated">[1]</a>
 </li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.commands.html#keycard.commands.SigningAlgorithm.BLS12_381">BLS12_381 (keycard.commands.SigningAlgorithm attribute)</a>
+
+      <ul>
+        <li><a href="keycard.html#keycard.constants.SigningAlgorithm.BLS12_381">(keycard.constants.SigningAlgorithm attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -181,12 +196,24 @@
       </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.ECDH">ECDH (class in keycard.commands)</a>
 </li>
+      <li><a href="keycard.commands.html#keycard.commands.SigningAlgorithm.ECDSA_SECP256K1">ECDSA_SECP256K1 (keycard.commands.SigningAlgorithm attribute)</a>
+
+      <ul>
+        <li><a href="keycard.html#keycard.constants.SigningAlgorithm.ECDSA_SECP256K1">(keycard.constants.SigningAlgorithm attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="keycard.commands.html#keycard.commands.SigningAlgorithm.EDDSA_ED25519">EDDSA_ED25519 (keycard.commands.SigningAlgorithm attribute)</a>
+
+      <ul>
+        <li><a href="keycard.html#keycard.constants.SigningAlgorithm.EDDSA_ED25519">(keycard.constants.SigningAlgorithm attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.commands.html#id7">enc_key (keycard.commands.SecureChannel attribute)</a>, <a href="keycard.commands.html#keycard.commands.SecureChannel.enc_key">[1]</a>
 </li>
       <li><a href="keycard.html#keycard.apdu.encode_lv">encode_lv() (in module keycard.apdu)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#keycard.keycard.KeyCard.export_current_key">export_current_key() (keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.export_current_key">[1]</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.export_key">export_key() (in module keycard.commands)</a>
@@ -215,6 +242,8 @@
         <li><a href="index.html#keycard.keycard.KeyCard.factory_reset">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.factory_reset">[1]</a>
 </li>
       </ul></li>
+      <li><a href="keycard.commands.html#keycard.commands.SignatureResult.format">format (keycard.commands.SignatureResult attribute)</a>
+</li>
       <li><a href="keycard.commands.html#keycard.commands.SigningKey.from_der">from_der() (keycard.commands.SigningKey class method)</a>
 
       <ul>
@@ -234,6 +263,8 @@
       <li><a href="keycard.commands.html#keycard.commands.VerifyingKey.from_public_key_recovery_with_digest">from_public_key_recovery_with_digest() (keycard.commands.VerifyingKey class method)</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.VerifyingKey.from_public_point">from_public_point() (keycard.commands.VerifyingKey class method)</a>
+</li>
+      <li><a href="keycard.commands.html#keycard.commands.SignatureResult.from_r_s">from_r_s() (keycard.commands.SignatureResult class method)</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.SigningKey.from_secret_exponent">from_secret_exponent() (keycard.commands.SigningKey class method)</a>
 </li>
@@ -325,7 +356,7 @@
       </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.InvalidResponseError">InvalidResponseError</a>, <a href="keycard.html#keycard.exceptions.InvalidResponseError">[1]</a>
 </li>
-      <li><a href="keycard.html#keycard.exceptions.InvalidStateError">InvalidStateError</a>
+      <li><a href="keycard.commands.html#keycard.commands.InvalidStateError">InvalidStateError</a>, <a href="keycard.html#keycard.exceptions.InvalidStateError">[1]</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.ExportedKey.is_extended">is_extended (keycard.commands.ExportedKey property)</a>
 </li>
@@ -750,7 +781,11 @@
       <li><a href="keycard.html#keycard.constants.StorageSlot.PUBLIC">PUBLIC (keycard.constants.StorageSlot attribute)</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.ExportedKey.public_key">public_key (keycard.commands.ExportedKey attribute)</a>
+
+      <ul>
+        <li><a href="keycard.commands.html#keycard.commands.SignatureResult.public_key">(keycard.commands.SignatureResult attribute)</a>
 </li>
+      </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.KeyExportOption.PUBLIC_ONLY">PUBLIC_ONLY (keycard.commands.KeyExportOption attribute)</a>
 
       <ul>
@@ -765,16 +800,18 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.commands.html#keycard.commands.SignatureResult.recovery_id">recovery_id (keycard.commands.SignatureResult attribute)</a>
+</li>
       <li><a href="keycard.commands.html#keycard.commands.remove_key">remove_key() (in module keycard.commands)</a>
 
       <ul>
         <li><a href="index.html#keycard.keycard.KeyCard.remove_key">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.remove_key">[1]</a>
 </li>
       </ul></li>
-      <li><a href="keycard.commands.html#keycard.commands.require_initialized">require_initialized() (in module keycard.commands)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.commands.html#keycard.commands.require_initialized">require_initialized() (in module keycard.commands)</a>
+</li>
       <li><a href="keycard.commands.html#keycard.commands.require_pin_verified">require_pin_verified() (in module keycard.commands)</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.require_secure_channel">require_secure_channel() (in module keycard.commands)</a>
@@ -787,6 +824,12 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.commands.html#keycard.commands.SigningAlgorithm.SCHNORR_BIP340">SCHNORR_BIP340 (keycard.commands.SigningAlgorithm attribute)</a>
+
+      <ul>
+        <li><a href="keycard.html#keycard.constants.SigningAlgorithm.SCHNORR_BIP340">(keycard.constants.SigningAlgorithm attribute)</a>
+</li>
+      </ul></li>
       <li><a href="keycard.parsing.html#id9">SECURE_CHANNEL (keycard.parsing.capabilities.Capabilities attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.capabilities.Capabilities.SECURE_CHANNEL">[1]</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.SecureChannel">SecureChannel (class in keycard.commands)</a>
@@ -815,22 +858,42 @@
       </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.ECDH.set_curve">set_curve() (keycard.commands.ECDH method)</a>
 </li>
-      <li><a href="keycard.commands.html#keycard.commands.SigningKey.sign">sign() (keycard.commands.SigningKey method)</a>
+      <li><a href="keycard.commands.html#keycard.commands.sign">sign() (in module keycard.commands)</a>
+
+      <ul>
+        <li><a href="keycard.commands.html#keycard.commands.SigningKey.sign">(keycard.commands.SigningKey method)</a>
+</li>
+        <li><a href="index.html#keycard.keycard.KeyCard.sign">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.sign">[1]</a>
+</li>
+      </ul></li>
+      <li><a href="keycard.commands.html#keycard.commands.SigningKey.sign_deterministic">sign_deterministic() (keycard.commands.SigningKey method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="keycard.commands.html#keycard.commands.SigningKey.sign_deterministic">sign_deterministic() (keycard.commands.SigningKey method)</a>
-</li>
       <li><a href="keycard.commands.html#keycard.commands.SigningKey.sign_digest">sign_digest() (keycard.commands.SigningKey method)</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.SigningKey.sign_digest_deterministic">sign_digest_deterministic() (keycard.commands.SigningKey method)</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.SigningKey.sign_number">sign_number() (keycard.commands.SigningKey method)</a>
 </li>
+      <li><a href="index.html#keycard.keycard.KeyCard.sign_pinless">sign_pinless() (keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.sign_pinless">[1]</a>
+</li>
+      <li><a href="index.html#keycard.keycard.KeyCard.sign_with_path">sign_with_path() (keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.sign_with_path">[1]</a>
+</li>
       <li><a href="keycard.commands.html#keycard.commands.Identity.signature">signature (keycard.commands.Identity attribute)</a>
 
       <ul>
+        <li><a href="keycard.commands.html#keycard.commands.SignatureResult.signature">(keycard.commands.SignatureResult attribute)</a>
+</li>
         <li><a href="keycard.parsing.html#keycard.parsing.identity.Identity.signature">(keycard.parsing.identity.Identity attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="keycard.commands.html#keycard.commands.SignatureResult">SignatureResult (class in keycard.commands)</a>
+</li>
+      <li><a href="keycard.commands.html#keycard.commands.SigningAlgorithm">SigningAlgorithm (class in keycard.commands)</a>
+
+      <ul>
+        <li><a href="keycard.html#keycard.constants.SigningAlgorithm">(class in keycard.constants)</a>
 </li>
       </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.SigningKey">SigningKey (class in keycard.commands)</a>
