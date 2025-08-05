@@ -73,3 +73,50 @@ def test_parse_tlv_incomplete_value():
     data = bytes([0x01, 0x05, ord('a'), ord('b'), ord('c')])
     with pytest.raises(InvalidResponseError):
         tlv.parse_tlv(data)
+
+
+def test_encode_tlv_short():
+    tag = 0x01
+    value = b'\xAB\xCD'
+    encoded = tlv.encode_tlv(tag, value)
+    assert encoded == b'\x01\x02\xAB\xCD'
+
+
+def test_encode_tlv_1byte_long_form():
+    tag = 0x02
+    value = b'\x00' * 130  # >127 triggers long form
+    encoded = tlv.encode_tlv(tag, value)
+    assert encoded[:2] == b'\x02\x81'
+    assert encoded[2] == 130
+    assert encoded[3:] == value
+
+
+def test_encode_tlv_2byte_long_form():
+    tag = 0x03
+    value = b'\xFF' * 300  # >255 triggers 2-byte length
+    encoded = tlv.encode_tlv(tag, value)
+    assert encoded[:3] == b'\x03\x82\x01'
+    assert encoded[3] == 0x2C  # 300 = 0x012C
+    assert encoded[4:] == value
+
+
+def test_encode_tlv_empty_value():
+    tag = 0x04
+    value = b""
+    encoded = tlv.encode_tlv(tag, value)
+    assert encoded == b'\x04\x00'
+
+
+def test_encode_tlv_max_short_length():
+    tag = 0x10
+    value = b"A" * 127
+    encoded = tlv.encode_tlv(tag, value)
+    assert encoded[1] == 127
+    assert len(encoded) == 2 + 127
+
+
+def test_encode_tlv_max_1byte_long_form():
+    tag = 0x20
+    value = b"A" * 255
+    encoded = tlv.encode_tlv(tag, value)
+    assert encoded[1:3] == b'\x81\xFF'

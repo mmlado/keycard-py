@@ -26,6 +26,7 @@ else:
     from .ident import ident
     from .init import init
     from .get_status import get_status
+    from .load_key import load_key
     from .mutually_authenticate import mutually_authenticate
     from .open_secure_channel import open_secure_channel
     from .pair import pair
@@ -46,6 +47,7 @@ else:
         'ident',
         'init',
         'get_status',
+        'load_key',
         'mutually_authenticate',
         'open_secure_channel',
         'pair',

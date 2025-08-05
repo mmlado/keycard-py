@@ -30,6 +30,7 @@ INS_STORE_DATA: int = 0xE2
 INS_GET_DATA: int = 0xCA
 INS_SIGN: int = 0xC0
 INS_EXPORT_KEY: int = 0xC2
+INS_LOAD_KEY: int = 0xD0
 
 # Status words
 SW_SUCCESS: int = 0x9000
@@ -71,3 +72,9 @@ class SigningAlgorithm(IntEnum):
     EDDSA_ED25519 = 0x01
     BLS12_381 = 0x02
     SCHNORR_BIP340 = 0x03
+
+
+class LoadKeyType(IntEnum):
+    ECC = 0x01
+    EXTENDED_ECC = 0x02
+    BIP39_SEED = 0x03

@@ -38,7 +38,7 @@ def test_sign_with_derivation_path(card):
     )
 
     expected_data = digest + key_path.data
-    print(f"{expected_data=}")
+
     card.send_secure_apdu.assert_called_once_with(
         ins=constants.INS_SIGN,
         p1=constants.DerivationOption.DERIVE,

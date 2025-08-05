@@ -337,3 +337,147 @@ def test_export_current_key_delegates_and_returns_result():
             source=constants.DerivationSource.MASTER
         )
         assert result is mock_exported
+
+
+def test_sign_current_key():
+    with patch("keycard.keycard.commands.sign") as mock_sign:
+        card = KeyCard(MagicMock())
+        digest = b"\xAA" * 32
+        mock_sign.return_value = "signed"
+
+        result = card.sign(digest)
+
+        mock_sign.assert_called_once_with(
+            card,
+            digest,
+            constants.DerivationOption.CURRENT,
+            constants.SigningAlgorithm.ECDSA_SECP256K1,
+        )
+        assert result == "signed"
+
+
+def test_sign_with_path():
+    with patch("keycard.keycard.commands.sign") as mock_sign:
+        card = KeyCard(MagicMock())
+        digest = b"\xBB" * 32
+        path = [0x8000002C, 0x8000003C, 0, 0, 0]  # m/44'/60'/0'/0/0
+        mock_sign.return_value = "sig"
+
+        result = card.sign_with_path(digest, path)
+
+        mock_sign.assert_called_once_with(
+            card,
+            digest,
+            constants.DerivationOption.DERIVE,
+            constants.SigningAlgorithm.ECDSA_SECP256K1,
+            derivation_path=path,
+        )
+        assert result == "sig"
+
+
+def test_sign_with_path_make_current():
+    with patch("keycard.keycard.commands.sign") as mock_sign:
+        card = KeyCard(MagicMock())
+        digest = b"\xCC" * 32
+        path = [0x8000002C, 0x8000003C, 0, 0, 0]
+        mock_sign.return_value = "sig"
+
+        result = card.sign_with_path(digest, path, make_current=True)
+
+        mock_sign.assert_called_once_with(
+            card,
+            digest,
+            constants.DerivationOption.DERIVE_AND_MAKE_CURRENT,
+            constants.SigningAlgorithm.ECDSA_SECP256K1,
+            derivation_path=path,
+        )
+        assert result == "sig"
+
+
+def test_sign_pinless():
+    with patch("keycard.keycard.commands.sign") as mock_sign:
+        card = KeyCard(MagicMock())
+        digest = b"\xDD" * 32
+        mock_sign.return_value = "sig"
+
+        result = card.sign_pinless(digest)
+
+        mock_sign.assert_called_once_with(
+            card,
+            digest,
+            constants.DerivationOption.PINLESS,
+            constants.SigningAlgorithm.ECDSA_SECP256K1,
+        )
+        assert result == "sig"
+
+
+def test_load_key_bip39_seed():
+    with patch("keycard.keycard.commands.load_key") as mock_load_key:
+        card = KeyCard(MagicMock())
+        seed = b"\xAB" * 64
+        mock_load_key.return_value = b"uid"
+
+        result = card.load_key(
+            key_type=constants.LoadKeyType.BIP39_SEED,
+            bip39_seed=seed
+        )
+
+        mock_load_key.assert_called_once_with(
+            card,
+            key_type=constants.LoadKeyType.BIP39_SEED,
+            public_key=None,
+            private_key=None,
+            chain_code=None,
+            bip39_seed=seed
+        )
+        assert result == b"uid"
+
+
+def test_load_key_ecc_pair():
+    with patch("keycard.keycard.commands.load_key") as mock_load_key:
+        card = KeyCard(MagicMock())
+        pub = b"\x04" + b"\x01" * 64
+        priv = b"\x02" * 32
+        mock_load_key.return_value = b"uid"
+
+        result = card.load_key(
+            key_type=constants.LoadKeyType.ECC,
+            public_key=pub,
+            private_key=priv
+        )
+
+        mock_load_key.assert_called_once_with(
+            card,
+            key_type=constants.LoadKeyType.ECC,
+            public_key=pub,
+            private_key=priv,
+            chain_code=None,
+            bip39_seed=None
+        )
+        assert result == b"uid"
+
+
+def test_load_key_extended():
+    with patch("keycard.keycard.commands.load_key") as mock_load_key:
+        card = KeyCard(MagicMock())
+        pub = b"\x04" + b"\x01" * 64
+        priv = b"\x02" * 32
+        chain = b"\x00" * 32
+        mock_load_key.return_value = b"uid"
+
+        result = card.load_key(
+            key_type=constants.LoadKeyType.EXTENDED_ECC,
+            public_key=pub,
+            private_key=priv,
+            chain_code=chain
+        )
+
+        mock_load_key.assert_called_once_with(
+            card,
+            key_type=constants.LoadKeyType.EXTENDED_ECC,
+            public_key=pub,
+            private_key=priv,
+            chain_code=chain,
+            bip39_seed=None
+        )
+        assert result == b"uid"
