@@ -31,6 +31,7 @@ else:
     from .pair import pair
     from .remove_key import remove_key
     from .select import select
+    from .sign import sign
     from .store_data import store_data
     from .unblock_pin import unblock_pin
     from .unpair import unpair
@@ -50,6 +51,7 @@ else:
         'pair',
         'remove_key',
         'select',
+        'sign',
         'store_data',
         'unblock_pin',
         'unpair',

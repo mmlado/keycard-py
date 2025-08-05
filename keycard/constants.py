@@ -28,6 +28,7 @@ INS_CHANGE_SECRET: int = 0x21
 INS_UNBLOCK_PIN: int = 0x22
 INS_STORE_DATA: int = 0xE2
 INS_GET_DATA: int = 0xCA
+INS_SIGN: int = 0xC0
 INS_EXPORT_KEY: int = 0xC2
 
 # Status words
@@ -63,3 +64,10 @@ class DerivationSource(IntEnum):
     MASTER = 0x00
     PARENT = 0x40
     CURRENT = 0x80
+
+
+class SigningAlgorithm(IntEnum):
+    ECDSA_SECP256K1 = 0x00
+    EDDSA_ED25519 = 0x01
+    BLS12_381 = 0x02
+    SCHNORR_BIP340 = 0x03

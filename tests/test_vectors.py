@@ -1,4 +1,3 @@
-import pytest
 from ecdsa import ECDH, SigningKey, SECP256k1, VerifyingKey
 from keycard.crypto.aes import aes_cbc_encrypt
 
