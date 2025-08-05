@@ -2714,6 +2714,28 @@ and returns it.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="keycard.commands.set_pinless_path">
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">set_pinless_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.set_pinless_path" title="Link to this definition">¶</a></dt>
+<dd><p>Set a PIN-less path on the card. Allows signing without PIN/auth if the
+current derived key matches this path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>card</strong> (<a class="reference internal" href="#keycard.commands.CardInterface" title="keycard.commands.CardInterface"><em>CardInterface</em></a>) – The card interface.</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – BIP-32-style path (e.g., “m/44’/60’/0’/0/0”). An empty
+string disables the pinless path.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – if the card rejects the input (invalid path)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.sign">
 <span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">DerivationOption.CURRENT</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SigningAlgorithm.ECDSA_SECP256K1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">derivation_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.sign" title="Link to this definition">¶</a></dt>
 <dd><p>Sign a 32-byte digest using the specified key and signing algorithm.</p>

@@ -470,6 +470,22 @@ in the specified slot.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.set_pinless_path">
+<span class="sig-name descname"><span class="pre">set_pinless_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.set_pinless_path" title="Link to this definition">¶</a></dt>
+<dd><p>Set a PIN-less path on the card. Allows signing without PIN/auth if the
+current derived key matches this path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>path</strong> (<em>str</em>) – BIP-32-style path (e.g., “m/44’/60’/0’/0/0”). An empty
+string disables the pinless path.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.sign">
 <span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SigningAlgorithm.ECDSA_SECP256K1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.sign" title="Link to this definition">¶</a></dt>
 <dd><p>Sign using the currently loaded keypair.
