@@ -226,6 +226,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.aes_cbc_encrypt"><code class="docutils literal notranslate"><span class="pre">aes_cbc_encrypt()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.change_secret"><code class="docutils literal notranslate"><span class="pre">change_secret()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.derive_key"><code class="docutils literal notranslate"><span class="pre">derive_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.export_key"><code class="docutils literal notranslate"><span class="pre">export_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.factory_reset"><code class="docutils literal notranslate"><span class="pre">factory_reset()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.generate_key"><code class="docutils literal notranslate"><span class="pre">generate_key()</span></code></a></li>
@@ -681,6 +682,21 @@ and card operations.</p>
 <li><p><strong>ValueError</strong> – If input format is invalid.</p></li>
 <li><p><a class="reference internal" href="#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the response status word is not 0x9000.</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.derive_key">
+<span class="sig-name descname"><span class="pre">derive_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.derive_key" title="Link to this definition">¶</a></dt>
+<dd><p>Set the derivation path for subsequent SIGN and EXPORT KEY commands.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>path</strong> (<em>str</em>) – BIP-32-style path (e.g., “m/44’/60’/0’/0/0”) or
+“../0/1” (parent) or “./0” (current).</p>
 </dd>
 </dl>
 </dd></dl>

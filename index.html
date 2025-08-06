@@ -113,6 +113,21 @@ and card operations.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.derive_key">
+<span class="sig-name descname"><span class="pre">derive_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.derive_key" title="Link to this definition">¶</a></dt>
+<dd><p>Set the derivation path for subsequent SIGN and EXPORT KEY commands.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>path</strong> (<em>str</em>) – BIP-32-style path (e.g., “m/44’/60’/0’/0/0”) or
+“../0/1” (parent) or “./0” (current).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.export_current_key">
 <span class="sig-name descname"><span class="pre">export_current_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">public_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.export_current_key" title="Link to this definition">¶</a></dt>
 <dd><p>Exports the current key from the card.</p>

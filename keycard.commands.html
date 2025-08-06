@@ -2297,6 +2297,27 @@ associated with this VerifyingKey and allow_truncate was not set</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="keycard.commands.derive_key">
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">derive_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.derive_key" title="Link to this definition">¶</a></dt>
+<dd><p>Set the derivation path for subsequent SIGN and EXPORT KEY commands.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>card</strong> (<a class="reference internal" href="#keycard.commands.CardInterface" title="keycard.commands.CardInterface"><em>CardInterface</em></a>) – The card interface.</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – BIP-32-style path (e.g., “m/44’/60’/0’/0/0”) or
+“../0/1” (parent) or “./0” (current).</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – if the derivation fails or the format is invalid.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.export_key">
 <span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">export_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">derivation_option</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_only</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keypath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_current</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">DerivationSource.MASTER</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.export_key" title="Link to this definition">¶</a></dt>
 <dd><p>Export a key (public or private) from the card using an optional keypath.</p>
@@ -2378,11 +2399,16 @@ associated with this VerifyingKey and allow_truncate was not set</p></li>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>card</strong> (<a class="reference internal" href="#keycard.commands.CardInterface" title="keycard.commands.CardInterface"><em>CardInterface</em></a>) – The card interface.</p></li>
-<li><p><strong>checksum_size</strong> (<em>int</em>) – Number of checksum bits (between 4 and 8 inclusive).</p></li>
+<li><p><strong>checksum_size</strong> (<em>int</em>) – Number of checksum bits
+(between 4 and 8 inclusive).</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of integers (0-2047) corresponding to wordlist indexes.</p>
+<dd class="field-odd"><p><dl class="simple">
+<dt>List of integers (0-2047) corresponding to wordlist</dt><dd><p>indexes.</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>List[int]</p>
