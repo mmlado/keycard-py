@@ -28,8 +28,7 @@ def get_uncompressed_pubkey(priv_key_bytes: bytes):
     return b'\x04' + vk.to_string()
 
 
-with Transport() as transport:
-    card = KeyCard(transport)
+with KeyCard() as card:
     card.select()
     print('Retrieving data...')
     retrieved_data = card.get_data(slot=constants.StorageSlot.PUBLIC)
@@ -65,6 +64,13 @@ with Transport() as transport:
     card.mutually_authenticate()
 
     print(card.status)
+
+    print("Generating mnemonic")
+    indexes = card.generate_mnemonic()
+    print("Generated list: ", ", ".join(str(m) for m in indexes))
+    mnemo = Mnemonic("english")
+    words = [mnemo.wordlist[i] for i in indexes]
+    print("Mnemonic: ", " ".join(words))
 
     print('Unblocking PIN...')
     card.verify_pin('654321')

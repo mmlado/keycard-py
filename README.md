@@ -22,7 +22,7 @@ APDU commands are being implemented one by one.
 - [x] UNBLOCK PIN
 - [x] LOAD KEY
 - [ ] DERIVE KEY
-- [ ] GENERATE MNEMONIC
+- [x] GENERATE MNEMONIC
 - [x] REMOVE KEY
 - [x] GENERATE KEY
 - [x] SIGN
