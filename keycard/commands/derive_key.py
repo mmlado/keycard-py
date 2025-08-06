@@ -17,9 +17,9 @@ def derive_key(card: CardInterface, path: str = '') -> None:
     Raises:
         APDUError: if the derivation fails or the format is invalid.
     """
-    keypath = KeyPath(path)  # Automatically sets P1 bits based on prefix
+    keypath = KeyPath(path)
     card.send_secure_apdu(
         ins=INS_DERIVE_KEY,
-        p1=keypath.source,  # DerivationSource enum
+        p1=keypath.source,
         data=keypath.data
     )
