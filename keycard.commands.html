@@ -2368,6 +2368,35 @@ associated with this VerifyingKey and allow_truncate was not set</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="keycard.commands.generate_mnemonic">
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">generate_mnemonic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checksum_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.generate_mnemonic" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a BIP39 mnemonic using the card’s RNG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>card</strong> (<a class="reference internal" href="#keycard.commands.CardInterface" title="keycard.commands.CardInterface"><em>CardInterface</em></a>) – The card interface.</p></li>
+<li><p><strong>checksum_size</strong> (<em>int</em>) – Number of checksum bits (between 4 and 8 inclusive).</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of integers (0-2047) corresponding to wordlist indexes.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[int]</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If checksum size is outside the allowed range.</p></li>
+<li><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – If the card rejects the request.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.generate_pairing_token">
 <span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">generate_pairing_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">passphrase</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.generate_pairing_token" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
