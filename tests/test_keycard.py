@@ -17,11 +17,6 @@ def test_keycard_init_with_transport():
     assert kc.session is None
 
 
-def test_keycard_init_without_transport_raises():
-    with pytest.raises(ValueError, match='Transport not initialized'):
-        KeyCard(None)
-
-
 def test_select_sets_card_pubkey():
     mock_info = MagicMock()
     mock_info.ecc_public_key = b'pubkey'
@@ -489,3 +484,14 @@ def test_keycard_set_pinless_path():
         card.set_pinless_path("m/44'/60'/0'/0/0")
 
         mock_cmd.assert_called_once_with(card, "m/44'/60'/0'/0/0")
+
+
+def test_keycard_generate_mnemonic():
+    with patch("keycard.keycard.commands.generate_mnemonic") as mock_cmd:
+        card = KeyCard(None)
+        mock_cmd.return_value = [0, 2047, 1337, 42]
+
+        result = card.generate_mnemonic(checksum_size=6)
+
+        mock_cmd.assert_called_once_with(card, 6)
+        assert result == [0, 2047, 1337, 42]

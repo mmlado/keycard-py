@@ -22,6 +22,7 @@ else:
     from .export_key import export_key
     from .factory_reset import factory_reset
     from .generate_key import generate_key
+    from .generate_menmonic import generate_mnemonic
     from .get_data import get_data
     from .ident import ident
     from .init import init
@@ -44,6 +45,7 @@ else:
         'export_key',
         'factory_reset',
         'generate_key',
+        'generate_mnemonic',
         'get_data',
         'ident',
         'init',

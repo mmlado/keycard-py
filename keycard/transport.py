@@ -20,9 +20,7 @@ class Transport:
         value: BaseException | None,
         traceback: TracebackType | None
     ) -> None:
-        if self.connection:
-            self.connection.disconnect()
-            self.connection = None
+        self.disconnect()
 
     def connect(self, index: int = 0) -> None:
         r = readers()
@@ -30,6 +28,11 @@ class Transport:
             raise TransportError('No smart card readers found')
         self.connection = r[index].createConnection()
         self.connection.connect()
+
+    def disconnect(self) -> None:
+        if self.connection:
+            self.connection.disconnect()
+            self.connection = None        
 
     def send_apdu(self, apdu: bytes) -> APDUResponse:
         if not self.connection:

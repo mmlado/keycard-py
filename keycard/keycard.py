@@ -1,3 +1,4 @@
+from types import TracebackType
 from typing import Optional, Union
 
 from . import constants
@@ -22,7 +23,7 @@ class KeyCard(CardInterface):
     and card operations.
     '''
 
-    def __init__(self, transport: Transport):
+    def __init__(self, transport: Optional[Transport] = None):
         '''
         Initializes the KeyCard interface.
 
@@ -32,13 +33,25 @@ class KeyCard(CardInterface):
         Raises:
             ValueError: If transport is None.
         '''
-        if not transport:
-            raise ValueError('Transport not initialized')
-
-        self.transport = transport
+        self.transport = transport if transport else Transport()
         self.card_public_key: Optional[bytes] = None
         self.session: Optional[SecureChannel] = None
         self._is_pin_verified: bool = False
+
+
+    def __enter__(self) -> 'Transport':
+        self.transport.connect()
+        return self
+
+    def __exit__(
+        self,
+        type_: type[BaseException] | None,
+        value: BaseException | None,
+        traceback: TracebackType | None
+    ) -> None:
+        if self.transport:
+            self.transport.disconnect()
+            self.transport = None
 
     @property
     def is_selected(self) -> bool:
@@ -519,6 +532,20 @@ class KeyCard(CardInterface):
                         string disables the pinless path.
         """
         commands.set_pinless_path(self, path)
+
+    def generate_mnemonic(self, checksum_size: int = 6) -> list[int]:
+        """
+        Generate a BIP39 mnemonic using the card's RNG.
+
+        Args:
+            checksum_size (int): Number of checksum bits
+                (between 4 and 8 inclusive).
+
+        Returns:
+            List[int]: List of integers (0-2047) corresponding to wordlist
+                indexes.
+        """
+        return commands.generate_mnemonic(self, checksum_size)
 
     def send_apdu(
         self,
