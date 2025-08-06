@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - LOAD KEY command
 - SET PINLESS PATH command
+- GENERATE MNEMONIC command
+- DERIVE KEY command
 
 ## [0.1.0] - 2025-08-05
 

@@ -495,3 +495,11 @@ def test_keycard_generate_mnemonic():
 
         mock_cmd.assert_called_once_with(card, 6)
         assert result == [0, 2047, 1337, 42]
+
+
+def test_keycard_derive_key():
+    with patch("keycard.keycard.commands.derive_key") as mock_cmd:
+        card = KeyCard(MagicMock())
+        card.derive_key("m/44'/60'/0'/0/0")
+
+        mock_cmd.assert_called_once_with(card, "m/44'/60'/0'/0/0")

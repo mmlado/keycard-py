@@ -32,7 +32,7 @@ class Transport:
     def disconnect(self) -> None:
         if self.connection:
             self.connection.disconnect()
-            self.connection = None        
+            self.connection = None
 
     def send_apdu(self, apdu: bytes) -> APDUResponse:
         if not self.connection:

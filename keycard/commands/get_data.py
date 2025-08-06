@@ -22,12 +22,14 @@ def get_data(
     Raises:
         ValueError: If slot is invalid or data is too long.
     """
-    kwargs = {
-        'ins': constants.INS_GET_DATA,
-        'p1': slot.value,
-    }
     if card.is_secure_channel_open:
-        return card.send_secure_apdu(**kwargs)
-    else:
-        kwargs['cla'] = constants.CLA_PROPRIETARY
-        return card.send_apdu(**kwargs)
+        return card.send_secure_apdu(
+            ins=constants.INS_GET_DATA,
+            p1=slot.value
+        )
+
+    return card.send_apdu(
+        cla=constants.CLA_PROPRIETARY,
+        ins=constants.INS_GET_DATA,
+        p1=slot.value
+    )

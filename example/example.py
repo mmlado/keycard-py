@@ -169,6 +169,9 @@ with KeyCard() as card:
     else:
         print("Received public key hash is not the same")
 
+    print("Deriving key...")
+    card.derive_key("m/44'/60'/0'/0/0")
+
     card.change_pin(PIN)
     print('PIN changed.')
     

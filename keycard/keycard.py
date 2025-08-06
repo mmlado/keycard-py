@@ -38,8 +38,7 @@ class KeyCard(CardInterface):
         self.session: Optional[SecureChannel] = None
         self._is_pin_verified: bool = False
 
-
-    def __enter__(self) -> 'Transport':
+    def __enter__(self) -> 'KeyCard':
         self.transport.connect()
         return self
 
@@ -51,7 +50,6 @@ class KeyCard(CardInterface):
     ) -> None:
         if self.transport:
             self.transport.disconnect()
-            self.transport = None
 
     @property
     def is_selected(self) -> bool:
@@ -546,6 +544,16 @@ class KeyCard(CardInterface):
                 indexes.
         """
         return commands.generate_mnemonic(self, checksum_size)
+
+    def derive_key(self, path: str = '') -> None:
+        """
+        Set the derivation path for subsequent SIGN and EXPORT KEY commands.
+
+        Args:
+            path (str): BIP-32-style path (e.g., "m/44'/60'/0'/0/0") or
+                        "../0/1" (parent) or "./0" (current).
+        """
+        commands.derive_key(self, path)
 
     def send_apdu(
         self,
