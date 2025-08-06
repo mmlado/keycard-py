@@ -19,6 +19,7 @@ if __debug__:
 
 else:
     from .change_secret import change_secret
+    from .derive_key import derive_key
     from .export_key import export_key
     from .factory_reset import factory_reset
     from .generate_key import generate_key
@@ -42,6 +43,7 @@ else:
 
     __all__ = [
         'change_secret',
+        'derive_key',
         'export_key',
         'factory_reset',
         'generate_key',

@@ -547,6 +547,16 @@ class KeyCard(CardInterface):
         """
         return commands.generate_mnemonic(self, checksum_size)
 
+    def derive_key(card: CardInterface, path: str = '') -> None:
+        """
+        Set the derivation path for subsequent SIGN and EXPORT KEY commands.
+
+        Args:
+            path (str): BIP-32-style path (e.g., "m/44'/60'/0'/0/0") or
+                        "../0/1" (parent) or "./0" (current).
+        """
+        commands.derive_key(path)
+
     def send_apdu(
         self,
         ins: int,
