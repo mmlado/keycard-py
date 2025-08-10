@@ -87,7 +87,7 @@ def sign(
         r = r_and_s[0x02][0]
         s = r_and_s[0x02][1]
         pub = inner.get(0x80, [None])[0]
-        return SignatureResult.from_r_s(
+        return SignatureResult(
             algo=p2,
             r=r,
             s=s,
@@ -99,10 +99,10 @@ def sign(
         raw = outer[0x80][0]
         if len(raw) != 65:
             raise ValueError("Expected 65-byte raw signature (r||s||recId)")
-        return SignatureResult(
+        return SignatureResult.from_r_s(
             algo=p2,
-            format='raw_65',
-            signature=raw,
+            r=raw[:32],
+            s=raw[32:64],
             recovery_id=raw[64]
         )
 
