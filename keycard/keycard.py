@@ -144,7 +144,8 @@ class KeyCard(CardInterface):
     def open_secure_channel(
         self,
         pairing_index: int,
-        pairing_key: bytes
+        pairing_key: bytes,
+        mutually_authenticate: Optional[bool] = True
     ) -> None:
         '''
         Opens a secure session with the card.
@@ -152,12 +153,17 @@ class KeyCard(CardInterface):
         Args:
             pairing_index (int): Index of the pairing slot to use.
             pairing_key (bytes): The shared pairing key (32 bytes).
+            mutually_authenticate (bool): Execute mutually authenticate when  
+                a secure channel has been opened
         '''
         self.session = commands.open_secure_channel(
             self,
             pairing_index,
             pairing_key,
         )
+        
+        if mutually_authenticate:
+            self.mutually_authenticate()
 
     def mutually_authenticate(self) -> None:
         '''

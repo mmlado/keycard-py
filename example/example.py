@@ -61,8 +61,6 @@ with KeyCard() as card:
     card.open_secure_channel(pairing_index, pairing_key)
     print('Secure channel established.')
 
-    card.mutually_authenticate()
-
     print(card.status)
 
     print("Generating mnemonic")

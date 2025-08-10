@@ -44,13 +44,36 @@ def test_ident_calls_command():
         assert result == 'identity'
 
 
-def test_open_secure_channel_sets_session():
-    with patch('keycard.keycard.commands.open_secure_channel') as mock_cmd:
-        mock_cmd.return_value = 'session'
-        kc = KeyCard(MagicMock())
-        kc._card_public_key = b'pub'
-        kc.open_secure_channel(1, b'pairing_key')
-        assert kc.session == 'session'
+def test_open_secure_channel_with_mutual_authentication():
+    with patch(
+        'keycard.keycard.commands.open_secure_channel'
+    ) as mock_osc:
+        with patch(
+            'keycard.keycard.commands.mutually_authenticate'
+        ) as mock_ma:
+            mock_osc.return_value = 'session'
+            kc = KeyCard(MagicMock())
+            kc._card_public_key = b'pub'
+            kc.open_secure_channel(1, b'pairing_key')
+            mock_osc.assert_called_once_with(kc, 1, b'pairing_key')
+            mock_ma.assert_called_once_with(kc)
+            assert kc.session == 'session'
+
+
+def test_open_secure_channel_without_mutual_authentication():
+    with patch(
+        'keycard.keycard.commands.open_secure_channel'
+    ) as mock_osc:
+        with patch(
+            'keycard.keycard.commands.mutually_authenticate'
+        ) as mock_ma:
+            mock_osc.return_value = 'session'
+            kc = KeyCard(MagicMock())
+            kc._card_public_key = b'pub'
+            kc.open_secure_channel(1, b'pairing_key', False)
+            mock_osc.assert_called_once_with(kc, 1, b'pairing_key')
+            mock_ma.assert_not_called()
+            assert kc.session == 'session'
 
 
 def test_mutually_authenticate_calls_command():
