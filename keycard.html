@@ -1017,7 +1017,7 @@ in the specified slot.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.open_secure_channel">
-<span class="sig-name descname"><span class="pre">open_secure_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pairing_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.open_secure_channel" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">open_secure_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pairing_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutually_authenticate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.open_secure_channel" title="Link to this definition">¶</a></dt>
 <dd><p>Opens a secure session with the card.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1027,6 +1027,8 @@ in the specified slot.</p>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>pairing_index</strong> (<em>int</em>) – Index of the pairing slot to use.</p></li>
 <li><p><strong>pairing_key</strong> (<em>bytes</em>) – The shared pairing key (32 bytes).</p></li>
+<li><p><strong>mutually_authenticate</strong> (<em>bool</em>) – Execute mutually authenticate when
+a secure channel has been opened</p></li>
 </ul>
 </dd>
 </dl>
