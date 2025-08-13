@@ -429,7 +429,6 @@ class KeyCard(CardInterface):
     def sign(
         self,
         digest: bytes,
-        algo: SigningAlgorithm = SigningAlgorithm.ECDSA_SECP256K1
     ) -> SignatureResult:
         """
         Sign using the currently loaded keypair.
@@ -437,21 +436,19 @@ class KeyCard(CardInterface):
 
         Args:
             digest (bytes): 32-byte hash to sign
-            algo (SigningAlgorithm): algorithm to use (default ECDSA/secp256k1)
 
         Returns:
             SignatureResult: Parsed signature result, including the signature
                 (DER or raw), algorithm, and optional recovery ID or
                 public key.
         """
-        return commands.sign(self, digest, DerivationOption.CURRENT, algo)
+        return commands.sign(self, digest, DerivationOption.CURRENT)
 
     def sign_with_path(
         self,
         digest: bytes,
         path: str,
-        make_current: bool = False,
-        algo: SigningAlgorithm = SigningAlgorithm.ECDSA_SECP256K1
+        make_current: bool = False
     ) -> SignatureResult:
         """
         Sign using a derived keypath. Optionally updates the current path.
@@ -460,7 +457,6 @@ class KeyCard(CardInterface):
             digest (bytes): 32-byte hash to sign
             path (list[int]): list of 32-bit integers
             make_current (bool): whether to update current path on card
-            algo (SigningAlgorithm): signature algorithm
 
         Returns:
             SignatureResult: Parsed signature result, including the signature
@@ -471,12 +467,11 @@ class KeyCard(CardInterface):
             DerivationOption.DERIVE_AND_MAKE_CURRENT
             if make_current else DerivationOption.DERIVE
         )
-        return commands.sign(self, digest, p1, algo, derivation_path=path)
+        return commands.sign(self, digest, p1, derivation_path=path)
 
     def sign_pinless(
         self,
-        digest: bytes,
-        algo: SigningAlgorithm = SigningAlgorithm.ECDSA_SECP256K1
+        digest: bytes
     ) -> SignatureResult:
         """
         Sign using the predefined PIN-less path.
@@ -484,7 +479,6 @@ class KeyCard(CardInterface):
 
         Args:
             digest (bytes): 32-byte hash to sign
-            algo (SigningAlgorithm): signature algorithm
 
         Returns:
             SignatureResult: Parsed signature result, including the signature
@@ -494,7 +488,7 @@ class KeyCard(CardInterface):
         Raises:
             APDUError: if no PIN-less path is set
         """
-        return commands.sign(self, digest, DerivationOption.PINLESS, algo)
+        return commands.sign(self, digest, DerivationOption.PINLESS)
 
     def load_key(
         self,
