@@ -368,8 +368,7 @@ def test_sign_current_key():
         mock_sign.assert_called_once_with(
             card,
             digest,
-            constants.DerivationOption.CURRENT,
-            constants.SigningAlgorithm.ECDSA_SECP256K1,
+            constants.DerivationOption.CURRENT
         )
         assert result == "signed"
 
@@ -387,7 +386,6 @@ def test_sign_with_path():
             card,
             digest,
             constants.DerivationOption.DERIVE,
-            constants.SigningAlgorithm.ECDSA_SECP256K1,
             derivation_path=path,
         )
         assert result == "sig"
@@ -405,8 +403,7 @@ def test_sign_with_path_make_current():
         mock_sign.assert_called_once_with(
             card,
             digest,
-            constants.DerivationOption.DERIVE_AND_MAKE_CURRENT,
-            constants.SigningAlgorithm.ECDSA_SECP256K1,
+            constants.DerivationOption.DERIVE_AND_MAKE_CURRENT, 
             derivation_path=path,
         )
         assert result == "sig"
@@ -423,8 +420,7 @@ def test_sign_pinless():
         mock_sign.assert_called_once_with(
             card,
             digest,
-            constants.DerivationOption.PINLESS,
-            constants.SigningAlgorithm.ECDSA_SECP256K1,
+            constants.DerivationOption.PINLESS
         )
         assert result == "sig"
 

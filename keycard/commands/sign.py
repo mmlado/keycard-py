@@ -99,17 +99,17 @@ def sign(
             s=s,
             public_key=pub
         )
-
-    if response.startswith(b'\x80'):
+    elif response.startswith(b'\x80'):
         outer = tlv.parse_tlv(response)
         raw = outer[0x80][0]
         if len(raw) != 65:
             raise ValueError("Expected 65-byte raw signature (r||s||recId)")
-        return SignatureResult.from_r_s(
+        return SignatureResult(
             algo=p2,
-            r=raw[:32],
-            s=raw[32:64],
-            recovery_id=raw[64]
+            digest=digest,
+            r=int.from_bytes(raw[:32], "big"),
+            s=int.from_bytes(raw[32:64], "big"),
+            recovery_id=int(raw[64])
         )
 
     raise ValueError("Unexpected SIGN response format")

@@ -29,12 +29,12 @@ class SignatureResult:
         if public_key is None and recovery_id is None:
             raise ValueError(
                 "Public key and recovery id not returned from card")
-        
+
         self.public_key = \
-            public_key if public_key else self._recover_public_key(digest)
-                    
+            public_key if public_key is not None else self._recover_public_key(digest)
+
         self.recovery_id = \
-            recovery_id if recovery_id else self._recover_v(digest)
+            recovery_id if recovery_id is not None else self._recover_v(digest)
 
     @property
     def signature(self):
@@ -63,6 +63,3 @@ class SignatureResult:
             index += 1
 
         raise RuntimeError("Recovery ID not found")
-
-    def _signature_der(self, id: Optional[int] = 0):
-        return 
