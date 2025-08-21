@@ -52,6 +52,9 @@ class SignatureResult:
         return signature
 
     def _recover_public_key(self, digest: bytes) -> bytes:
+        if self.recovery_id is None:
+            raise ValueError("Recovery ID is required for public key recovery")
+
         public_key = VerifyingKey.from_public_key_recovery_with_digest(
             self.signature_der,
             digest,

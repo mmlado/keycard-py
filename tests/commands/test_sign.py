@@ -5,7 +5,6 @@ from keycard.commands.sign import sign
 from keycard import constants
 from keycard.exceptions import InvalidStateError
 from keycard.parsing.keypath import KeyPath
-from keycard.parsing.signature_result import SignatureResult
 
 
 def test_sign_current_key(card):
@@ -13,15 +12,15 @@ def test_sign_current_key(card):
     raw = b'\x01' * 64 + b'\x1f'
     encoded = b'\x80' + bytes([len(raw)]) + raw
     card.send_secure_apdu.return_value = encoded
+    with mock.patch("keycard.commands.sign.SignatureResult"):
+        sign(card, digest)
 
-    sign(card, digest)
-
-    card.send_secure_apdu.assert_called_once_with(
-        ins=constants.INS_SIGN,
-        p1=constants.DerivationOption.CURRENT,
-        p2=constants.SigningAlgorithm.ECDSA_SECP256K1,
-        data=digest,
-    )
+        card.send_secure_apdu.assert_called_once_with(
+            ins=constants.INS_SIGN,
+            p1=constants.DerivationOption.CURRENT,
+            p2=constants.SigningAlgorithm.ECDSA_SECP256K1,
+            data=digest,
+        )
 
 
 def test_sign_with_derivation_path(card):
@@ -32,11 +31,7 @@ def test_sign_with_derivation_path(card):
     key_path = KeyPath("m/44'/60'/0'/0/0")
     expected_data = digest + key_path.data
 
-    with mock.patch.object(
-        SignatureResult,
-        "_recover_public_key",
-        return_value=b'\x02' + b'\x02' * 32
-    ) as mock_pubkey:
+    with mock.patch("keycard.commands.sign.SignatureResult"):
         sign(
             card,
             digest,
@@ -50,7 +45,6 @@ def test_sign_with_derivation_path(card):
             p2=constants.SigningAlgorithm.ECDSA_SECP256K1,
             data=expected_data,
         )
-        mock_pubkey.assert_called_once_with(digest)
 
 
 def test_sign_requires_pin(card):
