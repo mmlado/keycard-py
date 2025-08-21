@@ -1,5 +1,7 @@
 from typing import Optional
 
+from ecdsa.util import sigdecode_der
+
 
 from .. import constants
 from ..constants import DerivationOption, DerivationSource, SigningAlgorithm
@@ -54,6 +56,9 @@ def sign(
         InvalidStateError: If preconditions (PIN, SC) are not met.
         APDUError: If the card returns an error (e.g., SW=0x6985).
     """
+    if p2 != SigningAlgorithm.ECDSA_SECP256K1:
+        raise NotImplementedError("Signature algorithm not supported")
+
     if len(digest) != 32:
         raise ValueError("Digest must be exactly 32 bytes")
 
@@ -83,27 +88,28 @@ def sign(
     if response.startswith(b'\xA0'):
         outer = tlv.parse_tlv(response)
         inner = tlv.parse_tlv(outer[0xA0][0])
-        r_and_s = tlv.parse_tlv(inner[0x30][0])
-        r = r_and_s[0x02][0]
-        s = r_and_s[0x02][1]
+        der_bytes = b'\x30' + len(inner[0x30][0]).to_bytes() + inner[0x30][0]
+        signature = sigdecode_der(der_bytes, 0)
+        r, s = signature
         pub = inner.get(0x80, [None])[0]
-        return SignatureResult.from_r_s(
+        return SignatureResult(
             algo=p2,
+            digest=digest,
             r=r,
             s=s,
             public_key=pub
         )
-
-    if response.startswith(b'\x80'):
+    elif response.startswith(b'\x80'):
         outer = tlv.parse_tlv(response)
         raw = outer[0x80][0]
         if len(raw) != 65:
             raise ValueError("Expected 65-byte raw signature (r||s||recId)")
         return SignatureResult(
             algo=p2,
-            format='raw_65',
-            signature=raw,
-            recovery_id=raw[64]
+            digest=digest,
+            r=int.from_bytes(raw[:32], "big"),
+            s=int.from_bytes(raw[32:64], "big"),
+            recovery_id=int(raw[64])
         )
 
     raise ValueError("Unexpected SIGN response format")

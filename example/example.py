@@ -9,7 +9,6 @@ from mnemonic import Mnemonic
 from keycard import constants
 from keycard.exceptions import APDUError
 from keycard.keycard import KeyCard
-from keycard.transport import Transport
 
 PIN = '123456'
 PUK = '123456123456'
@@ -98,11 +97,12 @@ with KeyCard() as card:
     digest = sha256(b'This is a test message.').digest()
     print(f'Digest: {digest.hex()}')
     signature = card.sign(digest)
-    print(f'Signature: {signature.signature.hex()}')
+    print(f'Signature: {signature}')
 
     vk = VerifyingKey.from_string(exported_key.public_key, curve=SECP256k1)
     try:
-        vk.verify_digest(signature.signature, digest, sigdecode=util.sigdecode_der)
+        vk.verify_digest(
+            signature.signature_der, digest, sigdecode=util.sigdecode_der)
         print('Signature verified successfully.')
     except Exception as e:
         print(f"Signature verification failed: {e}")
@@ -111,7 +111,9 @@ with KeyCard() as card:
     card.set_pinless_path("m/44'/60'/0'/0/0")
     
     print("Sign with pinless path...")
+    print(f'Digest: {digest.hex()}')
     signature = card.sign_pinless(digest)
+    print(f'Signature: {signature}')
     
     exported_key = card.export_key(
         derivation_option=constants.DerivationOption.DERIVE,
@@ -121,7 +123,8 @@ with KeyCard() as card:
 
     vk = VerifyingKey.from_string(exported_key.public_key, curve=SECP256k1)
     try:
-        vk.verify_digest(signature.signature, digest, sigdecode=util.sigdecode_der)
+        vk.verify_digest(
+            signature.signature_der, digest, sigdecode=util.sigdecode_der)
         print('Signature verified successfully.')
     except Exception as e:
         print(f"Signature verification failed: {e}")
