@@ -529,7 +529,7 @@ string disables the pinless path.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.sign">
-<span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SigningAlgorithm.ECDSA_SECP256K1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.sign" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.sign" title="Link to this definition">¶</a></dt>
 <dd><p>Sign using the currently loaded keypair.
 Requires PIN verification and secure channel.</p>
 <dl class="field-list simple">
@@ -537,10 +537,7 @@ Requires PIN verification and secure channel.</p>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="keycard.commands.html#keycard.commands.SignatureResult" title="keycard.parsing.signature_result.SignatureResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignatureResult</span></code></a></span></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to sign</p></li>
-<li><p><strong>algo</strong> (<a class="reference internal" href="keycard.html#keycard.constants.SigningAlgorithm" title="keycard.constants.SigningAlgorithm"><em>SigningAlgorithm</em></a>) – algorithm to use (default ECDSA/secp256k1)</p></li>
-</ul>
+<dd class="field-even"><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to sign</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><dl class="simple">
@@ -558,7 +555,7 @@ public key.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.sign_pinless">
-<span class="sig-name descname"><span class="pre">sign_pinless</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SigningAlgorithm.ECDSA_SECP256K1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.sign_pinless" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">sign_pinless</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.sign_pinless" title="Link to this definition">¶</a></dt>
 <dd><p>Sign using the predefined PIN-less path.
 Does not require secure channel or PIN.</p>
 <dl class="field-list simple">
@@ -566,10 +563,7 @@ Does not require secure channel or PIN.</p>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="keycard.commands.html#keycard.commands.SignatureResult" title="keycard.parsing.signature_result.SignatureResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignatureResult</span></code></a></span></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to sign</p></li>
-<li><p><strong>algo</strong> (<a class="reference internal" href="keycard.html#keycard.constants.SigningAlgorithm" title="keycard.constants.SigningAlgorithm"><em>SigningAlgorithm</em></a>) – signature algorithm</p></li>
-</ul>
+<dd class="field-even"><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to sign</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><dl class="simple">
@@ -590,7 +584,7 @@ public key.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.sign_with_path">
-<span class="sig-name descname"><span class="pre">sign_with_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_current</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SigningAlgorithm.ECDSA_SECP256K1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.sign_with_path" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">sign_with_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_current</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.sign_with_path" title="Link to this definition">¶</a></dt>
 <dd><p>Sign using a derived keypath. Optionally updates the current path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -601,7 +595,6 @@ public key.</p>
 <li><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to sign</p></li>
 <li><p><strong>path</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – list of 32-bit integers</p></li>
 <li><p><strong>make_current</strong> (<em>bool</em>) – whether to update current path on card</p></li>
-<li><p><strong>algo</strong> (<a class="reference internal" href="keycard.html#keycard.constants.SigningAlgorithm" title="keycard.constants.SigningAlgorithm"><em>SigningAlgorithm</em></a>) – signature algorithm</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
