@@ -58,7 +58,7 @@ def sign(
     """
     if p2 != SigningAlgorithm.ECDSA_SECP256K1:
         raise NotImplementedError("Signature algorithm not supported")
-    
+
     if len(digest) != 32:
         raise ValueError("Digest must be exactly 32 bytes")
 

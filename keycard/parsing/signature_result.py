@@ -15,14 +15,13 @@ class SignatureResult:
 
     def __init__(
         self,
-        digest: str,
+        digest: bytes,
         algo: SigningAlgorithm,
         r: int,
         s: int,
         recovery_id: Optional[int] = None,
         public_key: Optional[bytes] = None
-    ) -> "SignatureResult":
-
+    ) -> None:
         self.algo = algo
         self.r = r.to_bytes((r.bit_length() + 7) // 8, 'big')
         self.s = s.to_bytes((s.bit_length() + 7) // 8, 'big')
@@ -30,29 +29,40 @@ class SignatureResult:
             raise ValueError(
                 "Public key and recovery id not returned from card")
 
-        self.public_key = \
-            public_key if public_key is not None else self._recover_public_key(digest)
+        self.public_key = (
+            public_key
+            if public_key is not None
+            else self._recover_public_key(digest)
+        )
 
-        self.recovery_id = \
-            recovery_id if recovery_id is not None else self._recover_v(digest)
+        self.recovery_id = (
+            recovery_id
+            if recovery_id is not None
+            else self._recover_v(digest)
+        )
 
     @property
-    def signature(self):
+    def signature(self) -> bytes:
         return self.r + self.s
-    
+
     @property
-    def signature_der(self):
-        return util.sigencode_der(
+    def signature_der(self) -> bytes:
+        signature: bytes = util.sigencode_der(
             int.from_bytes(self.r), int.from_bytes(self.s), self.recovery_id)
-    
-    def _recover_public_key(self, digest):
-        return VerifyingKey.from_public_key_recovery_with_digest(
+        return signature
+
+    def _recover_public_key(self, digest: bytes) -> bytes:
+        public_key = VerifyingKey.from_public_key_recovery_with_digest(
             self.signature_der,
             digest,
             SECP256k1,
             sigdecode=util.sigdecode_der)
+        return public_key.to_string()
 
-    def _recover_v(self, digest):
+    def _recover_v(self, digest: bytes) -> int:
+        if self.public_key is None:
+            raise ValueError("Public key is required for recovery ID")
+
         public_keys = VerifyingKey.from_public_key_recovery_with_digest(
             self.signature, digest, SECP256k1)
 

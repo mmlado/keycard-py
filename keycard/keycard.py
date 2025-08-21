@@ -4,7 +4,7 @@ from typing import Optional, Union
 from . import constants
 from . import commands
 from .apdu import APDUResponse
-from .constants import DerivationOption, SigningAlgorithm
+from .constants import DerivationOption
 from .card_interface import CardInterface
 from .exceptions import APDUError
 from .parsing.application_info import ApplicationInfo
@@ -153,7 +153,7 @@ class KeyCard(CardInterface):
         Args:
             pairing_index (int): Index of the pairing slot to use.
             pairing_key (bytes): The shared pairing key (32 bytes).
-            mutually_authenticate (bool): Execute mutually authenticate when  
+            mutually_authenticate (bool): Execute mutually authenticate when
                 a secure channel has been opened
         '''
         self.session = commands.open_secure_channel(
@@ -161,7 +161,7 @@ class KeyCard(CardInterface):
             pairing_index,
             pairing_key,
         )
-        
+
         if mutually_authenticate:
             self.mutually_authenticate()
 

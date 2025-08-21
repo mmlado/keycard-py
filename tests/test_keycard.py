@@ -403,7 +403,7 @@ def test_sign_with_path_make_current():
         mock_sign.assert_called_once_with(
             card,
             digest,
-            constants.DerivationOption.DERIVE_AND_MAKE_CURRENT, 
+            constants.DerivationOption.DERIVE_AND_MAKE_CURRENT,
             derivation_path=path,
         )
         assert result == "sig"

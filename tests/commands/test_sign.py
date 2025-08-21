@@ -14,7 +14,7 @@ def test_sign_current_key(card):
     encoded = b'\x80' + bytes([len(raw)]) + raw
     card.send_secure_apdu.return_value = encoded
 
-    result = sign(card, digest)
+    sign(card, digest)
 
     card.send_secure_apdu.assert_called_once_with(
         ins=constants.INS_SIGN,
@@ -50,6 +50,7 @@ def test_sign_with_derivation_path(card):
             p2=constants.SigningAlgorithm.ECDSA_SECP256K1,
             data=expected_data,
         )
+        mock_pubkey.assert_called_once_with(digest)
 
 
 def test_sign_requires_pin(card):
@@ -80,16 +81,16 @@ def test_sign_missing_path(card):
             p1=constants.DerivationOption.DERIVE,
             derivation_path=None
         )
-        
+
 
 def test_sign_not_implemented_algo(card):
     digest = b'\xAB' * 32
-    # Use a fake/unsupported algorithm value
-    class FakeAlgo(int):
-        pass
-    fake_algo = FakeAlgo(0xFF)
-    with pytest.raises(NotImplementedError, match="Signature algorithm not supported"):
-        sign(card, digest, p2=fake_algo)
+
+    with pytest.raises(
+        NotImplementedError,
+        match="Signature algorithm not supported"
+    ):
+        sign(card, digest, p2=0xFF)
 
 
 def test_sign_raw_signature_wrong_length(card):
@@ -100,4 +101,3 @@ def test_sign_raw_signature_wrong_length(card):
     card.is_pin_verified = True
     with pytest.raises(ValueError, match="Expected 65-byte raw signature"):
         sign(card, digest)
-
