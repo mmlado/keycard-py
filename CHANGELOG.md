@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Open Secure Channel also mutually authenticates unless specified otherwise.
+- SignatureResult object returned by sign methods
+- Identity returns public key.
 
 ## [0.2.0] - 2025-08-06
 

@@ -1,79 +1,43 @@
-from dataclasses import dataclass
-
-from ecdsa import (
-    BadSignatureError,
-    ellipticcurve,
-    VerifyingKey,
-    SECP256k1,
-    util,
-)
 from hashlib import sha256
+from ecdsa import VerifyingKey, SECP256k1, util
 
 from ..exceptions import InvalidResponseError
 from ..parsing.tlv import parse_tlv
 
 
-@dataclass
-class Identity:
-    certificate: bytes
-    signature: bytes
+def parse(challenge: bytes, data: bytes) -> bytes:
+    tlvs = parse_tlv(data)
 
-    def verify(self, challenge: bytes) -> bool:
-        if len(self.certificate) < 33:
-            raise InvalidResponseError('Certificate too short')
+    inner_tlvs = parse_tlv(tlvs[0xA0][0])
 
-        compressed = self.certificate[:33]
-        x = int.from_bytes(compressed[1:], 'big')
+    try:
+        certificate = inner_tlvs[0x8A][0]
+        signature = inner_tlvs[0x30][0]
+    except (IndexError, KeyError):
+        raise InvalidResponseError('Malformed identity response')
 
-        p = SECP256k1.curve.p()
-        a = SECP256k1.curve.a()
-        b = SECP256k1.curve.b()
-        alpha = (x**3 + a*x + b) % p
-        beta = pow(alpha, (p + 1) // 4, p)  # since p % 4 == 3
+    signature = b'\x30' + len(signature).to_bytes(1, 'big') + signature
+    if len(certificate) < 95 or len(signature) < 65:
+        raise InvalidResponseError('Malformed identity response')
 
-        if (compressed[0] == 3) != (beta % 2 == 1):
-            beta = p - beta
+    _verify(certificate, signature, challenge)
+    return _recover_public_key(certificate)
 
-        point = ellipticcurve.Point(SECP256k1.curve, x, beta)
-        vk = VerifyingKey.from_public_point(point, curve=SECP256k1)
 
-        r = int.from_bytes(self.signature[2:34], 'big')
-        s = int.from_bytes(self.signature[36:], 'big')
+def _verify(certificate: bytes, signature: bytes, challenge: bytes) -> None:
+    pub_key = certificate[:33]
+    vk = VerifyingKey.from_string(pub_key, curve=SECP256k1)
+    vk.verify_digest(signature, challenge, sigdecode=util.sigdecode_der)
 
-        der_signature = util.sigencode_der(r, s, SECP256k1.order)
 
-        try:
-            vk.verify(
-                der_signature,
-                challenge,
-                hashfunc=sha256,
-                sigdecode=util.sigdecode_der
-            )
-            return True
-        except BadSignatureError:
-            return False
+def _recover_public_key(certificate: bytes) -> bytes:
+    signature = certificate[33:]
+    v = signature[-1]
+    digest = sha256(certificate).digest()
 
-    @staticmethod
-    def parse(data: bytes) -> 'Identity':
-        tlvs = parse_tlv(data)
+    vk = VerifyingKey.from_public_key_recovery_with_digest(
+        signature[:-1], digest, SECP256k1)
 
-        cert = sig = None
-        inner_tlvs = parse_tlv(tlvs[0xA0][0])
-
-        if 0x8A in inner_tlvs and len(inner_tlvs[0x8A]):
-            cert = inner_tlvs[0x8a][0]
-        if 0x30 in inner_tlvs and len(inner_tlvs[0x30]):
-            sig = inner_tlvs[0x30][0]
-
-        if not cert or not sig:
-            raise InvalidResponseError('Missing certificate or signature')
-
-        return Identity(certificate=cert, signature=sig)
-
-    def __str__(self) -> str:
-        return (
-            f'Identity(certificate='
-            f'{self.certificate.hex() if self.certificate else None}, '
-            f'signature='
-            f'{self.signature.hex() if self.signature else None})'
-        )
+    public_key = vk[v] if isinstance(vk, list) else vk
+    der: bytes = public_key.to_der('compressed')
+    return der

@@ -1,89 +1,87 @@
 import pytest
-from keycard.parsing.identity import Identity
-from keycard.exceptions import InvalidResponseError
-from ecdsa import BadSignatureError
+from keycard.parsing.identity import parse, InvalidResponseError
+from keycard.parsing import identity
 
 
-def test_identity_str():
-    cert = b'\x02' * 33
-    sig = b'\x00' * 70
-    identity = Identity(certificate=cert, signature=sig)
-    s = str(identity)
-    assert 'Identity(certificate=' in s
-    assert cert.hex() in s
-    assert sig.hex() in s
+def make_tlv(tag, value):
+    return bytes([tag, len(value)]) + value
 
 
-def test_verify_certificate_too_short():
-    identity = Identity(certificate=b'\x01\x02', signature=b'\x00' * 70)
+def fake_parse_tlv(data):
+    if data == b'outer':
+        return {0xA0: [b'inner']}
+    elif data == b'inner':
+        return {0x8A: [b'cert'], 0x30: [b'sig']}
+    return {}
+
+
+def test_parse_success(monkeypatch):
+    monkeypatch.setattr(
+        identity,
+        "parse_tlv",
+        lambda data:
+            {0xA0: [b'inner']} if data == b'data'
+            else {0x8A: [b'c'*95], 0x30: [b's'*64]})
+    monkeypatch.setattr(
+        identity,
+        "_verify",
+        lambda certificate, signature, challenge: None
+    )
+    monkeypatch.setattr(
+        identity,
+        "_recover_public_key",
+        lambda certificate: b'pubkey'
+    )
+
+    challenge = b'challenge'
+    data = b'data'
+    result = parse(challenge, data)
+    assert result == b'pubkey'
+
+
+def test_parse_malformed_index(monkeypatch):
+    monkeypatch.setattr(
+        identity,
+        "parse_tlv",
+        lambda data: {0xA0: [b'inner']} if data == b'data' else {}
+    )
+    challenge = b'challenge'
+    data = b'data'
     with pytest.raises(
         InvalidResponseError,
-        match='Certificate too short'
+        match="Malformed identity response"
     ):
-        identity.verify(b'challenge')
+        parse(challenge, data)
 
 
-def test_parse_missing_certificate_or_signature():
-    # TLV with missing certificate and signature
-    data = b'\xa0\x06\x8b\x01\x00\x30\x01\x00'
+def test_parse_certificate_too_short(monkeypatch):
+    monkeypatch.setattr(
+        identity,
+        "parse_tlv",
+        lambda data:
+            {0xA0: [b'inner']} if data == b'data'
+            else {0x8A: [b'c'*10], 0x30: [b's'*64]}
+    )
+    challenge = b'challenge'
+    data = b'data'
     with pytest.raises(
         InvalidResponseError,
-        match='Missing certificate or signature'
+        match="Malformed identity response"
     ):
-        Identity.parse(data)
+        parse(challenge, data)
 
 
-def test_parse_valid(monkeypatch):
-    # Patch parse_tlv to return expected structure
-    cert = b'\x02' * 33
-    sig = b'\x00' * 70
-
-    def fake_parse_tlv(data):
-        if data == b'data':
-            return {0xA0: [b'inner']}
-        elif data == b'inner':
-            return {0x8a: [cert], 0x30: [sig]}
-        return {}
-
-    monkeypatch.setattr('keycard.parsing.identity.parse_tlv', fake_parse_tlv)
-    identity = Identity.parse(b'data')
-    assert identity.certificate == cert
-    assert identity.signature == sig
-
-
-def test_verify_invalid_signature(monkeypatch):
-    cert = b'\x02' + b'\x01' * 32
-    sig = b'\x00' * 70
-    identity = Identity(certificate=cert, signature=sig)
-
-    class FakeVerifyingKey:
-        def verify(self, *args, **kwargs):
-            raise BadSignatureError()
-
+def test_parse_signature_too_short(monkeypatch):
     monkeypatch.setattr(
-        'keycard.parsing.identity.VerifyingKey', type('VK', (), {
-            'from_public_point': staticmethod(
-                lambda *a, **kw: FakeVerifyingKey()
-            )
-        })
-    )
-    assert not identity.verify(b'challenge')
-
-
-def test_verify_valid_signature(monkeypatch):
-    cert = b'\x02' + b'\x01' * 32
-    sig = b'\x00' * 70
-    identity = Identity(certificate=cert, signature=sig)
-
-    class FakeVerifyingKey:
-        def verify(self, *args, **kwargs):
-            return True
-
-    monkeypatch.setattr(
-        'keycard.parsing.identity.VerifyingKey', type('VK', (), {
-            'from_public_point': staticmethod(
-                lambda *a, **kw: FakeVerifyingKey()
-            )
-        })
-    )
-    assert identity.verify(b'challenge')
+        identity,
+        "parse_tlv",
+        lambda data:
+            {0xA0: [b'inner']} if data == b'data'
+            else {0x8A: [b'c'*95], 0x30: [b's'*10]})
+    challenge = b'challenge'
+    data = b'data'
+    with pytest.raises(
+        InvalidResponseError,
+        match="Malformed identity response"
+    ):
+        parse(challenge, data)

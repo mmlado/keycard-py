@@ -44,13 +44,9 @@ with KeyCard() as card:
     print('Card initialized.')
     print(card.select())
 
-    challenge = os.urandom(32)
-    identity = card.ident(challenge)
-    print(identity)
-    if identity.verify(challenge):
-        print('Card verified')
-    else:
-        print('Card verification failed')
+    print('Identifying...')
+    ident_public_key = card.ident()
+    print(f'Identity public key: {ident_public_key.hex()}')
 
     print('Pairing...')
     pairing_index, pairing_key = card.pair(PAIRING_PASSWORD)

@@ -8,7 +8,6 @@ from .constants import DerivationOption
 from .card_interface import CardInterface
 from .exceptions import APDUError
 from .parsing.application_info import ApplicationInfo
-from .parsing.identity import Identity
 from .parsing.exported_key import ExportedKey
 from .parsing.signature_result import SignatureResult
 from .transport import Transport
@@ -129,15 +128,16 @@ class KeyCard(CardInterface):
             pairing_secret,
         )
 
-    def ident(self, challenge: bytes) -> Identity:
+    def ident(self, challenge: Optional[bytes] = None) -> bytes:
         '''
         Sends an identity challenge to the card.
 
         Args:
-            challenge (bytes): Challenge data to sign.
+            challenge (bytes): A challenge (nonce or data) to send to the
+                card. If None, a random 32-byte challenge is generated.
 
         Returns:
-            bytes: Response data (e.g., signature or proof).
+            bytes: The public key extracted from the card's identity response.
         '''
         return commands.ident(self, challenge)
 
