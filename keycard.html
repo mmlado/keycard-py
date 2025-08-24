@@ -139,13 +139,6 @@
 <li class="toctree-l4"><a class="reference internal" href="keycard.commands.html#keycard.commands.ExportedKey.public_key"><code class="docutils literal notranslate"><span class="pre">ExportedKey.public_key</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.Identity"><code class="docutils literal notranslate"><span class="pre">Identity</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="keycard.commands.html#keycard.commands.Identity.certificate"><code class="docutils literal notranslate"><span class="pre">Identity.certificate</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="keycard.commands.html#keycard.commands.Identity.parse"><code class="docutils literal notranslate"><span class="pre">Identity.parse()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="keycard.commands.html#keycard.commands.Identity.signature"><code class="docutils literal notranslate"><span class="pre">Identity.signature</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="keycard.commands.html#keycard.commands.Identity.verify"><code class="docutils literal notranslate"><span class="pre">Identity.verify()</span></code></a></li>
-</ul>
-</li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.InvalidResponseError"><code class="docutils literal notranslate"><span class="pre">InvalidResponseError</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.InvalidStateError"><code class="docutils literal notranslate"><span class="pre">InvalidStateError</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.KeyExportOption"><code class="docutils literal notranslate"><span class="pre">KeyExportOption</span></code></a><ul>
@@ -241,6 +234,7 @@
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.mutually_authenticate"><code class="docutils literal notranslate"><span class="pre">mutually_authenticate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.open_secure_channel"><code class="docutils literal notranslate"><span class="pre">open_secure_channel()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.pair"><code class="docutils literal notranslate"><span class="pre">pair()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.parse"><code class="docutils literal notranslate"><span class="pre">parse()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.remove_key"><code class="docutils literal notranslate"><span class="pre">remove_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.require_initialized"><code class="docutils literal notranslate"><span class="pre">require_initialized()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.require_pin_verified"><code class="docutils literal notranslate"><span class="pre">require_pin_verified()</span></code></a></li>
@@ -312,13 +306,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="keycard.parsing.html#module-keycard.parsing.identity">keycard.parsing.identity module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.identity.Identity"><code class="docutils literal notranslate"><span class="pre">Identity</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.identity.Identity.certificate"><code class="docutils literal notranslate"><span class="pre">Identity.certificate</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.identity.Identity.parse"><code class="docutils literal notranslate"><span class="pre">Identity.parse()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.identity.Identity.signature"><code class="docutils literal notranslate"><span class="pre">Identity.signature</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.identity.Identity.verify"><code class="docutils literal notranslate"><span class="pre">Identity.verify()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.identity.parse"><code class="docutils literal notranslate"><span class="pre">parse()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="keycard.parsing.html#module-keycard.parsing.tlv">keycard.parsing.tlv module</a><ul>
@@ -874,17 +862,18 @@ in the specified slot.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.ident">
-<span class="sig-name descname"><span class="pre">ident</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">challenge</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.ident" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ident</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">challenge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.ident" title="Link to this definition">¶</a></dt>
 <dd><p>Sends an identity challenge to the card.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.identity.Identity" title="keycard.parsing.identity.Identity"><code class="xref py py-class docutils literal notranslate"><span class="pre">Identity</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>challenge</strong> (<em>bytes</em>) – Challenge data to sign.</p>
+<dd class="field-even"><p><strong>challenge</strong> (<em>bytes</em>) – A challenge (nonce or data) to send to the
+card. If None, a random 32-byte challenge is generated.</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Response data (e.g., signature or proof).</p>
+<dd class="field-odd"><p>The public key extracted from the card’s identity response.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bytes</p>

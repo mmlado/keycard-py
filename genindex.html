@@ -120,18 +120,12 @@
 </li>
       <li><a href="keycard.html#keycard.constants.StorageSlot.CASH">CASH (keycard.constants.StorageSlot attribute)</a>
 </li>
-      <li><a href="keycard.commands.html#keycard.commands.Identity.certificate">certificate (keycard.commands.Identity attribute)</a>
-
-      <ul>
-        <li><a href="keycard.parsing.html#keycard.parsing.identity.Identity.certificate">(keycard.parsing.identity.Identity attribute)</a>
-</li>
-      </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.ExportedKey.chain_code">chain_code (keycard.commands.ExportedKey attribute)</a>
+</li>
+      <li><a href="index.html#keycard.keycard.KeyCard.change_pairing_secret">change_pairing_secret() (keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.change_pairing_secret">[1]</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="index.html#keycard.keycard.KeyCard.change_pairing_secret">change_pairing_secret() (keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.change_pairing_secret">[1]</a>
-</li>
       <li><a href="index.html#keycard.keycard.KeyCard.change_pin">change_pin() (keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.change_pin">[1]</a>
 </li>
       <li><a href="index.html#keycard.keycard.KeyCard.change_puk">change_puk() (keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.change_puk">[1]</a>
@@ -354,12 +348,6 @@
         <li><a href="index.html#keycard.keycard.KeyCard.ident">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.ident">[1]</a>
 </li>
       </ul></li>
-      <li><a href="keycard.commands.html#keycard.commands.Identity">Identity (class in keycard.commands)</a>
-
-      <ul>
-        <li><a href="keycard.parsing.html#keycard.parsing.identity.Identity">(class in keycard.parsing.identity)</a>
-</li>
-      </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.init">init() (in module keycard.commands)</a>
 
       <ul>
@@ -380,8 +368,6 @@
 </li>
       <li><a href="keycard.commands.html#keycard.commands.ExportedKey.is_extended">is_extended (keycard.commands.ExportedKey property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.commands.html#keycard.commands.ApplicationInfo.is_initialized">is_initialized (keycard.commands.ApplicationInfo property)</a>
 
       <ul>
@@ -392,6 +378,8 @@
         <li><a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.is_initialized">(keycard.parsing.application_info.ApplicationInfo property)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.commands.html#keycard.commands.CardInterface.is_pin_verified">is_pin_verified (keycard.commands.CardInterface property)</a>
 
       <ul>
@@ -772,16 +760,16 @@
         <li><a href="keycard.html#keycard.constants.DerivationSource.PARENT">(keycard.constants.DerivationSource attribute)</a>
 </li>
       </ul></li>
-      <li><a href="keycard.commands.html#keycard.commands.ApplicationInfo.parse">parse() (keycard.commands.ApplicationInfo static method)</a>
+      <li><a href="keycard.commands.html#keycard.commands.parse">parse() (in module keycard.commands)</a>
 
       <ul>
-        <li><a href="keycard.commands.html#keycard.commands.Identity.parse">(keycard.commands.Identity static method)</a>
+        <li><a href="keycard.parsing.html#keycard.parsing.identity.parse">(in module keycard.parsing.identity)</a>
+</li>
+        <li><a href="keycard.commands.html#keycard.commands.ApplicationInfo.parse">(keycard.commands.ApplicationInfo static method)</a>
 </li>
         <li><a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.parse">(keycard.parsing.application_info.ApplicationInfo static method)</a>
 </li>
         <li><a href="keycard.parsing.html#keycard.parsing.capabilities.Capabilities.parse">(keycard.parsing.capabilities.Capabilities class method)</a>
-</li>
-        <li><a href="keycard.parsing.html#keycard.parsing.identity.Identity.parse">(keycard.parsing.identity.Identity static method)</a>
 </li>
       </ul></li>
       <li><a href="keycard.parsing.html#keycard.parsing.tlv.parse_tlv">parse_tlv() (in module keycard.parsing.tlv)</a>
@@ -920,14 +908,8 @@
 </li>
       <li><a href="index.html#keycard.keycard.KeyCard.sign_with_path">sign_with_path() (keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.sign_with_path">[1]</a>
 </li>
-      <li><a href="keycard.commands.html#keycard.commands.Identity.signature">signature (keycard.commands.Identity attribute)</a>
-
-      <ul>
-        <li><a href="keycard.commands.html#keycard.commands.SignatureResult.signature">(keycard.commands.SignatureResult property)</a>
+      <li><a href="keycard.commands.html#keycard.commands.SignatureResult.signature">signature (keycard.commands.SignatureResult property)</a>
 </li>
-        <li><a href="keycard.parsing.html#keycard.parsing.identity.Identity.signature">(keycard.parsing.identity.Identity attribute)</a>
-</li>
-      </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.SignatureResult.signature_der">signature_der (keycard.commands.SignatureResult property)</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.SignatureResult">SignatureResult (class in keycard.commands)</a>
@@ -1024,14 +1006,8 @@
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="keycard.commands.html#keycard.commands.Identity.verify">verify() (keycard.commands.Identity method)</a>
-
-      <ul>
-        <li><a href="keycard.commands.html#keycard.commands.VerifyingKey.verify">(keycard.commands.VerifyingKey method)</a>
+      <li><a href="keycard.commands.html#keycard.commands.VerifyingKey.verify">verify() (keycard.commands.VerifyingKey method)</a>
 </li>
-        <li><a href="keycard.parsing.html#keycard.parsing.identity.Identity.verify">(keycard.parsing.identity.Identity method)</a>
-</li>
-      </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.VerifyingKey.verify_digest">verify_digest() (keycard.commands.VerifyingKey method)</a>
 </li>
       <li><a href="keycard.commands.html#keycard.commands.verify_pin">verify_pin() (in module keycard.commands)</a>
