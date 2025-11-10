@@ -4,33 +4,7 @@
 
 A minimal, clean, fully native Python SDK for communicating with [Keycard](https://keycard.tech) smart cards.
 
-This SDK is under active development.  
-APDU commands are being implemented one by one.
-
-## Supported Commands
-
-- [x] SELECT
-- [x] INIT
-- [x] IDENT
-- [x] OPEN SECURE CHANNEL
-- [x] MUTUALLY AUTHENTICATE
-- [x] PAIR
-- [x] UNPAIR
-- [x] GET STATUS
-- [x] VERIFY PIN
-- [x] CHANGE PIN
-- [x] UNBLOCK PIN
-- [x] LOAD KEY
-- [x] DERIVE KEY
-- [x] GENERATE MNEMONIC
-- [x] REMOVE KEY
-- [x] GENERATE KEY
-- [x] SIGN
-- [x] SET PINLESS PATH
-- [x] EXPORT KEY
-- [x] STORE DATA
-- [x] GET DATA
-- [x] FACTORY RESET
+[Documentation](https://deepwiki.com/mmlado/keycard-py)
 
 ## Goals
 
