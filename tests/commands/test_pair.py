@@ -1,6 +1,8 @@
 import pytest
 import hashlib
 from unittest.mock import patch
+
+from keycard.constants import INS_PAIR, PairingMode
 from keycard.commands.pair import pair
 from keycard.exceptions import APDUError, InvalidResponseError
 
@@ -29,6 +31,25 @@ def test_pair_success(card, mock_urandom):
 
     assert result == (5, expected_client_cryptogram)
     assert card.send_apdu.call_count == 2
+
+
+def test_pairing_mode(card, mock_urandom):
+    shared_secret = b'\xAA' * 32
+    client_challenge = b'\x01' * 32
+    card_challenge = b'\x02' * 32
+    expected_card_cryptogram = hashlib.sha256(
+        shared_secret + client_challenge).digest()
+    first_response = expected_card_cryptogram + card_challenge
+    second_response = b'\x05' + card_challenge
+
+    card.send_apdu.side_effect = [first_response, second_response]
+
+    pair(card, shared_secret, PairingMode.EPHEMERAL)
+    card.send_apdu.assert_any_call(
+        ins=INS_PAIR,
+        p2=PairingMode.EPHEMERAL,
+        data=client_challenge
+    )
 
 
 def test_pair_invalid_shared_secret(card, mock_urandom):
