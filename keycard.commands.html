@@ -10,8 +10,8 @@
     <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
     <script src="_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="keycard.crypto package" href="keycard.crypto.html" />
@@ -186,7 +186,7 @@ pairing slot.</p></li>
 <span id="keycard-commands-pair-module"></span><h2>keycard.commands.pair module<a class="headerlink" href="#module-keycard.commands.pair" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.pair.pair">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.pair.</span></span><span class="sig-name descname"><span class="pre">pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shared_secret</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.pair.pair" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.pair.</span></span><span class="sig-name descname"><span class="pre">pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shared_secret</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">PairingMode.ANY</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.pair.pair" title="Link to this definition">¶</a></dt>
 <dd><p>Performs an ECDH-based pairing handshake with the card.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -196,6 +196,7 @@ pairing slot.</p></li>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>card</strong> – The keycard interface.</p></li>
 <li><p><strong>shared_secret</strong> – A 32-byte secret or a passphrase convertible to one.</p></li>
+<li><p><strong>pairing_mode</strong> – Mode for pairing: ANY, EPHEMERAL, PERSISTENT</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -338,14 +339,14 @@ and raises an error if blocked or another APDU error occurs.</p>
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-keycard.commands" title="Link to this heading">¶</a></h2>
 <dl class="py exception">
 <dt class="sig sig-object py" id="keycard.commands.APDUError">
-<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">APDUError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.APDUError" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">APDUError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.APDUError" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="keycard.html#keycard.exceptions.KeyCardError" title="keycard.exceptions.KeyCardError"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeyCardError</span></code></a></p>
 <p>Raised when APDU returns non-success status word.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="keycard.commands.ApplicationInfo">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">ApplicationInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">capabilities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ecc_public_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance_uid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_uid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version_major</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version_minor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ApplicationInfo" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">ApplicationInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">capabilities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ecc_public_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance_uid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_uid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version_major</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version_minor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ApplicationInfo" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Represents parsed application information from a TLV-encoded response.</p>
 <dl class="py attribute">
@@ -417,22 +418,22 @@ instance, if present.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">capabilities</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><span class="pre">]</span></em><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">capabilities</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id1">
-<span class="sig-name descname"><span class="pre">ecc_public_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><span class="pre">]</span></em><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ecc_public_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id2">
-<span class="sig-name descname"><span class="pre">instance_uid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><span class="pre">]</span></em><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">instance_uid</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="keycard.commands.ApplicationInfo.is_initialized">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_initialized</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#keycard.commands.ApplicationInfo.is_initialized" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_initialized</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.commands.ApplicationInfo.is_initialized" title="Link to this definition">¶</a></dt>
 <dd><p>Checks if the application is initialized based on the presence of
 the key_uid.</p>
 <dl class="field-list simple">
@@ -447,12 +448,12 @@ the key_uid.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id3">
-<span class="sig-name descname"><span class="pre">key_uid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><span class="pre">]</span></em><a class="headerlink" href="#id3" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">key_uid</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id3" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.commands.ApplicationInfo.parse">
-<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ApplicationInfo.parse" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ApplicationInfo.parse" title="Link to this definition">¶</a></dt>
 <dd><p>Parses a byte sequence containing TLV-encoded application information
 and returns an ApplicationInfo instance.</p>
 <dl class="field-list simple">
@@ -500,44 +501,44 @@ and returns an ApplicationInfo instance.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id4">
-<span class="sig-name descname"><span class="pre">version_major</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#id4" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">version_major</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#id4" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id5">
-<span class="sig-name descname"><span class="pre">version_minor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#id5" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">version_minor</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#id5" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="keycard.commands.CardInterface">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">CardInterface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.CardInterface" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">CardInterface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.CardInterface" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
 <p>Abstract base class representing a Keycard interface for command functions.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.CardInterface.card_public_key">
-<span class="sig-name descname"><span class="pre">card_public_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><span class="pre">]</span></em><a class="headerlink" href="#keycard.commands.CardInterface.card_public_key" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">card_public_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#keycard.commands.CardInterface.card_public_key" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="keycard.commands.CardInterface.is_initialized">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_initialized</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#keycard.commands.CardInterface.is_initialized" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_initialized</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.commands.CardInterface.is_initialized" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="keycard.commands.CardInterface.is_pin_verified">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_pin_verified</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#keycard.commands.CardInterface.is_pin_verified" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_pin_verified</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.commands.CardInterface.is_pin_verified" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="keycard.commands.CardInterface.is_secure_channel_open">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_secure_channel_open</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#keycard.commands.CardInterface.is_secure_channel_open" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_secure_channel_open</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.commands.CardInterface.is_secure_channel_open" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="keycard.commands.CardInterface.is_selected">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_selected</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#keycard.commands.CardInterface.is_selected" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_selected</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.commands.CardInterface.is_selected" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -564,54 +565,54 @@ and returns an ApplicationInfo instance.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="keycard.commands.DerivationOption">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">DerivationOption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.DerivationOption" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">DerivationOption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.DerivationOption" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.DerivationOption.CURRENT">
-<span class="sig-name descname"><span class="pre">CURRENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#keycard.commands.DerivationOption.CURRENT" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CURRENT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#keycard.commands.DerivationOption.CURRENT" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.DerivationOption.DERIVE">
-<span class="sig-name descname"><span class="pre">DERIVE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#keycard.commands.DerivationOption.DERIVE" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">DERIVE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></span><a class="headerlink" href="#keycard.commands.DerivationOption.DERIVE" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.DerivationOption.DERIVE_AND_MAKE_CURRENT">
-<span class="sig-name descname"><span class="pre">DERIVE_AND_MAKE_CURRENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#keycard.commands.DerivationOption.DERIVE_AND_MAKE_CURRENT" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">DERIVE_AND_MAKE_CURRENT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></span><a class="headerlink" href="#keycard.commands.DerivationOption.DERIVE_AND_MAKE_CURRENT" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.DerivationOption.PINLESS">
-<span class="sig-name descname"><span class="pre">PINLESS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#keycard.commands.DerivationOption.PINLESS" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">PINLESS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></span><a class="headerlink" href="#keycard.commands.DerivationOption.PINLESS" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="keycard.commands.DerivationSource">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">DerivationSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.DerivationSource" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">DerivationSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.DerivationSource" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.DerivationSource.CURRENT">
-<span class="sig-name descname"><span class="pre">CURRENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">128</span></em><a class="headerlink" href="#keycard.commands.DerivationSource.CURRENT" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">CURRENT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">128</span></span><a class="headerlink" href="#keycard.commands.DerivationSource.CURRENT" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.DerivationSource.MASTER">
-<span class="sig-name descname"><span class="pre">MASTER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#keycard.commands.DerivationSource.MASTER" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">MASTER</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#keycard.commands.DerivationSource.MASTER" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.DerivationSource.PARENT">
-<span class="sig-name descname"><span class="pre">PARENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">64</span></em><a class="headerlink" href="#keycard.commands.DerivationSource.PARENT" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">PARENT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">64</span></span><a class="headerlink" href="#keycard.commands.DerivationSource.PARENT" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="keycard.commands.ECDH">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">ECDH</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">private_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ECDH" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">ECDH</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">private_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ECDH" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Elliptic-curve Diffie-Hellman (ECDH). A key agreement protocol.</p>
 <p>Allows two parties, each having an elliptic-curve public-private key
@@ -877,77 +878,77 @@ Look at keys.py:VerifyingKey.from_pem()</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="keycard.commands.ExportedKey">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">ExportedKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">public_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">private_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chain_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ExportedKey" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">ExportedKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">public_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">private_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chain_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ExportedKey" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.ExportedKey.chain_code">
-<span class="sig-name descname"><span class="pre">chain_code</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#keycard.commands.ExportedKey.chain_code" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">chain_code</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#keycard.commands.ExportedKey.chain_code" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="keycard.commands.ExportedKey.has_private">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_private</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#keycard.commands.ExportedKey.has_private" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">has_private</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.commands.ExportedKey.has_private" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="keycard.commands.ExportedKey.is_extended">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_extended</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#keycard.commands.ExportedKey.is_extended" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_extended</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.commands.ExportedKey.is_extended" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.ExportedKey.private_key">
-<span class="sig-name descname"><span class="pre">private_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#keycard.commands.ExportedKey.private_key" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">private_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#keycard.commands.ExportedKey.private_key" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.ExportedKey.public_key">
-<span class="sig-name descname"><span class="pre">public_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#keycard.commands.ExportedKey.public_key" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">public_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#keycard.commands.ExportedKey.public_key" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="keycard.commands.InvalidResponseError">
-<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">InvalidResponseError</span></span><a class="headerlink" href="#keycard.commands.InvalidResponseError" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">InvalidResponseError</span></span><a class="headerlink" href="#keycard.commands.InvalidResponseError" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="keycard.html#keycard.exceptions.KeyCardError" title="keycard.exceptions.KeyCardError"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeyCardError</span></code></a></p>
 <p>Raised when response parsing fails.</p>
 </dd></dl>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="keycard.commands.InvalidStateError">
-<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">InvalidStateError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.InvalidStateError" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">InvalidStateError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.InvalidStateError" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="keycard.html#keycard.exceptions.KeyCardError" title="keycard.exceptions.KeyCardError"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeyCardError</span></code></a></p>
 <p>Raised when a precondition is not met.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="keycard.commands.KeyExportOption">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">KeyExportOption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.KeyExportOption" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">KeyExportOption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.KeyExportOption" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.KeyExportOption.EXTENDED_PUBLIC">
-<span class="sig-name descname"><span class="pre">EXTENDED_PUBLIC</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#keycard.commands.KeyExportOption.EXTENDED_PUBLIC" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">EXTENDED_PUBLIC</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></span><a class="headerlink" href="#keycard.commands.KeyExportOption.EXTENDED_PUBLIC" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.KeyExportOption.PRIVATE_AND_PUBLIC">
-<span class="sig-name descname"><span class="pre">PRIVATE_AND_PUBLIC</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#keycard.commands.KeyExportOption.PRIVATE_AND_PUBLIC" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">PRIVATE_AND_PUBLIC</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#keycard.commands.KeyExportOption.PRIVATE_AND_PUBLIC" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.KeyExportOption.PUBLIC_ONLY">
-<span class="sig-name descname"><span class="pre">PUBLIC_ONLY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#keycard.commands.KeyExportOption.PUBLIC_ONLY" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">PUBLIC_ONLY</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></span><a class="headerlink" href="#keycard.commands.KeyExportOption.PUBLIC_ONLY" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="keycard.commands.KeyPath">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">KeyPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">DerivationSource.MASTER</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.KeyPath" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">KeyPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">DerivationSource.MASTER</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.KeyPath" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.KeyPath.MAX_COMPONENTS">
-<span class="sig-name descname"><span class="pre">MAX_COMPONENTS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#keycard.commands.KeyPath.MAX_COMPONENTS" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">MAX_COMPONENTS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></span><a class="headerlink" href="#keycard.commands.KeyPath.MAX_COMPONENTS" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -964,14 +965,14 @@ Look at keys.py:VerifyingKey.from_pem()</p>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="keycard.commands.NotSelectedError">
-<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">NotSelectedError</span></span><a class="headerlink" href="#keycard.commands.NotSelectedError" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">NotSelectedError</span></span><a class="headerlink" href="#keycard.commands.NotSelectedError" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="keycard.html#keycard.exceptions.KeyCardError" title="keycard.exceptions.KeyCardError"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeyCardError</span></code></a></p>
 <p>Raised when trying to use card before select().</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="keycard.commands.SecureChannel">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">SecureChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enc_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mac_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">authenticated</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SecureChannel" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">SecureChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enc_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mac_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">authenticated</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SecureChannel" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>SecureChannel manages a secure communication channel using AES encryption
 and MAC authentication.</p>
@@ -1021,27 +1022,27 @@ and MAC authentication.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id6">
-<span class="sig-name descname"><span class="pre">authenticated</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#id6" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">authenticated</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#id6" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id7">
-<span class="sig-name descname"><span class="pre">enc_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></em><a class="headerlink" href="#id7" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">enc_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#id7" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id8">
-<span class="sig-name descname"><span class="pre">iv</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></em><a class="headerlink" href="#id8" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">iv</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#id8" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id9">
-<span class="sig-name descname"><span class="pre">mac_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></em><a class="headerlink" href="#id9" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mac_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#id9" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.commands.SecureChannel.open">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shared_secret</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">salt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed_iv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SecureChannel.open" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shared_secret</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">salt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed_iv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SecureChannel.open" title="Link to this definition">¶</a></dt>
 <dd><p>Opens a new SecureChannel using the provided cryptographic parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1141,74 +1142,74 @@ and the concatenated MAC and encrypted data.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="keycard.commands.SignatureResult">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">SignatureResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recovery_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SignatureResult" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">SignatureResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recovery_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SignatureResult" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.SignatureResult.algo">
-<span class="sig-name descname"><span class="pre">algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="keycard.html#keycard.constants.SigningAlgorithm" title="keycard.constants.SigningAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">SigningAlgorithm</span></code></a></em><a class="headerlink" href="#keycard.commands.SignatureResult.algo" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">algo</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="keycard.html#keycard.constants.SigningAlgorithm" title="keycard.constants.SigningAlgorithm"><span class="pre">SigningAlgorithm</span></a></span><a class="headerlink" href="#keycard.commands.SignatureResult.algo" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.SignatureResult.public_key">
-<span class="sig-name descname"><span class="pre">public_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#keycard.commands.SignatureResult.public_key" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">public_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#keycard.commands.SignatureResult.public_key" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.SignatureResult.r">
-<span class="sig-name descname"><span class="pre">r</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></em><a class="headerlink" href="#keycard.commands.SignatureResult.r" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">r</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#keycard.commands.SignatureResult.r" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.SignatureResult.recovery_id">
-<span class="sig-name descname"><span class="pre">recovery_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#keycard.commands.SignatureResult.recovery_id" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">recovery_id</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#keycard.commands.SignatureResult.recovery_id" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.SignatureResult.s">
-<span class="sig-name descname"><span class="pre">s</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></em><a class="headerlink" href="#keycard.commands.SignatureResult.s" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">s</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#keycard.commands.SignatureResult.s" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="keycard.commands.SignatureResult.signature">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">signature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></em><a class="headerlink" href="#keycard.commands.SignatureResult.signature" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">signature</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#keycard.commands.SignatureResult.signature" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="keycard.commands.SignatureResult.signature_der">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">signature_der</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></em><a class="headerlink" href="#keycard.commands.SignatureResult.signature_der" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">signature_der</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#keycard.commands.SignatureResult.signature_der" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="keycard.commands.SigningAlgorithm">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">SigningAlgorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningAlgorithm" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">SigningAlgorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningAlgorithm" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.SigningAlgorithm.BLS12_381">
-<span class="sig-name descname"><span class="pre">BLS12_381</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#keycard.commands.SigningAlgorithm.BLS12_381" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">BLS12_381</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></span><a class="headerlink" href="#keycard.commands.SigningAlgorithm.BLS12_381" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.SigningAlgorithm.ECDSA_SECP256K1">
-<span class="sig-name descname"><span class="pre">ECDSA_SECP256K1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#keycard.commands.SigningAlgorithm.ECDSA_SECP256K1" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ECDSA_SECP256K1</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#keycard.commands.SigningAlgorithm.ECDSA_SECP256K1" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.SigningAlgorithm.EDDSA_ED25519">
-<span class="sig-name descname"><span class="pre">EDDSA_ED25519</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#keycard.commands.SigningAlgorithm.EDDSA_ED25519" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">EDDSA_ED25519</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></span><a class="headerlink" href="#keycard.commands.SigningAlgorithm.EDDSA_ED25519" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="keycard.commands.SigningAlgorithm.SCHNORR_BIP340">
-<span class="sig-name descname"><span class="pre">SCHNORR_BIP340</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#keycard.commands.SigningAlgorithm.SCHNORR_BIP340" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">SCHNORR_BIP340</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></span><a class="headerlink" href="#keycard.commands.SigningAlgorithm.SCHNORR_BIP340" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="keycard.commands.SigningKey">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">SigningKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_error__please_use_generate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">SigningKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_error__please_use_generate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for handling keys that can create signatures (private keys).</p>
 <dl class="field-list simple">
@@ -1227,7 +1228,7 @@ associated with this private key</p></li>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.commands.SigningKey.from_der">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_der</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc=&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_curve_encodings=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.from_der" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_der</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_curve_encodings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.from_der" title="Link to this definition">¶</a></dt>
 <dd><p>Initialise from key stored in <span class="xref std std-term">DER</span> format.</p>
 <p>The DER formats supported are the un-encrypted RFC5915
 (the ssleay format) supported by OpenSSL, and the more common
@@ -1294,7 +1295,7 @@ key failed</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.commands.SigningKey.from_pem">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_pem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc=&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_curve_encodings=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.from_pem" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_pem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_curve_encodings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.from_pem" title="Link to this definition">¶</a></dt>
 <dd><p>Initialise from key stored in <span class="xref std std-term">PEM</span> format.</p>
 <p>The PEM formats supported are the un-encrypted RFC5915
 (the ssleay format) supported by OpenSSL, and the more common
@@ -1336,7 +1337,7 @@ key failed</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.commands.SigningKey.from_secret_exponent">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_secret_exponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">secexp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve=NIST192p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc=&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.from_secret_exponent" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_secret_exponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">secexp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NIST192p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.from_secret_exponent" title="Link to this definition">¶</a></dt>
 <dd><p>Create a private key from a random integer.</p>
 <p>Note: it’s a low level method, it’s recommended to use the
 <a class="reference internal" href="#keycard.commands.SigningKey.generate" title="keycard.commands.SigningKey.generate"><code class="xref py py-func docutils literal notranslate"><span class="pre">generate()</span></code></a> method to create private keys.</p>
@@ -1370,7 +1371,7 @@ key failed</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.commands.SigningKey.from_string">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve=NIST192p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc=&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.from_string" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NIST192p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.from_string" title="Link to this definition">¶</a></dt>
 <dd><p>Decode the private key from <span class="xref std std-term">raw encoding</span>.</p>
 <p>Note: the name of this method is a misnomer coming from days of
 Python 2, when binary strings and character strings shared a type.
@@ -1404,7 +1405,7 @@ key failed</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.commands.SigningKey.generate">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curve=NIST192p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entropy=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc=&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.generate" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NIST192p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entropy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.generate" title="Link to this definition">¶</a></dt>
 <dd><p>Generate a random private key.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1446,7 +1447,7 @@ with this SigningKey</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.commands.SigningKey.sign">
-<span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entropy=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigencode=&lt;function</span> <span class="pre">sigencode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate=True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.sign" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entropy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigencode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">sigencode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.sign" title="Link to this definition">¶</a></dt>
 <dd><p>Create signature over data.</p>
 <p>Uses the probabilistic ECDSA algorithm for Weierstrass curves
 (NIST256p, etc.) and the deterministic EdDSA algorithm for the
@@ -1518,7 +1519,7 @@ different <code class="docutils literal notranslate"><span class="pre">k</span><
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.commands.SigningKey.sign_deterministic">
-<span class="sig-name descname"><span class="pre">sign_deterministic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigencode=&lt;function</span> <span class="pre">sigencode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_entropy=b''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.sign_deterministic" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">sign_deterministic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigencode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">sigencode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_entropy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">b''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.sign_deterministic" title="Link to this definition">¶</a></dt>
 <dd><p>Create signature over data.</p>
 <p>For Weierstrass curves it uses the deterministic RFC6979 algorithm.
 For Edwards curves it uses the standard EdDSA algorithm.</p>
@@ -1561,7 +1562,7 @@ Ignored with EdDSA.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.commands.SigningKey.sign_digest">
-<span class="sig-name descname"><span class="pre">sign_digest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entropy=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigencode=&lt;function</span> <span class="pre">sigencode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate=False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.sign_digest" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">sign_digest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entropy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigencode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">sigencode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.sign_digest" title="Link to this definition">¶</a></dt>
 <dd><p>Create signature over digest using the probabilistic ECDSA algorithm.</p>
 <p>This method uses the standard ECDSA algorithm that requires a
 cryptographically secure random number generator.</p>
@@ -1607,7 +1608,7 @@ different ‘k’, or use the
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.commands.SigningKey.sign_digest_deterministic">
-<span class="sig-name descname"><span class="pre">sign_digest_deterministic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigencode=&lt;function</span> <span class="pre">sigencode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_entropy=b''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate=False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.sign_digest_deterministic" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">sign_digest_deterministic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigencode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">sigencode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_entropy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">b''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.sign_digest_deterministic" title="Link to this definition">¶</a></dt>
 <dd><p>Create signature for digest using the deterministic RFC6979 algorithm.</p>
 <p><cite>digest</cite> should be the output of cryptographically secure hash function
 like SHA256 or SHA-3-256.</p>
@@ -1782,7 +1783,7 @@ The type used in Python 3 is <cite>bytes</cite>.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="keycard.commands.VerifyingKey">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">VerifyingKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_error__please_use_generate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">VerifyingKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_error__please_use_generate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for handling keys that can verify signatures (public keys).</p>
 <dl class="field-list simple">
@@ -1798,7 +1799,7 @@ data. Should implement the same API as hashlib.sha1</p></li>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.commands.VerifyingKey.from_der">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_der</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc=&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_encodings=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_curve_encodings=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.from_der" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_der</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_encodings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_curve_encodings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.from_der" title="Link to this definition">¶</a></dt>
 <dd><p>Initialise the key stored in <span class="xref std std-term">DER</span> format.</p>
 <p>The expected format of the key is the SubjectPublicKeyInfo structure
 from RFC5912 (for RSA keys, it’s known as the PKCS#1 format):</p>
@@ -1841,7 +1842,7 @@ for curve parameters. By default (<code class="docutils literal notranslate"><sp
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.commands.VerifyingKey.from_pem">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_pem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc=&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_encodings=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_curve_encodings=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.from_pem" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_pem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_encodings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_curve_encodings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.from_pem" title="Link to this definition">¶</a></dt>
 <dd><p>Initialise from public key stored in <span class="xref std std-term">PEM</span> format.</p>
 <p>The PEM header of the key should be <code class="docutils literal notranslate"><span class="pre">BEGIN</span> <span class="pre">PUBLIC</span> <span class="pre">KEY</span></code>.</p>
 <p>See the <a class="reference internal" href="#keycard.commands.VerifyingKey.from_der" title="keycard.commands.VerifyingKey.from_der"><code class="xref py py-func docutils literal notranslate"><span class="pre">from_der()</span></code></a> method for details of the
@@ -1872,7 +1873,7 @@ for curve parameters. By default (<code class="docutils literal notranslate"><sp
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.commands.VerifyingKey.from_public_key_recovery">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_public_key_recovery</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc=&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigdecode=&lt;function</span> <span class="pre">sigdecode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate=True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.from_public_key_recovery" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_public_key_recovery</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigdecode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">sigdecode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.from_public_key_recovery" title="Link to this definition">¶</a></dt>
 <dd><p>Return keys that can be used as verifiers of the provided signature.</p>
 <p>Tries to recover the public key that can be used to verify the
 signature, usually returns two keys like that.</p>
@@ -1906,7 +1907,7 @@ extra bits (at the end of the digest) will be truncated.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.commands.VerifyingKey.from_public_key_recovery_with_digest">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_public_key_recovery_with_digest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc=&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigdecode=&lt;function</span> <span class="pre">sigdecode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate=False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.from_public_key_recovery_with_digest" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_public_key_recovery_with_digest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigdecode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">sigdecode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.from_public_key_recovery_with_digest" title="Link to this definition">¶</a></dt>
 <dd><p>Return keys that can be used as verifiers of the provided signature.</p>
 <p>Tries to recover the public key that can be used to verify the
 signature, usually returns two keys like that.</p>
@@ -1941,7 +1942,7 @@ digest) will be truncated.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.commands.VerifyingKey.from_public_point">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_public_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve=NIST192p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc=&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_point=True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.from_public_point" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_public_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NIST192p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.from_public_point" title="Link to this definition">¶</a></dt>
 <dd><p>Initialise the object from a Point object.</p>
 <p>This is a low-level method, generally you will not want to use it.</p>
 <dl class="field-list simple">
@@ -1970,7 +1971,7 @@ curve</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.commands.VerifyingKey.from_string">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve=NIST192p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc=&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_point=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_encodings=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.from_string" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NIST192p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_encodings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.from_string" title="Link to this definition">¶</a></dt>
 <dd><p>Initialise the object from byte encoding of public key.</p>
 <p>The method does accept and automatically detect the type of point
 encoding used. It supports the <span class="xref std std-term">raw encoding</span>,
@@ -2135,7 +2136,7 @@ curve</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.commands.VerifyingKey.verify">
-<span class="sig-name descname"><span class="pre">verify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigdecode=&lt;function</span> <span class="pre">sigdecode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate=True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.verify" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">verify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigdecode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">sigdecode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.verify" title="Link to this definition">¶</a></dt>
 <dd><p>Verify a signature made over provided data.</p>
 <p>Will hash <cite>data</cite> to verify the signature.</p>
 <p>By default expects signature in <span class="xref std std-term">raw encoding</span>. Can also be used
@@ -2177,7 +2178,7 @@ True.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.commands.VerifyingKey.verify_digest">
-<span class="sig-name descname"><span class="pre">verify_digest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigdecode=&lt;function</span> <span class="pre">sigdecode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate=False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.verify_digest" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">verify_digest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigdecode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">sigdecode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.verify_digest" title="Link to this definition">¶</a></dt>
 <dd><p>Verify a signature made over provided hash value.</p>
 <p>By default expects signature in <span class="xref std std-term">raw encoding</span>. Can also be used
 to verify signatures in ASN.1 DER encoding by using
@@ -2624,7 +2625,7 @@ pairing slot.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.pair">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shared_secret</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.pair" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shared_secret</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">PairingMode.ANY</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.pair" title="Link to this definition">¶</a></dt>
 <dd><p>Performs an ECDH-based pairing handshake with the card.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -2634,6 +2635,7 @@ pairing slot.</p></li>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>card</strong> – The keycard interface.</p></li>
 <li><p><strong>shared_secret</strong> – A 32-byte secret or a passphrase convertible to one.</p></li>
+<li><p><strong>pairing_mode</strong> – Mode for pairing: ANY, EPHEMERAL, PERSISTENT</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -3051,7 +3053,7 @@ and raises an error if blocked or another APDU error occurs.</p>
       &#169;2025, mmlado.
       
       |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.0.4</a>
       &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
