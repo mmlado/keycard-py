@@ -1,5 +1,6 @@
 import hashlib
 from os import urandom
+from typing import Optional
 
 from .. import constants
 from ..card_interface import CardInterface
@@ -9,13 +10,18 @@ from ..preconditions import require_initialized
 
 
 @require_initialized
-def pair(card: CardInterface, shared_secret: str | bytes) -> tuple[int, bytes]:
+def pair(
+    card: CardInterface,
+    shared_secret: str | bytes,
+    pairing_mode: Optional[constants.PairingMode] = constants.PairingMode.ANY
+) -> tuple[int, bytes]:
     '''
     Performs an ECDH-based pairing handshake with the card.
 
     Args:
         card: The keycard interface.
         shared_secret: A 32-byte secret or a passphrase convertible to one.
+        pairing_mode: Mode for pairing: ANY, EPHEMERAL, PERSISTENT
 
     Returns:
         tuple[int, bytes]: Pairing index and derived 32-byte pairing key.
@@ -35,6 +41,7 @@ def pair(card: CardInterface, shared_secret: str | bytes) -> tuple[int, bytes]:
 
     response = card.send_apdu(
         ins=constants.INS_PAIR,
+        p2=pairing_mode,
         data=client_challenge
     )
 

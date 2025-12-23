@@ -4,7 +4,7 @@ from typing import Optional, Union
 from . import constants
 from . import commands
 from .apdu import APDUResponse
-from .constants import DerivationOption
+from .constants import DerivationOption, PairingMode
 from .card_interface import CardInterface
 from .exceptions import APDUError
 from .parsing.application_info import ApplicationInfo
@@ -174,7 +174,11 @@ class KeyCard(CardInterface):
         '''
         commands.mutually_authenticate(self)
 
-    def pair(self, shared_secret: bytes) -> tuple[int, bytes]:
+    def pair(
+        self,
+        shared_secret: bytes,
+        pairing_mode: Optional[PairingMode] = PairingMode.ANY
+    ) -> tuple[int, bytes]:
         '''
         Pairs with the card using an ECDH-derived shared secret.
 
@@ -184,7 +188,7 @@ class KeyCard(CardInterface):
         Returns:
             tuple[int, bytes]: The pairing index and client cryptogram.
         '''
-        return commands.pair(self, shared_secret)
+        return commands.pair(self, shared_secret, pairing_mode)
 
     def verify_pin(self, pin: str) -> bool:
         '''

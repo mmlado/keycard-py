@@ -81,3 +81,9 @@ class LoadKeyType(IntEnum):
     ECC = 0x01
     EXTENDED_ECC = 0x02
     BIP39_SEED = 0x03
+
+
+class PairingMode(IntEnum):
+    ANY = 0x00
+    EPHEMERAL = 0x01
+    PERSISTENT = 0x02
