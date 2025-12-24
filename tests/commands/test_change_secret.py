@@ -1,4 +1,6 @@
+import sys
 import pytest
+
 from unittest.mock import Mock, patch
 from keycard import constants
 from keycard.card_interface import CardInterface
@@ -13,14 +15,19 @@ def mock_card():
     return card
 
 
-def test_change_secret_user_pin_success(mock_card):
-    pin = b'123456'
-    change_secret(mock_card, pin, constants.PinType.USER)
-    mock_card.send_secure_apdu.assert_called_once_with(
-        ins=constants.INS_CHANGE_SECRET,
-        p1=constants.PinType.USER.value,
-        data=pin
-    )
+def test_change_secret_pairing_str_success(mock_card):
+    change_secret_module = sys.modules['keycard.commands.change_secret']
+    with patch.object(
+        change_secret_module, 'generate_pairing_token'
+    ) as mock_generate:
+        mock_generate.return_value = bytes(32)
+        change_secret(mock_card, 'pairingtoken', constants.PinType.PAIRING)
+        mock_generate.assert_called_once_with('pairingtoken')
+        mock_card.send_secure_apdu.assert_called_once_with(
+            ins=constants.INS_CHANGE_SECRET,
+            p1=constants.PinType.PAIRING.value,
+            data=mock_generate.return_value
+        )
 
 
 def test_change_secret_user_pin_str_success(mock_card):
@@ -80,18 +87,6 @@ def test_change_secret_pairing_bytes_success(mock_card):
 def test_change_secret_pairing_bytes_invalid_length(mock_card):
     with pytest.raises(ValueError, match="Pairing secret must be 32 bytes."):
         change_secret(mock_card, b'a' * 31, constants.PinType.PAIRING)
-
-
-@patch('keycard.commands.change_secret.generate_pairing_token')
-def test_change_secret_pairing_str_success(mock_generate, mock_card):
-    mock_generate.return_value = bytes(32)
-    change_secret(mock_card, 'pairingtoken', constants.PinType.PAIRING)
-    mock_generate.assert_called_once_with('pairingtoken')
-    mock_card.send_secure_apdu.assert_called_once_with(
-        ins=constants.INS_CHANGE_SECRET,
-        p1=constants.PinType.PAIRING.value,
-        data=mock_generate.return_value
-    )
 
 
 def test_change_secret_raises_apdu_error(mock_card):

@@ -48,7 +48,10 @@ class SignatureResult:
     @property
     def signature_der(self) -> bytes:
         signature: bytes = util.sigencode_der(
-            int.from_bytes(self.r), int.from_bytes(self.s), self.recovery_id)
+            int.from_bytes(self.r, 'big'),
+            int.from_bytes(self.s, 'big'),
+            self.recovery_id
+        )
         return signature
 
     def _recover_public_key(self, digest: bytes) -> bytes:
@@ -60,7 +63,8 @@ class SignatureResult:
             digest,
             SECP256k1,
             sigdecode=util.sigdecode_der)
-        return public_key.to_string()
+        public_key_bytes: bytes = public_key.to_string()
+        return public_key_bytes
 
     def _recover_v(self, digest: bytes) -> int:
         if self.public_key is None:

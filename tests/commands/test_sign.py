@@ -1,4 +1,6 @@
+import sys
 import pytest
+
 from unittest import mock
 
 from keycard.commands.sign import sign
@@ -8,11 +10,12 @@ from keycard.parsing.keypath import KeyPath
 
 
 def test_sign_current_key(card):
+    sign_module = sys.modules['keycard.commands.sign']
     digest = b'\xAA' * 32
     raw = b'\x01' * 64 + b'\x1f'
     encoded = b'\x80' + bytes([len(raw)]) + raw
     card.send_secure_apdu.return_value = encoded
-    with mock.patch("keycard.commands.sign.SignatureResult"):
+    with mock.patch.object(sign_module, "SignatureResult"):
         sign(card, digest)
 
         card.send_secure_apdu.assert_called_once_with(
@@ -24,6 +27,7 @@ def test_sign_current_key(card):
 
 
 def test_sign_with_derivation_path(card):
+    sign_module = sys.modules['keycard.commands.sign']
     digest = bytes(32)
     raw = bytes(65)
     encoded = b'\x80' + bytes([len(raw)]) + raw
@@ -31,7 +35,7 @@ def test_sign_with_derivation_path(card):
     key_path = KeyPath("m/44'/60'/0'/0/0")
     expected_data = digest + key_path.data
 
-    with mock.patch("keycard.commands.sign.SignatureResult"):
+    with mock.patch.object(sign_module, "SignatureResult"):
         sign(
             card,
             digest,

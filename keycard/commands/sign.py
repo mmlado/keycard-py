@@ -88,7 +88,11 @@ def sign(
     if response.startswith(b'\xA0'):
         outer = tlv.parse_tlv(response)
         inner = tlv.parse_tlv(outer[0xA0][0])
-        der_bytes = b'\x30' + len(inner[0x30][0]).to_bytes() + inner[0x30][0]
+        der_bytes = (
+            b'\x30' +
+            len(inner[0x30][0]).to_bytes(1, 'big') +
+            inner[0x30][0]
+        )
         signature = sigdecode_der(der_bytes, 0)
         r, s = signature
         pub = inner.get(0x80, [None])[0]
