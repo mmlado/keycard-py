@@ -1,6 +1,6 @@
 import pytest
 from keycard.constants import INS_GENERATE_MNEMONIC
-from keycard.commands.generate_menmonic import generate_mnemonic
+from keycard.commands.generate_mnemonic import generate_mnemonic
 
 
 def test_generate_mnemonic_valid(card):
