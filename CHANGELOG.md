@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Support Pairing Mode for Keycard version 3.2
 
+### Fixed
+
+- Older versions not supported. Python 3.10+ now supported
+
 ## [0.3.0] - 2025-08-24
 
 ### Changed
