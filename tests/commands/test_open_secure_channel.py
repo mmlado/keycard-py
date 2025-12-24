@@ -1,3 +1,4 @@
+import sys
 import pytest
 from unittest.mock import MagicMock, patch
 from ecdsa import SECP256k1
@@ -7,14 +8,43 @@ from keycard.commands.open_secure_channel import open_secure_channel
 from keycard.exceptions import APDUError
 
 
-@patch('keycard.commands.open_secure_channel.SecureChannel')
-@patch('keycard.commands.open_secure_channel.VerifyingKey')
-@patch('keycard.commands.open_secure_channel.ECDH')
-def test_open_secure_channel_success(
-    mock_ecdh,
-    mock_verifying_key,
-    mock_secure_channel
-):
+@pytest.fixture
+def mock_ecdsa():
+    open_secure_channel_module = sys.modules[
+        'keycard.commands.open_secure_channel'
+    ]
+    with (
+        patch.object(
+            open_secure_channel_module,
+            'SecureChannel'
+        ) as mock_secure_channel,
+        patch.object(
+            open_secure_channel_module,
+            'VerifyingKey'
+        ) as mock_verifying_key,
+        patch.object(
+            open_secure_channel_module,
+            'ECDH'
+        ) as mock_ecdh,
+        patch.object(
+            open_secure_channel_module,
+            'SigningKey'
+        ) as mock_signing_key,
+    ):
+        yield {
+            'secure_channel': mock_secure_channel,
+            'verifying_key': mock_verifying_key,
+            'ecdh': mock_ecdh,
+            'signing_key': mock_signing_key,
+        }
+
+
+def test_open_secure_channel_success(mock_ecdsa):
+    mock_verifying_key = mock_ecdsa['verifying_key']
+    mock_ecdh = mock_ecdsa['ecdh']
+    mock_signing_key = mock_ecdsa['signing_key']
+    mock_secure_channel = mock_ecdsa['secure_channel']
+
     pairing_index = 1
     pairing_key = b'pairing_key'
     card = MagicMock(spec=CardInterface)
@@ -24,6 +54,12 @@ def test_open_secure_channel_success(
     seed_iv = b'B' * 16
     response_data = salt + seed_iv
     card.send_apdu.return_value = response_data
+
+    # Mock SigningKey.generate
+    mock_signing_key_instance = MagicMock()
+    mock_signing_key_instance.verifying_key.to_string.return_value = \
+        b'\x04' + b'\x02' * 64
+    mock_signing_key.generate.return_value = mock_signing_key_instance
 
     mock_verifying_key.from_string.return_value = MagicMock()
     mock_ecdh_instance = MagicMock()
@@ -51,7 +87,15 @@ def test_open_secure_channel_success(
     assert result == 'secure_session'
 
 
-def test_open_secure_channel_raises_apdu_error(card):
+def test_open_secure_channel_raises_apdu_error(card, mock_ecdsa):
+    mock_signing_key = mock_ecdsa['signing_key']
+
+    # Mock SigningKey.generate
+    mock_signing_key_instance = MagicMock()
+    mock_signing_key_instance.verifying_key.to_string.return_value = \
+        b'\x04' + b'\x02' * 64
+    mock_signing_key.generate.return_value = mock_signing_key_instance
+
     pairing_index = 1
     pairing_key = b'pairing_key'
     card.card_public_key = b'\x04' + b'\x01' * 64

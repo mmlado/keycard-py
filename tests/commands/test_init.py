@@ -1,3 +1,4 @@
+import sys
 import pytest
 from unittest.mock import MagicMock, patch
 from keycard.commands.init import init
@@ -13,25 +14,30 @@ CARD_PUBLIC_KEY = b'\x04' + b'\x00' * 64  # Valid uncompressed pubkey format
 
 @pytest.fixture
 def ecc_patches():
+    init_module = sys.modules['keycard.commands.init']
     with (
-        patch('keycard.commands.init.urandom', return_value=b'\x00' * 16),
-        patch(
-            'keycard.commands.init.aes_cbc_encrypt',
-            side_effect=lambda k, iv, pt: b'\xAA' * len(pt)
+        patch.object(init_module, 'urandom', return_value=b'\x00' * 16),
+        patch.object(
+            init_module,
+            'aes_cbc_encrypt',
+            side_effect=lambda k, iv,
+            pt: b'\xAA' * len(pt)
         ),
-        patch('keycard.commands.init.SigningKey.generate') as mock_gen,
-        patch('keycard.commands.init.VerifyingKey.from_string') as mock_parse,
-        patch('keycard.commands.init.ECDH') as mock_ecdh,
+        patch.object(init_module, 'SigningKey') as mock_signing_key_cls,
+        patch.object(init_module, 'VerifyingKey') as mock_verifying_key_cls,
+        patch.object(init_module, 'ECDH') as mock_ecdh_cls,
     ):
+        mock_gen = mock_signing_key_cls.generate
         fake_privkey = MagicMock()
         fake_privkey.verifying_key.to_string.return_value = b'\x01' * 65
         mock_gen.return_value = fake_privkey
 
+        mock_parse = mock_verifying_key_cls.from_string
         mock_parse.return_value = 'parsed-pubkey'
 
         ecdh_instance = MagicMock()
         ecdh_instance.generate_sharedsecret_bytes.return_value = b'\xBB' * 32
-        mock_ecdh.return_value = ecdh_instance
+        mock_ecdh_cls.return_value = ecdh_instance
 
         yield
 

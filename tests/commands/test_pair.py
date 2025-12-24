@@ -1,5 +1,7 @@
+import sys
 import pytest
 import hashlib
+
 from unittest.mock import patch
 
 from keycard.constants import INS_PAIR, PairingMode
@@ -9,7 +11,8 @@ from keycard.exceptions import APDUError, InvalidResponseError
 
 @pytest.fixture
 def mock_urandom():
-    with patch('keycard.commands.pair.urandom', return_value=b'\x01' * 32):
+    pair_module = sys.modules['keycard.commands.pair']
+    with patch.object(pair_module, 'urandom', return_value=b'\x01' * 32):
         yield
 
 
