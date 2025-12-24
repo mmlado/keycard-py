@@ -154,7 +154,7 @@ sends the ephemeral public key, and receives cryptographic material
 from the card to derive a secure session.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#keycard.commands.SecureChannel" title="keycard.secure_channel.SecureChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecureChannel</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecureChannel</span></code></span></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -170,7 +170,7 @@ pairing slot.</p></li>
 <dd class="field-odd"><p>A newly established secure session with the card.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#keycard.commands.SecureChannel" title="keycard.commands.SecureChannel">SecureChannel</a></p>
+<dd class="field-even"><p>SecureChannel</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -241,7 +241,7 @@ and returns it.</p>
 </p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#keycard.commands.ApplicationInfo" title="keycard.commands.ApplicationInfo">ApplicationInfo</a></p>
+<dd class="field-even"><p><a class="reference internal" href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo" title="keycard.parsing.application_info.ApplicationInfo">ApplicationInfo</a></p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns a status word indicating failure.</p>
@@ -337,1898 +337,6 @@ and raises an error if blocked or another APDU error occurs.</p>
 </section>
 <section id="module-keycard.commands">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-keycard.commands" title="Link to this heading">¶</a></h2>
-<dl class="py exception">
-<dt class="sig sig-object py" id="keycard.commands.APDUError">
-<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">APDUError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.APDUError" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="keycard.html#keycard.exceptions.KeyCardError" title="keycard.exceptions.KeyCardError"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeyCardError</span></code></a></p>
-<p>Raised when APDU returns non-success status word.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="keycard.commands.ApplicationInfo">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">ApplicationInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">capabilities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ecc_public_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance_uid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_uid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version_major</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version_minor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ApplicationInfo" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Represents parsed application information from a TLV-encoded response.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.ApplicationInfo.capabilities">
-<span class="sig-name descname"><span class="pre">capabilities</span></span><a class="headerlink" href="#keycard.commands.ApplicationInfo.capabilities" title="Link to this definition">¶</a></dt>
-<dd><p>Parsed capabilities value, if present.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Optional[int]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.ApplicationInfo.ecc_public_key">
-<span class="sig-name descname"><span class="pre">ecc_public_key</span></span><a class="headerlink" href="#keycard.commands.ApplicationInfo.ecc_public_key" title="Link to this definition">¶</a></dt>
-<dd><p>ECC public key bytes, if present.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Optional[bytes]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.ApplicationInfo.instance_uid">
-<span class="sig-name descname"><span class="pre">instance_uid</span></span><a class="headerlink" href="#keycard.commands.ApplicationInfo.instance_uid" title="Link to this definition">¶</a></dt>
-<dd><p>Unique identifier for the application
-instance, if present.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Optional[bytes]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.ApplicationInfo.key_uid">
-<span class="sig-name descname"><span class="pre">key_uid</span></span><a class="headerlink" href="#keycard.commands.ApplicationInfo.key_uid" title="Link to this definition">¶</a></dt>
-<dd><p>Unique identifier for the key, if present.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Optional[bytes]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.ApplicationInfo.version_major">
-<span class="sig-name descname"><span class="pre">version_major</span></span><a class="headerlink" href="#keycard.commands.ApplicationInfo.version_major" title="Link to this definition">¶</a></dt>
-<dd><p>Major version number of the application.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.ApplicationInfo.version_minor">
-<span class="sig-name descname"><span class="pre">version_minor</span></span><a class="headerlink" href="#keycard.commands.ApplicationInfo.version_minor" title="Link to this definition">¶</a></dt>
-<dd><p>Minor version number of the application.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">capabilities</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id1">
-<span class="sig-name descname"><span class="pre">ecc_public_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id2">
-<span class="sig-name descname"><span class="pre">instance_uid</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="keycard.commands.ApplicationInfo.is_initialized">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_initialized</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.commands.ApplicationInfo.is_initialized" title="Link to this definition">¶</a></dt>
-<dd><p>Checks if the application is initialized based on the presence of
-the key_uid.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True if the key_uid is present, False otherwise.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id3">
-<span class="sig-name descname"><span class="pre">key_uid</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#id3" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.ApplicationInfo.parse">
-<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ApplicationInfo.parse" title="Link to this definition">¶</a></dt>
-<dd><p>Parses a byte sequence containing TLV-encoded application information
-and returns an ApplicationInfo instance.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo" title="keycard.parsing.application_info.ApplicationInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApplicationInfo</span></code></a></span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>data</strong> (<em>bytes</em>) – The TLV-encoded response data to parse.</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><dl class="simple">
-<dt>An instance populated with the parsed application</dt><dd><p>information fields.</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#keycard.commands.ApplicationInfo" title="keycard.commands.ApplicationInfo">ApplicationInfo</a></p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>The function extracts the following fields from the TLV data:</dt><dd><ul class="simple">
-<li><p>version_major (int): Major version number (from tag 0x02).</p></li>
-<li><p>version_minor (int): Minor version number (from tag 0x02).</p></li>
-<li><p>instance_uid (bytes or None): Instance UID (from tag 0x8F).</p></li>
-<li><p>key_uid (bytes or None): Key UID (from tag 0x8E).</p></li>
-<li><p>ecc_public_key (bytes or None): ECC public key (from tag 0x80).</p></li>
-<li><dl class="simple">
-<dt>capabilities (Capabilities or None): Capabilities object</dt><dd><p>(from tag 0x8D).</p>
-</dd>
-</dl>
-</li>
-</ul>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Any exceptions raised by ApplicationInfo._parse_response or</strong> – </p></li>
-<li><p><strong>Capabilities.parse.</strong> – </p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id4">
-<span class="sig-name descname"><span class="pre">version_major</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#id4" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id5">
-<span class="sig-name descname"><span class="pre">version_minor</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#id5" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="keycard.commands.CardInterface">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">CardInterface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.CardInterface" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
-<p>Abstract base class representing a Keycard interface for command functions.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.CardInterface.card_public_key">
-<span class="sig-name descname"><span class="pre">card_public_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#keycard.commands.CardInterface.card_public_key" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="keycard.commands.CardInterface.is_initialized">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_initialized</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.commands.CardInterface.is_initialized" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="keycard.commands.CardInterface.is_pin_verified">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_pin_verified</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.commands.CardInterface.is_pin_verified" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="keycard.commands.CardInterface.is_secure_channel_open">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_secure_channel_open</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.commands.CardInterface.is_secure_channel_open" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="keycard.commands.CardInterface.is_selected">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_selected</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.commands.CardInterface.is_selected" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.CardInterface.send_apdu">
-<span class="sig-name descname"><span class="pre">send_apdu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">b''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cla</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.CardInterface.send_apdu" title="Link to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.CardInterface.send_secure_apdu">
-<span class="sig-name descname"><span class="pre">send_secure_apdu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">b''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.CardInterface.send_secure_apdu" title="Link to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="keycard.commands.DerivationOption">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">DerivationOption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.DerivationOption" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.DerivationOption.CURRENT">
-<span class="sig-name descname"><span class="pre">CURRENT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#keycard.commands.DerivationOption.CURRENT" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.DerivationOption.DERIVE">
-<span class="sig-name descname"><span class="pre">DERIVE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></span><a class="headerlink" href="#keycard.commands.DerivationOption.DERIVE" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.DerivationOption.DERIVE_AND_MAKE_CURRENT">
-<span class="sig-name descname"><span class="pre">DERIVE_AND_MAKE_CURRENT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></span><a class="headerlink" href="#keycard.commands.DerivationOption.DERIVE_AND_MAKE_CURRENT" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.DerivationOption.PINLESS">
-<span class="sig-name descname"><span class="pre">PINLESS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></span><a class="headerlink" href="#keycard.commands.DerivationOption.PINLESS" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="keycard.commands.DerivationSource">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">DerivationSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.DerivationSource" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.DerivationSource.CURRENT">
-<span class="sig-name descname"><span class="pre">CURRENT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">128</span></span><a class="headerlink" href="#keycard.commands.DerivationSource.CURRENT" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.DerivationSource.MASTER">
-<span class="sig-name descname"><span class="pre">MASTER</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#keycard.commands.DerivationSource.MASTER" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.DerivationSource.PARENT">
-<span class="sig-name descname"><span class="pre">PARENT</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">64</span></span><a class="headerlink" href="#keycard.commands.DerivationSource.PARENT" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="keycard.commands.ECDH">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">ECDH</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">private_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ECDH" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Elliptic-curve Diffie-Hellman (ECDH). A key agreement protocol.</p>
-<p>Allows two parties, each having an elliptic-curve public-private key
-pair, to establish a shared secret over an insecure channel</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.ECDH.generate_private_key">
-<span class="sig-name descname"><span class="pre">generate_private_key</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ECDH.generate_private_key" title="Link to this definition">¶</a></dt>
-<dd><p>Generate local private key for ecdh operation with curve that was set.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>NoCurveError</strong> – Curve must be set before key generation.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>public (verifying) key from this private key.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#keycard.commands.VerifyingKey" title="keycard.commands.VerifyingKey">VerifyingKey</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.ECDH.generate_sharedsecret">
-<span class="sig-name descname"><span class="pre">generate_sharedsecret</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ECDH.generate_sharedsecret" title="Link to this definition">¶</a></dt>
-<dd><p>Generate shared secret from local private key and remote public key.</p>
-<p>The objects needs to have both private key and received public key
-before generation is allowed.</p>
-<p>It’s the same for local and remote party,
-shared secret(local private key, remote public key) ==
-shared secret(local public key, remote private key)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>InvalidCurveError</strong> – public_key curve not the same as self.curve</p></li>
-<li><p><strong>NoKeyError</strong> – public_key or private_key is not set</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>shared secret</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.ECDH.generate_sharedsecret_bytes">
-<span class="sig-name descname"><span class="pre">generate_sharedsecret_bytes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ECDH.generate_sharedsecret_bytes" title="Link to this definition">¶</a></dt>
-<dd><p>Generate shared secret from local private key and remote public key.</p>
-<p>The objects needs to have both private key and received public key
-before generation is allowed.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>InvalidCurveError</strong> – public_key curve not the same as self.curve</p></li>
-<li><p><strong>NoKeyError</strong> – public_key or private_key is not set</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>shared secret</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bytes</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.ECDH.get_public_key">
-<span class="sig-name descname"><span class="pre">get_public_key</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ECDH.get_public_key" title="Link to this definition">¶</a></dt>
-<dd><p>Provides a public key that matches the local private key.</p>
-<p>Needs to be sent to the remote party.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>public (verifying) key from local private key.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#keycard.commands.VerifyingKey" title="keycard.commands.VerifyingKey">VerifyingKey</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.ECDH.load_private_key">
-<span class="sig-name descname"><span class="pre">load_private_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">private_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ECDH.load_private_key" title="Link to this definition">¶</a></dt>
-<dd><p>Load private key from SigningKey (keys.py) object.</p>
-<p>Needs to have the same curve as was set with set_curve method.
-If curve is not set - it sets from this SigningKey</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>private_key</strong> (<a class="reference internal" href="#keycard.commands.SigningKey" title="keycard.commands.SigningKey"><em>SigningKey</em></a>) – Initialised SigningKey class</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>InvalidCurveError</strong> – private_key curve not the same as self.curve</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>public (verifying) key from this private key.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#keycard.commands.VerifyingKey" title="keycard.commands.VerifyingKey">VerifyingKey</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.ECDH.load_private_key_bytes">
-<span class="sig-name descname"><span class="pre">load_private_key_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">private_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ECDH.load_private_key_bytes" title="Link to this definition">¶</a></dt>
-<dd><p>Load private key from byte string.</p>
-<p>Uses current curve and checks if the provided key matches
-the curve of ECDH key agreement.
-Key loads via from_string method of SigningKey class</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>private_key</strong> (<span class="xref std std-term">bytes-like object</span>) – private key in bytes string format</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>NoCurveError</strong> – Curve must be set before loading.</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>public (verifying) key from this private key.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#keycard.commands.VerifyingKey" title="keycard.commands.VerifyingKey">VerifyingKey</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.ECDH.load_private_key_der">
-<span class="sig-name descname"><span class="pre">load_private_key_der</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">private_key_der</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ECDH.load_private_key_der" title="Link to this definition">¶</a></dt>
-<dd><p>Load private key from DER byte string.</p>
-<p>Compares the curve of the DER-encoded key with the ECDH set curve,
-uses the former if unset.</p>
-<p>Note, the only DER format supported is the RFC5915
-Look at keys.py:SigningKey.from_der()</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>private_key_der</strong> (<em>string</em>) – string with the DER encoding of private ECDSA
-key</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>InvalidCurveError</strong> – private_key curve not the same as self.curve</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>public (verifying) key from this private key.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#keycard.commands.VerifyingKey" title="keycard.commands.VerifyingKey">VerifyingKey</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.ECDH.load_private_key_pem">
-<span class="sig-name descname"><span class="pre">load_private_key_pem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">private_key_pem</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ECDH.load_private_key_pem" title="Link to this definition">¶</a></dt>
-<dd><p>Load private key from PEM string.</p>
-<p>Compares the curve of the DER-encoded key with the ECDH set curve,
-uses the former if unset.</p>
-<p>Note, the only PEM format supported is the RFC5915
-Look at keys.py:SigningKey.from_pem()
-it needs to have <cite>EC PRIVATE KEY</cite> section</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>private_key_pem</strong> (<em>string</em>) – string with PEM-encoded private ECDSA key</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>InvalidCurveError</strong> – private_key curve not the same as self.curve</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>public (verifying) key from this private key.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#keycard.commands.VerifyingKey" title="keycard.commands.VerifyingKey">VerifyingKey</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.ECDH.load_received_public_key">
-<span class="sig-name descname"><span class="pre">load_received_public_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">public_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ECDH.load_received_public_key" title="Link to this definition">¶</a></dt>
-<dd><p>Load public key from VerifyingKey (keys.py) object.</p>
-<p>Needs to have the same curve as set as current for ecdh operation.
-If curve is not set - it sets it from VerifyingKey.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>public_key</strong> (<a class="reference internal" href="#keycard.commands.VerifyingKey" title="keycard.commands.VerifyingKey"><em>VerifyingKey</em></a>) – Initialised VerifyingKey class</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>InvalidCurveError</strong> – public_key curve not the same as self.curve</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.ECDH.load_received_public_key_bytes">
-<span class="sig-name descname"><span class="pre">load_received_public_key_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">public_key_str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_encodings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ECDH.load_received_public_key_bytes" title="Link to this definition">¶</a></dt>
-<dd><p>Load public key from byte string.</p>
-<p>Uses current curve and checks if key length corresponds to
-the current curve.
-Key loads via from_string method of VerifyingKey class</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>public_key_str</strong> (<span class="xref std std-term">bytes-like object</span>) – public key in bytes string format</p></li>
-<li><p><strong>valid_encodings</strong> (<span class="xref std std-term">set-like object</span>) – list of acceptable point encoding formats,
-supported ones are: <span class="xref std std-term">uncompressed</span>, <span class="xref std std-term">compressed</span>,
-<span class="xref std std-term">hybrid</span>, and <span class="xref std std-term">raw encoding</span> (specified with <code class="docutils literal notranslate"><span class="pre">raw</span></code>
-name). All formats by default (specified with <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.ECDH.load_received_public_key_der">
-<span class="sig-name descname"><span class="pre">load_received_public_key_der</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">public_key_der</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ECDH.load_received_public_key_der" title="Link to this definition">¶</a></dt>
-<dd><p>Load public key from DER byte string.</p>
-<p>Compares the curve of the DER-encoded key with the ECDH set curve,
-uses the former if unset.</p>
-<p>Note, the only DER format supported is the RFC5912
-Look at keys.py:VerifyingKey.from_der()</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>public_key_der</strong> (<em>string</em>) – string with the DER encoding of public ECDSA key</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>InvalidCurveError</strong> – public_key curve not the same as self.curve</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.ECDH.load_received_public_key_pem">
-<span class="sig-name descname"><span class="pre">load_received_public_key_pem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">public_key_pem</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ECDH.load_received_public_key_pem" title="Link to this definition">¶</a></dt>
-<dd><p>Load public key from PEM string.</p>
-<p>Compares the curve of the PEM-encoded key with the ECDH set curve,
-uses the former if unset.</p>
-<p>Note, the only PEM format supported is the RFC5912
-Look at keys.py:VerifyingKey.from_pem()</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>public_key_pem</strong> (<em>string</em>) – string with PEM-encoded public ECDSA key</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>InvalidCurveError</strong> – public_key curve not the same as self.curve</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.ECDH.set_curve">
-<span class="sig-name descname"><span class="pre">set_curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key_curve</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ECDH.set_curve" title="Link to this definition">¶</a></dt>
-<dd><p>Set the working curve for ecdh operations.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>key_curve</strong> (<em>Curve</em>) – curve from <cite>curves</cite> module</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="keycard.commands.ExportedKey">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">ExportedKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">public_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">private_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chain_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.ExportedKey" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.ExportedKey.chain_code">
-<span class="sig-name descname"><span class="pre">chain_code</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#keycard.commands.ExportedKey.chain_code" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="keycard.commands.ExportedKey.has_private">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">has_private</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.commands.ExportedKey.has_private" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="keycard.commands.ExportedKey.is_extended">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_extended</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.commands.ExportedKey.is_extended" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.ExportedKey.private_key">
-<span class="sig-name descname"><span class="pre">private_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#keycard.commands.ExportedKey.private_key" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.ExportedKey.public_key">
-<span class="sig-name descname"><span class="pre">public_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#keycard.commands.ExportedKey.public_key" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="keycard.commands.InvalidResponseError">
-<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">InvalidResponseError</span></span><a class="headerlink" href="#keycard.commands.InvalidResponseError" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="keycard.html#keycard.exceptions.KeyCardError" title="keycard.exceptions.KeyCardError"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeyCardError</span></code></a></p>
-<p>Raised when response parsing fails.</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="keycard.commands.InvalidStateError">
-<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">InvalidStateError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.InvalidStateError" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="keycard.html#keycard.exceptions.KeyCardError" title="keycard.exceptions.KeyCardError"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeyCardError</span></code></a></p>
-<p>Raised when a precondition is not met.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="keycard.commands.KeyExportOption">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">KeyExportOption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.KeyExportOption" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.KeyExportOption.EXTENDED_PUBLIC">
-<span class="sig-name descname"><span class="pre">EXTENDED_PUBLIC</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></span><a class="headerlink" href="#keycard.commands.KeyExportOption.EXTENDED_PUBLIC" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.KeyExportOption.PRIVATE_AND_PUBLIC">
-<span class="sig-name descname"><span class="pre">PRIVATE_AND_PUBLIC</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#keycard.commands.KeyExportOption.PRIVATE_AND_PUBLIC" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.KeyExportOption.PUBLIC_ONLY">
-<span class="sig-name descname"><span class="pre">PUBLIC_ONLY</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></span><a class="headerlink" href="#keycard.commands.KeyExportOption.PUBLIC_ONLY" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="keycard.commands.KeyPath">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">KeyPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">DerivationSource.MASTER</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.KeyPath" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.KeyPath.MAX_COMPONENTS">
-<span class="sig-name descname"><span class="pre">MAX_COMPONENTS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></span><a class="headerlink" href="#keycard.commands.KeyPath.MAX_COMPONENTS" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.KeyPath.to_string">
-<span class="sig-name descname"><span class="pre">to_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.KeyPath.to_string" title="Link to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="keycard.commands.NotSelectedError">
-<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">NotSelectedError</span></span><a class="headerlink" href="#keycard.commands.NotSelectedError" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="keycard.html#keycard.exceptions.KeyCardError" title="keycard.exceptions.KeyCardError"><code class="xref py py-class docutils literal notranslate"><span class="pre">KeyCardError</span></code></a></p>
-<p>Raised when trying to use card before select().</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="keycard.commands.SecureChannel">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">SecureChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enc_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mac_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">authenticated</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SecureChannel" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>SecureChannel manages a secure communication channel using AES encryption
-and MAC authentication.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.SecureChannel.enc_key">
-<span class="sig-name descname"><span class="pre">enc_key</span></span><a class="headerlink" href="#keycard.commands.SecureChannel.enc_key" title="Link to this definition">¶</a></dt>
-<dd><p>The AES encryption key for the session.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bytes</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.SecureChannel.mac_key">
-<span class="sig-name descname"><span class="pre">mac_key</span></span><a class="headerlink" href="#keycard.commands.SecureChannel.mac_key" title="Link to this definition">¶</a></dt>
-<dd><p>The AES MAC key for message authentication.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bytes</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.SecureChannel.iv">
-<span class="sig-name descname"><span class="pre">iv</span></span><a class="headerlink" href="#keycard.commands.SecureChannel.iv" title="Link to this definition">¶</a></dt>
-<dd><p>The initialization vector for AES operations.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bytes</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.SecureChannel.authenticated">
-<span class="sig-name descname"><span class="pre">authenticated</span></span><a class="headerlink" href="#keycard.commands.SecureChannel.authenticated" title="Link to this definition">¶</a></dt>
-<dd><p>Indicates if the session is authenticated.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id6">
-<span class="sig-name descname"><span class="pre">authenticated</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#id6" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id7">
-<span class="sig-name descname"><span class="pre">enc_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#id7" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id8">
-<span class="sig-name descname"><span class="pre">iv</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#id8" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id9">
-<span class="sig-name descname"><span class="pre">mac_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#id9" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.SecureChannel.open">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shared_secret</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">salt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed_iv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SecureChannel.open" title="Link to this definition">¶</a></dt>
-<dd><p>Opens a new SecureChannel using the provided cryptographic parameters.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#keycard.commands.SecureChannel" title="keycard.secure_channel.SecureChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecureChannel</span></code></a></span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>shared_secret</strong> (<em>bytes</em>) – The shared secret used for key derivation.</p></li>
-<li><p><strong>pairing_key</strong> (<em>bytes</em>) – The pairing key used for key derivation.</p></li>
-<li><p><strong>salt</strong> (<em>bytes</em>) – The salt value used in the key derivation process.</p></li>
-<li><p><strong>seed_iv</strong> (<em>bytes</em>) – The initialization vector (IV) to seed the
-session.</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><dl class="simple">
-<dt>An instance of SecureChannel initialized with</dt><dd><p>derived encryption and MAC keys, and the provided IV.</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#keycard.commands.SecureChannel" title="keycard.commands.SecureChannel">SecureChannel</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.SecureChannel.unwrap_response">
-<span class="sig-name descname"><span class="pre">unwrap_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SecureChannel.unwrap_response" title="Link to this definition">¶</a></dt>
-<dd><p>Unwraps and verifies a secure channel response.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>response</strong> (<em>bytes</em>) – The encrypted response bytes to unwrap.</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><dl class="simple">
-<dt>A tuple containing the decrypted plaintext</dt><dd><p>(excluding the status word) and the status word as an integer.</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple[bytes, int]</p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ValueError</strong> – If the secure channel is not authenticated.</p></li>
-<li><p><strong>ValueError</strong> – If the response length is invalid.</p></li>
-<li><p><strong>ValueError</strong> – If the MAC verification fails.</p></li>
-<li><p><strong>ValueError</strong> – If the decrypted plaintext is too short to contain a
-    status word.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.SecureChannel.wrap_apdu">
-<span class="sig-name descname"><span class="pre">wrap_apdu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cla</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SecureChannel.wrap_apdu" title="Link to this definition">¶</a></dt>
-<dd><p>Wraps an APDU command with secure channel encryption and MAC.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>cla</strong> (<em>int</em>) – The APDU class byte.</p></li>
-<li><p><strong>ins</strong> (<em>int</em>) – The APDU instruction byte.</p></li>
-<li><p><strong>p1</strong> (<em>int</em>) – The APDU parameter 1 byte.</p></li>
-<li><p><strong>p2</strong> (<em>int</em>) – The APDU parameter 2 byte.</p></li>
-<li><p><strong>data</strong> (<em>bytes</em>) – The APDU data field to be encrypted.</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><dl class="simple">
-<dt>The wrapped APDU as a tuple</dt><dd><p>containing the class, instruction, parameter 1, parameter 2,
-and the concatenated MAC and encrypted data.</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple[int, int, int, int, bytes]</p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ValueError</strong> – If the secure channel is not authenticated and the
-    instruction is not 0x11.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="keycard.commands.SignatureResult">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">SignatureResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recovery_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SignatureResult" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.SignatureResult.algo">
-<span class="sig-name descname"><span class="pre">algo</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="keycard.html#keycard.constants.SigningAlgorithm" title="keycard.constants.SigningAlgorithm"><span class="pre">SigningAlgorithm</span></a></span><a class="headerlink" href="#keycard.commands.SignatureResult.algo" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.SignatureResult.public_key">
-<span class="sig-name descname"><span class="pre">public_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#keycard.commands.SignatureResult.public_key" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.SignatureResult.r">
-<span class="sig-name descname"><span class="pre">r</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#keycard.commands.SignatureResult.r" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.SignatureResult.recovery_id">
-<span class="sig-name descname"><span class="pre">recovery_id</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#keycard.commands.SignatureResult.recovery_id" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.SignatureResult.s">
-<span class="sig-name descname"><span class="pre">s</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#keycard.commands.SignatureResult.s" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="keycard.commands.SignatureResult.signature">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">signature</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#keycard.commands.SignatureResult.signature" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="keycard.commands.SignatureResult.signature_der">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">signature_der</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#keycard.commands.SignatureResult.signature_der" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="keycard.commands.SigningAlgorithm">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">SigningAlgorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningAlgorithm" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.SigningAlgorithm.BLS12_381">
-<span class="sig-name descname"><span class="pre">BLS12_381</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></span><a class="headerlink" href="#keycard.commands.SigningAlgorithm.BLS12_381" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.SigningAlgorithm.ECDSA_SECP256K1">
-<span class="sig-name descname"><span class="pre">ECDSA_SECP256K1</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#keycard.commands.SigningAlgorithm.ECDSA_SECP256K1" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.SigningAlgorithm.EDDSA_ED25519">
-<span class="sig-name descname"><span class="pre">EDDSA_ED25519</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></span><a class="headerlink" href="#keycard.commands.SigningAlgorithm.EDDSA_ED25519" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="keycard.commands.SigningAlgorithm.SCHNORR_BIP340">
-<span class="sig-name descname"><span class="pre">SCHNORR_BIP340</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></span><a class="headerlink" href="#keycard.commands.SigningAlgorithm.SCHNORR_BIP340" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="keycard.commands.SigningKey">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">SigningKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_error__please_use_generate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class for handling keys that can create signatures (private keys).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Variables<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>curve</strong> (<em>Curve</em>) – The Curve over which all the
-cryptographic operations will take place</p></li>
-<li><p><strong>default_hashfunc</strong> – the function that will be used for hashing the
-data. Should implement the same API as <code class="xref py py-class docutils literal notranslate"><span class="pre">hashlib.sha1</span></code></p></li>
-<li><p><strong>baselen</strong> (<em>int</em>) – the length of a <span class="xref std std-term">raw encoding</span> of private key</p></li>
-<li><p><strong>verifying_key</strong> (<a class="reference internal" href="#keycard.commands.VerifyingKey" title="ecdsa.keys.VerifyingKey"><em>VerifyingKey</em></a>) – the public key
-associated with this private key</p></li>
-<li><p><strong>privkey</strong> (<em>Private_key</em>) – the actual private key</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.SigningKey.from_der">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_der</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_curve_encodings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.from_der" title="Link to this definition">¶</a></dt>
-<dd><p>Initialise from key stored in <span class="xref std std-term">DER</span> format.</p>
-<p>The DER formats supported are the un-encrypted RFC5915
-(the ssleay format) supported by OpenSSL, and the more common
-un-encrypted RFC5958 (the PKCS #8 format).</p>
-<p>Both formats contain an ASN.1 object following the syntax specified
-in RFC5915:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ECPrivateKey</span> <span class="p">:</span><span class="o">:=</span> <span class="n">SEQUENCE</span> <span class="p">{</span>
-  <span class="n">version</span>        <span class="n">INTEGER</span> <span class="p">{</span> <span class="n">ecPrivkeyVer1</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">}}</span> <span class="p">(</span><span class="n">ecPrivkeyVer1</span><span class="p">),</span>
-  <span class="n">privateKey</span>     <span class="n">OCTET</span> <span class="n">STRING</span><span class="p">,</span>
-  <span class="n">parameters</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="n">ECParameters</span> <span class="p">{{</span> <span class="n">NamedCurve</span> <span class="p">}}</span> <span class="n">OPTIONAL</span><span class="p">,</span>
-  <span class="n">publicKey</span>  <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">BIT</span> <span class="n">STRING</span> <span class="n">OPTIONAL</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p><cite>publicKey</cite> field is ignored completely (errors, if any, in it will
-be undetected).</p>
-<p>Two formats are supported for the <cite>parameters</cite> field: the named
-curve and the explicit encoding of curve parameters.
-In the legacy ssleay format, this implementation requires the optional
-<cite>parameters</cite> field to get the curve name. In PKCS #8 format, the curve
-is part of the PrivateKeyAlgorithmIdentifier.</p>
-<p>The PKCS #8 format includes an ECPrivateKey object as the <cite>privateKey</cite>
-field within a larger structure:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OneAsymmetricKey</span> <span class="p">:</span><span class="o">:=</span> <span class="n">SEQUENCE</span> <span class="p">{</span>
-    <span class="n">version</span>                   <span class="n">Version</span><span class="p">,</span>
-    <span class="n">privateKeyAlgorithm</span>       <span class="n">PrivateKeyAlgorithmIdentifier</span><span class="p">,</span>
-    <span class="n">privateKey</span>                <span class="n">PrivateKey</span><span class="p">,</span>
-    <span class="n">attributes</span>            <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="n">Attributes</span> <span class="n">OPTIONAL</span><span class="p">,</span>
-    <span class="o">...</span><span class="p">,</span>
-    <span class="p">[[</span><span class="mi">2</span><span class="p">:</span> <span class="n">publicKey</span>        <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">PublicKey</span> <span class="n">OPTIONAL</span> <span class="p">]],</span>
-    <span class="o">...</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>The <cite>attributes</cite> and <cite>publicKey</cite> fields are completely ignored; errors
-in them will not be detected.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>string</strong> (<span class="xref std std-term">bytes-like object</span>) – binary string with DER-encoded private ECDSA key</p></li>
-<li><p><strong>valid_curve_encodings</strong> (<span class="xref std std-term">set-like object</span>) – list of allowed encoding formats
-for curve parameters. By default (<code class="docutils literal notranslate"><span class="pre">None</span></code>) all are supported:
-<code class="docutils literal notranslate"><span class="pre">named_curve</span></code> and <code class="docutils literal notranslate"><span class="pre">explicit</span></code>.
-Ignored for EdDSA.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>MalformedPointError</strong> – if the length of encoding doesn’t match
-the provided curve or the encoded values is too large</p></li>
-<li><p><strong>RuntimeError</strong> – if the generation of public key from private
-key failed</p></li>
-<li><p><strong>UnexpectedDER</strong> – if the encoding of the DER file is incorrect</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Initialised SigningKey object</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#keycard.commands.SigningKey" title="keycard.commands.SigningKey">SigningKey</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.SigningKey.from_pem">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_pem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_curve_encodings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.from_pem" title="Link to this definition">¶</a></dt>
-<dd><p>Initialise from key stored in <span class="xref std std-term">PEM</span> format.</p>
-<p>The PEM formats supported are the un-encrypted RFC5915
-(the ssleay format) supported by OpenSSL, and the more common
-un-encrypted RFC5958 (the PKCS #8 format).</p>
-<p>The legacy format files have the header with the string
-<code class="docutils literal notranslate"><span class="pre">BEGIN</span> <span class="pre">EC</span> <span class="pre">PRIVATE</span> <span class="pre">KEY</span></code>.
-PKCS#8 files have the header <code class="docutils literal notranslate"><span class="pre">BEGIN</span> <span class="pre">PRIVATE</span> <span class="pre">KEY</span></code>.
-Encrypted files (ones that include the string
-<code class="docutils literal notranslate"><span class="pre">Proc-Type:</span> <span class="pre">4,ENCRYPTED</span></code>
-right after the PEM header) are not supported.</p>
-<p>See <a class="reference internal" href="#keycard.commands.SigningKey.from_der" title="keycard.commands.SigningKey.from_der"><code class="xref py py-func docutils literal notranslate"><span class="pre">from_der()</span></code></a> for ASN.1 syntax of the objects in
-this files.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>string</strong> (<em>str</em>) – text with PEM-encoded private ECDSA key</p></li>
-<li><p><strong>valid_curve_encodings</strong> (<span class="xref std std-term">set-like object</span>) – list of allowed encoding formats
-for curve parameters. By default (<code class="docutils literal notranslate"><span class="pre">None</span></code>) all are supported:
-<code class="docutils literal notranslate"><span class="pre">named_curve</span></code> and <code class="docutils literal notranslate"><span class="pre">explicit</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>MalformedPointError</strong> – if the length of encoding doesn’t match
-the provided curve or the encoded values is too large</p></li>
-<li><p><strong>RuntimeError</strong> – if the generation of public key from private
-key failed</p></li>
-<li><p><strong>UnexpectedDER</strong> – if the encoding of the PEM file is incorrect</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Initialised SigningKey object</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#keycard.commands.SigningKey" title="keycard.commands.SigningKey">SigningKey</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.SigningKey.from_secret_exponent">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_secret_exponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">secexp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NIST192p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.from_secret_exponent" title="Link to this definition">¶</a></dt>
-<dd><p>Create a private key from a random integer.</p>
-<p>Note: it’s a low level method, it’s recommended to use the
-<a class="reference internal" href="#keycard.commands.SigningKey.generate" title="keycard.commands.SigningKey.generate"><code class="xref py py-func docutils literal notranslate"><span class="pre">generate()</span></code></a> method to create private keys.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>secexp</strong> (<em>int</em>) – secret multiplier (the actual private key in ECDSA).
-Needs to be an integer between 1 and the curve order.</p></li>
-<li><p><strong>curve</strong> (<em>Curve</em>) – The curve on which the point needs to reside</p></li>
-<li><p><strong>hashfunc</strong> (<em>callable</em>) – The default hash function that will be used for
-signing, needs to implement the same interface
-as hashlib.sha1</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>MalformedPointError</strong> – when the provided secexp is too large
-or too small for the curve selected</p></li>
-<li><p><strong>RuntimeError</strong> – if the generation of public key from private
-key failed</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Initialised SigningKey object</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#keycard.commands.SigningKey" title="keycard.commands.SigningKey">SigningKey</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.SigningKey.from_string">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NIST192p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.from_string" title="Link to this definition">¶</a></dt>
-<dd><p>Decode the private key from <span class="xref std std-term">raw encoding</span>.</p>
-<p>Note: the name of this method is a misnomer coming from days of
-Python 2, when binary strings and character strings shared a type.
-In Python 3, the expected type is <cite>bytes</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>string</strong> (<span class="xref std std-term">bytes-like object</span>) – the raw encoding of the private key</p></li>
-<li><p><strong>curve</strong> (<em>Curve</em>) – The curve on which the point needs to reside</p></li>
-<li><p><strong>hashfunc</strong> (<em>callable</em>) – The default hash function that will be used for
-signing, needs to implement the same interface
-as hashlib.sha1</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>MalformedPointError</strong> – if the length of encoding doesn’t match
-the provided curve or the encoded values is too large</p></li>
-<li><p><strong>RuntimeError</strong> – if the generation of public key from private
-key failed</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Initialised SigningKey object</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#keycard.commands.SigningKey" title="keycard.commands.SigningKey">SigningKey</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.SigningKey.generate">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NIST192p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entropy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.generate" title="Link to this definition">¶</a></dt>
-<dd><p>Generate a random private key.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>curve</strong> (<em>Curve</em>) – The curve on which the point needs to reside, defaults
-to NIST192p</p></li>
-<li><p><strong>entropy</strong> (<em>callable</em>) – Source of randomness for generating the private keys,
-should provide cryptographically secure random numbers if the keys
-need to be secure. Uses os.urandom() by default.</p></li>
-<li><p><strong>hashfunc</strong> (<em>callable</em>) – The default hash function that will be used for
-signing, needs to implement the same interface
-as hashlib.sha1</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Initialised SigningKey object</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#keycard.commands.SigningKey" title="keycard.commands.SigningKey">SigningKey</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.SigningKey.get_verifying_key">
-<span class="sig-name descname"><span class="pre">get_verifying_key</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.get_verifying_key" title="Link to this definition">¶</a></dt>
-<dd><p>Return the VerifyingKey associated with this private key.</p>
-<p>Equivalent to reading the <cite>verifying_key</cite> field of an instance.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a public key that can be used to verify the signatures made
-with this SigningKey</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#keycard.commands.VerifyingKey" title="keycard.commands.VerifyingKey">VerifyingKey</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.SigningKey.sign">
-<span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entropy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigencode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">sigencode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.sign" title="Link to this definition">¶</a></dt>
-<dd><p>Create signature over data.</p>
-<p>Uses the probabilistic ECDSA algorithm for Weierstrass curves
-(NIST256p, etc.) and the deterministic EdDSA algorithm for the
-Edwards curves (Ed25519, Ed448).</p>
-<p>This method uses the standard ECDSA algorithm that requires a
-cryptographically secure random number generator.</p>
-<p>It’s recommended to use the <a class="reference internal" href="#keycard.commands.SigningKey.sign_deterministic" title="keycard.commands.SigningKey.sign_deterministic"><code class="xref py py-func docutils literal notranslate"><span class="pre">sign_deterministic()</span></code></a>
-method instead of this one.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<span class="xref std std-term">bytes-like object</span>) – data that will be hashed for signing</p></li>
-<li><p><strong>entropy</strong> (<em>callable</em>) – randomness source, <code class="xref py py-func docutils literal notranslate"><span class="pre">os.urandom()</span></code> by
-default. Ignored with EdDSA.</p></li>
-<li><p><strong>hashfunc</strong> (<em>callable</em>) – hash function to use for hashing the provided
-<code class="docutils literal notranslate"><span class="pre">data</span></code>.
-If unspecified the default hash function selected during
-object initialisation will be used (see
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">VerifyingKey.default_hashfunc</span></code>).
-Should behave like <code class="xref py py-func docutils literal notranslate"><span class="pre">sha1()</span></code> from <code class="xref py py-mod docutils literal notranslate"><span class="pre">hashlib</span></code>.
-The output length of the
-hash (in bytes) must not be longer than the length of the curve
-order (rounded up to the nearest byte), so using SHA256 with
-NIST256p is ok, but SHA256 with NIST192p is not. (In the 2**-96ish
-unlikely event of a hash output larger than the curve order, the
-hash will effectively be wrapped mod n).
-If you want to explicitly allow use of large hashes with small
-curves set the <code class="docutils literal notranslate"><span class="pre">allow_truncate</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>.
-Use <code class="docutils literal notranslate"><span class="pre">hashfunc=hashlib.sha1</span></code> to match openssl’s
-<code class="docutils literal notranslate"><span class="pre">-ecdsa-with-SHA1</span></code> mode,
-or <code class="docutils literal notranslate"><span class="pre">hashfunc=hashlib.sha256</span></code> for openssl-1.0.0’s
-<code class="docutils literal notranslate"><span class="pre">-ecdsa-with-SHA256</span></code>.
-Ignored for EdDSA</p></li>
-<li><p><strong>sigencode</strong> (<em>callable</em>) – function used to encode the signature.
-The function needs to accept three parameters: the two integers
-that are the signature and the order of the curve over which the
-signature was computed. It needs to return an encoded signature.
-See <code class="xref py py-func docutils literal notranslate"><span class="pre">sigencode_string()</span></code> and
-<code class="xref py py-func docutils literal notranslate"><span class="pre">sigencode_der()</span></code>
-as examples of such functions.
-Ignored for EdDSA</p></li>
-<li><p><strong>k</strong> (<em>int</em>) – a pre-selected nonce for calculating the signature.
-In typical use cases, it should be set to None (the default) to
-allow its generation from an entropy source.
-Ignored for EdDSA.</p></li>
-<li><p><strong>allow_truncate</strong> (<em>bool</em>) – if <code class="docutils literal notranslate"><span class="pre">True</span></code>, the provided digest can have
-bigger bit-size than the order of the curve, the extra bits (at
-the end of the digest) will be truncated. Use it when signing
-SHA-384 output using NIST256p or in similar situations. True by
-default.
-Ignored for EdDSA.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>RSZeroError</strong> – in the unlikely event when <em>r</em> parameter or
-<em>s</em> parameter of the created signature is equal 0, as that would
-leak the key. Caller should try a better entropy source, retry with
-different <code class="docutils literal notranslate"><span class="pre">k</span></code>, or use the
-<a class="reference internal" href="#keycard.commands.SigningKey.sign_deterministic" title="keycard.commands.SigningKey.sign_deterministic"><code class="xref py py-func docutils literal notranslate"><span class="pre">sign_deterministic()</span></code></a> in such case.</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>encoded signature of the hash of <cite>data</cite></p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bytes or sigencode function dependent type</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.SigningKey.sign_deterministic">
-<span class="sig-name descname"><span class="pre">sign_deterministic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigencode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">sigencode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_entropy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">b''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.sign_deterministic" title="Link to this definition">¶</a></dt>
-<dd><p>Create signature over data.</p>
-<p>For Weierstrass curves it uses the deterministic RFC6979 algorithm.
-For Edwards curves it uses the standard EdDSA algorithm.</p>
-<p>For ECDSA the data will be hashed using the <cite>hashfunc</cite> function before
-signing.
-For EdDSA the data will be hashed with the hash associated with the
-curve (SHA-512 for Ed25519 and SHAKE-256 for Ed448).</p>
-<p>This is the recommended method for performing signatures when hashing
-of data is necessary.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<span class="xref std std-term">bytes-like object</span>) – data to be hashed and computed signature over</p></li>
-<li><p><strong>hashfunc</strong> (<em>callable</em>) – hash function to use for computing the signature,
-if unspecified, the default hash function selected during
-object initialisation will be used (see
-<cite>VerifyingKey.default_hashfunc</cite>). The object needs to implement
-the same interface as hashlib.sha1.
-Ignored with EdDSA.</p></li>
-<li><p><strong>sigencode</strong> (<em>callable</em>) – function used to encode the signature.
-The function needs to accept three parameters: the two integers
-that are the signature and the order of the curve over which the
-signature was computed. It needs to return an encoded signature.
-See <cite>ecdsa.util.sigencode_string</cite> and <cite>ecdsa.util.sigencode_der</cite>
-as examples of such functions.
-Ignored with EdDSA.</p></li>
-<li><p><strong>extra_entropy</strong> (<span class="xref std std-term">bytes-like object</span>) – additional data that will be fed into the random
-number generator used in the RFC6979 process. Entirely optional.
-Ignored with EdDSA.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>encoded signature over <cite>data</cite></p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bytes or sigencode function dependent type</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.SigningKey.sign_digest">
-<span class="sig-name descname"><span class="pre">sign_digest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entropy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigencode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">sigencode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.sign_digest" title="Link to this definition">¶</a></dt>
-<dd><p>Create signature over digest using the probabilistic ECDSA algorithm.</p>
-<p>This method uses the standard ECDSA algorithm that requires a
-cryptographically secure random number generator.</p>
-<p>This method does not hash the input.</p>
-<p>It’s recommended to use the
-<a class="reference internal" href="#keycard.commands.SigningKey.sign_digest_deterministic" title="keycard.commands.SigningKey.sign_digest_deterministic"><code class="xref py py-func docutils literal notranslate"><span class="pre">sign_digest_deterministic()</span></code></a> method
-instead of this one.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>digest</strong> (<span class="xref std std-term">bytes-like object</span>) – hash value that will be signed</p></li>
-<li><p><strong>entropy</strong> (<em>callable</em>) – randomness source, os.urandom by default</p></li>
-<li><p><strong>sigencode</strong> (<em>callable</em>) – function used to encode the signature.
-The function needs to accept three parameters: the two integers
-that are the signature and the order of the curve over which the
-signature was computed. It needs to return an encoded signature.
-See <cite>ecdsa.util.sigencode_string</cite> and <cite>ecdsa.util.sigencode_der</cite>
-as examples of such functions.</p></li>
-<li><p><strong>k</strong> (<em>int</em>) – a pre-selected nonce for calculating the signature.
-In typical use cases, it should be set to None (the default) to
-allow its generation from an entropy source.</p></li>
-<li><p><strong>allow_truncate</strong> (<em>bool</em>) – if True, the provided digest can have
-bigger bit-size than the order of the curve, the extra bits (at
-the end of the digest) will be truncated. Use it when signing
-SHA-384 output using NIST256p or in similar situations.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>RSZeroError</strong> – in the unlikely event when “r” parameter or
-“s” parameter of the created signature is equal 0, as that would
-leak the key. Caller should try a better entropy source, retry with
-different ‘k’, or use the
-<a class="reference internal" href="#keycard.commands.SigningKey.sign_digest_deterministic" title="keycard.commands.SigningKey.sign_digest_deterministic"><code class="xref py py-func docutils literal notranslate"><span class="pre">sign_digest_deterministic()</span></code></a> in such case.</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>encoded signature for the <cite>digest</cite> hash</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bytes or sigencode function dependent type</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.SigningKey.sign_digest_deterministic">
-<span class="sig-name descname"><span class="pre">sign_digest_deterministic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigencode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">sigencode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_entropy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">b''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.sign_digest_deterministic" title="Link to this definition">¶</a></dt>
-<dd><p>Create signature for digest using the deterministic RFC6979 algorithm.</p>
-<p><cite>digest</cite> should be the output of cryptographically secure hash function
-like SHA256 or SHA-3-256.</p>
-<p>This is the recommended method for performing signatures when no
-hashing of data is necessary.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>digest</strong> (<span class="xref std std-term">bytes-like object</span>) – hash of data that will be signed</p></li>
-<li><p><strong>hashfunc</strong> (<em>callable</em>) – hash function to use for computing the random “k”
-value from RFC6979 process,
-if unspecified, the default hash function selected during
-object initialisation will be used (see
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">VerifyingKey.default_hashfunc</span></code>). The object needs to
-implement
-the same interface as <code class="xref py py-func docutils literal notranslate"><span class="pre">sha1()</span></code> from <code class="xref py py-mod docutils literal notranslate"><span class="pre">hashlib</span></code>.</p></li>
-<li><p><strong>sigencode</strong> (<em>callable</em>) – function used to encode the signature.
-The function needs to accept three parameters: the two integers
-that are the signature and the order of the curve over which the
-signature was computed. It needs to return an encoded signature.
-See <code class="xref py py-func docutils literal notranslate"><span class="pre">sigencode_string()</span></code> and
-<code class="xref py py-func docutils literal notranslate"><span class="pre">sigencode_der()</span></code>
-as examples of such functions.</p></li>
-<li><p><strong>extra_entropy</strong> (<span class="xref std std-term">bytes-like object</span>) – additional data that will be fed into the random
-number generator used in the RFC6979 process. Entirely optional.</p></li>
-<li><p><strong>allow_truncate</strong> (<em>bool</em>) – if True, the provided digest can have
-bigger bit-size than the order of the curve, the extra bits (at
-the end of the digest) will be truncated. Use it when signing
-SHA-384 output using NIST256p or in similar situations.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>encoded signature for the <cite>digest</cite> hash</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bytes or sigencode function dependent type</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.SigningKey.sign_number">
-<span class="sig-name descname"><span class="pre">sign_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entropy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.sign_number" title="Link to this definition">¶</a></dt>
-<dd><p>Sign an integer directly.</p>
-<p>Note, this is a low level method, usually you will want to use
-<a class="reference internal" href="#keycard.commands.SigningKey.sign_deterministic" title="keycard.commands.SigningKey.sign_deterministic"><code class="xref py py-func docutils literal notranslate"><span class="pre">sign_deterministic()</span></code></a> or
-<a class="reference internal" href="#keycard.commands.SigningKey.sign_digest_deterministic" title="keycard.commands.SigningKey.sign_digest_deterministic"><code class="xref py py-func docutils literal notranslate"><span class="pre">sign_digest_deterministic()</span></code></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>number</strong> (<em>int</em>) – number to sign using the probabilistic ECDSA
-algorithm.</p></li>
-<li><p><strong>entropy</strong> (<em>callable</em>) – entropy source, os.urandom by default</p></li>
-<li><p><strong>k</strong> (<em>int</em>) – pre-selected nonce for signature operation. If unset
-it will be selected at random using the entropy source.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>RSZeroError</strong> – in the unlikely event when “r” parameter or
-“s” parameter of the created signature is equal 0, as that would
-leak the key. Caller should try a better entropy source, retry with
-different ‘k’, or use the
-<a class="reference internal" href="#keycard.commands.SigningKey.sign_digest_deterministic" title="keycard.commands.SigningKey.sign_digest_deterministic"><code class="xref py py-func docutils literal notranslate"><span class="pre">sign_digest_deterministic()</span></code></a> in such case.</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>the “r” and “s” parameters of the signature</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple of ints</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.SigningKey.to_der">
-<span class="sig-name descname"><span class="pre">to_der</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'uncompressed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ssleay'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve_parameters_encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.to_der" title="Link to this definition">¶</a></dt>
-<dd><p>Convert the private key to the <span class="xref std std-term">DER</span> format.</p>
-<p>See <a class="reference internal" href="#keycard.commands.SigningKey.from_der" title="keycard.commands.SigningKey.from_der"><code class="xref py py-func docutils literal notranslate"><span class="pre">from_der()</span></code></a> method for format specification.</p>
-<p>Only the named curve format is supported.
-The public key will be included in the generated string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>point_encoding</strong> (<em>str</em>) – format to use for encoding public point
-Ignored for EdDSA</p></li>
-<li><p><strong>format</strong> (<em>str</em>) – either <code class="docutils literal notranslate"><span class="pre">ssleay</span></code> (default) or <code class="docutils literal notranslate"><span class="pre">pkcs8</span></code>.
-EdDSA keys require <code class="docutils literal notranslate"><span class="pre">pkcs8</span></code>.</p></li>
-<li><p><strong>curve_parameters_encoding</strong> (<em>str</em>) – format of encoded curve
-parameters, default depends on the curve, if the curve has
-an associated OID, <code class="docutils literal notranslate"><span class="pre">named_curve</span></code> format will be used,
-if no OID is associated with the curve, the fallback of
-<code class="docutils literal notranslate"><span class="pre">explicit</span></code> parameters will be used.
-Ignored for EdDSA.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DER encoded private key</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bytes</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.SigningKey.to_pem">
-<span class="sig-name descname"><span class="pre">to_pem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'uncompressed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ssleay'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve_parameters_encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.to_pem" title="Link to this definition">¶</a></dt>
-<dd><p>Convert the private key to the <span class="xref std std-term">PEM</span> format.</p>
-<p>See <a class="reference internal" href="#keycard.commands.SigningKey.from_pem" title="keycard.commands.SigningKey.from_pem"><code class="xref py py-func docutils literal notranslate"><span class="pre">from_pem()</span></code></a> method for format description.</p>
-<p>Only the named curve format is supported.
-The public key will be included in generated string.</p>
-<p>The PEM header will specify <code class="docutils literal notranslate"><span class="pre">BEGIN</span> <span class="pre">EC</span> <span class="pre">PRIVATE</span> <span class="pre">KEY</span></code> or
-<code class="docutils literal notranslate"><span class="pre">BEGIN</span> <span class="pre">PRIVATE</span> <span class="pre">KEY</span></code>, depending on the desired format.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>point_encoding</strong> (<em>str</em>) – format to use for encoding public point</p></li>
-<li><p><strong>format</strong> (<em>str</em>) – either <code class="docutils literal notranslate"><span class="pre">ssleay</span></code> (default) or <code class="docutils literal notranslate"><span class="pre">pkcs8</span></code></p></li>
-<li><p><strong>curve_parameters_encoding</strong> (<em>str</em>) – format of encoded curve
-parameters, default depends on the curve, if the curve has
-an associated OID, <code class="docutils literal notranslate"><span class="pre">named_curve</span></code> format will be used,
-if no OID is associated with the curve, the fallback of
-<code class="docutils literal notranslate"><span class="pre">explicit</span></code> parameters will be used.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>PEM encoded private key</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bytes</p>
-</dd>
-</dl>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The PEM is encoded to US-ASCII, it needs to be
-re-encoded if the system is incompatible (e.g. uses UTF-16)</p>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.SigningKey.to_ssh">
-<span class="sig-name descname"><span class="pre">to_ssh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.to_ssh" title="Link to this definition">¶</a></dt>
-<dd><p>Convert the private key to the SSH format.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>SSH encoded private key</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bytes</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.SigningKey.to_string">
-<span class="sig-name descname"><span class="pre">to_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.SigningKey.to_string" title="Link to this definition">¶</a></dt>
-<dd><p>Convert the private key to <span class="xref std std-term">raw encoding</span>.</p>
-<p>Note: while the method is named “to_string”, its name comes from
-Python 2 days, when binary and character strings used the same type.
-The type used in Python 3 is <cite>bytes</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>raw encoding of private key</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bytes</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="keycard.commands.VerifyingKey">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">VerifyingKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_error__please_use_generate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class for handling keys that can verify signatures (public keys).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Variables<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>~.curve</strong> (<em>Curve</em>) – The Curve over which all the
-cryptographic operations will take place</p></li>
-<li><p><strong>default_hashfunc</strong> (<em>callable</em>) – the function that will be used for hashing the
-data. Should implement the same API as hashlib.sha1</p></li>
-<li><p><strong>pubkey</strong> (<em>Public_key</em>) – the actual public key</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.VerifyingKey.from_der">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_der</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_encodings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_curve_encodings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.from_der" title="Link to this definition">¶</a></dt>
-<dd><p>Initialise the key stored in <span class="xref std std-term">DER</span> format.</p>
-<p>The expected format of the key is the SubjectPublicKeyInfo structure
-from RFC5912 (for RSA keys, it’s known as the PKCS#1 format):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SubjectPublicKeyInfo</span> <span class="p">{</span><span class="n">PUBLIC</span><span class="o">-</span><span class="n">KEY</span><span class="p">:</span> <span class="n">IOSet</span><span class="p">}</span> <span class="p">:</span><span class="o">:=</span> <span class="n">SEQUENCE</span> <span class="p">{</span>
-    <span class="n">algorithm</span>        <span class="n">AlgorithmIdentifier</span> <span class="p">{</span><span class="n">PUBLIC</span><span class="o">-</span><span class="n">KEY</span><span class="p">,</span> <span class="p">{</span><span class="n">IOSet</span><span class="p">}},</span>
-    <span class="n">subjectPublicKey</span> <span class="n">BIT</span> <span class="n">STRING</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>Note: only public EC keys are supported by this method. The
-SubjectPublicKeyInfo.algorithm.algorithm field must specify
-id-ecPublicKey (see RFC3279).</p>
-<p>Only the named curve encoding is supported, thus the
-SubjectPublicKeyInfo.algorithm.parameters field needs to be an
-object identifier. A sequence in that field indicates an explicit
-parameter curve encoding, this format is not supported. A NULL object
-in that field indicates an “implicitlyCA” encoding, where the curve
-parameters come from CA certificate, those, again, are not supported.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>string</strong> (<em>bytes-like object</em>) – binary string with the DER encoding of public ECDSA key</p></li>
-<li><p><strong>valid_encodings</strong> (<span class="xref std std-term">set-like object</span>) – list of allowed point encodings.
-By default <span class="xref std std-term">uncompressed</span>, <span class="xref std std-term">compressed</span>, and
-<span class="xref std std-term">hybrid</span>. To read malformed files, include
-<span class="xref std std-term">raw encoding</span> with <code class="docutils literal notranslate"><span class="pre">raw</span></code> in the list.</p></li>
-<li><p><strong>valid_curve_encodings</strong> (<span class="xref std std-term">set-like object</span>) – list of allowed encoding formats
-for curve parameters. By default (<code class="docutils literal notranslate"><span class="pre">None</span></code>) all are supported:
-<code class="docutils literal notranslate"><span class="pre">named_curve</span></code> and <code class="docutils literal notranslate"><span class="pre">explicit</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Initialised VerifyingKey object</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#keycard.commands.VerifyingKey" title="keycard.commands.VerifyingKey">VerifyingKey</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.VerifyingKey.from_pem">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_pem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_encodings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_curve_encodings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.from_pem" title="Link to this definition">¶</a></dt>
-<dd><p>Initialise from public key stored in <span class="xref std std-term">PEM</span> format.</p>
-<p>The PEM header of the key should be <code class="docutils literal notranslate"><span class="pre">BEGIN</span> <span class="pre">PUBLIC</span> <span class="pre">KEY</span></code>.</p>
-<p>See the <a class="reference internal" href="#keycard.commands.VerifyingKey.from_der" title="keycard.commands.VerifyingKey.from_der"><code class="xref py py-func docutils literal notranslate"><span class="pre">from_der()</span></code></a> method for details of the
-format supported.</p>
-<p>Note: only a single PEM object decoding is supported in provided
-string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>string</strong> (<em>str</em>) – text with PEM-encoded public ECDSA key</p></li>
-<li><p><strong>valid_encodings</strong> (<span class="xref std std-term">set-like object</span>) – list of allowed point encodings.
-By default <span class="xref std std-term">uncompressed</span>, <span class="xref std std-term">compressed</span>, and
-<span class="xref std std-term">hybrid</span>. To read malformed files, include
-<span class="xref std std-term">raw encoding</span> with <code class="docutils literal notranslate"><span class="pre">raw</span></code> in the list.</p></li>
-<li><p><strong>valid_curve_encodings</strong> (<span class="xref std std-term">set-like object</span>) – list of allowed encoding formats
-for curve parameters. By default (<code class="docutils literal notranslate"><span class="pre">None</span></code>) all are supported:
-<code class="docutils literal notranslate"><span class="pre">named_curve</span></code> and <code class="docutils literal notranslate"><span class="pre">explicit</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Initialised VerifyingKey object</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#keycard.commands.VerifyingKey" title="keycard.commands.VerifyingKey">VerifyingKey</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.VerifyingKey.from_public_key_recovery">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_public_key_recovery</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigdecode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">sigdecode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.from_public_key_recovery" title="Link to this definition">¶</a></dt>
-<dd><p>Return keys that can be used as verifiers of the provided signature.</p>
-<p>Tries to recover the public key that can be used to verify the
-signature, usually returns two keys like that.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>signature</strong> (<em>bytes-like object</em>) – the byte string with the encoded signature</p></li>
-<li><p><strong>data</strong> (<em>bytes-like object</em>) – the data to be hashed for signature verification</p></li>
-<li><p><strong>curve</strong> (<em>Curve</em>) – the curve over which the signature was performed</p></li>
-<li><p><strong>hashfunc</strong> (<em>callable</em>) – The default hash function that will be used for
-verification, needs to implement the same interface as hashlib.sha1</p></li>
-<li><p><strong>sigdecode</strong> (<em>callable</em>) – Callable to define the way the signature needs to
-be decoded to an object, needs to handle <cite>signature</cite> as the
-first parameter, the curve order (an int) as the second and return
-a tuple with two integers, “r” as the first one and “s” as the
-second one. See <code class="xref py py-func docutils literal notranslate"><span class="pre">ecdsa.util.sigdecode_string()</span></code> and
-<code class="xref py py-func docutils literal notranslate"><span class="pre">ecdsa.util.sigdecode_der()</span></code> for examples.</p></li>
-<li><p><strong>allow_truncate</strong> (<em>bool</em>) – if True, the provided hashfunc can generate
-values larger than the bit size of the order of the curve, the
-extra bits (at the end of the digest) will be truncated.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Initialised VerifyingKey objects</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list of <a class="reference internal" href="#keycard.commands.VerifyingKey" title="keycard.commands.VerifyingKey">VerifyingKey</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.VerifyingKey.from_public_key_recovery_with_digest">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_public_key_recovery_with_digest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigdecode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">sigdecode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.from_public_key_recovery_with_digest" title="Link to this definition">¶</a></dt>
-<dd><p>Return keys that can be used as verifiers of the provided signature.</p>
-<p>Tries to recover the public key that can be used to verify the
-signature, usually returns two keys like that.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>signature</strong> (<em>bytes-like object</em>) – the byte string with the encoded signature</p></li>
-<li><p><strong>digest</strong> (<em>bytes-like object</em>) – the hash value of the message signed by the signature</p></li>
-<li><p><strong>curve</strong> (<em>Curve</em>) – the curve over which the signature was performed</p></li>
-<li><p><strong>hashfunc</strong> (<em>callable</em>) – The default hash function that will be used for
-verification, needs to implement the same interface as hashlib.sha1</p></li>
-<li><p><strong>sigdecode</strong> (<em>callable</em>) – Callable to define the way the signature needs to
-be decoded to an object, needs to handle <cite>signature</cite> as the
-first parameter, the curve order (an int) as the second and return
-a tuple with two integers, “r” as the first one and “s” as the
-second one. See <code class="xref py py-func docutils literal notranslate"><span class="pre">ecdsa.util.sigdecode_string()</span></code> and
-<code class="xref py py-func docutils literal notranslate"><span class="pre">ecdsa.util.sigdecode_der()</span></code> for examples.</p></li>
-<li><p><strong>allow_truncate</strong> (<em>bool</em>) – if True, the provided hashfunc can generate
-values larger than the bit size of the order of the curve (and
-the length of provided <cite>digest</cite>), the extra bits (at the end of the
-digest) will be truncated.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Initialised VerifyingKey object</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#keycard.commands.VerifyingKey" title="keycard.commands.VerifyingKey">VerifyingKey</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.VerifyingKey.from_public_point">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_public_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NIST192p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.from_public_point" title="Link to this definition">¶</a></dt>
-<dd><p>Initialise the object from a Point object.</p>
-<p>This is a low-level method, generally you will not want to use it.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> (<em>AbstractPoint</em>) – The point to wrap around, the actual public key</p></li>
-<li><p><strong>curve</strong> (<em>Curve</em>) – The curve on which the point needs to reside, defaults
-to NIST192p</p></li>
-<li><p><strong>hashfunc</strong> (<em>callable</em>) – The default hash function that will be used for
-verification, needs to implement the same interface
-as <code class="xref py py-class docutils literal notranslate"><span class="pre">hashlib.sha1</span></code></p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>MalformedPointError</strong> – if the public point does not lay on the
-curve</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Initialised VerifyingKey object</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#keycard.commands.VerifyingKey" title="keycard.commands.VerifyingKey">VerifyingKey</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.VerifyingKey.from_string">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NIST192p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">openssl_sha1&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid_encodings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.from_string" title="Link to this definition">¶</a></dt>
-<dd><p>Initialise the object from byte encoding of public key.</p>
-<p>The method does accept and automatically detect the type of point
-encoding used. It supports the <span class="xref std std-term">raw encoding</span>,
-<span class="xref std std-term">uncompressed</span>, <span class="xref std std-term">compressed</span>, and <span class="xref std std-term">hybrid</span> encodings.
-It also works with the native encoding of Ed25519 and Ed448 public
-keys (technically those are compressed, but encoded differently than
-in other signature systems).</p>
-<p>Note, while the method is named “from_string” it’s a misnomer from
-Python 2 days when there were no binary strings. In Python 3 the
-input needs to be a bytes-like object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>string</strong> (<span class="xref std std-term">bytes-like object</span>) – single point encoding of the public key</p></li>
-<li><p><strong>curve</strong> (<em>Curve</em>) – the curve on which the public key is expected to lay</p></li>
-<li><p><strong>hashfunc</strong> (<em>callable</em>) – The default hash function that will be used for
-verification, needs to implement the same interface as
-hashlib.sha1. Ignored for EdDSA.</p></li>
-<li><p><strong>validate_point</strong> (<em>bool</em>) – whether to verify that the point lays on the
-provided curve or not, defaults to True. Ignored for EdDSA.</p></li>
-<li><p><strong>valid_encodings</strong> (<span class="xref std std-term">set-like object</span>) – list of acceptable point encoding formats,
-supported ones are: <span class="xref std std-term">uncompressed</span>, <span class="xref std std-term">compressed</span>,
-<span class="xref std std-term">hybrid</span>, and <span class="xref std std-term">raw encoding</span> (specified with <code class="docutils literal notranslate"><span class="pre">raw</span></code>
-name). All formats by default (specified with <code class="docutils literal notranslate"><span class="pre">None</span></code>).
-Ignored for EdDSA.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>MalformedPointError</strong> – if the public point does not lay on the
-curve or the encoding is invalid</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Initialised VerifyingKey object</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#keycard.commands.VerifyingKey" title="keycard.commands.VerifyingKey">VerifyingKey</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.VerifyingKey.precompute">
-<span class="sig-name descname"><span class="pre">precompute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lazy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.precompute" title="Link to this definition">¶</a></dt>
-<dd><p>Precompute multiplication tables for faster signature verification.</p>
-<p>Calling this method will cause the library to precompute the
-scalar multiplication tables, used in signature verification.
-While it’s an expensive operation (comparable to performing
-as many signatures as the bit size of the curve, i.e. 256 for NIST256p)
-it speeds up verification 2 times. You should call this method
-if you expect to verify hundreds of signatures (or more) using the same
-VerifyingKey object.</p>
-<p>Note: You should call this method only once, this method generates a
-new precomputation table every time it’s called.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>lazy</strong> (<em>bool</em>) – whether to calculate the precomputation table now
-(if set to False) or if it should be delayed to the time of first
-use (when set to True)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.VerifyingKey.to_der">
-<span class="sig-name descname"><span class="pre">to_der</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'uncompressed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve_parameters_encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.to_der" title="Link to this definition">¶</a></dt>
-<dd><p>Convert the public key to the <span class="xref std std-term">DER</span> format.</p>
-<p>The format of the key is described in the
-<a class="reference internal" href="#keycard.commands.VerifyingKey.from_der" title="keycard.commands.VerifyingKey.from_der"><code class="xref py py-func docutils literal notranslate"><span class="pre">from_der()</span></code></a> method.
-This method supports only “named curve” encoding of keys.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>point_encoding</strong> (<em>str</em>) – specification of the encoding format
-of public keys. “uncompressed” is most portable, “compressed” is
-smallest. “hybrid” is uncommon and unsupported by most
-implementations, it is as big as “uncompressed”.</p></li>
-<li><p><strong>curve_parameters_encoding</strong> (<em>str</em>) – the encoding for curve parameters
-to use, by default tries to use <code class="docutils literal notranslate"><span class="pre">named_curve</span></code> encoding,
-if that is not possible, falls back to <code class="docutils literal notranslate"><span class="pre">explicit</span></code> encoding.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DER encoding of the public key</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bytes</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.VerifyingKey.to_pem">
-<span class="sig-name descname"><span class="pre">to_pem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'uncompressed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curve_parameters_encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.to_pem" title="Link to this definition">¶</a></dt>
-<dd><p>Convert the public key to the <span class="xref std std-term">PEM</span> format.</p>
-<p>The PEM header of the key will be <code class="docutils literal notranslate"><span class="pre">BEGIN</span> <span class="pre">PUBLIC</span> <span class="pre">KEY</span></code>.</p>
-<p>The format of the key is described in the
-<a class="reference internal" href="#keycard.commands.VerifyingKey.from_der" title="keycard.commands.VerifyingKey.from_der"><code class="xref py py-func docutils literal notranslate"><span class="pre">from_der()</span></code></a> method.
-This method supports only “named curve” encoding of keys.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>point_encoding</strong> (<em>str</em>) – specification of the encoding format
-of public keys. “uncompressed” is most portable, “compressed” is
-smallest. “hybrid” is uncommon and unsupported by most
-implementations, it is as big as “uncompressed”.</p></li>
-<li><p><strong>curve_parameters_encoding</strong> (<em>str</em>) – the encoding for curve parameters
-to use, by default tries to use <code class="docutils literal notranslate"><span class="pre">named_curve</span></code> encoding,
-if that is not possible, falls back to <code class="docutils literal notranslate"><span class="pre">explicit</span></code> encoding.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>portable encoding of the public key</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bytes</p>
-</dd>
-</dl>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The PEM is encoded to US-ASCII, it needs to be
-re-encoded if the system is incompatible (e.g. uses UTF-16)</p>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.VerifyingKey.to_ssh">
-<span class="sig-name descname"><span class="pre">to_ssh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.to_ssh" title="Link to this definition">¶</a></dt>
-<dd><p>Convert the public key to the SSH format.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>SSH encoding of the public key</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bytes</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.VerifyingKey.to_string">
-<span class="sig-name descname"><span class="pre">to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'raw'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.to_string" title="Link to this definition">¶</a></dt>
-<dd><p>Convert the public key to a byte string.</p>
-<p>The method by default uses the <span class="xref std std-term">raw encoding</span> (specified
-by <cite>encoding=”raw”</cite>. It can also output keys in <span class="xref std std-term">uncompressed</span>,
-<span class="xref std std-term">compressed</span> and <span class="xref std std-term">hybrid</span> formats.</p>
-<p>Remember that the curve identification is not part of the encoding
-so to decode the point using <a class="reference internal" href="#keycard.commands.VerifyingKey.from_string" title="keycard.commands.VerifyingKey.from_string"><code class="xref py py-func docutils literal notranslate"><span class="pre">from_string()</span></code></a>, curve
-needs to be specified.</p>
-<p>Note: while the method is called “to_string”, it’s a misnomer from
-Python 2 days when character strings and byte strings shared type.
-On Python 3 the returned type will be <cite>bytes</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="xref std std-term">raw encoding</span> of the public key (public point) on the
-curve</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bytes</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.VerifyingKey.verify">
-<span class="sig-name descname"><span class="pre">verify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hashfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigdecode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">sigdecode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.verify" title="Link to this definition">¶</a></dt>
-<dd><p>Verify a signature made over provided data.</p>
-<p>Will hash <cite>data</cite> to verify the signature.</p>
-<p>By default expects signature in <span class="xref std std-term">raw encoding</span>. Can also be used
-to verify signatures in ASN.1 DER encoding by using
-<code class="xref py py-func docutils literal notranslate"><span class="pre">ecdsa.util.sigdecode_der()</span></code>
-as the <cite>sigdecode</cite> parameter.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>signature</strong> (<em>sigdecode method dependent</em>) – encoding of the signature</p></li>
-<li><p><strong>data</strong> (<span class="xref std std-term">bytes-like object</span>) – data signed by the <cite>signature</cite>, will be hashed using
-<cite>hashfunc</cite>, if specified, or default hash function</p></li>
-<li><p><strong>hashfunc</strong> (<em>callable</em>) – The default hash function that will be used for
-verification, needs to implement the same interface as hashlib.sha1</p></li>
-<li><p><strong>sigdecode</strong> (<em>callable</em>) – Callable to define the way the signature needs to
-be decoded to an object, needs to handle <cite>signature</cite> as the
-first parameter, the curve order (an int) as the second and return
-a tuple with two integers, “r” as the first one and “s” as the
-second one. See <code class="xref py py-func docutils literal notranslate"><span class="pre">ecdsa.util.sigdecode_string()</span></code> and
-<code class="xref py py-func docutils literal notranslate"><span class="pre">ecdsa.util.sigdecode_der()</span></code> for examples.</p></li>
-<li><p><strong>allow_truncate</strong> (<em>bool</em>) – if True, the provided digest can have
-bigger bit-size than the order of the curve, the extra bits (at
-the end of the digest) will be truncated. Use it when verifying
-SHA-384 output using NIST256p or in similar situations. Defaults to
-True.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>BadSignatureError</strong> – if the signature is invalid or malformed</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True if the verification was successful</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="keycard.commands.VerifyingKey.verify_digest">
-<span class="sig-name descname"><span class="pre">verify_digest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigdecode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">sigdecode_string&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_truncate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.VerifyingKey.verify_digest" title="Link to this definition">¶</a></dt>
-<dd><p>Verify a signature made over provided hash value.</p>
-<p>By default expects signature in <span class="xref std std-term">raw encoding</span>. Can also be used
-to verify signatures in ASN.1 DER encoding by using
-<code class="xref py py-func docutils literal notranslate"><span class="pre">ecdsa.util.sigdecode_der()</span></code>
-as the <cite>sigdecode</cite> parameter.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>signature</strong> (<em>sigdecode method dependent</em>) – encoding of the signature</p></li>
-<li><p><strong>digest</strong> (<span class="xref std std-term">bytes-like object</span>) – raw hash value that the signature authenticates.</p></li>
-<li><p><strong>sigdecode</strong> (<em>callable</em>) – Callable to define the way the signature needs to
-be decoded to an object, needs to handle <cite>signature</cite> as the
-first parameter, the curve order (an int) as the second and return
-a tuple with two integers, “r” as the first one and “s” as the
-second one. See <code class="xref py py-func docutils literal notranslate"><span class="pre">ecdsa.util.sigdecode_string()</span></code> and
-<code class="xref py py-func docutils literal notranslate"><span class="pre">ecdsa.util.sigdecode_der()</span></code> for examples.</p></li>
-<li><p><strong>allow_truncate</strong> (<em>bool</em>) – if True, the provided digest can have
-bigger bit-size than the order of the curve, the extra bits (at
-the end of the digest) will be truncated. Use it when verifying
-SHA-384 output using NIST256p or in similar situations.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>BadSignatureError</strong> – if the signature is invalid or malformed</p></li>
-<li><p><strong>BadDigestError</strong> – if the provided digest is too big for the curve
-associated with this VerifyingKey and allow_truncate was not set</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True if the verification was successful</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="keycard.commands.aes_cbc_encrypt">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">aes_cbc_encrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.aes_cbc_encrypt" title="Link to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.change_secret">
 <span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">change_secret</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.change_secret" title="Link to this definition">¶</a></dt>
@@ -2256,7 +364,7 @@ associated with this VerifyingKey and allow_truncate was not set</p></li>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>ValueError</strong> – If input format is invalid.</p></li>
-<li><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – If the card returns an error status word.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns an error status word.</p></li>
 </ul>
 </dd>
 </dl>
@@ -2272,13 +380,13 @@ associated with this VerifyingKey and allow_truncate was not set</p></li>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>card</strong> (<a class="reference internal" href="#keycard.commands.CardInterface" title="keycard.commands.CardInterface"><em>CardInterface</em></a>) – The card interface.</p></li>
+<li><p><strong>card</strong> (<em>CardInterface</em>) – The card interface.</p></li>
 <li><p><strong>path</strong> (<em>str</em>) – BIP-32-style path (e.g., “m/44’/60’/0’/0/0”) or
 “../0/1” (parent) or “./0” (current).</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – if the derivation fails or the format is invalid.</p>
+<dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – if the derivation fails or the format is invalid.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2290,7 +398,7 @@ associated with this VerifyingKey and allow_truncate was not set</p></li>
 <p>If derivation_option == CURRENT, keypath can be omitted or empty.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#keycard.commands.ExportedKey" title="keycard.parsing.exported_key.ExportedKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExportedKey</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExportedKey</span></code></span></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -2349,7 +457,7 @@ associated with this VerifyingKey and allow_truncate was not set</p></li>
 <dd class="field-odd"><p>bytes</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – If the response status word is not 0x9000</p>
+<dd class="field-even"><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the response status word is not 0x9000</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2364,7 +472,7 @@ associated with this VerifyingKey and allow_truncate was not set</p></li>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>card</strong> (<a class="reference internal" href="#keycard.commands.CardInterface" title="keycard.commands.CardInterface"><em>CardInterface</em></a>) – The card interface.</p></li>
+<li><p><strong>card</strong> (<em>CardInterface</em>) – The card interface.</p></li>
 <li><p><strong>checksum_size</strong> (<em>int</em>) – Number of checksum bits
 (between 4 and 8 inclusive).</p></li>
 </ul>
@@ -2382,18 +490,8 @@ associated with this VerifyingKey and allow_truncate was not set</p></li>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ValueError</strong> – If checksum size is outside the allowed range.</p></li>
-<li><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – If the card rejects the request.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card rejects the request.</p></li>
 </ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="keycard.commands.generate_pairing_token">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">generate_pairing_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">passphrase</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.generate_pairing_token" title="Link to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2460,7 +558,7 @@ If False (default), returns application status.</p></li>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – If the response status word is not 0x9000.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the response status word is not 0x9000.</p></li>
 <li><p><strong>ValueError</strong> – If the application status template (tag 0xA3) is missing.</p></li>
 </ul>
 </dd>
@@ -2490,7 +588,7 @@ If None, a random 32-byte challenge is generated.</p></li>
 <dd class="field-even"><p>bytes</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – If the response status word is not successful (0x9000).</p>
+<dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the response status word is not successful (0x9000).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2518,9 +616,9 @@ will be converted into one.</p></li>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#keycard.commands.NotSelectedError" title="keycard.commands.NotSelectedError"><strong>NotSelectedError</strong></a> – If no card public key is provided.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.NotSelectedError" title="keycard.exceptions.NotSelectedError"><strong>NotSelectedError</strong></a> – If no card public key is provided.</p></li>
 <li><p><strong>ValueError</strong> – If the encrypted data exceeds a single APDU length.</p></li>
-<li><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – If the card returns a failure status word.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns a failure status word.</p></li>
 </ul>
 </dd>
 </dl>
@@ -2580,7 +678,7 @@ If not provided, a random 32-byte value will be generated.</p></li>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – If the response status word is not 0x9000.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the response status word is not 0x9000.</p></li>
 <li><p><strong>ValueError</strong> – If the decrypted response is not exactly 32 bytes.</p></li>
 </ul>
 </dd>
@@ -2596,7 +694,7 @@ sends the ephemeral public key, and receives cryptographic material
 from the card to derive a secure session.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#keycard.commands.SecureChannel" title="keycard.secure_channel.SecureChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecureChannel</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecureChannel</span></code></span></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -2612,12 +710,12 @@ pairing slot.</p></li>
 <dd class="field-odd"><p>A newly established secure session with the card.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#keycard.commands.SecureChannel" title="keycard.commands.SecureChannel">SecureChannel</a></p>
+<dd class="field-even"><p>SecureChannel</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#keycard.commands.NotSelectedError" title="keycard.commands.NotSelectedError"><strong>NotSelectedError</strong></a> – If no card public key is provided.</p></li>
-<li><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – If the card returns a failure status word.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.NotSelectedError" title="keycard.exceptions.NotSelectedError"><strong>NotSelectedError</strong></a> – If no card public key is provided.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns a failure status word.</p></li>
 </ul>
 </dd>
 </dl>
@@ -2647,19 +745,9 @@ pairing slot.</p></li>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ValueError</strong> – If the shared secret is not 32 bytes.</p></li>
-<li><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – If the card returns a non-success status word.</p></li>
-<li><p><a class="reference internal" href="#keycard.commands.InvalidResponseError" title="keycard.commands.InvalidResponseError"><strong>InvalidResponseError</strong></a> – If response lengths or values are unexpected.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns a non-success status word.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidResponseError" title="keycard.exceptions.InvalidResponseError"><strong>InvalidResponseError</strong></a> – If response lengths or values are unexpected.</p></li>
 </ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="keycard.commands.parse">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">challenge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.parse" title="Link to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2671,46 +759,6 @@ pairing slot.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="keycard.commands.require_initialized">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">require_initialized</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.require_initialized" title="Link to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>[[<code class="xref py py-class docutils literal notranslate"><span class="pre">ParamSpec</span></code>(<code class="docutils literal notranslate"><span class="pre">P</span></code>, bound= <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>)], <code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code>(<code class="docutils literal notranslate"><span class="pre">R</span></code>)]</span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="keycard.commands.require_pin_verified">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">require_pin_verified</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.require_pin_verified" title="Link to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>[[<code class="xref py py-class docutils literal notranslate"><span class="pre">ParamSpec</span></code>(<code class="docutils literal notranslate"><span class="pre">P</span></code>, bound= <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>)], <code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code>(<code class="docutils literal notranslate"><span class="pre">R</span></code>)]</span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="keycard.commands.require_secure_channel">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">require_secure_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.require_secure_channel" title="Link to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>[[<code class="xref py py-class docutils literal notranslate"><span class="pre">ParamSpec</span></code>(<code class="docutils literal notranslate"><span class="pre">P</span></code>, bound= <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>)], <code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code>(<code class="docutils literal notranslate"><span class="pre">R</span></code>)]</span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="keycard.commands.require_selected">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">require_selected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.require_selected" title="Link to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>[[<code class="xref py py-class docutils literal notranslate"><span class="pre">ParamSpec</span></code>(<code class="docutils literal notranslate"><span class="pre">P</span></code>, bound= <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>)], <code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code>(<code class="docutils literal notranslate"><span class="pre">R</span></code>)]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2738,10 +786,10 @@ and returns it.</p>
 </p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#keycard.commands.ApplicationInfo" title="keycard.commands.ApplicationInfo">ApplicationInfo</a></p>
+<dd class="field-even"><p><a class="reference internal" href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo" title="keycard.parsing.application_info.ApplicationInfo">ApplicationInfo</a></p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – If the card returns a status word indicating failure.</p>
+<dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns a status word indicating failure.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2757,46 +805,13 @@ current derived key matches this path.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>card</strong> (<a class="reference internal" href="#keycard.commands.CardInterface" title="keycard.commands.CardInterface"><em>CardInterface</em></a>) – The card interface.</p></li>
+<li><p><strong>card</strong> (<em>CardInterface</em>) – The card interface.</p></li>
 <li><p><strong>path</strong> (<em>str</em>) – BIP-32-style path (e.g., “m/44’/60’/0’/0/0”). An empty
 string disables the pinless path.</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – if the card rejects the input (invalid path)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="keycard.commands.sigdecode_der">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">sigdecode_der</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig_der</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.sigdecode_der" title="Link to this definition">¶</a></dt>
-<dd><p>Decoder for DER format of ECDSA signatures.</p>
-<p>DER format of signature is one that uses the <span class="xref std std-term">ASN.1</span> <span class="xref std std-term">DER</span>
-rules to encode it as a sequence of two integers:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Ecdsa</span><span class="o">-</span><span class="n">Sig</span><span class="o">-</span><span class="n">Value</span> <span class="p">:</span><span class="o">:=</span> <span class="n">SEQUENCE</span> <span class="p">{</span>
-    <span class="n">r</span>       <span class="n">INTEGER</span><span class="p">,</span>
-    <span class="n">s</span>       <span class="n">INTEGER</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>It’s expected that this function will be used as as the <code class="docutils literal notranslate"><span class="pre">sigdecode=</span></code>
-parameter to the <code class="xref py py-func docutils literal notranslate"><span class="pre">ecdsa.keys.VerifyingKey.verify()</span></code> method.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>sig_der</strong> (<em>bytes like object</em>) – encoded signature</p></li>
-<li><p><strong>order</strong> (<em>int</em>) – order of the curve over which the signature was computed</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>UnexpectedDER</strong> – when the encoding of signature is invalid</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple with decoded <code class="docutils literal notranslate"><span class="pre">r</span></code> and <code class="docutils literal notranslate"><span class="pre">s</span></code> values of signature</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple of ints</p>
+<dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – if the card rejects the input (invalid path)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2811,7 +826,7 @@ returned as a DER-encoded structure, a raw 65-byte format including
 the recovery ID, or an ECDSA template depending on card behavior.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#keycard.commands.SignatureResult" title="keycard.parsing.signature_result.SignatureResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignatureResult</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignatureResult</span></code></span></p>
 </dd>
 </dl>
 <dl class="simple">
@@ -2826,14 +841,14 @@ the recovery ID, or an ECDSA template depending on card behavior.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>card</strong> (<a class="reference internal" href="#keycard.commands.CardInterface" title="keycard.commands.CardInterface"><em>CardInterface</em></a>) – Active Keycard transport session.</p></li>
+<li><p><strong>card</strong> (<em>CardInterface</em>) – Active Keycard transport session.</p></li>
 <li><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to be signed.</p></li>
-<li><p><strong>p1</strong> (<a class="reference internal" href="#keycard.commands.DerivationOption" title="keycard.commands.DerivationOption"><em>DerivationOption</em></a>) – Key derivation option. One of:
+<li><p><strong>p1</strong> (<a class="reference internal" href="keycard.html#keycard.constants.DerivationOption" title="keycard.constants.DerivationOption"><em>DerivationOption</em></a>) – Key derivation option. One of:
 - CURRENT: Sign with the currently loaded key
 - DERIVE: Derive key for signing without changing current
 - DERIVE_AND_MAKE_CURRENT: Derive and load for future use
 - PINLESS: Use pre-defined PIN-less key without SC/PIN</p></li>
-<li><p><strong>p2</strong> (<a class="reference internal" href="#keycard.commands.SigningAlgorithm" title="keycard.commands.SigningAlgorithm"><em>SigningAlgorithm</em></a>) – Signing algorithm (e.g. ECDSA_SECP256K1).</p></li>
+<li><p><strong>p2</strong> (<a class="reference internal" href="keycard.html#keycard.constants.SigningAlgorithm" title="keycard.constants.SigningAlgorithm"><em>SigningAlgorithm</em></a>) – Signing algorithm (e.g. ECDSA_SECP256K1).</p></li>
 <li><p><strong>derivation_path</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – String-formatted BIP32 path
 (e.g. “m/44’/60’/0’/0/0”). Required if <cite>p1</cite> uses derivation.
 The source (master/parent/current) is inferred from the path
@@ -2845,13 +860,13 @@ prefix.</p></li>
 (DER or raw), algorithm, and optional recovery ID or public key.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#keycard.commands.SignatureResult" title="keycard.commands.SignatureResult">SignatureResult</a></p>
+<dd class="field-odd"><p>SignatureResult</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>ValueError</strong> – If the digest is not 32 bytes or path is invalid.</p></li>
-<li><p><a class="reference internal" href="#keycard.commands.InvalidStateError" title="keycard.commands.InvalidStateError"><strong>InvalidStateError</strong></a> – If preconditions (PIN, SC) are not met.</p></li>
-<li><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – If the card returns an error (e.g., SW=0x6985).</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidStateError" title="keycard.exceptions.InvalidStateError"><strong>InvalidStateError</strong></a> – If preconditions (PIN, SC) are not met.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns an error (e.g., SW=0x6985).</p></li>
 </ul>
 </dd>
 </dl>
@@ -2896,7 +911,7 @@ prefix.</p></li>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ValueError</strong> – If the format is invalid.</p></li>
-<li><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – If the card returns an error.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns an error.</p></li>
 </ul>
 </dd>
 </dl>
@@ -2932,16 +947,10 @@ session to instruct it to forget a specific pairing index.</p>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>ValueError</strong> – If transport or secure_session is not provided, or if
     the session is not authenticated.</p></li>
-<li><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – If the response status word indicates an error.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the response status word indicates an error.</p></li>
 </ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="keycard.commands.urandom">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">urandom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.urandom" title="Link to this definition">¶</a></dt>
-<dd><p>Return a bytes object containing random bytes suitable for cryptographic use.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -2981,7 +990,7 @@ and raises an error if blocked or another APDU error occurs.</p>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>ValueError</strong> – If no secure session is provided.</p></li>
 <li><p><strong>RuntimeError</strong> – If the PIN is blocked (no attempts remaining).</p></li>
-<li><p><a class="reference internal" href="#keycard.commands.APDUError" title="keycard.commands.APDUError"><strong>APDUError</strong></a> – For other status word errors returned by the card.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – For other status word errors returned by the card.</p></li>
 </ul>
 </dd>
 </dl>
