@@ -1,37 +1,39 @@
 import hashlib
 import hmac
-import os
+
+from hashlib import sha256
 
 from ecdsa import SigningKey, VerifyingKey, SECP256k1, util
-from hashlib import sha256
 from mnemonic import Mnemonic
 
 from keycard import constants
 from keycard.exceptions import APDUError
-from keycard.keycard import KeyCard
+from keycard import KeyCard
 
 PIN = '123456'
 PUK = '123456123456'
 PAIRING_PASSWORD = 'KeycardTest'
 
-def bip32_master_key(seed: bytes):
+
+def bip32_master_key(seed: bytes) -> tuple[bytes, bytes]:
     I = hmac.new(b"Bitcoin seed", seed, hashlib.sha512).digest()
     master_priv_key = I[:32]
     master_chain_code = I[32:]
     return master_priv_key, master_chain_code
 
 
-def get_uncompressed_pubkey(priv_key_bytes: bytes):
+def get_uncompressed_pubkey(priv_key_bytes: bytes) -> bytes:
     sk = SigningKey.from_string(priv_key_bytes, curve=SECP256k1)
     vk = sk.verifying_key
-    return b'\x04' + vk.to_string()
+    key: bytes = b'\x04' + vk.to_string()
+    return key
 
 
 with KeyCard() as card:
     card.select()
     print('Retrieving data...')
     retrieved_data = card.get_data(slot=constants.StorageSlot.PUBLIC)
-    print(f'Retrieved data: {retrieved_data}')
+    print(f'Retrieved data: {retrieved_data.hex()}')
     try:
         print('Factory resetting card...')
         card.factory_reset()
@@ -77,6 +79,18 @@ with KeyCard() as card:
 
     card.verify_pin(PIN)
     print('PIN verified.')
+
+    print('Store long NDEF')
+    ndef = b'\xAA' * 120
+    print(f'Writing NDEF: {ndef.hex()}')
+    card.store_data(ndef, constants.StorageSlot.NDEF)
+    print('Data written. Reading...')
+    read_ndef = card.get_data(constants.StorageSlot.NDEF)
+    print(f'Received NDEF: {read_ndef.hex()}')
+    if ndef == read_ndef:
+        print('Read NDEF the same as stored')
+    else:
+        print('NDEF data not the same')
     
     print('Generating key...')
     key = b'0x04' + card.generate_key()
@@ -124,7 +138,6 @@ with KeyCard() as card:
         print('Signature verified successfully.')
     except Exception as e:
         print(f"Signature verification failed: {e}")
-
 
     print("Load key...")
     sk = SigningKey.generate(curve=SECP256k1)
