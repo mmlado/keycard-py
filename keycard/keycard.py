@@ -36,6 +36,8 @@ class KeyCard(CardInterface):
         self.card_public_key: Optional[bytes] = None
         self.session: Optional[SecureChannel] = None
         self._is_pin_verified: bool = False
+        self._is_initialized: bool = False
+        self._application_info: Optional[ApplicationInfo] = None
 
     def __enter__(self) -> 'KeyCard':
         self.transport.connect()
@@ -100,6 +102,21 @@ class KeyCard(CardInterface):
         '''
         return self._is_pin_verified
 
+    @property
+    def version(self) -> tuple[int, int]:
+        '''
+        Retuns tuple with major and minor version number
+
+        Returns:
+            [int, int]: [major_version, minor_version]
+        '''
+        if not self._application_info:
+            return (0, 0)
+        return (
+            self._application_info.version_major,
+            self._application_info.version_minor
+        )
+
     def select(self) -> 'ApplicationInfo':
         '''
         Selects the Keycard applet and retrieves application metadata.
@@ -108,6 +125,7 @@ class KeyCard(CardInterface):
             ApplicationInfo: Object containing ECC public key and card info.
         '''
         info = commands.select(self)
+        self._application_info = info
         self.card_public_key = info.ecc_public_key
         self._is_initialized = info.is_initialized
         return info
@@ -588,7 +606,7 @@ class KeyCard(CardInterface):
     ) -> bytes:
         if not self.session or not self.session.authenticated:
             raise RuntimeError('Secure channel not established')
-
+        print(p2)
         encrypted = self.session.wrap_apdu(
             cla=constants.CLA_PROPRIETARY,
             ins=ins,
