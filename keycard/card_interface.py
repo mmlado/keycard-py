@@ -20,6 +20,9 @@ class CardInterface(Protocol):
     @property
     def is_selected(self) -> bool: ...
 
+    @property
+    def version(self) -> tuple[int, int]: ...
+
     def send_apdu(
         self,
         ins: int,
