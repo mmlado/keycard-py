@@ -41,7 +41,8 @@ def sign(
             - DERIVE: Derive key for signing without changing current
             - DERIVE_AND_MAKE_CURRENT: Derive and load for future use
             - PINLESS: Use pre-defined PIN-less key without SC/PIN
-        p2 (SigningAlgorithm): Signing algorithm (e.g. ECDSA_SECP256K1).
+        p2 (SigningAlgorithm): Signing algorithm. Defaults to
+            ECDSA_SECP256K1. Other options include SCHNORR_BIP340.
         derivation_path (Optional[str]): String-formatted BIP32 path
             (e.g. "m/44'/60'/0'/0/0"). Required if `p1` uses derivation.
             The source (master/parent/current) is inferred from the path
@@ -56,8 +57,13 @@ def sign(
         InvalidStateError: If preconditions (PIN, SC) are not met.
         APDUError: If the card returns an error (e.g., SW=0x6985).
     """
-    if p2 != SigningAlgorithm.ECDSA_SECP256K1:
-        raise NotImplementedError("Signature algorithm not supported")
+    if p2 not in (
+        SigningAlgorithm.ECDSA_SECP256K1,
+        SigningAlgorithm.SCHNORR_BIP340
+    ):
+        raise NotImplementedError(
+            f"Signature algorithm {p2} not supported"
+        )
 
     if len(digest) != 32:
         raise ValueError("Digest must be exactly 32 bytes")

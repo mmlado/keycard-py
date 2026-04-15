@@ -433,6 +433,7 @@ class KeyCard(CardInterface):
     def sign(
         self,
         digest: bytes,
+        algorithm: constants.SigningAlgorithm = constants.SigningAlgorithm.ECDSA_SECP256K1,
     ) -> SignatureResult:
         """
         Sign using the currently loaded keypair.
@@ -440,27 +441,32 @@ class KeyCard(CardInterface):
 
         Args:
             digest (bytes): 32-byte hash to sign
+            algorithm (SigningAlgorithm): Signing algorithm to use. Defaults to
+                ECDSA_SECP256K1. Other options include SCHNORR_BIP340.
 
         Returns:
             SignatureResult: Parsed signature result, including the signature
                 (DER or raw), algorithm, and optional recovery ID or
                 public key.
         """
-        return commands.sign(self, digest, DerivationOption.CURRENT)
+        return commands.sign(self, digest, DerivationOption.CURRENT, algorithm)
 
     def sign_with_path(
         self,
         digest: bytes,
         path: str,
-        make_current: bool = False
+        make_current: bool = False,
+        algorithm: constants.SigningAlgorithm = constants.SigningAlgorithm.ECDSA_SECP256K1,
     ) -> SignatureResult:
         """
         Sign using a derived keypath. Optionally updates the current path.
 
         Args:
             digest (bytes): 32-byte hash to sign
-            path (list[int]): list of 32-bit integers
+            path (str): BIP-32-style path (e.g. "m/44'/60'/0'/0/0")
             make_current (bool): whether to update current path on card
+            algorithm (SigningAlgorithm): Signing algorithm to use. Defaults to
+                ECDSA_SECP256K1. Other options include SCHNORR_BIP340.
 
         Returns:
             SignatureResult: Parsed signature result, including the signature
@@ -471,11 +477,12 @@ class KeyCard(CardInterface):
             DerivationOption.DERIVE_AND_MAKE_CURRENT
             if make_current else DerivationOption.DERIVE
         )
-        return commands.sign(self, digest, p1, derivation_path=path)
+        return commands.sign(self, digest, p1, algorithm, derivation_path=path)
 
     def sign_pinless(
         self,
-        digest: bytes
+        digest: bytes,
+        algorithm: constants.SigningAlgorithm = constants.SigningAlgorithm.ECDSA_SECP256K1,
     ) -> SignatureResult:
         """
         Sign using the predefined PIN-less path.
@@ -483,6 +490,8 @@ class KeyCard(CardInterface):
 
         Args:
             digest (bytes): 32-byte hash to sign
+            algorithm (SigningAlgorithm): Signing algorithm to use. Defaults to
+                ECDSA_SECP256K1. Other options include SCHNORR_BIP340.
 
         Returns:
             SignatureResult: Parsed signature result, including the signature
@@ -492,7 +501,7 @@ class KeyCard(CardInterface):
         Raises:
             APDUError: if no PIN-less path is set
         """
-        return commands.sign(self, digest, DerivationOption.PINLESS)
+        return commands.sign(self, digest, DerivationOption.PINLESS, algorithm)
 
     def load_key(
         self,
@@ -500,7 +509,8 @@ class KeyCard(CardInterface):
         public_key: Optional[bytes] = None,
         private_key: Optional[bytes] = None,
         chain_code: Optional[bytes] = None,
-        bip39_seed: Optional[bytes] = None
+        bip39_seed: Optional[bytes] = None,
+        lee_seed: Optional[bytes] = None
     ) -> bytes:
         """
         Load a key into the card for signing purposes.
@@ -510,7 +520,8 @@ class KeyCard(CardInterface):
             public_key: Optional ECC public key (tag 0x80).
             private_key: ECC private key (tag 0x81).
             chain_code: Optional chain code (tag 0x82, only for extended key).
-            bip39_seed: 64-byte BIP39 seed (only for key_type=BIP39_SEED).
+            bip39_seed: 16 to 64-byte BIP39 seed (only for key_type=BIP39_SEED).
+            lee_seed: 16 to 64-byte LEE seed (only for key_type=BIP39_SEED).
 
         Returns:
             UID of the loaded key (SHA-256 of public key).
@@ -521,7 +532,8 @@ class KeyCard(CardInterface):
             public_key=public_key,
             private_key=private_key,
             chain_code=chain_code,
-            bip39_seed=bip39_seed
+            bip39_seed=bip39_seed,
+            lee_seed=lee_seed
         )
 
     def set_pinless_path(self, path: str) -> None:

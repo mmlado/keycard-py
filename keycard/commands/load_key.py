@@ -13,7 +13,8 @@ def load_key(
     public_key: Optional[bytes] = None,
     private_key: Optional[bytes] = None,
     chain_code: Optional[bytes] = None,
-    bip39_seed: Optional[bytes] = None
+    bip39_seed: Optional[bytes] = None,
+    lee_seed: Optional[bytes] = None
 ) -> bytes:
     """
     Load a key into the card for signing purposes.
@@ -25,15 +26,20 @@ def load_key(
         private_key: ECC private key (tag 0x81).
         chain_code: Optional chain code (tag 0x82, only for extended key).
         bip39_seed: 64-byte BIP39 seed (only for key_type=BIP39_SEED).
+        lee_seed: 64-byte LEE seed (only for key_type=LEE_SEED).
 
     Returns:
         UID of the loaded key (SHA-256 of public key).
     """
     if key_type == constants.LoadKeyType.BIP39_SEED:
-        if bip39_seed is None or len(bip39_seed) != 64:
+        if bip39_seed is None and lee_seed is None:
             raise ValueError(
-                "BIP39 seed must be 64 bytes for key_type = BIP39_SEED")
-        data = bip39_seed
+                "Either bip39_seed or lee_seed must be provided for key_type = BIP39_SEED")
+        data = bip39_seed if bip39_seed is not None else lee_seed
+
+        if data is not None and len(data) > 64 or len(data) < 16:
+            raise ValueError(
+                "BIP39/LEE seed must be 16-64 bytes")
     else:
         inner_tlv = []
         if public_key is not None:
@@ -52,6 +58,7 @@ def load_key(
     response = card.send_secure_apdu(
         ins=constants.INS_LOAD_KEY,
         p1=key_type,
+        p2=1 if lee_seed is not None else 0,
         data=data
     )
 
