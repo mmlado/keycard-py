@@ -1,6 +1,7 @@
 from .change_secret import change_secret
 from .derive_key import derive_key
 from .export_key import export_key
+from .export_lee_key import export_lee_key
 from .factory_reset import factory_reset
 from .generate_key import generate_key
 from .generate_mnemonic import generate_mnemonic
@@ -25,6 +26,7 @@ __all__ = [
     'change_secret',
     'derive_key',
     'export_key',
+    'export_lee_key',
     'factory_reset',
     'generate_key',
     'generate_mnemonic',
