@@ -94,21 +94,32 @@ def sign(
     if response.startswith(b'\xA0'):
         outer = tlv.parse_tlv(response)
         inner = tlv.parse_tlv(outer[0xA0][0])
-        der_bytes = (
-            b'\x30' +
-            len(inner[0x30][0]).to_bytes(1, 'big') +
-            inner[0x30][0]
-        )
-        signature = sigdecode_der(der_bytes, 0)
-        r, s = signature
         pub = inner.get(0x80, [None])[0]
-        return SignatureResult(
-            algo=p2,
-            digest=digest,
-            r=r,
-            s=s,
-            public_key=pub
-        )
+
+        if len(inner.get(0x80, [])) > 1:
+            return SignatureResult(
+                algo=p2,
+                digest=digest,
+                r=int.from_bytes(inner[0x80][1][:32], "big"),
+                s=int.from_bytes(inner[0x80][1][32:64], "big"),
+                recovery_id=-1,
+                public_key=pub
+            )
+        else:
+            der_bytes = (
+                b'\x30' +
+                len(inner[0x30][0]).to_bytes(1, 'big') +
+                inner[0x30][0]
+            )
+            signature = sigdecode_der(der_bytes, 0)
+            r, s = signature
+            return SignatureResult(
+                algo=p2,
+                digest=digest,
+                r=r,
+                s=s,
+                public_key=pub
+            )
     elif response.startswith(b'\x80'):
         outer = tlv.parse_tlv(response)
         raw = outer[0x80][0]
