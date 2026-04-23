@@ -26,7 +26,7 @@ def load_key(
         private_key: ECC private key (tag 0x81).
         chain_code: Optional chain code (tag 0x82, only for extended key).
         bip39_seed: 64-byte BIP39 seed (only for key_type=BIP39_SEED).
-        lee_seed: 64-byte LEE seed (only for key_type=LEE_SEED).
+        lee_seed: 64-byte LEE seed (only for key_type=BIP39_SEED).
 
     Returns:
         UID of the loaded key (SHA-256 of public key).

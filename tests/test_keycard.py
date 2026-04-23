@@ -368,7 +368,8 @@ def test_sign_current_key():
         mock_sign.assert_called_once_with(
             card,
             digest,
-            constants.DerivationOption.CURRENT
+            constants.DerivationOption.CURRENT,
+            constants.SigningAlgorithm.ECDSA_SECP256K1
         )
         assert result == "signed"
 
@@ -386,7 +387,8 @@ def test_sign_with_path():
             card,
             digest,
             constants.DerivationOption.DERIVE,
-            derivation_path=path,
+            constants.SigningAlgorithm.ECDSA_SECP256K1,
+            derivation_path=path
         )
         assert result == "sig"
 
@@ -404,7 +406,8 @@ def test_sign_with_path_make_current():
             card,
             digest,
             constants.DerivationOption.DERIVE_AND_MAKE_CURRENT,
-            derivation_path=path,
+            constants.SigningAlgorithm.ECDSA_SECP256K1,
+            derivation_path=path
         )
         assert result == "sig"
 
@@ -420,7 +423,8 @@ def test_sign_pinless():
         mock_sign.assert_called_once_with(
             card,
             digest,
-            constants.DerivationOption.PINLESS
+            constants.DerivationOption.PINLESS,
+            constants.SigningAlgorithm.ECDSA_SECP256K1
         )
         assert result == "sig"
 
@@ -442,7 +446,8 @@ def test_load_key_bip39_seed():
             public_key=None,
             private_key=None,
             chain_code=None,
-            bip39_seed=seed
+            bip39_seed=seed,
+            lee_seed=None
         )
         assert result == b"uid"
 
@@ -466,7 +471,8 @@ def test_load_key_ecc_pair():
             public_key=pub,
             private_key=priv,
             chain_code=None,
-            bip39_seed=None
+            bip39_seed=None,
+            lee_seed=None
         )
         assert result == b"uid"
 
@@ -492,7 +498,8 @@ def test_load_key_extended():
             public_key=pub,
             private_key=priv,
             chain_code=chain,
-            bip39_seed=None
+            bip39_seed=None,
+            lee_seed=None
         )
         assert result == b"uid"
 

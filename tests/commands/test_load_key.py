@@ -19,6 +19,7 @@ def test_load_key_bip39(card):
     card.send_secure_apdu.assert_called_once_with(
         ins=constants.INS_LOAD_KEY,
         p1=constants.LoadKeyType.BIP39_SEED,
+        p2=0,
         data=seed
     )
     assert result == fake_uid
@@ -46,22 +47,23 @@ def test_load_key_pair(card):
     card.send_secure_apdu.assert_called_once_with(
         ins=constants.INS_LOAD_KEY,
         p1=constants.LoadKeyType.ECC,
+        p2=0,
         data=encoded
     )
     assert result == uid
 
 
 def test_bip39_seed_too_short(card):
-    with pytest.raises(ValueError, match="BIP39 seed must be 64 bytes"):
+    with pytest.raises(ValueError, match="BIP39/LEE seed must be 16-64 bytes"):
         load_key(
             card,
             key_type=constants.LoadKeyType.BIP39_SEED,
-            bip39_seed=b"\xAA" * 32
+            bip39_seed=b"\xAA" * 8
         )
 
 
 def test_bip39_seed_missing(card):
-    with pytest.raises(ValueError, match="BIP39 seed must be 64 bytes"):
+    with pytest.raises(ValueError, match="Either bip39_seed or lee_seed must be provided for key_type = BIP39_SEED"):
         load_key(
             card,
             key_type=constants.LoadKeyType.BIP39_SEED

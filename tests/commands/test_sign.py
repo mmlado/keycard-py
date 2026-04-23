@@ -86,7 +86,7 @@ def test_sign_not_implemented_algo(card):
 
     with pytest.raises(
         NotImplementedError,
-        match="Signature algorithm not supported"
+        match="Signature algorithm 255 not supported"
     ):
         sign(card, digest, p2=0xFF)
 
