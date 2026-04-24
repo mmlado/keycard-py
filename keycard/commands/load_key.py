@@ -32,14 +32,23 @@ def load_key(
         UID of the loaded key (SHA-256 of public key).
     """
     if key_type == constants.LoadKeyType.BIP39_SEED:
-        if bip39_seed is None and lee_seed is None:
+        if bip39_seed is None:
             raise ValueError(
-                "Either bip39_seed or lee_seed must be provided for key_type = BIP39_SEED")
-        data = bip39_seed if bip39_seed is not None else lee_seed
+                "bip39_seed must be provided for key_type = BIP39_SEED")
+        data = bip39_seed
 
         if data is not None and len(data) > 64 or len(data) < 16:
             raise ValueError(
-                "BIP39/LEE seed must be 16-64 bytes")
+                "BIP39 seed must be 16-64 bytes")
+    elif key_type == constants.LoadKeyType.LEE_SEED:
+        if lee_seed is None:
+            raise ValueError(
+                "lee_seed must be provided for key_type = LEE_SEED")
+        data = lee_seed
+
+        if data is not None and len(data) > 64 or len(data) < 16:
+            raise ValueError(
+                "LEE seed must be 16-64 bytes")
     else:
         inner_tlv = []
         if public_key is not None:
@@ -58,7 +67,7 @@ def load_key(
     response = card.send_secure_apdu(
         ins=constants.INS_LOAD_KEY,
         p1=key_type,
-        p2=1 if lee_seed is not None else 0,
+        p2=0,
         data=data
     )
 

@@ -96,12 +96,12 @@ def sign(
         inner = tlv.parse_tlv(outer[0xA0][0])
         pub = inner.get(0x80, [None])[0]
 
-        if len(inner.get(0x80, [])) > 1:
+        if inner.get(0x88, None) is not None:
             return SignatureResult(
                 algo=p2,
                 digest=digest,
-                r=int.from_bytes(inner[0x80][1][:32], "big"),
-                s=int.from_bytes(inner[0x80][1][32:64], "big"),
+                r=int.from_bytes(inner[0x88][0][:32], "big"),
+                s=int.from_bytes(inner[0x88][0][32:64], "big"),
                 recovery_id=-1,
                 public_key=pub
             )

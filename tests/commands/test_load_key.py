@@ -54,7 +54,7 @@ def test_load_key_pair(card):
 
 
 def test_bip39_seed_too_short(card):
-    with pytest.raises(ValueError, match="BIP39/LEE seed must be 16-64 bytes"):
+    with pytest.raises(ValueError, match="BIP39 seed must be 16-64 bytes"):
         load_key(
             card,
             key_type=constants.LoadKeyType.BIP39_SEED,
@@ -63,7 +63,7 @@ def test_bip39_seed_too_short(card):
 
 
 def test_bip39_seed_missing(card):
-    with pytest.raises(ValueError, match="Either bip39_seed or lee_seed must be provided for key_type = BIP39_SEED"):
+    with pytest.raises(ValueError, match="bip39_seed must be provided for key_type = BIP39_SEED"):
         load_key(
             card,
             key_type=constants.LoadKeyType.BIP39_SEED
