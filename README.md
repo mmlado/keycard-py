@@ -11,6 +11,14 @@ A minimal, clean, fully native Python SDK for communicating with [Keycard](https
 
 ## Installation
 
+​```bash
+pip install keycard
+​```
+
+The package is published on PyPI as `keycard` (repo name is keycard-py).
+
+### From source
+
 ```bash
 git clone https://github.com/mmlado/keycard-py.git
 cd keycard-py
