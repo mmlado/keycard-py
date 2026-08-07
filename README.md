@@ -2,12 +2,22 @@
  
 A minimal, clean, fully native Python SDK for communicating with [Keycard](https://keycard.tech) smart cards.
 
+[Documentation](https://deepwiki.com/mmlado/keycard-py)
+
 ## Requirements
  
 - Python 3.10 or higher
 - The library is tested on Python 3.10, 3.11, 3.12, and 3.13
 
 ## Installation
+
+​```bash
+pip install keycard
+​```
+
+The package is published on PyPI as `keycard` (repo name is keycard-py).
+
+### From source
 
 ```bash
 git clone https://github.com/mmlado/keycard-py.git
