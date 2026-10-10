@@ -293,11 +293,15 @@ class KeyCard(CardInterface):
         Args:
             pin (str): The user-entered PIN.
 
+        A failed attempt also clears a previous verification, as it does on
+        the card.
+
         Returns:
             bool: True if PIN is valid, otherwise False.
         '''
+        self._is_pin_verified = False
         result = commands.verify_pin(self, pin.encode('utf-8'))
-        self._is_pin_verified = True
+        self._is_pin_verified = result
         return result
 
     @property

@@ -1,7 +1,7 @@
 import pytest
 
 from keycard import constants
-from keycard.exceptions import UntrustedCardError
+from keycard.exceptions import APDUError, UntrustedCardError
 from keycard.keycard import KeyCard
 from keycard.secure_channel import SecureChannelVersion, channel_version
 
@@ -62,6 +62,16 @@ def test_reset_init_and_verify_pin(keycard):
     status = keycard.status
     assert status['pin_retry_count'] == 5
     assert status['puk_retry_count'] == 10
+
+    assert keycard.verify_pin('000000') is False
+    assert not keycard.is_pin_verified
+    with pytest.raises(APDUError) as excinfo:
+        keycard.send_secure_apdu(
+            ins=constants.INS_STORE_DATA, data=b'\x01x')
+    assert excinfo.value.sw == 0x6985
+    assert keycard.verify_pin(PIN)
+    assert keycard.is_pin_verified
+    keycard.send_secure_apdu(ins=constants.INS_STORE_DATA, data=b'\x01x')
 
     if not v2:
         keycard.unpair(pairing.slot)

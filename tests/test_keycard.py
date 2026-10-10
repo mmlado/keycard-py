@@ -101,6 +101,43 @@ def test_verify_pin_delegates_call_and_returns_result():
         result = kc.verify_pin('1234')
         mock_cmd.assert_called_once_with(kc, b'1234')
         assert result is True
+        assert kc.is_pin_verified
+
+
+def test_verify_pin_rejected_leaves_pin_unverified():
+    kc = KeyCard(MagicMock())
+
+    with patch('keycard.keycard.commands.verify_pin', return_value=False):
+        assert kc.verify_pin('000000') is False
+
+    assert not kc.is_pin_verified
+
+
+def test_verify_pin_rejected_clears_previous_verification():
+    kc = KeyCard(MagicMock())
+
+    with patch('keycard.keycard.commands.verify_pin', return_value=True):
+        kc.verify_pin('123456')
+    with patch('keycard.keycard.commands.verify_pin', return_value=False):
+        kc.verify_pin('000000')
+
+    assert not kc.is_pin_verified
+
+
+@pytest.mark.parametrize('error', [
+    RuntimeError('PIN is blocked'),
+    APDUError(0x6A80),
+])
+def test_verify_pin_error_leaves_pin_unverified(error):
+    kc = KeyCard(MagicMock())
+
+    with patch('keycard.keycard.commands.verify_pin', return_value=True):
+        kc.verify_pin('123456')
+    with patch('keycard.keycard.commands.verify_pin', side_effect=error):
+        with pytest.raises(type(error)):
+            kc.verify_pin('123456')
+
+    assert not kc.is_pin_verified
 
 
 def test_unpair_delegates_call():
