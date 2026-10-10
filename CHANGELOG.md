@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - `ident()` recovered the CA key from the wrong digest
+- `verify_pin` marked the PIN as verified when the card rejected it
 - Older versions not supported. Python 3.10+ now supported
 
 ## [0.3.0] - 2025-08-24
