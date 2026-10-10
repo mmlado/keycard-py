@@ -195,7 +195,7 @@ class KeyCard(CardInterface):
     def pair(
         self,
         shared_secret: bytes,
-        pairing_mode: Optional[PairingMode] = PairingMode.ANY
+        pairing_mode: PairingMode = PairingMode.ANY
     ) -> tuple[int, bytes]:
         '''
         Pairs with the card using an ECDH-derived shared secret.
@@ -362,12 +362,15 @@ class KeyCard(CardInterface):
         """
         Stores data on the card in the specified slot.
 
+        NDEF data is the complete NDEF file, starting with its 2-byte length.
+
         Args:
-            data (bytes): The data to store (max 127 bytes).
+            data (bytes): The data to store (max 127 bytes, or 512 bytes for
+                NDEF from applet 3.2).
             slot (StorageSlot): Where to store the data (PUBLIC, NDEF, CASH)
 
         Raises:
-            ValueError: If slot is invalid or data is too long.
+            ValueError: If the data is too long.
         """
         commands.store_data(self, data, slot)
 
@@ -379,11 +382,14 @@ class KeyCard(CardInterface):
         Gets the data on the card previously stored with the store data command
         in the specified slot.
 
+        NDEF data is the complete NDEF file, starting with its 2-byte length.
+        Applets before 4.0 return at most the first 223 bytes.
+
         Args:
             slot (StorageSlot): Where to retrieve the data (PUBLIC, NDEF, CASH)
 
         Raises:
-            ValueError: If slot is invalid or data is too long.
+            InvalidResponseError: If segmented NDEF data is malformed.
         """
         return commands.get_data(self, slot)
 
@@ -606,7 +612,7 @@ class KeyCard(CardInterface):
     ) -> bytes:
         if not self.session or not self.session.authenticated:
             raise RuntimeError('Secure channel not established')
-        print(p2)
+
         encrypted = self.session.wrap_apdu(
             cla=constants.CLA_PROPRIETARY,
             ins=ins,

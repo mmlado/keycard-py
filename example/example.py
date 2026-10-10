@@ -81,7 +81,9 @@ with KeyCard() as card:
     print('PIN verified.')
 
     print('Store long NDEF')
-    ndef = b'\xAA' * 120
+    # 221 bytes: two STORE DATA chunks, still a single GET DATA on 3.x.
+    message = b'\xAA' * 219
+    ndef = len(message).to_bytes(2, 'big') + message
     print(f'Writing NDEF: {ndef.hex()}')
     card.store_data(ndef, constants.StorageSlot.NDEF)
     print('Data written. Reading...')

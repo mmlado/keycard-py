@@ -126,7 +126,8 @@ class SecureChannel:
         received_mac = bytes(response.data[:16])
         encrypted = bytes(response.data[16:])
 
-        lr = len(response.data)
+        # The card MACs only the low byte; a full response is 256 bytes.
+        lr = len(response.data) & 0xFF
         mac_input = bytes([lr]) + bytes(15) + bytes(encrypted)
         expected_mac = aes_cbc_encrypt(
             self.mac_key, bytes(16), mac_input, padding=False)[-16:]
