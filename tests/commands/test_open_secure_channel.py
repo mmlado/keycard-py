@@ -1,87 +1,114 @@
-import sys
-import pytest
+import os
+from hashlib import sha512
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from keycard import constants
-from keycard.card_interface import CardInterface
+from keycard.apdu import APDUResponse
 from keycard.commands.open_secure_channel import open_secure_channel
-from keycard.exceptions import APDUError
+from keycard.crypto.aes import aes_cbc_decrypt, aes_cbc_encrypt
+from keycard.exceptions import InvalidResponseError, InvalidStateError
+from keycard.pairing import Pairing
+
+PAIRING = Pairing(1, bytes(range(32)))
+SHARED_SECRET = b'\xBB' * 32
+SALT = b'A' * 32
+SEED_IV = b'B' * 16
+EPHEMERAL_PUBLIC_KEY = b'\x04' + b'\x02' * 64
+DIGEST = sha512(SHARED_SECRET + PAIRING.key + SALT).digest()
+ENC_KEY, MAC_KEY = DIGEST[:32], DIGEST[32:]
+
+
+@pytest.mark.parametrize('version,helper', [
+    ((3, 2), '_open_v1'),
+    ((4, 0), '_open_v2'),
+])
+def test_open_secure_channel_uses_helper_for_version(card, version, helper):
+    card.version = version
+    with patch(
+        f'keycard.commands.open_secure_channel.{helper}',
+        return_value='channel'
+    ) as open_version:
+        assert open_secure_channel(card) == 'channel'
+
+    open_version.assert_called_once_with(card)
+
+
+def card_response(command, payload):
+    """Encrypts a response the way a 3.x card does."""
+    encrypted = aes_cbc_encrypt(ENC_KEY, command[5:21], payload + b'\x90\x00')
+    lr = (16 + len(encrypted)) & 0xFF
+    mac = aes_cbc_encrypt(
+        MAC_KEY, bytes(16), bytes([lr]) + bytes(15) + encrypted,
+        padding=False
+    )[-16:]
+    return APDUResponse(mac + encrypted, 0x9000)
 
 
 @pytest.fixture
-def mock_crypto():
-    open_secure_channel_module = sys.modules[
-        'keycard.commands.open_secure_channel'
-    ]
-    ephemeral_key = MagicMock()
+def v1_card(card):
+    card.version = (3, 2)
+    card.is_initialized = True
+    card.pairing = PAIRING
+    card.card_public_key = b'\x04' + b'\x01' * 64
+    card.send_apdu.return_value = SALT + SEED_IV
     with (
-        patch.object(
-            open_secure_channel_module,
-            'SecureChannelV1'
-        ) as mock_secure_channel,
-        patch.object(
-            open_secure_channel_module,
-            'generate_key_pair',
-            return_value=(ephemeral_key, b'\x04' + b'\x02' * 64)
-        ) as mock_generate_key_pair,
-        patch.object(
-            open_secure_channel_module,
-            'ecdh_shared_secret',
-            return_value=b'shared_secret'
-        ) as mock_ecdh_shared_secret,
+        patch(
+            'keycard.commands.open_secure_channel.generate_key_pair',
+            return_value=(MagicMock(), EPHEMERAL_PUBLIC_KEY)
+        ),
+        patch(
+            'keycard.commands.open_secure_channel.ecdh_shared_secret',
+            return_value=SHARED_SECRET
+        ),
     ):
-        yield {
-            'secure_channel': mock_secure_channel,
-            'generate_key_pair': mock_generate_key_pair,
-            'ecdh_shared_secret': mock_ecdh_shared_secret,
-            'ephemeral_key': ephemeral_key,
-        }
+        yield card
 
 
-def test_open_secure_channel_success(mock_crypto):
-    mock_secure_channel = mock_crypto['secure_channel']
+def test_v1_open_derives_keys_and_mutually_authenticates(v1_card):
+    challenges = []
 
-    pairing_index = 1
-    pairing_key = b'pairing_key'
-    card = MagicMock(spec=CardInterface)
-    card.card_public_key = b'\x04' + b'\x01' * 64
+    def send_raw_apdu(apdu):
+        assert apdu[:4] == bytes([0x80, 0x11, 0x00, 0x00])
+        challenges.append(aes_cbc_decrypt(ENC_KEY, SEED_IV, apdu[21:]))
+        return card_response(apdu, os.urandom(32))
 
-    salt = b'A' * 32
-    seed_iv = b'B' * 16
-    card.send_apdu.return_value = salt + seed_iv
-    mock_secure_channel.open.return_value = 'secure_session'
+    v1_card.send_raw_apdu.side_effect = send_raw_apdu
 
-    result = open_secure_channel(
-        card,
-        pairing_index,
-        pairing_key
-    )
+    channel = open_secure_channel(v1_card)
 
-    card.send_apdu.assert_called_once_with(
+    v1_card.send_apdu.assert_called_once_with(
         ins=constants.INS_OPEN_SECURE_CHANNEL,
-        p1=pairing_index,
-        data=b'\x04' + b'\x02' * 64
+        p1=PAIRING.slot,
+        data=EPHEMERAL_PUBLIC_KEY
     )
-    mock_crypto['ecdh_shared_secret'].assert_called_once_with(
-        mock_crypto['ephemeral_key'], card.card_public_key
-    )
-    mock_secure_channel.open.assert_called_once_with(
-        b'shared_secret', pairing_key, salt, seed_iv
-    )
-    assert result == 'secure_session'
+    assert (channel.enc_key, channel.mac_key) == (ENC_KEY, MAC_KEY)
+    assert len(challenges) == 1 and len(challenges[0]) == 32
+    assert channel.is_open
 
 
-def test_open_secure_channel_raises_apdu_error(card, mock_crypto):
-    pairing_index = 1
-    pairing_key = b'pairing_key'
-    card.card_public_key = b'\x04' + b'\x01' * 64
-    card.send_apdu.side_effect = APDUError(0x6A80)
+def test_v1_open_rejects_short_mutual_authentication(v1_card):
+    v1_card.send_raw_apdu.side_effect = (
+        lambda apdu: card_response(apdu, bytes(31)))
 
-    with pytest.raises(APDUError):
-        open_secure_channel(
-            card,
-            pairing_index,
-            pairing_key
-        )
+    with pytest.raises(InvalidResponseError, match='not 32 bytes'):
+        open_secure_channel(v1_card)
 
-    mock_crypto['ecdh_shared_secret'].assert_not_called()
+
+def test_v1_open_requires_pairing(v1_card):
+    v1_card.pairing = None
+
+    with pytest.raises(InvalidStateError, match='needs a pairing'):
+        open_secure_channel(v1_card)
+
+    v1_card.send_apdu.assert_not_called()
+
+
+def test_v1_open_requires_initialized_card(v1_card):
+    v1_card.is_initialized = False
+
+    with pytest.raises(InvalidStateError, match='Initialization'):
+        open_secure_channel(v1_card)
+
+    v1_card.send_apdu.assert_not_called()

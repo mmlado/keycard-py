@@ -21,7 +21,7 @@ def session_params():
 
 
 def test_open_sets_authenticated_and_keys(session_params):
-    session = SecureChannelV1.open(**session_params)
+    session = SecureChannelV1.from_handshake(**session_params)
     assert session.authenticated is True
     assert isinstance(session.enc_key, bytes) and len(session.enc_key) == 32
     assert isinstance(session.mac_key, bytes) and len(session.mac_key) == 32
@@ -29,7 +29,7 @@ def test_open_sets_authenticated_and_keys(session_params):
 
 
 def test_wrap_apdu_authenticated(session_params):
-    session = SecureChannelV1.open(**session_params)
+    session = SecureChannelV1.from_handshake(**session_params)
     wrapped = session.wrap_apdu(
         0x80,
         0xCA,
@@ -61,7 +61,7 @@ def test_wrap_apdu_auth_check(ins, should_raise):
 
 def test_unwrap_response_authenticated_and_mac(monkeypatch, session_params):
     # Patch aes_cbc_encrypt and aes_cbc_decrypt to simulate expected behavior
-    session = SecureChannelV1.open(**session_params)
+    session = SecureChannelV1.from_handshake(**session_params)
     plaintext = b"hello world" + b'\x90\x00'  # status word 0x9000
 
     # Simulate encryption and MAC
@@ -88,7 +88,7 @@ def test_unwrap_response_authenticated_and_mac(monkeypatch, session_params):
 
 
 def test_unwrap_response_256_bytes(session_params):
-    session = SecureChannelV1.open(**session_params)
+    session = SecureChannelV1.from_handshake(**session_params)
     payload = bytes(range(223))
     encrypted = aes_cbc_encrypt(
         session.enc_key, session.iv, payload + b'\x90\x00')
@@ -105,7 +105,7 @@ def test_unwrap_response_256_bytes(session_params):
 
 
 def test_unwrap_response_not_authenticated_raises(session_params):
-    session = SecureChannelV1.open(**session_params)
+    session = SecureChannelV1.from_handshake(**session_params)
     session.authenticated = False
     response = APDUResponse(bytes(32), 0x900)
     with pytest.raises(ValueError, match="not authenticated"):
@@ -113,7 +113,7 @@ def test_unwrap_response_not_authenticated_raises(session_params):
 
 
 def test_unwrap_response_invalid_length_raises(session_params):
-    session = SecureChannelV1.open(**session_params)
+    session = SecureChannelV1.from_handshake(**session_params)
     session.authenticated = True
     response = APDUResponse(bytes(10), 0x900)
     with pytest.raises(ValueError, match="Invalid secure response length"):
@@ -121,7 +121,7 @@ def test_unwrap_response_invalid_length_raises(session_params):
 
 
 def test_unwrap_response_invalid_mac_raises(monkeypatch, session_params):
-    session = SecureChannelV1.open(**session_params)
+    session = SecureChannelV1.from_handshake(**session_params)
     # Patch aes_cbc_encrypt to return a different MAC
 
     def fake_encrypt(key, iv, data, padding=True):
@@ -139,7 +139,7 @@ def test_unwrap_response_invalid_mac_raises(monkeypatch, session_params):
 
 
 def test_unwrap_response_missing_status_word(monkeypatch, session_params):
-    session = SecureChannelV1.open(**session_params)
+    session = SecureChannelV1.from_handshake(**session_params)
 
     def fake_decrypt(key, iv, data):
         return b'\x01'
@@ -169,13 +169,13 @@ def _card_response(session, payload, sw):
 
 
 def test_version_and_is_open(session_params):
-    session = SecureChannelV1.open(**session_params)
+    session = SecureChannelV1.from_handshake(**session_params)
     assert session.version == SecureChannelVersion.V1
     assert session.is_open is True
 
 
 def test_wrap_builds_full_apdu_the_card_can_verify(session_params):
-    session = SecureChannelV1.open(**session_params)
+    session = SecureChannelV1.from_handshake(**session_params)
     iv = session.iv
 
     apdu = session.wrap(0xCA, 0x01, 0x02, b'payload')
@@ -193,14 +193,14 @@ def test_wrap_builds_full_apdu_the_card_can_verify(session_params):
 
 
 def test_unwrap_returns_data(session_params):
-    session = SecureChannelV1.open(**session_params)
+    session = SecureChannelV1.from_handshake(**session_params)
     response = _card_response(session, b'result', 0x9000)
 
     assert session.unwrap(response) == b'result'
 
 
 def test_unwrap_raises_on_inner_status_word(session_params):
-    session = SecureChannelV1.open(**session_params)
+    session = SecureChannelV1.from_handshake(**session_params)
     response = _card_response(session, b'', 0x6A84)
 
     with pytest.raises(APDUError) as excinfo:
@@ -209,7 +209,7 @@ def test_unwrap_raises_on_inner_status_word(session_params):
 
 
 def test_unwrap_raises_on_outer_status_word(session_params):
-    session = SecureChannelV1.open(**session_params)
+    session = SecureChannelV1.from_handshake(**session_params)
 
     with pytest.raises(APDUError) as excinfo:
         session.unwrap(APDUResponse(b'', 0x6982))

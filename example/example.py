@@ -71,7 +71,7 @@ with KeyCard() as card:
     print(f'Paired. Index: {pairing_index}')
     print(f'{pairing_key.hex()=}')
 
-    card.open_secure_channel(pairing_index, pairing_key)
+    card.open_secure_channel()
     print('Secure channel established.')
 
     print(card.status)

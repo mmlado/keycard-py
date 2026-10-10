@@ -1,5 +1,5 @@
 from types import TracebackType
-from typing import Optional, Union
+from typing import Iterable, Optional, Union
 
 from . import constants
 from . import commands
@@ -10,6 +10,7 @@ from .exceptions import APDUError, InvalidStateError
 from .parsing.application_info import ApplicationInfo
 from .parsing.exported_key import ExportedKey
 from .parsing.signature_result import SignatureResult
+from .pairing import Pairing
 from .transport import Transport
 from .secure_channel import (
     SecureChannel,
@@ -26,18 +27,32 @@ class KeyCard(CardInterface):
     and card operations.
     '''
 
-    def __init__(self, transport: Optional[Transport] = None):
+    def __init__(
+        self,
+        transport: Optional[Transport] = None,
+        ca_public_keys: Optional[Iterable[bytes]] = None,
+        trusted_identity_keys: Optional[Iterable[bytes]] = None
+    ):
         '''
         Initializes the KeyCard interface.
 
         Args:
             transport (Transport): Instance used for APDU communication.
-
-        Raises:
-            ValueError: If transport is None.
+            ca_public_keys: Keycard CA public keys trusted to sign Identity
+                Certificates. Defaults to the official Keycard CA.
+            trusted_identity_keys: Card Identity Keys trusted even without a
+                certificate from a trusted CA.
         '''
         self.transport = transport if transport else Transport()
+        self.ca_public_keys: list[bytes] = (
+            list(ca_public_keys)
+            if ca_public_keys is not None
+            else [constants.OFFICIAL_CA_PUBLIC_KEY]
+        )
+        self.trusted_identity_keys: list[bytes] = list(
+            trusted_identity_keys or [])
         self.card_public_key: Optional[bytes] = None
+        self.pairing: Optional[Pairing] = None
         self.session: Optional[SecureChannel] = None
         self._is_pin_verified: bool = False
         self._is_initialized: bool = False
@@ -59,12 +74,12 @@ class KeyCard(CardInterface):
     @property
     def is_selected(self) -> bool:
         '''
-        Checks if a card is selected and has a public key.
+        Checks if the Keycard applet has been selected.
 
         Returns:
             bool: True if a card is selected, False otherwise.
         '''
-        return self.card_public_key is not None
+        return self._application_info is not None
 
     @property
     def is_session_open(self) -> bool:
@@ -134,6 +149,18 @@ class KeyCard(CardInterface):
             return None
         return channel_version(self.version)
 
+    @property
+    def identity_certificate(self) -> Optional[bytes]:
+        '''
+        The card's Identity Certificate from SELECT (4.x only).
+
+        Returns:
+            bytes: The 98-byte certificate, or None.
+        '''
+        if self._application_info is None:
+            return None
+        return self._application_info.identity_certificate
+
     def _require_secure_channel_v1(self, operation: str) -> None:
         version = self.secure_channel_version
         if version is not None and version != SecureChannelVersion.V1:
@@ -143,30 +170,57 @@ class KeyCard(CardInterface):
         '''
         Selects the Keycard applet and retrieves application metadata.
 
+        Selecting the applet closes any secure channel on the card, so the
+        session and PIN state are reset.
+
         Returns:
-            ApplicationInfo: Object containing ECC public key and card info.
+            ApplicationInfo: The card's application information.
         '''
         info = commands.select(self)
         self._application_info = info
         self.card_public_key = info.ecc_public_key
         self._is_initialized = info.is_initialized
+        self.session = None
+        self._is_pin_verified = False
         return info
 
-    def init(self, pin: str, puk: str, pairing_secret: str) -> None:
+    def init(
+        self,
+        pin: str,
+        puk: str,
+        pairing_secret: Optional[str | bytes] = None,
+        pin_retries: Optional[int] = None,
+        puk_retries: Optional[int] = None,
+        alt_pin: Optional[str] = None
+    ) -> None:
         '''
-        Initializes the card with security credentials.
+        Initializes the card with its credentials.
+
+        Secure Channel V1 cards need the pairing secret. Secure Channel V2
+        cards take none; the channel is opened if needed and stays open.
 
         Args:
-            pin (bytes): The PIN code in bytes.
-            puk (bytes): The PUK code in bytes.
-            pairing_secret (bytes): The shared secret for pairing.
+            pin (str): The 6-digit PIN.
+            puk (str): The 12-digit PUK.
+            pairing_secret: The pairing secret (Secure Channel V1 only).
+            pin_retries (int): PIN attempts, 2 to 10 (default 3).
+            puk_retries (int): PUK attempts, 3 to 12 (default 5).
+            alt_pin (str): Optional 6-digit Alternate PIN.
+
+        Raises:
+            ValueError: If the pairing secret is missing on V1, given on V2,
+                or a parameter is out of range.
         '''
         commands.init(
             self,
             pin,
             puk,
             pairing_secret,
+            pin_retries=pin_retries,
+            puk_retries=puk_retries,
+            alt_pin=alt_pin,
         )
+        self._is_initialized = True
 
     def ident(self, challenge: Optional[bytes] = None) -> bytes:
         '''
@@ -181,34 +235,21 @@ class KeyCard(CardInterface):
         '''
         return commands.ident(self, challenge)
 
-    def open_secure_channel(
-        self,
-        pairing_index: int,
-        pairing_key: bytes,
-        mutually_authenticate: Optional[bool] = True
-    ) -> None:
+    def open_secure_channel(self) -> None:
         '''
         Opens a secure session with the card.
 
-        Args:
-            pairing_index (int): Index of the pairing slot to use.
-            pairing_key (bytes): The shared pairing key (32 bytes).
-            mutually_authenticate (bool): Execute mutually authenticate when
-                a secure channel has been opened
+        Secure Channel V1 cards use ``pairing`` (set by ``pair()`` or
+        assigned) and run MUTUALLY AUTHENTICATE. Secure Channel V2 cards need
+        an Identity Certificate signed by one of ``ca_public_keys``, or an
+        Identity Key in ``trusted_identity_keys``.
 
         Raises:
-            InvalidStateError: If the card uses Secure Channel V2, which is
-                not supported yet.
+            InvalidStateError: If a V1 card has no pairing.
+            UntrustedCardError: If a V2 card is not trusted.
+            InvalidResponseError: If the handshake does not verify.
         '''
-        self._require_secure_channel_v1('Opening a secure channel')
-        self.session = commands.open_secure_channel(
-            self,
-            pairing_index,
-            pairing_key,
-        )
-
-        if mutually_authenticate:
-            self.mutually_authenticate()
+        self.session = commands.open_secure_channel(self)
 
     def mutually_authenticate(self) -> None:
         '''
@@ -225,21 +266,25 @@ class KeyCard(CardInterface):
         self,
         shared_secret: bytes,
         pairing_mode: PairingMode = PairingMode.ANY
-    ) -> tuple[int, bytes]:
+    ) -> Pairing:
         '''
         Pairs with the card using an ECDH-derived shared secret.
 
         Args:
             shared_secret (bytes): 32-byte ECDH shared secret.
 
+        The pairing is stored in ``pairing`` for ``open_secure_channel``.
+
         Returns:
-            tuple[int, bytes]: The pairing index and client cryptogram.
+            Pairing: The pairing slot and key.
 
         Raises:
             InvalidStateError: If the card does not use Secure Channel V1.
         '''
         self._require_secure_channel_v1('Pairing')
-        return commands.pair(self, shared_secret, pairing_mode)
+        self.pairing = Pairing(
+            *commands.pair(self, shared_secret, pairing_mode))
+        return self.pairing
 
     def verify_pin(self, pin: str) -> bool:
         '''
@@ -302,15 +347,23 @@ class KeyCard(CardInterface):
         '''
         self._require_secure_channel_v1('Unpairing')
         commands.unpair(self, index)
+        if self.pairing is not None and self.pairing.slot == index:
+            self.pairing = None
 
     def factory_reset(self) -> None:
         '''
         Sends the FACTORY_RESET command to the card.
 
+        The card closes any secure channel and forgets its credentials, so
+        the session, PIN and initialization state are reset.
+
         Raises:
             APDUError: If the card returns a failure status word.
         '''
         commands.factory_reset(self)
+        self.session = None
+        self._is_pin_verified = False
+        self._is_initialized = False
 
     def generate_key(self) -> bytes:
         '''
@@ -620,6 +673,15 @@ class KeyCard(CardInterface):
         """
         commands.derive_key(self, path)
 
+    def send_raw_apdu(self, apdu: bytes) -> APDUResponse:
+        '''
+        Sends a complete APDU and returns the raw response.
+
+        Returns:
+            APDUResponse: The response data and status word.
+        '''
+        return self.transport.send_apdu(apdu)
+
     def send_apdu(
         self,
         ins: int,
@@ -651,5 +713,5 @@ class KeyCard(CardInterface):
         if session is None or not session.is_open:
             raise RuntimeError('Secure channel not established')
 
-        response = self.transport.send_apdu(session.wrap(ins, p1, p2, data))
+        response = self.send_raw_apdu(session.wrap(ins, p1, p2, data))
         return session.unwrap(response)
