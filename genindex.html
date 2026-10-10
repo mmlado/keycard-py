@@ -53,6 +53,7 @@
  | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
  | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -64,14 +65,20 @@
 </li>
       <li><a href="keycard.html#keycard.constants.PairingMode.ANY">ANY (keycard.constants.PairingMode attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.html#keycard.exceptions.APDUError">APDUError</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.html#keycard.apdu.APDUResponse">APDUResponse (class in keycard.apdu)</a>
 </li>
       <li><a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo">ApplicationInfo (class in keycard.parsing.application_info)</a>
 </li>
+      <li><a href="keycard.secure_channel.html#id4">authenticated (keycard.secure_channel.SecureChannelV1 attribute)</a>, <a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannelV1.authenticated">[1]</a>
+
+      <ul>
+        <li><a href="keycard.secure_channel.html#id0">(keycard.secure_channel.v1.SecureChannelV1 attribute)</a>, <a href="keycard.secure_channel.html#keycard.secure_channel.v1.SecureChannelV1.authenticated">[1]</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -122,6 +129,12 @@
       </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.change_secret">change_secret() (in module keycard.commands)</a>
 </li>
+      <li><a href="keycard.secure_channel.html#keycard.secure_channel.channel_version">channel_version() (in module keycard.secure_channel)</a>
+
+      <ul>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.base.channel_version">(in module keycard.secure_channel.base)</a>
+</li>
+      </ul></li>
       <li><a href="keycard.html#keycard.transport.Transport.connect">connect() (keycard.transport.Transport method)</a>
 </li>
       <li><a href="keycard.parsing.html#id6">CREDENTIALS_MANAGEMENT (keycard.parsing.capabilities.Capabilities attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.capabilities.Capabilities.CREDENTIALS_MANAGEMENT">[1]</a>
@@ -176,12 +189,18 @@
 </li>
       <li><a href="keycard.html#keycard.constants.SigningAlgorithm.EDDSA_ED25519">EDDSA_ED25519 (keycard.constants.SigningAlgorithm attribute)</a>
 </li>
-      <li><a href="keycard.html#keycard.apdu.encode_lv">encode_lv() (in module keycard.apdu)</a>
+      <li><a href="keycard.secure_channel.html#id5">enc_key (keycard.secure_channel.SecureChannelV1 attribute)</a>, <a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannelV1.enc_key">[1]</a>
+
+      <ul>
+        <li><a href="keycard.secure_channel.html#id1">(keycard.secure_channel.v1.SecureChannelV1 attribute)</a>, <a href="keycard.secure_channel.html#keycard.secure_channel.v1.SecureChannelV1.enc_key">[1]</a>
 </li>
-      <li><a href="keycard.html#keycard.constants.PairingMode.EPHEMERAL">EPHEMERAL (keycard.constants.PairingMode attribute)</a>
+      </ul></li>
+      <li><a href="keycard.html#keycard.apdu.encode_lv">encode_lv() (in module keycard.apdu)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.html#keycard.constants.PairingMode.EPHEMERAL">EPHEMERAL (keycard.constants.PairingMode attribute)</a>
+</li>
       <li><a href="keycard.html#keycard.KeyCard.export_current_key">export_current_key() (keycard.KeyCard method)</a>
 
       <ul>
@@ -298,6 +317,16 @@
         <li><a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.is_initialized">(keycard.parsing.application_info.ApplicationInfo property)</a>
 </li>
       </ul></li>
+      <li><a href="keycard.secure_channel.html#keycard.secure_channel.base.SecureChannel.is_open">is_open (keycard.secure_channel.base.SecureChannel property)</a>
+
+      <ul>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannel.is_open">(keycard.secure_channel.SecureChannel property)</a>
+</li>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannelV1.is_open">(keycard.secure_channel.SecureChannelV1 property)</a>
+</li>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.v1.SecureChannelV1.is_open">(keycard.secure_channel.v1.SecureChannelV1 property)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.html#keycard.CardInterface.is_pin_verified">is_pin_verified (keycard.CardInterface property)</a>
@@ -334,6 +363,12 @@
 </li>
       <li><a href="keycard.crypto.html#keycard.crypto.padding.iso7816_unpad">iso7816_unpad() (in module keycard.crypto.padding)</a>
 </li>
+      <li><a href="keycard.secure_channel.html#id6">iv (keycard.secure_channel.SecureChannelV1 attribute)</a>, <a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannelV1.iv">[1]</a>
+
+      <ul>
+        <li><a href="keycard.secure_channel.html#id2">(keycard.secure_channel.v1.SecureChannelV1 attribute)</a>, <a href="keycard.secure_channel.html#keycard.secure_channel.v1.SecureChannelV1.iv">[1]</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -434,8 +469,6 @@
         <li><a href="keycard.html#module-keycard.constants">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     keycard.crypto
 
@@ -443,6 +476,8 @@
         <li><a href="keycard.crypto.html#module-keycard.crypto">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     keycard.crypto.aes
 
@@ -514,6 +549,27 @@
 </li>
       </ul></li>
       <li>
+    keycard.secure_channel
+
+      <ul>
+        <li><a href="keycard.secure_channel.html#module-keycard.secure_channel">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.secure_channel.base
+
+      <ul>
+        <li><a href="keycard.secure_channel.html#module-keycard.secure_channel.base">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.secure_channel.v1
+
+      <ul>
+        <li><a href="keycard.secure_channel.html#module-keycard.secure_channel.v1">module</a>
+</li>
+      </ul></li>
+      <li>
     keycard.transport
 
       <ul>
@@ -548,6 +604,12 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.secure_channel.html#id7">mac_key (keycard.secure_channel.SecureChannelV1 attribute)</a>, <a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannelV1.mac_key">[1]</a>
+
+      <ul>
+        <li><a href="keycard.secure_channel.html#id3">(keycard.secure_channel.v1.SecureChannelV1 attribute)</a>, <a href="keycard.secure_channel.html#keycard.secure_channel.v1.SecureChannelV1.mac_key">[1]</a>
+</li>
+      </ul></li>
       <li><a href="keycard.html#keycard.constants.DerivationSource.MASTER">MASTER (keycard.constants.DerivationSource attribute)</a>
 </li>
       <li>
@@ -600,6 +662,12 @@
 </li>
         <li><a href="keycard.parsing.html#module-keycard.parsing.tlv">keycard.parsing.tlv</a>
 </li>
+        <li><a href="keycard.secure_channel.html#module-keycard.secure_channel">keycard.secure_channel</a>
+</li>
+        <li><a href="keycard.secure_channel.html#module-keycard.secure_channel.base">keycard.secure_channel.base</a>
+</li>
+        <li><a href="keycard.secure_channel.html#module-keycard.secure_channel.v1">keycard.secure_channel.v1</a>
+</li>
         <li><a href="keycard.html#module-keycard.transport">keycard.transport</a>
 </li>
       </ul></li>
@@ -639,6 +707,12 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannelV1.open">open() (keycard.secure_channel.SecureChannelV1 class method)</a>
+
+      <ul>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.v1.SecureChannelV1.open">(keycard.secure_channel.v1.SecureChannelV1 class method)</a>
+</li>
+      </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.open_secure_channel">open_secure_channel() (in module keycard.commands)</a>
 
       <ul>
@@ -721,6 +795,30 @@
 </li>
       <li><a href="keycard.parsing.html#id9">SECURE_CHANNEL (keycard.parsing.capabilities.Capabilities attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.capabilities.Capabilities.SECURE_CHANNEL">[1]</a>
 </li>
+      <li><a href="keycard.html#keycard.KeyCard.secure_channel_version">secure_channel_version (keycard.KeyCard property)</a>
+
+      <ul>
+        <li><a href="index.html#keycard.keycard.KeyCard.secure_channel_version">(keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.secure_channel_version">[1]</a>
+</li>
+      </ul></li>
+      <li><a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannel">SecureChannel (class in keycard.secure_channel)</a>
+
+      <ul>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.base.SecureChannel">(class in keycard.secure_channel.base)</a>
+</li>
+      </ul></li>
+      <li><a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannelV1">SecureChannelV1 (class in keycard.secure_channel)</a>
+
+      <ul>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.v1.SecureChannelV1">(class in keycard.secure_channel.v1)</a>
+</li>
+      </ul></li>
+      <li><a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannelVersion">SecureChannelVersion (class in keycard.secure_channel)</a>
+
+      <ul>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.base.SecureChannelVersion">(class in keycard.secure_channel.base)</a>
+</li>
+      </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.select">select() (in module keycard.commands)</a>
 
       <ul>
@@ -749,6 +847,8 @@
         <li><a href="keycard.html#keycard.keycard.KeyCard.send_secure_apdu">(keycard.keycard.KeyCard method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.commands.html#keycard.commands.set_pinless_path">set_pinless_path() (in module keycard.commands)</a>
 
       <ul>
@@ -757,8 +857,6 @@
         <li><a href="index.html#keycard.keycard.KeyCard.set_pinless_path">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.set_pinless_path">[1]</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.commands.html#keycard.commands.sign">sign() (in module keycard.commands)</a>
 
       <ul>
@@ -837,6 +935,22 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.secure_channel.html#keycard.secure_channel.base.SecureChannel.unwrap">unwrap() (keycard.secure_channel.base.SecureChannel method)</a>
+
+      <ul>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannel.unwrap">(keycard.secure_channel.SecureChannel method)</a>
+</li>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannelV1.unwrap">(keycard.secure_channel.SecureChannelV1 method)</a>
+</li>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.v1.SecureChannelV1.unwrap">(keycard.secure_channel.v1.SecureChannelV1 method)</a>
+</li>
+      </ul></li>
+      <li><a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannelV1.unwrap_response">unwrap_response() (keycard.secure_channel.SecureChannelV1 method)</a>
+
+      <ul>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.v1.SecureChannelV1.unwrap_response">(keycard.secure_channel.v1.SecureChannelV1 method)</a>
+</li>
+      </ul></li>
       <li><a href="keycard.html#keycard.constants.PinType.USER">USER (keycard.constants.PinType attribute)</a>
 </li>
   </ul></td>
@@ -845,6 +959,18 @@
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.secure_channel.html#keycard.secure_channel.base.SecureChannelVersion.V1">V1 (keycard.secure_channel.base.SecureChannelVersion attribute)</a>
+
+      <ul>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannelVersion.V1">(keycard.secure_channel.SecureChannelVersion attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="keycard.secure_channel.html#keycard.secure_channel.base.SecureChannelVersion.V2">V2 (keycard.secure_channel.base.SecureChannelVersion attribute)</a>
+
+      <ul>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannelVersion.V2">(keycard.secure_channel.SecureChannelVersion attribute)</a>
+</li>
+      </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.verify_pin">verify_pin() (in module keycard.commands)</a>
 
       <ul>
@@ -864,11 +990,43 @@
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.version">(keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.version">[1]</a>
 </li>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.base.SecureChannel.version">(keycard.secure_channel.base.SecureChannel property)</a>
+</li>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannel.version">(keycard.secure_channel.SecureChannel property)</a>
+</li>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannelV1.version">(keycard.secure_channel.SecureChannelV1 property)</a>
+</li>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.v1.SecureChannelV1.version">(keycard.secure_channel.v1.SecureChannelV1 property)</a>
+</li>
       </ul></li>
       <li><a href="keycard.parsing.html#id4">version_major (keycard.parsing.application_info.ApplicationInfo attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.version_major">[1]</a>
 </li>
       <li><a href="keycard.parsing.html#id5">version_minor (keycard.parsing.application_info.ApplicationInfo attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.version_minor">[1]</a>
 </li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.secure_channel.html#keycard.secure_channel.base.SecureChannel.wrap">wrap() (keycard.secure_channel.base.SecureChannel method)</a>
+
+      <ul>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannel.wrap">(keycard.secure_channel.SecureChannel method)</a>
+</li>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannelV1.wrap">(keycard.secure_channel.SecureChannelV1 method)</a>
+</li>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.v1.SecureChannelV1.wrap">(keycard.secure_channel.v1.SecureChannelV1 method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannelV1.wrap_apdu">wrap_apdu() (keycard.secure_channel.SecureChannelV1 method)</a>
+
+      <ul>
+        <li><a href="keycard.secure_channel.html#keycard.secure_channel.v1.SecureChannelV1.wrap_apdu">(keycard.secure_channel.v1.SecureChannelV1 method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 

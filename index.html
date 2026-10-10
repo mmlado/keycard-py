@@ -439,7 +439,10 @@ card. If None, a random 32-byte challenge is generated.</p>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the authentication fails.</p>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the authentication fails.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidStateError" title="keycard.exceptions.InvalidStateError"><strong>InvalidStateError</strong></a> – If the card does not use Secure Channel V1.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -459,6 +462,10 @@ card. If None, a random 32-byte challenge is generated.</p>
 <li><p><strong>mutually_authenticate</strong> (<em>bool</em>) – Execute mutually authenticate when
 a secure channel has been opened</p></li>
 </ul>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidStateError" title="keycard.exceptions.InvalidStateError"><strong>InvalidStateError</strong></a> – If the card uses Secure Channel V2, which is
+    not supported yet.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -480,6 +487,9 @@ a secure channel has been opened</p></li>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>tuple[int, bytes]</p>
 </dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidStateError" title="keycard.exceptions.InvalidStateError"><strong>InvalidStateError</strong></a> – If the card does not use Secure Channel V1.</p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -493,6 +503,24 @@ a secure channel has been opened</p></li>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the response status word is not 0x9000.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.secure_channel_version">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">secure_channel_version</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="keycard.secure_channel.html#keycard.secure_channel.base.SecureChannelVersion" title="keycard.secure_channel.base.SecureChannelVersion"><span class="pre">SecureChannelVersion</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#keycard.keycard.KeyCard.secure_channel_version" title="Link to this definition">¶</a></dt>
+<dd><p>The secure channel version the selected card uses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>V2 from applet 4.0, V1 before, or None</dt><dd><p>before select().</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="keycard.secure_channel.html#keycard.secure_channel.base.SecureChannelVersion" title="keycard.secure_channel.base.SecureChannelVersion">SecureChannelVersion</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -692,6 +720,9 @@ new PIN (6 digits)</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>index</strong> (<em>int</em>) – Index of the pairing slot to remove.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidStateError" title="keycard.exceptions.InvalidStateError"><strong>InvalidStateError</strong></a> – If the card does not use Secure Channel V1.</p>
 </dd>
 </dl>
 </dd></dl>

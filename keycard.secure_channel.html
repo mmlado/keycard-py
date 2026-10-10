@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>keycard.secure_channel package &#8212; KeyCard.py  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="keycard.parsing package" href="keycard.parsing.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="keycard-secure-channel-package">
+<h1>keycard.secure_channel package<a class="headerlink" href="#keycard-secure-channel-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-keycard.secure_channel.base">
+<span id="keycard-secure-channel-base-module"></span><h2>keycard.secure_channel.base module<a class="headerlink" href="#module-keycard.secure_channel.base" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="keycard.secure_channel.base.SecureChannel">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.secure_channel.base.</span></span><span class="sig-name descname"><span class="pre">SecureChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.base.SecureChannel" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
+<p>An open encrypted session with the card.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.secure_channel.base.SecureChannel.is_open">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_open</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.secure_channel.base.SecureChannel.is_open" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.secure_channel.base.SecureChannel.unwrap">
+<span class="sig-name descname"><span class="pre">unwrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.base.SecureChannel.unwrap" title="Link to this definition">¶</a></dt>
+<dd><p>Verifies and decrypts a response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The response data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returned a failure status word.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.secure_channel.base.SecureChannel.version">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">version</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#keycard.secure_channel.base.SecureChannelVersion" title="keycard.secure_channel.base.SecureChannelVersion"><span class="pre">SecureChannelVersion</span></a></span><a class="headerlink" href="#keycard.secure_channel.base.SecureChannel.version" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.secure_channel.base.SecureChannel.wrap">
+<span class="sig-name descname"><span class="pre">wrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.base.SecureChannel.wrap" title="Link to this definition">¶</a></dt>
+<dd><p>Protects a command for sending.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The complete command APDU.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="keycard.secure_channel.base.SecureChannelVersion">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.secure_channel.base.</span></span><span class="sig-name descname"><span class="pre">SecureChannelVersion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.base.SecureChannelVersion" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.secure_channel.base.SecureChannelVersion.V1">
+<span class="sig-name descname"><span class="pre">V1</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></span><a class="headerlink" href="#keycard.secure_channel.base.SecureChannelVersion.V1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.secure_channel.base.SecureChannelVersion.V2">
+<span class="sig-name descname"><span class="pre">V2</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></span><a class="headerlink" href="#keycard.secure_channel.base.SecureChannelVersion.V2" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="keycard.secure_channel.base.channel_version">
+<span class="sig-prename descclassname"><span class="pre">keycard.secure_channel.base.</span></span><span class="sig-name descname"><span class="pre">channel_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_version</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.base.channel_version" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the secure channel version used by an applet version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#keycard.secure_channel.base.SecureChannelVersion" title="keycard.secure_channel.base.SecureChannelVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecureChannelVersion</span></code></a></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>app_version</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Applet major and minor version.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>V2 from applet 4.0, V1 before.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#keycard.secure_channel.base.SecureChannelVersion" title="keycard.secure_channel.base.SecureChannelVersion">SecureChannelVersion</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-keycard.secure_channel.v1">
+<span id="keycard-secure-channel-v1-module"></span><h2>keycard.secure_channel.v1 module<a class="headerlink" href="#module-keycard.secure_channel.v1" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="keycard.secure_channel.v1.SecureChannelV1">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.secure_channel.v1.</span></span><span class="sig-name descname"><span class="pre">SecureChannelV1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enc_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mac_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">authenticated</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.v1.SecureChannelV1" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Secure Channel V1 (applet 3.x): AES-CBC encryption with AES-CBC-MAC,
+keyed from a pairing.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.secure_channel.v1.SecureChannelV1.enc_key">
+<span class="sig-name descname"><span class="pre">enc_key</span></span><a class="headerlink" href="#keycard.secure_channel.v1.SecureChannelV1.enc_key" title="Link to this definition">¶</a></dt>
+<dd><p>The AES encryption key for the session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.secure_channel.v1.SecureChannelV1.mac_key">
+<span class="sig-name descname"><span class="pre">mac_key</span></span><a class="headerlink" href="#keycard.secure_channel.v1.SecureChannelV1.mac_key" title="Link to this definition">¶</a></dt>
+<dd><p>The AES MAC key for message authentication.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.secure_channel.v1.SecureChannelV1.iv">
+<span class="sig-name descname"><span class="pre">iv</span></span><a class="headerlink" href="#keycard.secure_channel.v1.SecureChannelV1.iv" title="Link to this definition">¶</a></dt>
+<dd><p>The initialization vector for AES operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.secure_channel.v1.SecureChannelV1.authenticated">
+<span class="sig-name descname"><span class="pre">authenticated</span></span><a class="headerlink" href="#keycard.secure_channel.v1.SecureChannelV1.authenticated" title="Link to this definition">¶</a></dt>
+<dd><p>Indicates if the session is authenticated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">authenticated</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">enc_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.secure_channel.v1.SecureChannelV1.is_open">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_open</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.secure_channel.v1.SecureChannelV1.is_open" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">iv</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">mac_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#id3" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.secure_channel.v1.SecureChannelV1.open">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shared_secret</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">salt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed_iv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.v1.SecureChannelV1.open" title="Link to this definition">¶</a></dt>
+<dd><p>Opens a new channel using the provided cryptographic parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#keycard.secure_channel.v1.SecureChannelV1" title="keycard.secure_channel.v1.SecureChannelV1"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecureChannelV1</span></code></a></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>shared_secret</strong> (<em>bytes</em>) – The shared secret used for key derivation.</p></li>
+<li><p><strong>pairing_key</strong> (<em>bytes</em>) – The pairing key used for key derivation.</p></li>
+<li><p><strong>salt</strong> (<em>bytes</em>) – The salt value used in the key derivation process.</p></li>
+<li><p><strong>seed_iv</strong> (<em>bytes</em>) – The initialization vector (IV) to seed the
+session.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>A channel initialized with derived encryption</dt><dd><p>and MAC keys, and the provided IV.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#keycard.secure_channel.v1.SecureChannelV1" title="keycard.secure_channel.v1.SecureChannelV1">SecureChannelV1</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.secure_channel.v1.SecureChannelV1.unwrap">
+<span class="sig-name descname"><span class="pre">unwrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.v1.SecureChannelV1.unwrap" title="Link to this definition">¶</a></dt>
+<dd><p>Verifies and decrypts a response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The response data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returned a failure status word.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.secure_channel.v1.SecureChannelV1.unwrap_response">
+<span class="sig-name descname"><span class="pre">unwrap_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.v1.SecureChannelV1.unwrap_response" title="Link to this definition">¶</a></dt>
+<dd><p>Unwraps and verifies a secure channel response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>response</strong> (<em>bytes</em>) – The encrypted response bytes to unwrap.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>A tuple containing the decrypted plaintext</dt><dd><p>(excluding the status word) and the status word as an integer.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[bytes, int]</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the secure channel is not authenticated.</p></li>
+<li><p><strong>ValueError</strong> – If the response length is invalid.</p></li>
+<li><p><strong>ValueError</strong> – If the MAC verification fails.</p></li>
+<li><p><strong>ValueError</strong> – If the decrypted plaintext is too short to contain a
+    status word.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.secure_channel.v1.SecureChannelV1.version">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">version</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#keycard.secure_channel.base.SecureChannelVersion" title="keycard.secure_channel.base.SecureChannelVersion"><span class="pre">SecureChannelVersion</span></a></span><a class="headerlink" href="#keycard.secure_channel.v1.SecureChannelV1.version" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.secure_channel.v1.SecureChannelV1.wrap">
+<span class="sig-name descname"><span class="pre">wrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.v1.SecureChannelV1.wrap" title="Link to this definition">¶</a></dt>
+<dd><p>Protects a command for sending.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The complete command APDU.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.secure_channel.v1.SecureChannelV1.wrap_apdu">
+<span class="sig-name descname"><span class="pre">wrap_apdu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cla</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.v1.SecureChannelV1.wrap_apdu" title="Link to this definition">¶</a></dt>
+<dd><p>Wraps an APDU command with secure channel encryption and MAC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>cla</strong> (<em>int</em>) – The APDU class byte.</p></li>
+<li><p><strong>ins</strong> (<em>int</em>) – The APDU instruction byte.</p></li>
+<li><p><strong>p1</strong> (<em>int</em>) – The APDU parameter 1 byte.</p></li>
+<li><p><strong>p2</strong> (<em>int</em>) – The APDU parameter 2 byte.</p></li>
+<li><p><strong>data</strong> (<em>bytes</em>) – The APDU data field to be encrypted.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>The wrapped APDU as a tuple</dt><dd><p>containing the class, instruction, parameter 1, parameter 2,
+and the concatenated MAC and encrypted data.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[int, int, int, int, bytes]</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the secure channel is not authenticated and the
+    instruction is not 0x11.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-keycard.secure_channel">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-keycard.secure_channel" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="keycard.secure_channel.SecureChannel">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.secure_channel.</span></span><span class="sig-name descname"><span class="pre">SecureChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.SecureChannel" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
+<p>An open encrypted session with the card.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.secure_channel.SecureChannel.is_open">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_open</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.secure_channel.SecureChannel.is_open" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.secure_channel.SecureChannel.unwrap">
+<span class="sig-name descname"><span class="pre">unwrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.SecureChannel.unwrap" title="Link to this definition">¶</a></dt>
+<dd><p>Verifies and decrypts a response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The response data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returned a failure status word.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.secure_channel.SecureChannel.version">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">version</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#keycard.secure_channel.base.SecureChannelVersion" title="keycard.secure_channel.base.SecureChannelVersion"><span class="pre">SecureChannelVersion</span></a></span><a class="headerlink" href="#keycard.secure_channel.SecureChannel.version" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.secure_channel.SecureChannel.wrap">
+<span class="sig-name descname"><span class="pre">wrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.SecureChannel.wrap" title="Link to this definition">¶</a></dt>
+<dd><p>Protects a command for sending.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The complete command APDU.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="keycard.secure_channel.SecureChannelV1">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.secure_channel.</span></span><span class="sig-name descname"><span class="pre">SecureChannelV1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enc_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mac_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">authenticated</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.SecureChannelV1" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Secure Channel V1 (applet 3.x): AES-CBC encryption with AES-CBC-MAC,
+keyed from a pairing.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.secure_channel.SecureChannelV1.enc_key">
+<span class="sig-name descname"><span class="pre">enc_key</span></span><a class="headerlink" href="#keycard.secure_channel.SecureChannelV1.enc_key" title="Link to this definition">¶</a></dt>
+<dd><p>The AES encryption key for the session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.secure_channel.SecureChannelV1.mac_key">
+<span class="sig-name descname"><span class="pre">mac_key</span></span><a class="headerlink" href="#keycard.secure_channel.SecureChannelV1.mac_key" title="Link to this definition">¶</a></dt>
+<dd><p>The AES MAC key for message authentication.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.secure_channel.SecureChannelV1.iv">
+<span class="sig-name descname"><span class="pre">iv</span></span><a class="headerlink" href="#keycard.secure_channel.SecureChannelV1.iv" title="Link to this definition">¶</a></dt>
+<dd><p>The initialization vector for AES operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.secure_channel.SecureChannelV1.authenticated">
+<span class="sig-name descname"><span class="pre">authenticated</span></span><a class="headerlink" href="#keycard.secure_channel.SecureChannelV1.authenticated" title="Link to this definition">¶</a></dt>
+<dd><p>Indicates if the session is authenticated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">authenticated</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#id4" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">enc_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#id5" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.secure_channel.SecureChannelV1.is_open">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_open</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.secure_channel.SecureChannelV1.is_open" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">iv</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#id6" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">mac_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#id7" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.secure_channel.SecureChannelV1.open">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shared_secret</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">salt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed_iv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.SecureChannelV1.open" title="Link to this definition">¶</a></dt>
+<dd><p>Opens a new channel using the provided cryptographic parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#keycard.secure_channel.v1.SecureChannelV1" title="keycard.secure_channel.v1.SecureChannelV1"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecureChannelV1</span></code></a></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>shared_secret</strong> (<em>bytes</em>) – The shared secret used for key derivation.</p></li>
+<li><p><strong>pairing_key</strong> (<em>bytes</em>) – The pairing key used for key derivation.</p></li>
+<li><p><strong>salt</strong> (<em>bytes</em>) – The salt value used in the key derivation process.</p></li>
+<li><p><strong>seed_iv</strong> (<em>bytes</em>) – The initialization vector (IV) to seed the
+session.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>A channel initialized with derived encryption</dt><dd><p>and MAC keys, and the provided IV.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#keycard.secure_channel.SecureChannelV1" title="keycard.secure_channel.SecureChannelV1">SecureChannelV1</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.secure_channel.SecureChannelV1.unwrap">
+<span class="sig-name descname"><span class="pre">unwrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.SecureChannelV1.unwrap" title="Link to this definition">¶</a></dt>
+<dd><p>Verifies and decrypts a response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The response data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returned a failure status word.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.secure_channel.SecureChannelV1.unwrap_response">
+<span class="sig-name descname"><span class="pre">unwrap_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.SecureChannelV1.unwrap_response" title="Link to this definition">¶</a></dt>
+<dd><p>Unwraps and verifies a secure channel response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>response</strong> (<em>bytes</em>) – The encrypted response bytes to unwrap.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>A tuple containing the decrypted plaintext</dt><dd><p>(excluding the status word) and the status word as an integer.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[bytes, int]</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the secure channel is not authenticated.</p></li>
+<li><p><strong>ValueError</strong> – If the response length is invalid.</p></li>
+<li><p><strong>ValueError</strong> – If the MAC verification fails.</p></li>
+<li><p><strong>ValueError</strong> – If the decrypted plaintext is too short to contain a
+    status word.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.secure_channel.SecureChannelV1.version">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">version</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#keycard.secure_channel.base.SecureChannelVersion" title="keycard.secure_channel.base.SecureChannelVersion"><span class="pre">SecureChannelVersion</span></a></span><a class="headerlink" href="#keycard.secure_channel.SecureChannelV1.version" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.secure_channel.SecureChannelV1.wrap">
+<span class="sig-name descname"><span class="pre">wrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.SecureChannelV1.wrap" title="Link to this definition">¶</a></dt>
+<dd><p>Protects a command for sending.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The complete command APDU.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.secure_channel.SecureChannelV1.wrap_apdu">
+<span class="sig-name descname"><span class="pre">wrap_apdu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cla</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.SecureChannelV1.wrap_apdu" title="Link to this definition">¶</a></dt>
+<dd><p>Wraps an APDU command with secure channel encryption and MAC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>cla</strong> (<em>int</em>) – The APDU class byte.</p></li>
+<li><p><strong>ins</strong> (<em>int</em>) – The APDU instruction byte.</p></li>
+<li><p><strong>p1</strong> (<em>int</em>) – The APDU parameter 1 byte.</p></li>
+<li><p><strong>p2</strong> (<em>int</em>) – The APDU parameter 2 byte.</p></li>
+<li><p><strong>data</strong> (<em>bytes</em>) – The APDU data field to be encrypted.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>The wrapped APDU as a tuple</dt><dd><p>containing the class, instruction, parameter 1, parameter 2,
+and the concatenated MAC and encrypted data.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[int, int, int, int, bytes]</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the secure channel is not authenticated and the
+    instruction is not 0x11.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="keycard.secure_channel.SecureChannelVersion">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.secure_channel.</span></span><span class="sig-name descname"><span class="pre">SecureChannelVersion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.SecureChannelVersion" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.secure_channel.SecureChannelVersion.V1">
+<span class="sig-name descname"><span class="pre">V1</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></span><a class="headerlink" href="#keycard.secure_channel.SecureChannelVersion.V1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.secure_channel.SecureChannelVersion.V2">
+<span class="sig-name descname"><span class="pre">V2</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></span><a class="headerlink" href="#keycard.secure_channel.SecureChannelVersion.V2" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="keycard.secure_channel.channel_version">
+<span class="sig-prename descclassname"><span class="pre">keycard.secure_channel.</span></span><span class="sig-name descname"><span class="pre">channel_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_version</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.secure_channel.channel_version" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the secure channel version used by an applet version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#keycard.secure_channel.base.SecureChannelVersion" title="keycard.secure_channel.base.SecureChannelVersion"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecureChannelVersion</span></code></a></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>app_version</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Applet major and minor version.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>V2 from applet 4.0, V1 before.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#keycard.secure_channel.SecureChannelVersion" title="keycard.secure_channel.SecureChannelVersion">SecureChannelVersion</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">KeyCard.py</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">keycard</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="keycard.html">keycard package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">keycard</a><ul>
+  <li><a href="keycard.html">keycard package</a><ul>
+      <li>Previous: <a href="keycard.parsing.html" title="previous chapter">keycard.parsing package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, mmlado.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/keycard.secure_channel.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
