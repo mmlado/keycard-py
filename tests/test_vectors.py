@@ -1,5 +1,7 @@
-from ecdsa import ECDH, SigningKey, SECP256k1, VerifyingKey
+from cryptography.hazmat.primitives.asymmetric import ec
+
 from keycard.crypto.aes import aes_cbc_encrypt
+from keycard.crypto.ecdh import ecdh_shared_secret
 
 
 def test_full_crypto_vector():
@@ -16,21 +18,11 @@ def test_full_crypto_vector():
         'aaa8b049e75288c01034f25893db43d4db4bd6dfc4a6546658dd22227082aa58'
     )
 
-    ephemeral_key = SigningKey.from_string(
-        ephemeral_private_bytes,
-        curve=SECP256k1
+    ephemeral_key = ec.derive_private_key(
+        int.from_bytes(ephemeral_private_bytes, 'big'),
+        ec.SECP256K1()
     )
-    card_pubkey = VerifyingKey.from_string(
-        card_pubkey_bytes,
-        curve=SECP256k1
-    )
-
-    ecdh = ECDH(
-        curve=SECP256k1,
-        private_key=ephemeral_key,
-        public_key=card_pubkey
-    )
-    shared_secret = ecdh.generate_sharedsecret_bytes()
+    shared_secret = ecdh_shared_secret(ephemeral_key, card_pubkey_bytes)
 
     pin = b'123456'
     puk = b'123456789012'

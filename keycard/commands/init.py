@@ -1,9 +1,9 @@
 from os import urandom
-from ecdsa import SigningKey, VerifyingKey, ECDH, SECP256k1
 
 from .. import constants
 from ..card_interface import CardInterface
 from ..crypto.aes import aes_cbc_encrypt
+from ..crypto.ecdh import ecdh_shared_secret, generate_key_pair
 from ..crypto.generate_pairing_token import generate_pairing_token
 from ..exceptions import NotSelectedError
 from ..preconditions import require_selected
@@ -46,19 +46,8 @@ def init(
     if not isinstance(pairing_secret, bytes):
         pairing_secret = generate_pairing_token(pairing_secret)
 
-    ephemeral_key = SigningKey.generate(curve=SECP256k1)
-    our_pubkey_bytes: bytes = \
-        ephemeral_key.verifying_key.to_string('uncompressed')
-    card_pubkey = VerifyingKey.from_string(
-        card.card_public_key,
-        curve=SECP256k1
-    )
-    ecdh = ECDH(
-        curve=SECP256k1,
-        private_key=ephemeral_key,
-        public_key=card_pubkey
-    )
-    shared_secret = ecdh.generate_sharedsecret_bytes()
+    ephemeral_key, our_pubkey_bytes = generate_key_pair()
+    shared_secret = ecdh_shared_secret(ephemeral_key, card.card_public_key)
 
     plaintext: bytes = pin + puk + pairing_secret
     iv: bytes = urandom(16)

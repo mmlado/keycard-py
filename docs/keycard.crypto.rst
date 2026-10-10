@@ -12,6 +12,14 @@ keycard.crypto.aes module
    :show-inheritance:
    :undoc-members:
 
+keycard.crypto.ecdh module
+--------------------------
+
+.. automodule:: keycard.crypto.ecdh
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 keycard.crypto.padding module
 -----------------------------
 

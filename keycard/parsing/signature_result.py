@@ -1,6 +1,10 @@
 from dataclasses import dataclass
-from ecdsa import VerifyingKey, util, SECP256k1
 from typing import Optional
+
+from cryptography.hazmat.primitives.asymmetric.utils import (
+    encode_dss_signature,
+)
+from ecdsa import VerifyingKey, util, SECP256k1
 
 from ..constants import SigningAlgorithm
 
@@ -47,12 +51,10 @@ class SignatureResult:
 
     @property
     def signature_der(self) -> bytes:
-        signature: bytes = util.sigencode_der(
+        return encode_dss_signature(
             int.from_bytes(self.r, 'big'),
             int.from_bytes(self.s, 'big'),
-            self.recovery_id
         )
-        return signature
 
     def _recover_public_key(self, digest: bytes) -> bytes:
         if self.recovery_id is None:

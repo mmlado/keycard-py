@@ -14,7 +14,7 @@ requires-python = ">=3.10"
 dependencies = [
     "pyscard",
     "ecdsa",
-    "pyaes",
+    "cryptography",
     "ber-tlv==0.0.6"
 ]
 

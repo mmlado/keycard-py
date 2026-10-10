@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - TLV parsing and encoding use the `ber-tlv` package
+- AES, secp256k1 ECDH and ECDSA verification use the `cryptography` package; `pyaes` is no longer a dependency
 
 ### Fixed
 
