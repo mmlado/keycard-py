@@ -6,12 +6,16 @@ from . import commands
 from .apdu import APDUResponse
 from .constants import DerivationOption, PairingMode
 from .card_interface import CardInterface
-from .exceptions import APDUError
+from .exceptions import APDUError, InvalidStateError
 from .parsing.application_info import ApplicationInfo
 from .parsing.exported_key import ExportedKey
 from .parsing.signature_result import SignatureResult
 from .transport import Transport
-from .secure_channel import SecureChannel
+from .secure_channel import (
+    SecureChannel,
+    SecureChannelVersion,
+    channel_version,
+)
 
 
 class KeyCard(CardInterface):
@@ -80,7 +84,7 @@ class KeyCard(CardInterface):
         Returns:
             bool: True if a secure channel is established, False otherwise.
         '''
-        return self.session is not None and self.session.authenticated
+        return self.session is not None and self.session.is_open
 
     @property
     def is_initialized(self) -> bool:
@@ -116,6 +120,24 @@ class KeyCard(CardInterface):
             self._application_info.version_major,
             self._application_info.version_minor
         )
+
+    @property
+    def secure_channel_version(self) -> Optional[SecureChannelVersion]:
+        '''
+        The secure channel version the selected card uses.
+
+        Returns:
+            SecureChannelVersion: V2 from applet 4.0, V1 before, or None
+                before select().
+        '''
+        if self._application_info is None:
+            return None
+        return channel_version(self.version)
+
+    def _require_secure_channel_v1(self, operation: str) -> None:
+        version = self.secure_channel_version
+        if version is not None and version != SecureChannelVersion.V1:
+            raise InvalidStateError(f'{operation} requires Secure Channel V1')
 
     def select(self) -> 'ApplicationInfo':
         '''
@@ -173,7 +195,12 @@ class KeyCard(CardInterface):
             pairing_key (bytes): The shared pairing key (32 bytes).
             mutually_authenticate (bool): Execute mutually authenticate when
                 a secure channel has been opened
+
+        Raises:
+            InvalidStateError: If the card uses Secure Channel V2, which is
+                not supported yet.
         '''
+        self._require_secure_channel_v1('Opening a secure channel')
         self.session = commands.open_secure_channel(
             self,
             pairing_index,
@@ -189,7 +216,9 @@ class KeyCard(CardInterface):
 
         Raises:
             APDUError: If the authentication fails.
+            InvalidStateError: If the card does not use Secure Channel V1.
         '''
+        self._require_secure_channel_v1('Mutual authentication')
         commands.mutually_authenticate(self)
 
     def pair(
@@ -205,7 +234,11 @@ class KeyCard(CardInterface):
 
         Returns:
             tuple[int, bytes]: The pairing index and client cryptogram.
+
+        Raises:
+            InvalidStateError: If the card does not use Secure Channel V1.
         '''
+        self._require_secure_channel_v1('Pairing')
         return commands.pair(self, shared_secret, pairing_mode)
 
     def verify_pin(self, pin: str) -> bool:
@@ -263,7 +296,11 @@ class KeyCard(CardInterface):
 
         Args:
             index (int): Index of the pairing slot to remove.
+
+        Raises:
+            InvalidStateError: If the card does not use Secure Channel V1.
         '''
+        self._require_secure_channel_v1('Unpairing')
         commands.unpair(self, index)
 
     def factory_reset(self) -> None:
@@ -610,33 +647,9 @@ class KeyCard(CardInterface):
         p2: int = 0x00,
         data: bytes = b''
     ) -> bytes:
-        if not self.session or not self.session.authenticated:
+        session = self.session
+        if session is None or not session.is_open:
             raise RuntimeError('Secure channel not established')
 
-        encrypted = self.session.wrap_apdu(
-            cla=constants.CLA_PROPRIETARY,
-            ins=ins,
-            p1=p1,
-            p2=p2,
-            data=data
-        )
-
-        response: APDUResponse = self.transport.send_apdu(
-            bytes([
-                constants.CLA_PROPRIETARY,
-                ins,
-                p1,
-                p2,
-                len(encrypted)
-            ]) + encrypted
-        )
-
-        if response.status_word != 0x9000:
-            raise APDUError(response.status_word)
-
-        plaintext, sw = self.session.unwrap_response(response)
-
-        if sw != 0x9000:
-            raise APDUError(sw)
-
-        return plaintext
+        response = self.transport.send_apdu(session.wrap(ins, p1, p2, data))
+        return session.unwrap(response)

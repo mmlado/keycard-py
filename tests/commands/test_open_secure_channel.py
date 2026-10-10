@@ -17,7 +17,7 @@ def mock_crypto():
     with (
         patch.object(
             open_secure_channel_module,
-            'SecureChannel'
+            'SecureChannelV1'
         ) as mock_secure_channel,
         patch.object(
             open_secure_channel_module,

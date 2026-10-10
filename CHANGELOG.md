@@ -11,11 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Support Pairing Mode for Keycard version 3.2
 - Store NDEF data up to 512 bytes in chunks (applet 3.2+) and read it in segments (applet 4.0+)
+- `KeyCard.secure_channel_version`, chosen from the applet version
 
 ### Changed
 
 - TLV parsing and encoding use the `ber-tlv` package
 - AES, secp256k1 ECDH and ECDSA verification use the `cryptography` package; `pyaes` is no longer a dependency
+- The secure channel is behind an interface in `keycard.secure_channel`; `SecureChannel` is now `SecureChannelV1`
+- `pair`, `unpair` and `mutually_authenticate` raise `InvalidStateError` on cards that don't use Secure Channel V1
 
 ### Fixed
 
