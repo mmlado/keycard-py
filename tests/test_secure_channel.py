@@ -1,6 +1,7 @@
 import pytest
 
 from keycard.apdu import APDUResponse
+from keycard.crypto.aes import aes_cbc_encrypt
 from keycard.secure_channel import SecureChannel
 
 
@@ -76,6 +77,23 @@ def test_unwrap_response_authenticated_and_mac(monkeypatch, session_params):
     response = APDUResponse(b'Y' * 16 + b'Z' * 16, 0x900)
     out, sw = session.unwrap_response(response)
     assert out == plaintext[:-2]
+    assert sw == 0x9000
+
+
+def test_unwrap_response_256_bytes(session_params):
+    session = SecureChannel.open(**session_params)
+    payload = bytes(range(223))
+    encrypted = aes_cbc_encrypt(
+        session.enc_key, session.iv, payload + b'\x90\x00')
+    mac = aes_cbc_encrypt(
+        session.mac_key, bytes(16), bytes(16) + encrypted, padding=False
+    )[-16:]
+    response = APDUResponse(mac + encrypted, 0x9000)
+    assert len(response.data) == 256
+
+    out, sw = session.unwrap_response(response)
+
+    assert out == payload
     assert sw == 0x9000
 
 

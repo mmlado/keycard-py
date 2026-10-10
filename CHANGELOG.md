@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Support Pairing Mode for Keycard version 3.2
+- Store NDEF data up to 512 bytes in chunks (applet 3.2+) and read it in segments (applet 4.0+)
 
 ### Changed
 

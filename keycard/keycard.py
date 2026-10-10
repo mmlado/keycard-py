@@ -36,6 +36,8 @@ class KeyCard(CardInterface):
         self.card_public_key: Optional[bytes] = None
         self.session: Optional[SecureChannel] = None
         self._is_pin_verified: bool = False
+        self._is_initialized: bool = False
+        self._application_info: Optional[ApplicationInfo] = None
 
     def __enter__(self) -> 'KeyCard':
         self.transport.connect()
@@ -100,6 +102,21 @@ class KeyCard(CardInterface):
         '''
         return self._is_pin_verified
 
+    @property
+    def version(self) -> tuple[int, int]:
+        '''
+        Retuns tuple with major and minor version number
+
+        Returns:
+            [int, int]: [major_version, minor_version]
+        '''
+        if not self._application_info:
+            return (0, 0)
+        return (
+            self._application_info.version_major,
+            self._application_info.version_minor
+        )
+
     def select(self) -> 'ApplicationInfo':
         '''
         Selects the Keycard applet and retrieves application metadata.
@@ -108,6 +125,7 @@ class KeyCard(CardInterface):
             ApplicationInfo: Object containing ECC public key and card info.
         '''
         info = commands.select(self)
+        self._application_info = info
         self.card_public_key = info.ecc_public_key
         self._is_initialized = info.is_initialized
         return info
@@ -177,7 +195,7 @@ class KeyCard(CardInterface):
     def pair(
         self,
         shared_secret: bytes,
-        pairing_mode: Optional[PairingMode] = PairingMode.ANY
+        pairing_mode: PairingMode = PairingMode.ANY
     ) -> tuple[int, bytes]:
         '''
         Pairs with the card using an ECDH-derived shared secret.
@@ -344,12 +362,15 @@ class KeyCard(CardInterface):
         """
         Stores data on the card in the specified slot.
 
+        NDEF data is the complete NDEF file, starting with its 2-byte length.
+
         Args:
-            data (bytes): The data to store (max 127 bytes).
+            data (bytes): The data to store (max 127 bytes, or 512 bytes for
+                NDEF from applet 3.2).
             slot (StorageSlot): Where to store the data (PUBLIC, NDEF, CASH)
 
         Raises:
-            ValueError: If slot is invalid or data is too long.
+            ValueError: If the data is too long.
         """
         commands.store_data(self, data, slot)
 
@@ -361,11 +382,14 @@ class KeyCard(CardInterface):
         Gets the data on the card previously stored with the store data command
         in the specified slot.
 
+        NDEF data is the complete NDEF file, starting with its 2-byte length.
+        Applets before 4.0 return at most the first 223 bytes.
+
         Args:
             slot (StorageSlot): Where to retrieve the data (PUBLIC, NDEF, CASH)
 
         Raises:
-            ValueError: If slot is invalid or data is too long.
+            InvalidResponseError: If segmented NDEF data is malformed.
         """
         return commands.get_data(self, slot)
 

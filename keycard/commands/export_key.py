@@ -48,6 +48,7 @@ def export_key(
     else:
         raise TypeError("Keypath must be a string or bytes")
 
+    p1: int
     if make_current:
         p1 = DerivationOption.DERIVE_AND_MAKE_CURRENT
     else:
