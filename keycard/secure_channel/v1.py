@@ -26,7 +26,7 @@ class SecureChannelV1:
     authenticated: bool = False
 
     @classmethod
-    def open(
+    def from_handshake(
         cls,
         shared_secret: bytes,
         pairing_key: bytes,
@@ -34,7 +34,7 @@ class SecureChannelV1:
         seed_iv: bytes
     ) -> "SecureChannelV1":
         """
-        Opens a new channel using the provided cryptographic parameters.
+        Derives the session keys from the handshake.
 
         Args:
             shared_secret (bytes): The shared secret used for key derivation.

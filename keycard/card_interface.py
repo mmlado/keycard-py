@@ -1,5 +1,8 @@
 from typing import Optional, Protocol, runtime_checkable
 
+from .apdu import APDUResponse
+from .pairing import Pairing
+
 
 @runtime_checkable
 class CardInterface(Protocol):
@@ -7,6 +10,9 @@ class CardInterface(Protocol):
     Abstract base class representing a Keycard interface for command functions.
     '''
     card_public_key: Optional[bytes]
+    pairing: Optional[Pairing]
+    ca_public_keys: list[bytes]
+    trusted_identity_keys: list[bytes]
 
     @property
     def is_initialized(self) -> bool: ...
@@ -22,6 +28,13 @@ class CardInterface(Protocol):
 
     @property
     def version(self) -> tuple[int, int]: ...
+
+    @property
+    def identity_certificate(self) -> Optional[bytes]: ...
+
+    def open_secure_channel(self) -> None: ...
+
+    def send_raw_apdu(self, apdu: bytes) -> APDUResponse: ...
 
     def send_apdu(
         self,

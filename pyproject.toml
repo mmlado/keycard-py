@@ -34,3 +34,9 @@ dev = [
 [project.urls]
 Homepage = "https://github.com/mmlado/keycard-py"
 Documentation = "https://mmlado.github.io/keycard-py/"
+
+[tool.pytest.ini_options]
+markers = [
+    "card: needs a real card (set KEYCARD_READER)",
+    "destructive: resets and initializes the card (set KEYCARD_DESTRUCTIVE=1)",
+]

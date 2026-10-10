@@ -6,6 +6,7 @@ from keycard.apdu import APDUResponse
 from keycard.exceptions import APDUError, InvalidStateError
 from keycard.parsing.exported_key import ExportedKey
 from keycard.keycard import KeyCard
+from keycard.pairing import Pairing
 from keycard.secure_channel import SecureChannelVersion
 from keycard.transport import Transport
 
@@ -34,7 +35,9 @@ def test_init_calls_command():
         kc = KeyCard(transport)
         kc.card_public_key = b'pub'
         kc.init(b'pin', b'puk', b'secret')
-        mock_init.assert_called_once_with(kc, b'pin', b'puk', b'secret')
+        mock_init.assert_called_once_with(
+            kc, b'pin', b'puk', b'secret',
+            pin_retries=None, puk_retries=None, alt_pin=None)
 
 
 def test_ident_calls_command():
@@ -45,36 +48,16 @@ def test_ident_calls_command():
         assert result == 'identity'
 
 
-def test_open_secure_channel_with_mutual_authentication():
+def test_open_secure_channel_stores_session():
     with patch(
-        'keycard.keycard.commands.open_secure_channel'
+        'keycard.keycard.commands.open_secure_channel',
+        return_value='session'
     ) as mock_osc:
-        with patch(
-            'keycard.keycard.commands.mutually_authenticate'
-        ) as mock_ma:
-            mock_osc.return_value = 'session'
-            kc = KeyCard(MagicMock())
-            kc._card_public_key = b'pub'
-            kc.open_secure_channel(1, b'pairing_key')
-            mock_osc.assert_called_once_with(kc, 1, b'pairing_key')
-            mock_ma.assert_called_once_with(kc)
-            assert kc.session == 'session'
+        kc = KeyCard(MagicMock())
+        kc.open_secure_channel()
 
-
-def test_open_secure_channel_without_mutual_authentication():
-    with patch(
-        'keycard.keycard.commands.open_secure_channel'
-    ) as mock_osc:
-        with patch(
-            'keycard.keycard.commands.mutually_authenticate'
-        ) as mock_ma:
-            mock_osc.return_value = 'session'
-            kc = KeyCard(MagicMock())
-            kc._card_public_key = b'pub'
-            kc.open_secure_channel(1, b'pairing_key', False)
-            mock_osc.assert_called_once_with(kc, 1, b'pairing_key')
-            mock_ma.assert_not_called()
-            assert kc.session == 'session'
+    mock_osc.assert_called_once_with(kc)
+    assert kc.session == 'session'
 
 
 def test_mutually_authenticate_calls_command():
@@ -85,11 +68,27 @@ def test_mutually_authenticate_calls_command():
         mock_auth.assert_called_once()
 
 
-def test_pair_returns_expected_tuple():
-    with patch('keycard.keycard.commands.pair', return_value=(1, b'crypt')):
+def test_pair_stores_and_returns_pairing():
+    with patch('keycard.keycard.commands.pair', return_value=(1, b'key')):
         kc = KeyCard(MagicMock())
         result = kc.pair(b'shared')
-        assert result == (1, b'crypt')
+
+    assert result == Pairing(1, b'key')
+    assert kc.pairing == result
+    slot, key = result
+    assert (slot, key) == (1, b'key')
+
+
+def test_unpair_clears_own_pairing():
+    kc = KeyCard(MagicMock())
+    kc.pairing = Pairing(2, b'key')
+
+    with patch('keycard.keycard.commands.unpair'):
+        kc.unpair(1)
+        assert kc.pairing == Pairing(2, b'key')
+        kc.unpair(2)
+
+    assert kc.pairing is None
 
 
 def test_verify_pin_delegates_call_and_returns_result():
@@ -180,7 +179,6 @@ def test_secure_channel_version(version, expected):
     ('pair', (b'secret',), 'pair'),
     ('unpair', (0,), 'unpair'),
     ('mutually_authenticate', (), 'mutually_authenticate'),
-    ('open_secure_channel', (0, bytes(32)), 'open_secure_channel'),
 ])
 def test_v1_operations_raise_on_v2(method, args, command):
     kc = _card_with_version(4, 0)

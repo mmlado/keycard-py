@@ -39,3 +39,8 @@ class InvalidStateError(KeyCardError):
     """Raised when a precondition is not met."""
     def __init__(self, message: str):
         super().__init__(message)
+
+
+class UntrustedCardError(KeyCardError):
+    """Raised when a card's identity cannot be verified as trusted."""
+    pass
