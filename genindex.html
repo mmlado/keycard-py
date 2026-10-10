@@ -59,18 +59,14 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="keycard.crypto.html#keycard.crypto.aes.aes_cbc_decrypt">aes_cbc_decrypt() (in module keycard.crypto.aes)</a>
-</li>
-      <li><a href="keycard.crypto.html#keycard.crypto.aes.aes_cbc_encrypt">aes_cbc_encrypt() (in module keycard.crypto.aes)</a>
-</li>
       <li><a href="keycard.html#keycard.constants.PairingMode.ANY">ANY (keycard.constants.PairingMode attribute)</a>
 </li>
       <li><a href="keycard.html#keycard.exceptions.APDUError">APDUError</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.html#keycard.apdu.APDUResponse">APDUResponse (class in keycard.apdu)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo">ApplicationInfo (class in keycard.parsing.application_info)</a>
 </li>
       <li><a href="keycard.secure_channel.html#id4">authenticated (keycard.secure_channel.SecureChannelV1 attribute)</a>, <a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannelV1.authenticated">[1]</a>
@@ -111,6 +107,12 @@
 </li>
       <li><a href="keycard.html#keycard.constants.StorageSlot.CASH">CASH (keycard.constants.StorageSlot attribute)</a>
 </li>
+      <li><a href="keycard.secure_channel.html#keycard.secure_channel.v1.cbc_decrypt">cbc_decrypt() (in module keycard.secure_channel.v1)</a>
+</li>
+      <li><a href="keycard.secure_channel.html#keycard.secure_channel.v1.cbc_encrypt">cbc_encrypt() (in module keycard.secure_channel.v1)</a>
+</li>
+      <li><a href="keycard.secure_channel.html#keycard.secure_channel.v1.cbc_mac">cbc_mac() (in module keycard.secure_channel.v1)</a>
+</li>
       <li><a href="keycard.html#keycard.KeyCard.change_pairing_secret">change_pairing_secret() (keycard.KeyCard method)</a>
 
       <ul>
@@ -123,14 +125,14 @@
         <li><a href="index.html#keycard.keycard.KeyCard.change_pin">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.change_pin">[1]</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.html#keycard.KeyCard.change_puk">change_puk() (keycard.KeyCard method)</a>
 
       <ul>
         <li><a href="index.html#keycard.keycard.KeyCard.change_puk">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.change_puk">[1]</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.commands.html#keycard.commands.change_secret">change_secret() (in module keycard.commands)</a>
 </li>
       <li><a href="keycard.secure_channel.html#keycard.secure_channel.channel_version">channel_version() (in module keycard.secure_channel)</a>
@@ -409,10 +411,6 @@
         <li><a href="index.html#keycard.keycard.KeyCard.is_session_open">(keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.is_session_open">[1]</a>
 </li>
       </ul></li>
-      <li><a href="keycard.crypto.html#keycard.crypto.padding.iso7816_pad">iso7816_pad() (in module keycard.crypto.padding)</a>
-</li>
-      <li><a href="keycard.crypto.html#keycard.crypto.padding.iso7816_unpad">iso7816_unpad() (in module keycard.crypto.padding)</a>
-</li>
       <li><a href="keycard.secure_channel.html#id6">iv (keycard.secure_channel.SecureChannelV1 attribute)</a>, <a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannelV1.iv">[1]</a>
 
       <ul>
@@ -526,13 +524,6 @@
         <li><a href="keycard.crypto.html#module-keycard.crypto">module</a>
 </li>
       </ul></li>
-      <li>
-    keycard.crypto.aes
-
-      <ul>
-        <li><a href="keycard.crypto.html#module-keycard.crypto.aes">module</a>
-</li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
@@ -540,13 +531,6 @@
 
       <ul>
         <li><a href="keycard.crypto.html#module-keycard.crypto.ecdh">module</a>
-</li>
-      </ul></li>
-      <li>
-    keycard.crypto.padding
-
-      <ul>
-        <li><a href="keycard.crypto.html#module-keycard.crypto.padding">module</a>
 </li>
       </ul></li>
       <li>
@@ -706,11 +690,7 @@
 </li>
         <li><a href="keycard.crypto.html#module-keycard.crypto">keycard.crypto</a>
 </li>
-        <li><a href="keycard.crypto.html#module-keycard.crypto.aes">keycard.crypto.aes</a>
-</li>
         <li><a href="keycard.crypto.html#module-keycard.crypto.ecdh">keycard.crypto.ecdh</a>
-</li>
-        <li><a href="keycard.crypto.html#module-keycard.crypto.padding">keycard.crypto.padding</a>
 </li>
         <li><a href="keycard.html#module-keycard.exceptions">keycard.exceptions</a>
 </li>
@@ -775,6 +755,8 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.secure_channel.html#keycard.secure_channel.v1.one_shot_encrypt">one_shot_encrypt() (in module keycard.secure_channel.v1)</a>
+</li>
       <li><a href="keycard.commands.html#keycard.commands.open_secure_channel">open_secure_channel() (in module keycard.commands)</a>
 
       <ul>

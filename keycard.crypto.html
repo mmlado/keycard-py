@@ -38,29 +38,6 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
 </section>
-<section id="module-keycard.crypto.aes">
-<span id="keycard-crypto-aes-module"></span><h2>keycard.crypto.aes module<a class="headerlink" href="#module-keycard.crypto.aes" title="Link to this heading">¶</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="keycard.crypto.aes.aes_cbc_decrypt">
-<span class="sig-prename descclassname"><span class="pre">keycard.crypto.aes.</span></span><span class="sig-name descname"><span class="pre">aes_cbc_decrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ciphertext</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.crypto.aes.aes_cbc_decrypt" title="Link to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="keycard.crypto.aes.aes_cbc_encrypt">
-<span class="sig-prename descclassname"><span class="pre">keycard.crypto.aes.</span></span><span class="sig-name descname"><span class="pre">aes_cbc_encrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.crypto.aes.aes_cbc_encrypt" title="Link to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
 <section id="module-keycard.crypto.ecdh">
 <span id="keycard-crypto-ecdh-module"></span><h2>keycard.crypto.ecdh module<a class="headerlink" href="#module-keycard.crypto.ecdh" title="Link to this heading">¶</a></h2>
 <dl class="py function">
@@ -106,29 +83,6 @@
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple[EllipticCurvePrivateKey, bytes]</p>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
-<section id="module-keycard.crypto.padding">
-<span id="keycard-crypto-padding-module"></span><h2>keycard.crypto.padding module<a class="headerlink" href="#module-keycard.crypto.padding" title="Link to this heading">¶</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="keycard.crypto.padding.iso7816_pad">
-<span class="sig-prename descclassname"><span class="pre">keycard.crypto.padding.</span></span><span class="sig-name descname"><span class="pre">iso7816_pad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.crypto.padding.iso7816_pad" title="Link to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="keycard.crypto.padding.iso7816_unpad">
-<span class="sig-prename descclassname"><span class="pre">keycard.crypto.padding.</span></span><span class="sig-name descname"><span class="pre">iso7816_unpad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">padded</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.crypto.padding.iso7816_unpad" title="Link to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
