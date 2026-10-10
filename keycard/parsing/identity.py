@@ -1,5 +1,10 @@
 from hashlib import sha256
-from ecdsa import VerifyingKey, SECP256k1, util
+
+from cryptography.exceptions import InvalidSignature
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import ec
+from cryptography.hazmat.primitives.asymmetric.utils import Prehashed
+from ecdsa import VerifyingKey, SECP256k1
 
 from ..exceptions import InvalidResponseError
 from ..parsing.tlv import parse_tlv
@@ -25,9 +30,13 @@ def parse(challenge: bytes, data: bytes) -> bytes:
 
 
 def _verify(certificate: bytes, signature: bytes, challenge: bytes) -> None:
-    pub_key = certificate[:33]
-    vk = VerifyingKey.from_string(pub_key, curve=SECP256k1)
-    vk.verify_digest(signature, challenge, sigdecode=util.sigdecode_der)
+    identity_key = ec.EllipticCurvePublicKey.from_encoded_point(
+        ec.SECP256K1(), certificate[:33])
+    try:
+        identity_key.verify(
+            signature, challenge, ec.ECDSA(Prehashed(hashes.SHA256())))
+    except InvalidSignature as e:
+        raise InvalidResponseError('Identity signature is invalid') from e
 
 
 def _recover_public_key(certificate: bytes) -> bytes:

@@ -1,7 +1,6 @@
-from ecdsa import SigningKey, VerifyingKey, SECP256k1, ECDH
-
 from .. import constants
 from ..card_interface import CardInterface
+from ..crypto.ecdh import ecdh_shared_secret, generate_key_pair
 from ..exceptions import NotSelectedError
 from ..secure_channel import SecureChannel
 from ..preconditions import require_initialized
@@ -38,8 +37,7 @@ def open_secure_channel(
     if not card.card_public_key:
         raise NotSelectedError('Card not selected or missing public key')
 
-    ephemeral_key = SigningKey.generate(curve=SECP256k1)
-    eph_pub_bytes = ephemeral_key.verifying_key.to_string('uncompressed')
+    ephemeral_key, eph_pub_bytes = generate_key_pair()
     response: bytes = card.send_apdu(
         ins=constants.INS_OPEN_SECURE_CHANNEL,
         p1=pairing_index,
@@ -49,16 +47,7 @@ def open_secure_channel(
     salt = bytes(response[:32])
     seed_iv = bytes(response[32:])
 
-    public_key = VerifyingKey.from_string(
-        card.card_public_key,
-        curve=SECP256k1
-    )
-    ecdh = ECDH(
-        curve=SECP256k1,
-        private_key=ephemeral_key,
-        public_key=public_key
-    )
-    shared_secret = ecdh.generate_sharedsecret_bytes()
+    shared_secret = ecdh_shared_secret(ephemeral_key, card.card_public_key)
 
     return SecureChannel.open(
         shared_secret,

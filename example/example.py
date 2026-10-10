@@ -3,7 +3,13 @@ import hmac
 
 from hashlib import sha256
 
-from ecdsa import SigningKey, VerifyingKey, SECP256k1, util
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import ec
+from cryptography.hazmat.primitives.asymmetric.utils import Prehashed
+from cryptography.hazmat.primitives.serialization import (
+    Encoding,
+    PublicFormat,
+)
 from mnemonic import Mnemonic
 
 from keycard import constants
@@ -22,11 +28,21 @@ def bip32_master_key(seed: bytes) -> tuple[bytes, bytes]:
     return master_priv_key, master_chain_code
 
 
+def uncompressed(public_key: ec.EllipticCurvePublicKey) -> bytes:
+    return public_key.public_bytes(
+        Encoding.X962, PublicFormat.UncompressedPoint)
+
+
 def get_uncompressed_pubkey(priv_key_bytes: bytes) -> bytes:
-    sk = SigningKey.from_string(priv_key_bytes, curve=SECP256k1)
-    vk = sk.verifying_key
-    key: bytes = b'\x04' + vk.to_string()
-    return key
+    key = ec.derive_private_key(
+        int.from_bytes(priv_key_bytes, 'big'), ec.SECP256K1())
+    return uncompressed(key.public_key())
+
+
+def verify(public_key: bytes, signature_der: bytes, digest: bytes) -> None:
+    ec.EllipticCurvePublicKey.from_encoded_point(
+        ec.SECP256K1(), public_key
+    ).verify(signature_der, digest, ec.ECDSA(Prehashed(hashes.SHA256())))
 
 
 with KeyCard() as card:
@@ -111,10 +127,8 @@ with KeyCard() as card:
     signature = card.sign(digest)
     print(f'Signature: {signature}')
 
-    vk = VerifyingKey.from_string(exported_key.public_key, curve=SECP256k1)
     try:
-        vk.verify_digest(
-            signature.signature_der, digest, sigdecode=util.sigdecode_der)
+        verify(exported_key.public_key, signature.signature_der, digest)
         print('Signature verified successfully.')
     except Exception as e:
         print(f"Signature verification failed: {e}")
@@ -133,23 +147,20 @@ with KeyCard() as card:
         keypath="m/44'/60'/0'/0/0"
     )
 
-    vk = VerifyingKey.from_string(exported_key.public_key, curve=SECP256k1)
     try:
-        vk.verify_digest(
-            signature.signature_der, digest, sigdecode=util.sigdecode_der)
+        verify(exported_key.public_key, signature.signature_der, digest)
         print('Signature verified successfully.')
     except Exception as e:
         print(f"Signature verification failed: {e}")
 
     print("Load key...")
-    sk = SigningKey.generate(curve=SECP256k1)
-    vk = sk.verifying_key
-    public_key = b'\x04' + vk.to_string()
-    
+    sk = ec.generate_private_key(ec.SECP256K1())
+    public_key = uncompressed(sk.public_key())
+
     result = card.load_key(
         key_type=constants.LoadKeyType.ECC,
         public_key=public_key,
-        private_key=sk.to_string()
+        private_key=sk.private_numbers().private_value.to_bytes(32, 'big')
     )
 
     uid = sha256(public_key).digest()

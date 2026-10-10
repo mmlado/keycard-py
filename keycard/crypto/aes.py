@@ -1,6 +1,6 @@
-from .padding import iso7816_pad, iso7816_unpad
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
-import pyaes
+from .padding import iso7816_pad, iso7816_unpad
 
 
 def aes_cbc_encrypt(
@@ -11,22 +11,10 @@ def aes_cbc_encrypt(
 ) -> bytes:
     if padding:
         data = iso7816_pad(data, 16)
-    aes = pyaes.AESModeOfOperationCBC(key, iv=iv)
-
-    ciphertext = b''
-    for i in range(0, len(data), 16):
-        block = data[i:i+16]
-        ciphertext += aes.encrypt(block)
-
-    return ciphertext
+    encryptor = Cipher(algorithms.AES(key), modes.CBC(iv)).encryptor()
+    return encryptor.update(data) + encryptor.finalize()
 
 
 def aes_cbc_decrypt(key: bytes, iv: bytes, ciphertext: bytes) -> bytes:
-    aes = pyaes.AESModeOfOperationCBC(key, iv=iv)
-
-    decrypted = b''
-    for i in range(0, len(ciphertext), 16):
-        block = ciphertext[i:i+16]
-        decrypted += aes.decrypt(block)
-
-    return iso7816_unpad(decrypted)
+    decryptor = Cipher(algorithms.AES(key), modes.CBC(iv)).decryptor()
+    return iso7816_unpad(decryptor.update(ciphertext) + decryptor.finalize())

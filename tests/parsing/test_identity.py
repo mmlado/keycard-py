@@ -1,4 +1,12 @@
 import pytest
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import ec
+from cryptography.hazmat.primitives.asymmetric.utils import Prehashed
+from cryptography.hazmat.primitives.serialization import (
+    Encoding,
+    PublicFormat,
+)
+
 from keycard.parsing.identity import parse, InvalidResponseError
 from keycard.parsing import identity
 
@@ -85,3 +93,26 @@ def test_parse_signature_too_short(monkeypatch):
         match="Malformed identity response"
     ):
         parse(challenge, data)
+
+
+def _identity_key_and_signature(challenge):
+    key = ec.generate_private_key(ec.SECP256K1())
+    public_key = key.public_key().public_bytes(
+        Encoding.X962, PublicFormat.CompressedPoint)
+    signature = key.sign(challenge, ec.ECDSA(Prehashed(hashes.SHA256())))
+    return public_key, signature
+
+
+def test_verify_accepts_valid_signature():
+    challenge = bytes(range(32))
+    public_key, signature = _identity_key_and_signature(challenge)
+
+    identity._verify(public_key + bytes(65), signature, challenge)
+
+
+def test_verify_rejects_invalid_signature():
+    challenge = bytes(range(32))
+    public_key, signature = _identity_key_and_signature(challenge)
+
+    with pytest.raises(InvalidResponseError, match="signature is invalid"):
+        identity._verify(public_key + bytes(65), signature, bytes(32))

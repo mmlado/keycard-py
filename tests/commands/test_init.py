@@ -23,22 +23,17 @@ def ecc_patches():
             side_effect=lambda k, iv,
             pt: b'\xAA' * len(pt)
         ),
-        patch.object(init_module, 'SigningKey') as mock_signing_key_cls,
-        patch.object(init_module, 'VerifyingKey') as mock_verifying_key_cls,
-        patch.object(init_module, 'ECDH') as mock_ecdh_cls,
+        patch.object(
+            init_module,
+            'generate_key_pair',
+            return_value=(MagicMock(), b'\x01' * 65)
+        ),
+        patch.object(
+            init_module,
+            'ecdh_shared_secret',
+            return_value=b'\xBB' * 32
+        ),
     ):
-        mock_gen = mock_signing_key_cls.generate
-        fake_privkey = MagicMock()
-        fake_privkey.verifying_key.to_string.return_value = b'\x01' * 65
-        mock_gen.return_value = fake_privkey
-
-        mock_parse = mock_verifying_key_cls.from_string
-        mock_parse.return_value = 'parsed-pubkey'
-
-        ecdh_instance = MagicMock()
-        ecdh_instance.generate_sharedsecret_bytes.return_value = b'\xBB' * 32
-        mock_ecdh_cls.return_value = ecdh_instance
-
         yield
 
 
