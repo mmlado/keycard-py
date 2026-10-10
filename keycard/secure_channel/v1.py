@@ -1,19 +1,18 @@
-# keycard/secure_channel.py
-
+from dataclasses import dataclass
 from hashlib import sha512
 
-from .apdu import APDUResponse
-
-from .crypto.aes import aes_cbc_encrypt, aes_cbc_decrypt
-
-from dataclasses import dataclass
+from .. import constants
+from ..apdu import APDUResponse
+from ..crypto.aes import aes_cbc_encrypt, aes_cbc_decrypt
+from ..exceptions import APDUError
+from .base import SecureChannelVersion
 
 
 @dataclass
-class SecureChannel:
+class SecureChannelV1:
     """
-    SecureChannel manages a secure communication channel using AES encryption
-    and MAC authentication.
+    Secure Channel V1 (applet 3.x): AES-CBC encryption with AES-CBC-MAC,
+    keyed from a pairing.
 
     Attributes:
         enc_key (bytes): The AES encryption key for the session.
@@ -33,9 +32,9 @@ class SecureChannel:
         pairing_key: bytes,
         salt: bytes,
         seed_iv: bytes
-    ) -> "SecureChannel":
+    ) -> "SecureChannelV1":
         """
-        Opens a new SecureChannel using the provided cryptographic parameters.
+        Opens a new channel using the provided cryptographic parameters.
 
         Args:
             shared_secret (bytes): The shared secret used for key derivation.
@@ -45,8 +44,8 @@ class SecureChannel:
                 session.
 
         Returns:
-            SecureChannel: An instance of SecureChannel initialized with
-                derived encryption and MAC keys, and the provided IV.
+            SecureChannelV1: A channel initialized with derived encryption
+                and MAC keys, and the provided IV.
         """
         digest = sha512(shared_secret + pairing_key + salt).digest()
         enc_key, mac_key = digest[:32], digest[32:]
@@ -56,6 +55,44 @@ class SecureChannel:
             iv=seed_iv,
             authenticated=True
         )
+
+    @property
+    def version(self) -> SecureChannelVersion:
+        return SecureChannelVersion.V1
+
+    @property
+    def is_open(self) -> bool:
+        return self.authenticated
+
+    def wrap(self, ins: int, p1: int, p2: int, data: bytes) -> bytes:
+        """
+        Protects a command for sending.
+
+        Returns:
+            bytes: The complete command APDU.
+        """
+        cla = constants.CLA_PROPRIETARY
+        payload = self.wrap_apdu(cla=cla, ins=ins, p1=p1, p2=p2, data=data)
+        return bytes([cla, ins, p1, p2, len(payload)]) + payload
+
+    def unwrap(self, response: APDUResponse) -> bytes:
+        """
+        Verifies and decrypts a response.
+
+        Returns:
+            bytes: The response data.
+
+        Raises:
+            APDUError: If the card returned a failure status word.
+        """
+        if response.status_word != constants.SW_SUCCESS:
+            raise APDUError(response.status_word)
+
+        plaintext, sw = self.unwrap_response(response)
+        if sw != constants.SW_SUCCESS:
+            raise APDUError(sw)
+
+        return plaintext
 
     def wrap_apdu(
         self,

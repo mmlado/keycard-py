@@ -10,6 +10,7 @@ Subpackages
    keycard.commands
    keycard.crypto
    keycard.parsing
+   keycard.secure_channel
 
 Submodules
 ----------
