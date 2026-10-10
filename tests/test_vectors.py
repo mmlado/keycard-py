@@ -1,6 +1,6 @@
 from cryptography.hazmat.primitives.asymmetric import ec
 
-from keycard.crypto.aes import aes_cbc_encrypt
+from keycard.secure_channel.v1 import cbc_encrypt
 from keycard.crypto.ecdh import ecdh_shared_secret
 
 
@@ -29,7 +29,7 @@ def test_full_crypto_vector():
     pairing_secret = b'A' * 32
     plaintext = pin + puk + pairing_secret
 
-    ciphertext: bytes = aes_cbc_encrypt(shared_secret, iv, plaintext)
+    ciphertext: bytes = cbc_encrypt(shared_secret, iv, plaintext)
 
     assert ciphertext == expected_ciphertext, (
         "Ciphertext does not match expected test vector"

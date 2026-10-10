@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `pair()` stores and returns a `Pairing(slot, key)` named tuple; `unpair()` clears it
 - `init()` takes the pairing secret as optional: required on 3.x, rejected on 4.x
 - `commands.open_secure_channel` and `commands.init` handle both secure channel versions
+- AES-CBC, CBC-MAC and the ISO 7816-4 padding moved into `keycard.secure_channel.v1`; `keycard.crypto.aes` and `keycard.crypto.padding` are removed
 - `ident()` returns the CA public key in compressed form
 - `select()` and `factory_reset()` reset the secure channel and PIN state
 

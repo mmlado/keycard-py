@@ -1,14 +1,12 @@
-from os import urandom
 from typing import Optional
 
 from .. import constants
 from ..card_interface import CardInterface
-from ..crypto.aes import aes_cbc_encrypt
-from ..crypto.ecdh import ecdh_shared_secret, generate_key_pair
 from ..crypto.generate_pairing_token import generate_pairing_token
 from ..exceptions import NotSelectedError
 from ..preconditions import require_selected
 from ..secure_channel import SecureChannelVersion, channel_version
+from ..secure_channel.v1 import one_shot_encrypt
 
 DEFAULT_PIN_RETRIES = 3
 DEFAULT_PUK_RETRIES = 5
@@ -69,15 +67,7 @@ def _init_v1(card: CardInterface, credentials: bytes) -> None:
     if card.card_public_key is None:
         raise NotSelectedError('Card not selected. Call select() first.')
 
-    ephemeral_key, ephemeral_public_key = generate_key_pair()
-    shared_secret = ecdh_shared_secret(ephemeral_key, card.card_public_key)
-    iv = urandom(16)
-    data = (
-        bytes([len(ephemeral_public_key)])
-        + ephemeral_public_key
-        + iv
-        + aes_cbc_encrypt(shared_secret, iv, credentials)
-    )
+    data = one_shot_encrypt(card.card_public_key, credentials)
     if len(data) > 255:
         raise ValueError('Data too long for single APDU')
 

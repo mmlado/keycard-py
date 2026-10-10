@@ -13,6 +13,7 @@ PAIRING_SECRET = b'abcdefgh'
 CARD_PUBLIC_KEY = b'\x04' + b'\x00' * 64
 
 init_module = importlib.import_module('keycard.commands.init')
+v1_module = importlib.import_module('keycard.secure_channel.v1')
 
 
 @pytest.mark.parametrize('version,helper', [
@@ -32,17 +33,17 @@ def test_init_uses_helper_for_version(card, version, helper):
 @pytest.fixture
 def v1_crypto():
     with (
-        patch.object(init_module, 'urandom', return_value=bytes(16)),
+        patch.object(v1_module, 'urandom', return_value=bytes(16)),
         patch.object(
-            init_module, 'aes_cbc_encrypt',
+            v1_module, 'cbc_encrypt',
             side_effect=lambda key, iv, pt: b'\xAA' * len(pt)
         ),
         patch.object(
-            init_module, 'generate_key_pair',
+            v1_module, 'generate_key_pair',
             return_value=(MagicMock(), b'\x01' * 65)
         ),
         patch.object(
-            init_module, 'ecdh_shared_secret',
+            v1_module, 'ecdh_shared_secret',
             return_value=b'\xBB' * 32
         ),
     ):
@@ -72,7 +73,7 @@ def test_v1_initialize_sends_encrypted_credentials(card, v1_crypto):
 def test_v1_initialize_appends_limits_and_alt_pin(card, v1_crypto):
     card.card_public_key = CARD_PUBLIC_KEY
 
-    with patch.object(init_module, 'aes_cbc_encrypt') as encrypt:
+    with patch.object(v1_module, 'cbc_encrypt') as encrypt:
         encrypt.return_value = b''
         v1_initialize(card, pin_retries=5, puk_retries=10, alt_pin='654321')
 

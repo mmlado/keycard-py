@@ -1,12 +1,27 @@
 import pytest
+from cryptography.hazmat.primitives.asymmetric import ec
+from cryptography.hazmat.primitives.ciphers import (
+    Cipher,
+    algorithms,
+    modes,
+)
+from cryptography.hazmat.primitives.serialization import (
+    Encoding,
+    PublicFormat,
+)
 
 from keycard.apdu import APDUResponse
-from keycard.crypto.aes import aes_cbc_decrypt, aes_cbc_encrypt
 from keycard.exceptions import APDUError
 from keycard.secure_channel import (
     SecureChannelV1,
     SecureChannelVersion,
     channel_version,
+)
+from keycard.secure_channel.v1 import (
+    cbc_decrypt,
+    cbc_encrypt,
+    cbc_mac,
+    one_shot_encrypt,
 )
 
 
@@ -60,25 +75,15 @@ def test_wrap_apdu_auth_check(ins, should_raise):
 
 
 def test_unwrap_response_authenticated_and_mac(monkeypatch, session_params):
-    # Patch aes_cbc_encrypt and aes_cbc_decrypt to simulate expected behavior
     session = SecureChannelV1.from_handshake(**session_params)
     plaintext = b"hello world" + b'\x90\x00'  # status word 0x9000
 
     # Simulate encryption and MAC
 
-    def fake_decrypt(key, iv, data):
-        return plaintext
-
-    def fake_encrypt(key, iv, data, padding=True):
-        # Return 16 bytes MAC for mac_key, else just return dummy
-        if key == session.mac_key:
-            return b'Y' * 16
-        return b'Z' * (len(data) // 16 * 16)
-
     monkeypatch.setattr(
-        'keycard.secure_channel.v1.aes_cbc_decrypt', fake_decrypt)
+        'keycard.secure_channel.v1.cbc_decrypt', lambda *a: plaintext)
     monkeypatch.setattr(
-        'keycard.secure_channel.v1.aes_cbc_encrypt', fake_encrypt)
+        'keycard.secure_channel.v1.cbc_mac', lambda *a: b'Y' * 16)
 
     # Compose response: 16 bytes MAC + encrypted data
     response = APDUResponse(b'Y' * 16 + b'Z' * 16, 0x900)
@@ -90,11 +95,9 @@ def test_unwrap_response_authenticated_and_mac(monkeypatch, session_params):
 def test_unwrap_response_256_bytes(session_params):
     session = SecureChannelV1.from_handshake(**session_params)
     payload = bytes(range(223))
-    encrypted = aes_cbc_encrypt(
+    encrypted = cbc_encrypt(
         session.enc_key, session.iv, payload + b'\x90\x00')
-    mac = aes_cbc_encrypt(
-        session.mac_key, bytes(16), bytes(16) + encrypted, padding=False
-    )[-16:]
+    mac = cbc_mac(session.mac_key, bytes(16) + encrypted)
     response = APDUResponse(mac + encrypted, 0x9000)
     assert len(response.data) == 256
 
@@ -122,15 +125,8 @@ def test_unwrap_response_invalid_length_raises(session_params):
 
 def test_unwrap_response_invalid_mac_raises(monkeypatch, session_params):
     session = SecureChannelV1.from_handshake(**session_params)
-    # Patch aes_cbc_encrypt to return a different MAC
-
-    def fake_encrypt(key, iv, data, padding=True):
-        return b'X' * 16
-
     monkeypatch.setattr(
-        'keycard.secure_channel.v1.aes_cbc_encrypt',
-        fake_encrypt
-    )
+        'keycard.secure_channel.v1.cbc_mac', lambda *a: b'X' * 16)
 
     response = APDUResponse(b'Y' * 16 + b'Z' * 16, 0x900)
 
@@ -141,15 +137,10 @@ def test_unwrap_response_invalid_mac_raises(monkeypatch, session_params):
 def test_unwrap_response_missing_status_word(monkeypatch, session_params):
     session = SecureChannelV1.from_handshake(**session_params)
 
-    def fake_decrypt(key, iv, data):
-        return b'\x01'
-
     monkeypatch.setattr(
-        'keycard.secure_channel.v1.aes_cbc_decrypt',
-        fake_decrypt)
+        'keycard.secure_channel.v1.cbc_decrypt', lambda *a: b'\x01')
     monkeypatch.setattr(
-        'keycard.secure_channel.v1.aes_cbc_encrypt',
-        lambda *a, **k: b'Y' * 16)
+        'keycard.secure_channel.v1.cbc_mac', lambda *a: b'Y' * 16)
 
     response = APDUResponse(b'Y' * 16 + b'Z' * 16, 0x9000)
 
@@ -158,13 +149,10 @@ def test_unwrap_response_missing_status_word(monkeypatch, session_params):
 
 
 def _card_response(session, payload, sw):
-    encrypted = aes_cbc_encrypt(
+    encrypted = cbc_encrypt(
         session.enc_key, session.iv, payload + sw.to_bytes(2, 'big'))
     lr = (16 + len(encrypted)) & 0xFF
-    mac = aes_cbc_encrypt(
-        session.mac_key, bytes(16), bytes([lr]) + bytes(15) + encrypted,
-        padding=False
-    )[-16:]
+    mac = cbc_mac(session.mac_key, bytes([lr]) + bytes(15) + encrypted)
     return APDUResponse(mac + encrypted, 0x9000)
 
 
@@ -184,11 +172,8 @@ def test_wrap_builds_full_apdu_the_card_can_verify(session_params):
     assert header == bytes([0x80, 0xCA, 0x01, 0x02])
     assert lc == len(body)
     mac, encrypted = body[:16], body[16:]
-    assert aes_cbc_decrypt(session.enc_key, iv, encrypted) == b'payload'
-    expected_mac = aes_cbc_encrypt(
-        session.mac_key, bytes(16), apdu[:5] + bytes(11) + encrypted,
-        padding=False
-    )[-16:]
+    assert cbc_decrypt(session.enc_key, iv, encrypted) == b'payload'
+    expected_mac = cbc_mac(session.mac_key, apdu[:5] + bytes(11) + encrypted)
     assert mac == expected_mac
 
 
@@ -225,3 +210,59 @@ def test_unwrap_raises_on_outer_status_word(session_params):
 ])
 def test_channel_version(app_version, expected):
     assert channel_version(app_version) == expected
+
+
+KEY = b'0123456789abcdef'
+IV = b'abcdef9876543210'
+
+
+@pytest.mark.parametrize('data', [
+    b'',
+    b'a',
+    b'short',
+    b'exactly16bytes!!',
+    b'longer data that is not a multiple of block size',
+])
+def test_cbc_round_trip(data):
+    ciphertext = cbc_encrypt(KEY, IV, data)
+
+    assert len(ciphertext) % 16 == 0
+    assert len(ciphertext) > len(data)
+    assert cbc_decrypt(KEY, IV, ciphertext) == data
+
+
+def test_cbc_decrypt_rejects_missing_padding():
+    raw = Cipher(algorithms.AES(KEY), modes.CBC(IV)).encryptor()
+    ciphertext = raw.update(bytes(16)) + raw.finalize()
+
+    with pytest.raises(ValueError, match='padding'):
+        cbc_decrypt(KEY, IV, ciphertext)
+
+
+def test_cbc_mac_is_last_cbc_block_with_zero_iv():
+    data = bytes(range(48))
+    raw = Cipher(algorithms.AES(KEY), modes.CBC(bytes(16))).encryptor()
+
+    assert cbc_mac(KEY, data) == (raw.update(data) + raw.finalize())[-16:]
+
+
+def test_cbc_mac_rejects_unaligned_data():
+    with pytest.raises(ValueError, match='multiple of 16'):
+        cbc_mac(KEY, bytes(17))
+
+
+def test_one_shot_encrypt_card_recovers_plaintext():
+    card_key = ec.generate_private_key(ec.SECP256K1())
+    card_public_key = card_key.public_key().public_bytes(
+        Encoding.X962, PublicFormat.UncompressedPoint)
+    plaintext = b'123456' + b'123456789012' + bytes(32)
+
+    data = one_shot_encrypt(card_public_key, plaintext)
+
+    key_length = data[0]
+    ephemeral = ec.EllipticCurvePublicKey.from_encoded_point(
+        ec.SECP256K1(), data[1:1 + key_length])
+    iv = data[1 + key_length:17 + key_length]
+    shared_secret = card_key.exchange(ec.ECDH(), ephemeral)
+    assert key_length == 65
+    assert cbc_decrypt(shared_secret, iv, data[17 + key_length:]) == plaintext

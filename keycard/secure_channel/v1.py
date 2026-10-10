@@ -1,11 +1,87 @@
 from dataclasses import dataclass
 from hashlib import sha512
+from os import urandom
+
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
 from .. import constants
 from ..apdu import APDUResponse
-from ..crypto.aes import aes_cbc_encrypt, aes_cbc_decrypt
+from ..crypto.ecdh import ecdh_shared_secret, generate_key_pair
 from ..exceptions import APDUError
 from .base import SecureChannelVersion
+
+BLOCK_SIZE = 16
+
+
+def _pad(data: bytes) -> bytes:
+    """ISO/IEC 9797-1 padding method 2 (0x80, then zeros)."""
+    return data + b'\x80' + bytes(BLOCK_SIZE - 1 - len(data) % BLOCK_SIZE)
+
+
+def _unpad(data: bytes) -> bytes:
+    if b'\x80' not in data:
+        raise ValueError("Invalid ISO7816 padding")
+    return data[:data.rindex(b'\x80')]
+
+
+def _cbc(key: bytes, iv: bytes, data: bytes, decrypt: bool = False) -> bytes:
+    cipher = Cipher(algorithms.AES(key), modes.CBC(iv))
+    context = cipher.decryptor() if decrypt else cipher.encryptor()
+    return context.update(data) + context.finalize()
+
+
+def cbc_encrypt(key: bytes, iv: bytes, data: bytes) -> bytes:
+    """
+    Pads and encrypts data with AES-CBC.
+
+    Returns:
+        bytes: The ciphertext.
+    """
+    return _cbc(key, iv, _pad(data))
+
+
+def cbc_decrypt(key: bytes, iv: bytes, data: bytes) -> bytes:
+    """
+    Decrypts AES-CBC data and removes the padding.
+
+    Raises:
+        ValueError: If the padding is invalid.
+    """
+    return _unpad(_cbc(key, iv, data, decrypt=True))
+
+
+def cbc_mac(key: bytes, data: bytes) -> bytes:
+    """
+    AES-CBC-MAC with a zero IV over block-aligned data.
+
+    Returns:
+        bytes: The 16-byte MAC.
+
+    Raises:
+        ValueError: If the data is not a multiple of the block size.
+    """
+    if len(data) % BLOCK_SIZE:
+        raise ValueError("CBC-MAC data must be a multiple of 16 bytes")
+    return _cbc(key, bytes(BLOCK_SIZE), data)[-BLOCK_SIZE:]
+
+
+def one_shot_encrypt(card_public_key: bytes, plaintext: bytes) -> bytes:
+    """
+    Encrypts data once to the card's public key, as Secure Channel V1 INIT
+    requires: an ephemeral ECDH key, then AES-CBC under the shared secret.
+
+    Returns:
+        bytes: Ephemeral public key length and key, IV, then ciphertext.
+    """
+    ephemeral_key, ephemeral_public_key = generate_key_pair()
+    shared_secret = ecdh_shared_secret(ephemeral_key, card_public_key)
+    iv = urandom(BLOCK_SIZE)
+    return (
+        bytes([len(ephemeral_public_key)])
+        + ephemeral_public_key
+        + iv
+        + cbc_encrypt(shared_secret, iv, plaintext)
+    )
 
 
 @dataclass
@@ -124,15 +200,12 @@ class SecureChannelV1:
         if not self.authenticated and ins != 0x11:
             raise ValueError("Secure channel not authenticated")
 
-        encrypted = aes_cbc_encrypt(self.enc_key, self.iv, data)
+        encrypted = cbc_encrypt(self.enc_key, self.iv, data)
 
         lc = 16 + len(encrypted)
         mac_input = bytes([cla, ins, p1, p2, lc]) + bytes(11) + encrypted
 
-        enc_data = aes_cbc_encrypt(
-            self.mac_key, bytes(16), mac_input, padding=False)
-
-        self.iv = enc_data[-16:]
+        self.iv = cbc_mac(self.mac_key, mac_input)
 
         return self.iv + encrypted
 
@@ -166,12 +239,11 @@ class SecureChannelV1:
         # The card MACs only the low byte; a full response is 256 bytes.
         lr = len(response.data) & 0xFF
         mac_input = bytes([lr]) + bytes(15) + bytes(encrypted)
-        expected_mac = aes_cbc_encrypt(
-            self.mac_key, bytes(16), mac_input, padding=False)[-16:]
+        expected_mac = cbc_mac(self.mac_key, mac_input)
         if received_mac != expected_mac:
             raise ValueError("Invalid MAC")
 
-        plaintext = aes_cbc_decrypt(self.enc_key, self.iv, encrypted)
+        plaintext = cbc_decrypt(self.enc_key, self.iv, encrypted)
 
         self.iv = received_mac
 
