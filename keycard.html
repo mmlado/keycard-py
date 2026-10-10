@@ -479,7 +479,7 @@ via APDU commands.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.keycard.</span></span><span class="sig-name descname"><span class="pre">KeyCard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CardInterface</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#keycard.CardInterface" title="keycard.card_interface.CardInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">CardInterface</span></code></a></p>
 <p>High-level interface for interacting with a Keycard device.</p>
 <p>This class provides convenient methods to manage pairing, secure channels,
 and card operations.</p>
@@ -697,6 +697,8 @@ bytes. If derivation_option is CURRENT, this can be omitted.</p></li>
 <span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">StorageSlot.PUBLIC</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.get_data" title="Link to this definition">¶</a></dt>
 <dd><p>Gets the data on the card previously stored with the store data command
 in the specified slot.</p>
+<p>NDEF data is the complete NDEF file, starting with its 2-byte length.
+Applets before 4.0 return at most the first 223 bytes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
@@ -705,7 +707,7 @@ in the specified slot.</p>
 <dd class="field-even"><p><strong>slot</strong> (<a class="reference internal" href="#keycard.constants.StorageSlot" title="keycard.constants.StorageSlot"><em>StorageSlot</em></a>) – Where to retrieve the data (PUBLIC, NDEF, CASH)</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ValueError</strong> – If slot is invalid or data is too long.</p>
+<dd class="field-odd"><p><a class="reference internal" href="#keycard.exceptions.InvalidResponseError" title="keycard.exceptions.InvalidResponseError"><strong>InvalidResponseError</strong></a> – If segmented NDEF data is malformed.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1092,18 +1094,20 @@ public key.</p>
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.store_data">
 <span class="sig-name descname"><span class="pre">store_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">StorageSlot.PUBLIC</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.store_data" title="Link to this definition">¶</a></dt>
 <dd><p>Stores data on the card in the specified slot.</p>
+<p>NDEF data is the complete NDEF file, starting with its 2-byte length.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>data</strong> (<em>bytes</em>) – The data to store (max 127 bytes).</p></li>
+<li><p><strong>data</strong> (<em>bytes</em>) – The data to store (max 127 bytes, or 512 bytes for
+NDEF from applet 3.2).</p></li>
 <li><p><strong>slot</strong> (<a class="reference internal" href="#keycard.constants.StorageSlot" title="keycard.constants.StorageSlot"><em>StorageSlot</em></a>) – Where to store the data (PUBLIC, NDEF, CASH)</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ValueError</strong> – If slot is invalid or data is too long.</p>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the data is too long.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1163,6 +1167,20 @@ new PIN (6 digits)</p>
 </dl>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.version">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">version</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#keycard.keycard.KeyCard.version" title="Link to this definition">¶</a></dt>
+<dd><p>Retuns tuple with major and minor version number</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>[major_version, minor_version]</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>[int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -1208,6 +1226,770 @@ new PIN (6 digits)</p>
 <section id="module-keycard">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-keycard" title="Link to this heading">¶</a></h2>
 <p>Python SDK for interacting with Status Keycard.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="keycard.CardInterface">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.</span></span><span class="sig-name descname"><span class="pre">CardInterface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.CardInterface" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
+<p>Abstract base class representing a Keycard interface for command functions.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.CardInterface.card_public_key">
+<span class="sig-name descname"><span class="pre">card_public_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#keycard.CardInterface.card_public_key" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.CardInterface.is_initialized">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_initialized</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.CardInterface.is_initialized" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.CardInterface.is_pin_verified">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_pin_verified</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.CardInterface.is_pin_verified" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.CardInterface.is_secure_channel_open">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_secure_channel_open</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.CardInterface.is_secure_channel_open" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.CardInterface.is_selected">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_selected</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.CardInterface.is_selected" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.CardInterface.send_apdu">
+<span class="sig-name descname"><span class="pre">send_apdu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">b''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cla</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.CardInterface.send_apdu" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.CardInterface.send_secure_apdu">
+<span class="sig-name descname"><span class="pre">send_secure_apdu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">b''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.CardInterface.send_secure_apdu" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.CardInterface.version">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">version</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#keycard.CardInterface.version" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="keycard.KeyCard">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.</span></span><span class="sig-name descname"><span class="pre">KeyCard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#keycard.CardInterface" title="keycard.card_interface.CardInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">CardInterface</span></code></a></p>
+<p>High-level interface for interacting with a Keycard device.</p>
+<p>This class provides convenient methods to manage pairing, secure channels,
+and card operations.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.change_pairing_secret">
+<span class="sig-name descname"><span class="pre">change_pairing_secret</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.change_pairing_secret" title="Link to this definition">¶</a></dt>
+<dd><p>Changes the pairing secret on the card.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>new_value</strong> (<em>str</em>) – The new pairing secret value to set.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If input format is invalid.</p></li>
+<li><p><a class="reference internal" href="#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the response status word is not 0x9000.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.change_pin">
+<span class="sig-name descname"><span class="pre">change_pin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.change_pin" title="Link to this definition">¶</a></dt>
+<dd><p>Changes the user PIN on the card.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>new_value</strong> (<em>str</em>) – The new PIN value to set.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If input format is invalid.</p></li>
+<li><p><a class="reference internal" href="#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the response status word is not 0x9000.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.change_puk">
+<span class="sig-name descname"><span class="pre">change_puk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.change_puk" title="Link to this definition">¶</a></dt>
+<dd><p>Changes the PUK on the card.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>new_value</strong> (<em>str</em>) – The new PUK value to set.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If input format is invalid.</p></li>
+<li><p><a class="reference internal" href="#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the response status word is not 0x9000.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.derive_key">
+<span class="sig-name descname"><span class="pre">derive_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.derive_key" title="Link to this definition">¶</a></dt>
+<dd><p>Set the derivation path for subsequent SIGN and EXPORT KEY commands.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>path</strong> (<em>str</em>) – BIP-32-style path (e.g., “m/44’/60’/0’/0/0”) or
+“../0/1” (parent) or “./0” (current).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.export_current_key">
+<span class="sig-name descname"><span class="pre">export_current_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">public_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.export_current_key" title="Link to this definition">¶</a></dt>
+<dd><p>Exports the current key from the card.</p>
+<p>This is a convenience method that uses the CURRENT derivation option
+and does not require a keypath.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExportedKey</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>public_only</strong> (<em>bool</em>) – If True, only the public key will be returned.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>An object containing the public key, and optionally</dt><dd><p>the private key and chain code.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ExportedKey</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.export_key">
+<span class="sig-name descname"><span class="pre">export_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">derivation_option</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_only</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keypath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_current</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">DerivationSource.MASTER</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.export_key" title="Link to this definition">¶</a></dt>
+<dd><p>Export a key from the card.</p>
+<p>This is a proxy for <a class="reference internal" href="keycard.commands.html#keycard.commands.export_key" title="keycard.commands.export_key"><code class="xref py py-func docutils literal notranslate"><span class="pre">keycard.commands.export_key()</span></code></a>, provided here
+for convenience.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExportedKey</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>derivation_option</strong> – One of the derivation options
+(CURRENT, DERIVE, DERIVE_AND_MAKE_CURRENT).</p></li>
+<li><p><strong>public_only</strong> – If True, only the public key will be returned.</p></li>
+<li><p><strong>keypath</strong> – BIP32-style string (e.g. “m/44’/60’/0’/0/0”) or packed
+bytes. If derivation_option is CURRENT, this can be omitted.</p></li>
+<li><p><strong>make_current</strong> – If True, updates the card’s current derivation path.</p></li>
+<li><p><strong>source</strong> – Which node to derive from: MASTER, PARENT, or CURRENT.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>An object containing the public key, and optionally</dt><dd><p>the private key and chain code.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ExportedKey</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference internal" href="keycard.commands.html#keycard.commands.export_key" title="keycard.commands.export_key"><code class="xref py py-func docutils literal notranslate"><span class="pre">keycard.commands.export_key()</span></code></a> - for the lower-level</dt><dd><p>implementation</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">keycard.types.ExportedKey</span></code> - return value</dt><dd><p>structure</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.factory_reset">
+<span class="sig-name descname"><span class="pre">factory_reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.factory_reset" title="Link to this definition">¶</a></dt>
+<dd><p>Sends the FACTORY_RESET command to the card.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns a failure status word.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.generate_key">
+<span class="sig-name descname"><span class="pre">generate_key</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.generate_key" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a new key on the card and returns the key UID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Key UID (SHA-256 of the public key)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the response status word is not 0x9000</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.generate_mnemonic">
+<span class="sig-name descname"><span class="pre">generate_mnemonic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checksum_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.generate_mnemonic" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a BIP39 mnemonic using the card’s RNG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>checksum_size</strong> (<em>int</em>) – Number of checksum bits
+(between 4 and 8 inclusive).</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>List of integers (0-2047) corresponding to wordlist</dt><dd><p>indexes.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">StorageSlot.PUBLIC</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.get_data" title="Link to this definition">¶</a></dt>
+<dd><p>Gets the data on the card previously stored with the store data command
+in the specified slot.</p>
+<p>NDEF data is the complete NDEF file, starting with its 2-byte length.
+Applets before 4.0 return at most the first 223 bytes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>slot</strong> (<a class="reference internal" href="#keycard.constants.StorageSlot" title="keycard.constants.StorageSlot"><em>StorageSlot</em></a>) – Where to retrieve the data (PUBLIC, NDEF, CASH)</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#keycard.exceptions.InvalidResponseError" title="keycard.exceptions.InvalidResponseError"><strong>InvalidResponseError</strong></a> – If segmented NDEF data is malformed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.KeyCard.get_key_path">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_key_path</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#keycard.KeyCard.get_key_path" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the current key derivation path from the card.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of 32-bit integers representing the key path.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of int</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>RuntimeError</strong> – If the secure session is not open.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.ident">
+<span class="sig-name descname"><span class="pre">ident</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">challenge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.ident" title="Link to this definition">¶</a></dt>
+<dd><p>Sends an identity challenge to the card.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>challenge</strong> (<em>bytes</em>) – A challenge (nonce or data) to send to the
+card. If None, a random 32-byte challenge is generated.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The public key extracted from the card’s identity response.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">puk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_secret</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.init" title="Link to this definition">¶</a></dt>
+<dd><p>Initializes the card with security credentials.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>pin</strong> (<em>bytes</em>) – The PIN code in bytes.</p></li>
+<li><p><strong>puk</strong> (<em>bytes</em>) – The PUK code in bytes.</p></li>
+<li><p><strong>pairing_secret</strong> (<em>bytes</em>) – The shared secret for pairing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.KeyCard.is_initialized">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_initialized</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.KeyCard.is_initialized" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if the Keycard is initialized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the Keycard is initialized, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.KeyCard.is_pin_verified">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_pin_verified</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.KeyCard.is_pin_verified" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if the user PIN has been verified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the PIN is verified, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.KeyCard.is_secure_channel_open">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_secure_channel_open</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.KeyCard.is_secure_channel_open" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if a secure channel is currently open.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if a secure channel is established, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.KeyCard.is_selected">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_selected</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.KeyCard.is_selected" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if a card is selected and has a public key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if a card is selected, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.KeyCard.is_session_open">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_session_open</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.KeyCard.is_session_open" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if a secure session is currently open.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if a secure session is established, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.load_key">
+<span class="sig-name descname"><span class="pre">load_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">private_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chain_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bip39_seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.load_key" title="Link to this definition">¶</a></dt>
+<dd><p>Load a key into the card for signing purposes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>key_type</strong> – Key type</p></li>
+<li><p><strong>public_key</strong> – Optional ECC public key (tag 0x80).</p></li>
+<li><p><strong>private_key</strong> – ECC private key (tag 0x81).</p></li>
+<li><p><strong>chain_code</strong> – Optional chain code (tag 0x82, only for extended key).</p></li>
+<li><p><strong>bip39_seed</strong> – 64-byte BIP39 seed (only for key_type=BIP39_SEED).</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>UID of the loaded key (SHA-256 of public key).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.mutually_authenticate">
+<span class="sig-name descname"><span class="pre">mutually_authenticate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.mutually_authenticate" title="Link to this definition">¶</a></dt>
+<dd><p>Performs mutual authentication between host and card.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the authentication fails.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.open_secure_channel">
+<span class="sig-name descname"><span class="pre">open_secure_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pairing_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutually_authenticate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.open_secure_channel" title="Link to this definition">¶</a></dt>
+<dd><p>Opens a secure session with the card.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>pairing_index</strong> (<em>int</em>) – Index of the pairing slot to use.</p></li>
+<li><p><strong>pairing_key</strong> (<em>bytes</em>) – The shared pairing key (32 bytes).</p></li>
+<li><p><strong>mutually_authenticate</strong> (<em>bool</em>) – Execute mutually authenticate when
+a secure channel has been opened</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.pair">
+<span class="sig-name descname"><span class="pre">pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shared_secret</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">PairingMode.ANY</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.pair" title="Link to this definition">¶</a></dt>
+<dd><p>Pairs with the card using an ECDH-derived shared secret.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code>]</span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>shared_secret</strong> (<em>bytes</em>) – 32-byte ECDH shared secret.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The pairing index and client cryptogram.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[int, bytes]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.remove_key">
+<span class="sig-name descname"><span class="pre">remove_key</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.remove_key" title="Link to this definition">¶</a></dt>
+<dd><p>Removes the current key from the card.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the response status word is not 0x9000.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.select">
+<span class="sig-name descname"><span class="pre">select</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.select" title="Link to this definition">¶</a></dt>
+<dd><p>Selects the Keycard applet and retrieves application metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo" title="keycard.parsing.application_info.ApplicationInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApplicationInfo</span></code></a></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Object containing ECC public key and card info.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo" title="keycard.parsing.application_info.ApplicationInfo">ApplicationInfo</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.send_apdu">
+<span class="sig-name descname"><span class="pre">send_apdu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">b''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cla</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.send_apdu" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.send_secure_apdu">
+<span class="sig-name descname"><span class="pre">send_secure_apdu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">b''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.send_secure_apdu" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.set_pinless_path">
+<span class="sig-name descname"><span class="pre">set_pinless_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.set_pinless_path" title="Link to this definition">¶</a></dt>
+<dd><p>Set a PIN-less path on the card. Allows signing without PIN/auth if the
+current derived key matches this path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>path</strong> (<em>str</em>) – BIP-32-style path (e.g., “m/44’/60’/0’/0/0”). An empty
+string disables the pinless path.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.sign">
+<span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.sign" title="Link to this definition">¶</a></dt>
+<dd><p>Sign using the currently loaded keypair.
+Requires PIN verification and secure channel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignatureResult</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to sign</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>Parsed signature result, including the signature</dt><dd><p>(DER or raw), algorithm, and optional recovery ID or
+public key.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>SignatureResult</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.sign_pinless">
+<span class="sig-name descname"><span class="pre">sign_pinless</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.sign_pinless" title="Link to this definition">¶</a></dt>
+<dd><p>Sign using the predefined PIN-less path.
+Does not require secure channel or PIN.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignatureResult</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to sign</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>Parsed signature result, including the signature</dt><dd><p>(DER or raw), algorithm, and optional recovery ID or
+public key.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>SignatureResult</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – if no PIN-less path is set</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.sign_with_path">
+<span class="sig-name descname"><span class="pre">sign_with_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_current</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.sign_with_path" title="Link to this definition">¶</a></dt>
+<dd><p>Sign using a derived keypath. Optionally updates the current path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignatureResult</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to sign</p></li>
+<li><p><strong>path</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – list of 32-bit integers</p></li>
+<li><p><strong>make_current</strong> (<em>bool</em>) – whether to update current path on card</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>Parsed signature result, including the signature</dt><dd><p>(DER or raw), algorithm, and optional recovery ID or
+public key.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>SignatureResult</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.KeyCard.status">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">status</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#keycard.KeyCard.status" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the application status using the secure session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>A dictionary with:</dt><dd><ul class="simple">
+<li><p>pin_retry_count (int)</p></li>
+<li><p>puk_retry_count (int)</p></li>
+<li><p>initialized (bool)</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>RuntimeError</strong> – If the secure session is not open.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.store_data">
+<span class="sig-name descname"><span class="pre">store_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">StorageSlot.PUBLIC</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.store_data" title="Link to this definition">¶</a></dt>
+<dd><p>Stores data on the card in the specified slot.</p>
+<p>NDEF data is the complete NDEF file, starting with its 2-byte length.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>data</strong> (<em>bytes</em>) – The data to store (max 127 bytes, or 512 bytes for
+NDEF from applet 3.2).</p></li>
+<li><p><strong>slot</strong> (<a class="reference internal" href="#keycard.constants.StorageSlot" title="keycard.constants.StorageSlot"><em>StorageSlot</em></a>) – Where to store the data (PUBLIC, NDEF, CASH)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the data is too long.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.unblock_pin">
+<span class="sig-name descname"><span class="pre">unblock_pin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">puk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_pin</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.unblock_pin" title="Link to this definition">¶</a></dt>
+<dd><p>Unblocks the user PIN using the provided PUK and sets a new PIN.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>puk_and_pin</strong> (<em>str</em><em> | </em><em>bytes</em>) – Concatenation of PUK (12 digits) +
+new PIN (6 digits)</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the format is invalid.</p></li>
+<li><p><a class="reference internal" href="#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns an error.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.unpair">
+<span class="sig-name descname"><span class="pre">unpair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.unpair" title="Link to this definition">¶</a></dt>
+<dd><p>Removes a pairing slot from the card.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>index</strong> (<em>int</em>) – Index of the pairing slot to remove.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.verify_pin">
+<span class="sig-name descname"><span class="pre">verify_pin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pin</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.verify_pin" title="Link to this definition">¶</a></dt>
+<dd><p>Verifies the user PIN with the card.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pin</strong> (<em>str</em>) – The user-entered PIN.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if PIN is valid, otherwise False.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.KeyCard.version">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">version</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#keycard.KeyCard.version" title="Link to this definition">¶</a></dt>
+<dd><p>Retuns tuple with major and minor version number</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>[major_version, minor_version]</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>[int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 

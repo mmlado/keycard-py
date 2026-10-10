@@ -380,7 +380,7 @@ and raises an error if blocked or another APDU error occurs.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>card</strong> (<em>CardInterface</em>) – The card interface.</p></li>
+<li><p><strong>card</strong> (<a class="reference internal" href="keycard.html#keycard.CardInterface" title="keycard.CardInterface"><em>CardInterface</em></a>) – The card interface.</p></li>
 <li><p><strong>path</strong> (<em>str</em>) – BIP-32-style path (e.g., “m/44’/60’/0’/0/0”) or
 “../0/1” (parent) or “./0” (current).</p></li>
 </ul>
@@ -472,7 +472,7 @@ and raises an error if blocked or another APDU error occurs.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>card</strong> (<em>CardInterface</em>) – The card interface.</p></li>
+<li><p><strong>card</strong> (<a class="reference internal" href="keycard.html#keycard.CardInterface" title="keycard.CardInterface"><em>CardInterface</em></a>) – The card interface.</p></li>
 <li><p><strong>checksum_size</strong> (<em>int</em>) – Number of checksum bits
 (between 4 and 8 inclusive).</p></li>
 </ul>
@@ -503,6 +503,9 @@ and raises an error if blocked or another APDU error occurs.</p>
 in the specified slot.</p>
 <p>If the secure channel is open, it uses the secure APDU command.
 Otherwise, it uses the proprietary APDU command.</p>
+<p>NDEF data is the complete NDEF file, starting with its 2-byte length.
+From applet 4.0 it is read in segments until the whole file is received;
+earlier applets return at most the first 223 bytes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
@@ -510,11 +513,12 @@ Otherwise, it uses the proprietary APDU command.</p>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>card</strong> – The card session object.</p></li>
-<li><p><strong>slot</strong> (<a class="reference internal" href="keycard.html#keycard.constants.StorageSlot" title="keycard.constants.StorageSlot"><em>StorageSlot</em></a>) – Where to store the data (PUBLIC, NDEF, CASH)</p></li>
+<li><p><strong>slot</strong> (<a class="reference internal" href="keycard.html#keycard.constants.StorageSlot" title="keycard.constants.StorageSlot"><em>StorageSlot</em></a>) – Where to retrieve the data from (PUBLIC, NDEF,
+CASH)</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ValueError</strong> – If slot is invalid or data is too long.</p>
+<dd class="field-odd"><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidResponseError" title="keycard.exceptions.InvalidResponseError"><strong>InvalidResponseError</strong></a> – If segmented NDEF data is malformed.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -805,7 +809,7 @@ current derived key matches this path.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>card</strong> (<em>CardInterface</em>) – The card interface.</p></li>
+<li><p><strong>card</strong> (<a class="reference internal" href="keycard.html#keycard.CardInterface" title="keycard.CardInterface"><em>CardInterface</em></a>) – The card interface.</p></li>
 <li><p><strong>path</strong> (<em>str</em>) – BIP-32-style path (e.g., “m/44’/60’/0’/0/0”). An empty
 string disables the pinless path.</p></li>
 </ul>
@@ -841,7 +845,7 @@ the recovery ID, or an ECDSA template depending on card behavior.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>card</strong> (<em>CardInterface</em>) – Active Keycard transport session.</p></li>
+<li><p><strong>card</strong> (<a class="reference internal" href="keycard.html#keycard.CardInterface" title="keycard.CardInterface"><em>CardInterface</em></a>) – Active Keycard transport session.</p></li>
 <li><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to be signed.</p></li>
 <li><p><strong>p1</strong> (<a class="reference internal" href="keycard.html#keycard.constants.DerivationOption" title="keycard.constants.DerivationOption"><em>DerivationOption</em></a>) – Key derivation option. One of:
 - CURRENT: Sign with the currently loaded key
@@ -876,6 +880,8 @@ prefix.</p></li>
 <dt class="sig sig-object py" id="keycard.commands.store_data">
 <span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">store_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">StorageSlot.PUBLIC</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.store_data" title="Link to this definition">¶</a></dt>
 <dd><p>Stores data on the card in the specified slot.</p>
+<p>NDEF data is the complete NDEF file, starting with its 2-byte length.
+From applet 3.2 it can be up to 512 bytes and is sent in chunks.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
@@ -883,12 +889,13 @@ prefix.</p></li>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>card</strong> – The card session object.</p></li>
-<li><p><strong>data</strong> (<em>bytes</em>) – The data to store (max 127 bytes).</p></li>
+<li><p><strong>data</strong> (<em>bytes</em>) – The data to store (max 127 bytes, or 512 bytes for
+NDEF from applet 3.2).</p></li>
 <li><p><strong>slot</strong> (<a class="reference internal" href="keycard.html#keycard.constants.StorageSlot" title="keycard.constants.StorageSlot"><em>StorageSlot</em></a>) – Where to store the data (PUBLIC, NDEF, CASH)</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ValueError</strong> – If slot is invalid or data is too long.</p>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the data is too long.</p>
 </dd>
 </dl>
 </dd></dl>
