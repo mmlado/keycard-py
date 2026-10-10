@@ -8,9 +8,9 @@ import pytest
 from keycard import constants
 from keycard.apdu import APDUResponse
 from keycard.commands.open_secure_channel import open_secure_channel
-from keycard.crypto.aes import aes_cbc_decrypt, aes_cbc_encrypt
 from keycard.exceptions import InvalidResponseError, InvalidStateError
 from keycard.pairing import Pairing
+from keycard.secure_channel.v1 import cbc_decrypt, cbc_encrypt, cbc_mac
 
 PAIRING = Pairing(1, bytes(range(32)))
 SHARED_SECRET = b'\xBB' * 32
@@ -40,12 +40,9 @@ def test_open_secure_channel_uses_helper_for_version(card, version, helper):
 
 def card_response(command, payload):
     """Encrypts a response the way a 3.x card does."""
-    encrypted = aes_cbc_encrypt(ENC_KEY, command[5:21], payload + b'\x90\x00')
+    encrypted = cbc_encrypt(ENC_KEY, command[5:21], payload + b'\x90\x00')
     lr = (16 + len(encrypted)) & 0xFF
-    mac = aes_cbc_encrypt(
-        MAC_KEY, bytes(16), bytes([lr]) + bytes(15) + encrypted,
-        padding=False
-    )[-16:]
+    mac = cbc_mac(MAC_KEY, bytes([lr]) + bytes(15) + encrypted)
     return APDUResponse(mac + encrypted, 0x9000)
 
 
@@ -74,7 +71,7 @@ def test_v1_open_derives_keys_and_mutually_authenticates(v1_card):
 
     def send_raw_apdu(apdu):
         assert apdu[:4] == bytes([0x80, 0x11, 0x00, 0x00])
-        challenges.append(aes_cbc_decrypt(ENC_KEY, SEED_IV, apdu[21:]))
+        challenges.append(cbc_decrypt(ENC_KEY, SEED_IV, apdu[21:]))
         return card_response(apdu, os.urandom(32))
 
     v1_card.send_raw_apdu.side_effect = send_raw_apdu
