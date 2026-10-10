@@ -1,3 +1,4 @@
+import importlib
 import os
 from hashlib import sha512
 from unittest.mock import MagicMock, patch
@@ -19,6 +20,8 @@ EPHEMERAL_PUBLIC_KEY = b'\x04' + b'\x02' * 64
 DIGEST = sha512(SHARED_SECRET + PAIRING.key + SALT).digest()
 ENC_KEY, MAC_KEY = DIGEST[:32], DIGEST[32:]
 
+osc_module = importlib.import_module('keycard.commands.open_secure_channel')
+
 
 @pytest.mark.parametrize('version,helper', [
     ((3, 2), '_open_v1'),
@@ -26,8 +29,8 @@ ENC_KEY, MAC_KEY = DIGEST[:32], DIGEST[32:]
 ])
 def test_open_secure_channel_uses_helper_for_version(card, version, helper):
     card.version = version
-    with patch(
-        f'keycard.commands.open_secure_channel.{helper}',
+    with patch.object(
+        osc_module, helper,
         return_value='channel'
     ) as open_version:
         assert open_secure_channel(card) == 'channel'
@@ -54,12 +57,12 @@ def v1_card(card):
     card.card_public_key = b'\x04' + b'\x01' * 64
     card.send_apdu.return_value = SALT + SEED_IV
     with (
-        patch(
-            'keycard.commands.open_secure_channel.generate_key_pair',
+        patch.object(
+            osc_module, 'generate_key_pair',
             return_value=(MagicMock(), EPHEMERAL_PUBLIC_KEY)
         ),
-        patch(
-            'keycard.commands.open_secure_channel.ecdh_shared_secret',
+        patch.object(
+            osc_module, 'ecdh_shared_secret',
             return_value=SHARED_SECRET
         ),
     ):

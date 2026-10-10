@@ -1,3 +1,4 @@
+import importlib
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -11,6 +12,8 @@ PUK = b'123456789012'
 PAIRING_SECRET = b'abcdefgh'
 CARD_PUBLIC_KEY = b'\x04' + b'\x00' * 64
 
+init_module = importlib.import_module('keycard.commands.init')
+
 
 @pytest.mark.parametrize('version,helper', [
     ((3, 2), '_init_v1'),
@@ -19,7 +22,7 @@ CARD_PUBLIC_KEY = b'\x04' + b'\x00' * 64
 def test_init_uses_helper_for_version(card, version, helper):
     card.version = version
     pairing_secret = PAIRING_SECRET if version < (4, 0) else None
-    with patch(f'keycard.commands.init.{helper}') as init_version:
+    with patch.object(init_module, helper) as init_version:
         init(card, PIN, PUK, pairing_secret, pin_retries=4)
 
     expected = PIN + PUK + (pairing_secret or b'') + b'\x04\x05'
@@ -29,17 +32,17 @@ def test_init_uses_helper_for_version(card, version, helper):
 @pytest.fixture
 def v1_crypto():
     with (
-        patch('keycard.commands.init.urandom', return_value=bytes(16)),
-        patch(
-            'keycard.commands.init.aes_cbc_encrypt',
+        patch.object(init_module, 'urandom', return_value=bytes(16)),
+        patch.object(
+            init_module, 'aes_cbc_encrypt',
             side_effect=lambda key, iv, pt: b'\xAA' * len(pt)
         ),
-        patch(
-            'keycard.commands.init.generate_key_pair',
+        patch.object(
+            init_module, 'generate_key_pair',
             return_value=(MagicMock(), b'\x01' * 65)
         ),
-        patch(
-            'keycard.commands.init.ecdh_shared_secret',
+        patch.object(
+            init_module, 'ecdh_shared_secret',
             return_value=b'\xBB' * 32
         ),
     ):
@@ -69,7 +72,7 @@ def test_v1_initialize_sends_encrypted_credentials(card, v1_crypto):
 def test_v1_initialize_appends_limits_and_alt_pin(card, v1_crypto):
     card.card_public_key = CARD_PUBLIC_KEY
 
-    with patch('keycard.commands.init.aes_cbc_encrypt') as encrypt:
+    with patch.object(init_module, 'aes_cbc_encrypt') as encrypt:
         encrypt.return_value = b''
         v1_initialize(card, pin_retries=5, puk_retries=10, alt_pin='654321')
 
