@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Support Pairing Mode for Keycard version 3.2
 
+### Changed
+
+- TLV parsing and encoding use the `ber-tlv` package
+
 ### Fixed
 
 - Older versions not supported. Python 3.10+ now supported
