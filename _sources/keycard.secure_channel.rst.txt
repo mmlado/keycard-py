@@ -20,6 +20,14 @@ keycard.secure_channel.v1 module
    :show-inheritance:
    :undoc-members:
 
+keycard.secure_channel.v2 module
+--------------------------------
+
+.. automodule:: keycard.secure_channel.v2
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 Module contents
 ---------------
 

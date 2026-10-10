@@ -20,6 +20,14 @@ keycard.parsing.capabilities module
    :show-inheritance:
    :undoc-members:
 
+keycard.parsing.certificate module
+----------------------------------
+
+.. automodule:: keycard.parsing.certificate
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 keycard.parsing.identity module
 -------------------------------
 

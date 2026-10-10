@@ -64,6 +64,7 @@
 <li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#module-keycard.parsing.application_info">keycard.parsing.application_info module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#module-keycard.parsing.capabilities">keycard.parsing.capabilities module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#module-keycard.parsing.certificate">keycard.parsing.certificate module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#module-keycard.parsing.identity">keycard.parsing.identity module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#module-keycard.parsing.tlv">keycard.parsing.tlv module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.parsing.html#module-keycard.parsing">Module contents</a></li>
@@ -73,6 +74,7 @@
 <li class="toctree-l4"><a class="reference internal" href="keycard.secure_channel.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.secure_channel.html#module-keycard.secure_channel.base">keycard.secure_channel.base module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.secure_channel.html#module-keycard.secure_channel.v1">keycard.secure_channel.v1 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.secure_channel.html#module-keycard.secure_channel.v2">keycard.secure_channel.v2 module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.secure_channel.html#module-keycard.secure_channel">Module contents</a></li>
 </ul>
 </li>
@@ -151,6 +153,7 @@
 <li class="toctree-l3"><a class="reference internal" href="keycard.html#keycard.exceptions.NotInitializedError"><code class="docutils literal notranslate"><span class="pre">NotInitializedError</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.html#keycard.exceptions.NotSelectedError"><code class="docutils literal notranslate"><span class="pre">NotSelectedError</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.html#keycard.exceptions.TransportError"><code class="docutils literal notranslate"><span class="pre">TransportError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="keycard.html#keycard.exceptions.UntrustedCardError"><code class="docutils literal notranslate"><span class="pre">UntrustedCardError</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="keycard.html#module-keycard.keycard">keycard.keycard module</a><ul>
@@ -167,6 +170,7 @@
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.keycard.KeyCard.get_data"><code class="docutils literal notranslate"><span class="pre">KeyCard.get_data()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.keycard.KeyCard.get_key_path"><code class="docutils literal notranslate"><span class="pre">KeyCard.get_key_path</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.keycard.KeyCard.ident"><code class="docutils literal notranslate"><span class="pre">KeyCard.ident()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.keycard.KeyCard.identity_certificate"><code class="docutils literal notranslate"><span class="pre">KeyCard.identity_certificate</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.keycard.KeyCard.init"><code class="docutils literal notranslate"><span class="pre">KeyCard.init()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.keycard.KeyCard.is_initialized"><code class="docutils literal notranslate"><span class="pre">KeyCard.is_initialized</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.keycard.KeyCard.is_pin_verified"><code class="docutils literal notranslate"><span class="pre">KeyCard.is_pin_verified</span></code></a></li>
@@ -181,6 +185,7 @@
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.keycard.KeyCard.secure_channel_version"><code class="docutils literal notranslate"><span class="pre">KeyCard.secure_channel_version</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.keycard.KeyCard.select"><code class="docutils literal notranslate"><span class="pre">KeyCard.select()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.keycard.KeyCard.send_apdu"><code class="docutils literal notranslate"><span class="pre">KeyCard.send_apdu()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.keycard.KeyCard.send_raw_apdu"><code class="docutils literal notranslate"><span class="pre">KeyCard.send_raw_apdu()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.keycard.KeyCard.send_secure_apdu"><code class="docutils literal notranslate"><span class="pre">KeyCard.send_secure_apdu()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.keycard.KeyCard.set_pinless_path"><code class="docutils literal notranslate"><span class="pre">KeyCard.set_pinless_path()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.keycard.KeyCard.sign"><code class="docutils literal notranslate"><span class="pre">KeyCard.sign()</span></code></a></li>
@@ -207,13 +212,19 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="keycard.html#module-keycard">Module contents</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="keycard.html#keycard.CardInterface"><code class="docutils literal notranslate"><span class="pre">CardInterface</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.CardInterface.ca_public_keys"><code class="docutils literal notranslate"><span class="pre">CardInterface.ca_public_keys</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.CardInterface.card_public_key"><code class="docutils literal notranslate"><span class="pre">CardInterface.card_public_key</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.CardInterface.identity_certificate"><code class="docutils literal notranslate"><span class="pre">CardInterface.identity_certificate</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.CardInterface.is_initialized"><code class="docutils literal notranslate"><span class="pre">CardInterface.is_initialized</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.CardInterface.is_pin_verified"><code class="docutils literal notranslate"><span class="pre">CardInterface.is_pin_verified</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.CardInterface.is_secure_channel_open"><code class="docutils literal notranslate"><span class="pre">CardInterface.is_secure_channel_open</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.CardInterface.is_selected"><code class="docutils literal notranslate"><span class="pre">CardInterface.is_selected</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.CardInterface.open_secure_channel"><code class="docutils literal notranslate"><span class="pre">CardInterface.open_secure_channel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.CardInterface.pairing"><code class="docutils literal notranslate"><span class="pre">CardInterface.pairing</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.CardInterface.send_apdu"><code class="docutils literal notranslate"><span class="pre">CardInterface.send_apdu()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.CardInterface.send_raw_apdu"><code class="docutils literal notranslate"><span class="pre">CardInterface.send_raw_apdu()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.CardInterface.send_secure_apdu"><code class="docutils literal notranslate"><span class="pre">CardInterface.send_secure_apdu()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.CardInterface.trusted_identity_keys"><code class="docutils literal notranslate"><span class="pre">CardInterface.trusted_identity_keys</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.CardInterface.version"><code class="docutils literal notranslate"><span class="pre">CardInterface.version</span></code></a></li>
 </ul>
 </li>
@@ -230,6 +241,7 @@
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.KeyCard.get_data"><code class="docutils literal notranslate"><span class="pre">KeyCard.get_data()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.KeyCard.get_key_path"><code class="docutils literal notranslate"><span class="pre">KeyCard.get_key_path</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.KeyCard.ident"><code class="docutils literal notranslate"><span class="pre">KeyCard.ident()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.KeyCard.identity_certificate"><code class="docutils literal notranslate"><span class="pre">KeyCard.identity_certificate</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.KeyCard.init"><code class="docutils literal notranslate"><span class="pre">KeyCard.init()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.KeyCard.is_initialized"><code class="docutils literal notranslate"><span class="pre">KeyCard.is_initialized</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.KeyCard.is_pin_verified"><code class="docutils literal notranslate"><span class="pre">KeyCard.is_pin_verified</span></code></a></li>
@@ -244,6 +256,7 @@
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.KeyCard.secure_channel_version"><code class="docutils literal notranslate"><span class="pre">KeyCard.secure_channel_version</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.KeyCard.select"><code class="docutils literal notranslate"><span class="pre">KeyCard.select()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.KeyCard.send_apdu"><code class="docutils literal notranslate"><span class="pre">KeyCard.send_apdu()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.KeyCard.send_raw_apdu"><code class="docutils literal notranslate"><span class="pre">KeyCard.send_raw_apdu()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.KeyCard.send_secure_apdu"><code class="docutils literal notranslate"><span class="pre">KeyCard.send_secure_apdu()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.KeyCard.set_pinless_path"><code class="docutils literal notranslate"><span class="pre">KeyCard.set_pinless_path()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="keycard.html#keycard.KeyCard.sign"><code class="docutils literal notranslate"><span class="pre">KeyCard.sign()</span></code></a></li>

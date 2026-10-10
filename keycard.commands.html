@@ -73,29 +73,31 @@ If None, a random 32-byte challenge is generated.</p></li>
 <span id="keycard-commands-init-module"></span><h2>keycard.commands.init module<a class="headerlink" href="#module-keycard.commands.init" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.init.init">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.init.</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">puk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_secret</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.init.init" title="Link to this definition">¶</a></dt>
-<dd><p>Initializes a Keycard device with PIN, PUK, and pairing secret.</p>
-<p>Establishes an ephemeral ECDH key exchange and sends encrypted
-credentials to the card.</p>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.init.</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">puk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_secret</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin_retries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">puk_retries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_pin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.init.init" title="Link to this definition">¶</a></dt>
+<dd><p>Initializes the card the way its secure channel version requires.</p>
+<p>Secure Channel V1 (3.x) cards need the pairing secret and receive the
+credentials encrypted once to the card’s public key. Secure Channel V2
+(4.x) cards take no pairing secret and receive INIT inside the secure
+channel, which is opened if needed and stays open.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>transport</strong> – The transport used to send APDU commands to the card.</p></li>
-<li><p><strong>card_public_key</strong> (<em>bytes</em>) – The card’s ECC public key, usually
-retrieved via select().</p></li>
-<li><p><strong>pin</strong> (<em>bytes</em>) – The personal identification number (PIN) as bytes.</p></li>
-<li><p><strong>puk</strong> (<em>bytes</em>) – The personal unblocking key (PUK) as bytes.</p></li>
-<li><p><strong>pairing_secret</strong> (<em>bytes</em>) – A 32-byte shared secret or a passphrase that
-will be converted into one.</p></li>
+<li><p><strong>card</strong> – The card interface.</p></li>
+<li><p><strong>pin</strong> – The 6-digit PIN.</p></li>
+<li><p><strong>puk</strong> – The 12-digit PUK.</p></li>
+<li><p><strong>pairing_secret</strong> – A 32-byte secret or a passphrase (V1 only).</p></li>
+<li><p><strong>pin_retries</strong> – PIN attempts, 2 to 10 (default 3).</p></li>
+<li><p><strong>puk_retries</strong> – PUK attempts, 3 to 12 (default 5).</p></li>
+<li><p><strong>alt_pin</strong> – Optional 6-digit Alternate PIN.</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.NotSelectedError" title="keycard.exceptions.NotSelectedError"><strong>NotSelectedError</strong></a> – If no card public key is provided.</p></li>
-<li><p><strong>ValueError</strong> – If the encrypted data exceeds a single APDU length.</p></li>
+<li><p><strong>ValueError</strong> – If the pairing secret is missing on V1, given on V2, or a
+    parameter is out of range.</p></li>
 <li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns a failure status word.</p></li>
 </ul>
 </dd>
@@ -147,34 +149,30 @@ If not provided, a random 32-byte value will be generated.</p></li>
 <h2>keycard.commands.open_secure_channel module<a class="headerlink" href="#keycard-commands-open-secure-channel-module" title="Link to this heading">¶</a></h2>
 <dl class="py function" id="module-keycard.commands.open_secure_channel">
 <dt class="sig sig-object py" id="keycard.commands.open_secure_channel.open_secure_channel">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.open_secure_channel.</span></span><span class="sig-name descname"><span class="pre">open_secure_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.open_secure_channel.open_secure_channel" title="Link to this definition">¶</a></dt>
-<dd><p>Opens a secure session with the Keycard using ECDH and a pairing key.</p>
-<p>This function performs an ephemeral ECDH key exchange with the card,
-sends the ephemeral public key, and receives cryptographic material
-from the card to derive a secure session.</p>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.open_secure_channel.</span></span><span class="sig-name descname"><span class="pre">open_secure_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.open_secure_channel.open_secure_channel" title="Link to this definition">¶</a></dt>
+<dd><p>Opens a secure channel with the selected card, using the channel version
+its applet supports.</p>
+<p>Secure Channel V1 (3.x) uses the card’s pairing and runs MUTUALLY
+AUTHENTICATE. Secure Channel V2 (4.x) first checks the card’s Identity
+Certificate against the trusted Keycard CAs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="keycard.secure_channel.html#keycard.secure_channel.v1.SecureChannelV1" title="keycard.secure_channel.v1.SecureChannelV1"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecureChannelV1</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="keycard.secure_channel.html#keycard.secure_channel.base.SecureChannel" title="keycard.secure_channel.base.SecureChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecureChannel</span></code></a></span></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>transport</strong> – The transport used to communicate with the card.</p></li>
-<li><p><strong>card_public_key</strong> (<em>bytes</em>) – The ECC public key of the card, retrieved
-via select().</p></li>
-<li><p><strong>pairing_index</strong> (<em>int</em>) – The index of the previously established
-pairing slot.</p></li>
-<li><p><strong>pairing_key</strong> (<em>bytes</em>) – The shared 32-byte pairing key.</p></li>
-</ul>
+<dd class="field-even"><p><strong>card</strong> – The card interface.</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A newly established secure session with the card.</p>
+<dd class="field-odd"><p>The open channel.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="keycard.secure_channel.html#keycard.secure_channel.v1.SecureChannelV1" title="keycard.secure_channel.v1.SecureChannelV1">SecureChannelV1</a></p>
+<dd class="field-even"><p><a class="reference internal" href="keycard.secure_channel.html#keycard.secure_channel.base.SecureChannel" title="keycard.secure_channel.base.SecureChannel">SecureChannel</a></p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.NotSelectedError" title="keycard.exceptions.NotSelectedError"><strong>NotSelectedError</strong></a> – If no card public key is provided.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidStateError" title="keycard.exceptions.InvalidStateError"><strong>InvalidStateError</strong></a> – If a V1 card has no pairing or is not initialized.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.UntrustedCardError" title="keycard.exceptions.UntrustedCardError"><strong>UntrustedCardError</strong></a> – If a V2 card is not trusted.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidResponseError" title="keycard.exceptions.InvalidResponseError"><strong>InvalidResponseError</strong></a> – If the handshake does not verify.</p></li>
 <li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns a failure status word.</p></li>
 </ul>
 </dd>
@@ -599,29 +597,31 @@ If None, a random 32-byte challenge is generated.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.init">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">puk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_secret</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.init" title="Link to this definition">¶</a></dt>
-<dd><p>Initializes a Keycard device with PIN, PUK, and pairing secret.</p>
-<p>Establishes an ephemeral ECDH key exchange and sends encrypted
-credentials to the card.</p>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">puk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_secret</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin_retries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">puk_retries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_pin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.init" title="Link to this definition">¶</a></dt>
+<dd><p>Initializes the card the way its secure channel version requires.</p>
+<p>Secure Channel V1 (3.x) cards need the pairing secret and receive the
+credentials encrypted once to the card’s public key. Secure Channel V2
+(4.x) cards take no pairing secret and receive INIT inside the secure
+channel, which is opened if needed and stays open.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>transport</strong> – The transport used to send APDU commands to the card.</p></li>
-<li><p><strong>card_public_key</strong> (<em>bytes</em>) – The card’s ECC public key, usually
-retrieved via select().</p></li>
-<li><p><strong>pin</strong> (<em>bytes</em>) – The personal identification number (PIN) as bytes.</p></li>
-<li><p><strong>puk</strong> (<em>bytes</em>) – The personal unblocking key (PUK) as bytes.</p></li>
-<li><p><strong>pairing_secret</strong> (<em>bytes</em>) – A 32-byte shared secret or a passphrase that
-will be converted into one.</p></li>
+<li><p><strong>card</strong> – The card interface.</p></li>
+<li><p><strong>pin</strong> – The 6-digit PIN.</p></li>
+<li><p><strong>puk</strong> – The 12-digit PUK.</p></li>
+<li><p><strong>pairing_secret</strong> – A 32-byte secret or a passphrase (V1 only).</p></li>
+<li><p><strong>pin_retries</strong> – PIN attempts, 2 to 10 (default 3).</p></li>
+<li><p><strong>puk_retries</strong> – PUK attempts, 3 to 12 (default 5).</p></li>
+<li><p><strong>alt_pin</strong> – Optional 6-digit Alternate PIN.</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.NotSelectedError" title="keycard.exceptions.NotSelectedError"><strong>NotSelectedError</strong></a> – If no card public key is provided.</p></li>
-<li><p><strong>ValueError</strong> – If the encrypted data exceeds a single APDU length.</p></li>
+<li><p><strong>ValueError</strong> – If the pairing secret is missing on V1, given on V2, or a
+    parameter is out of range.</p></li>
 <li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns a failure status word.</p></li>
 </ul>
 </dd>
@@ -691,34 +691,30 @@ If not provided, a random 32-byte value will be generated.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.open_secure_channel">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">open_secure_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairing_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.open_secure_channel" title="Link to this definition">¶</a></dt>
-<dd><p>Opens a secure session with the Keycard using ECDH and a pairing key.</p>
-<p>This function performs an ephemeral ECDH key exchange with the card,
-sends the ephemeral public key, and receives cryptographic material
-from the card to derive a secure session.</p>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">open_secure_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.open_secure_channel" title="Link to this definition">¶</a></dt>
+<dd><p>Opens a secure channel with the selected card, using the channel version
+its applet supports.</p>
+<p>Secure Channel V1 (3.x) uses the card’s pairing and runs MUTUALLY
+AUTHENTICATE. Secure Channel V2 (4.x) first checks the card’s Identity
+Certificate against the trusted Keycard CAs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="keycard.secure_channel.html#keycard.secure_channel.v1.SecureChannelV1" title="keycard.secure_channel.v1.SecureChannelV1"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecureChannelV1</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="keycard.secure_channel.html#keycard.secure_channel.base.SecureChannel" title="keycard.secure_channel.base.SecureChannel"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecureChannel</span></code></a></span></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>transport</strong> – The transport used to communicate with the card.</p></li>
-<li><p><strong>card_public_key</strong> (<em>bytes</em>) – The ECC public key of the card, retrieved
-via select().</p></li>
-<li><p><strong>pairing_index</strong> (<em>int</em>) – The index of the previously established
-pairing slot.</p></li>
-<li><p><strong>pairing_key</strong> (<em>bytes</em>) – The shared 32-byte pairing key.</p></li>
-</ul>
+<dd class="field-even"><p><strong>card</strong> – The card interface.</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A newly established secure session with the card.</p>
+<dd class="field-odd"><p>The open channel.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="keycard.secure_channel.html#keycard.secure_channel.v1.SecureChannelV1" title="keycard.secure_channel.v1.SecureChannelV1">SecureChannelV1</a></p>
+<dd class="field-even"><p><a class="reference internal" href="keycard.secure_channel.html#keycard.secure_channel.base.SecureChannel" title="keycard.secure_channel.base.SecureChannel">SecureChannel</a></p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.NotSelectedError" title="keycard.exceptions.NotSelectedError"><strong>NotSelectedError</strong></a> – If no card public key is provided.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidStateError" title="keycard.exceptions.InvalidStateError"><strong>InvalidStateError</strong></a> – If a V1 card has no pairing or is not initialized.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.UntrustedCardError" title="keycard.exceptions.UntrustedCardError"><strong>UntrustedCardError</strong></a> – If a V2 card is not trusted.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidResponseError" title="keycard.exceptions.InvalidResponseError"><strong>InvalidResponseError</strong></a> – If the handshake does not verify.</p></li>
 <li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns a failure status word.</p></li>
 </ul>
 </dd>
