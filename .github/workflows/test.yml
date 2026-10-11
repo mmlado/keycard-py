@@ -9,7 +9,7 @@ on:
 
 jobs:
   test-matrix:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -17,10 +17,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v7
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -36,14 +36,14 @@ jobs:
         pytest --maxfail=1 --disable-warnings --exitfirst
 
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
 
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v7
       with:
         python-version: "3.13"
 
@@ -61,7 +61,7 @@ jobs:
       run: mypy keycard
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [test-matrix, lint]
     if: always()
     steps:
