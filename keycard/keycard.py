@@ -694,6 +694,20 @@ class KeyCard(CardInterface):
         """
         return commands.export_lee(self, path)
 
+    def export_bip85(self, path: str, length: int) -> bytes:
+        """
+        Export BIP-85 entropy derived from the loaded key. Needs applet 4.0.
+
+        Args:
+            path (str): Path starting with "m/83696968'", every component
+                hardened, e.g. "m/83696968'/0'/0'".
+            length (int): Number of entropy bytes, 1 to 64.
+
+        Returns:
+            bytes: The entropy.
+        """
+        return commands.export_bip85(self, path, length)
+
     def set_pinless_path(self, path: str) -> None:
         """
         Set a PIN-less path on the card. Allows signing without PIN/auth if the

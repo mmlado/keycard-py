@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from hashlib import sha512
 from os import urandom
+from typing import Optional
 
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
@@ -11,6 +12,7 @@ from ..exceptions import APDUError
 from .base import SecureChannelVersion
 
 BLOCK_SIZE = 16
+STATUS_WORD_PADDING = b'\x80' + bytes(BLOCK_SIZE - 3)
 
 
 def _pad(data: bytes) -> bytes:
@@ -95,11 +97,14 @@ class SecureChannelV1:
         mac_key (bytes): The AES MAC key for message authentication.
         iv (bytes): The initialization vector for AES operations.
         authenticated (bool): Indicates if the session is authenticated.
+        previous_iv (Optional[bytes]): The IV the last command was
+            encrypted with.
     """
     enc_key: bytes
     mac_key: bytes
     iv: bytes
     authenticated: bool = False
+    previous_iv: Optional[bytes] = None
 
     @classmethod
     def from_handshake(
@@ -205,6 +210,7 @@ class SecureChannelV1:
         lc = 16 + len(encrypted)
         mac_input = bytes([cla, ins, p1, p2, lc]) + bytes(11) + encrypted
 
+        self.previous_iv = self.iv
         self.iv = cbc_mac(self.mac_key, mac_input)
 
         return self.iv + encrypted
@@ -243,7 +249,15 @@ class SecureChannelV1:
         if received_mac != expected_mac:
             raise ValueError("Invalid MAC")
 
-        plaintext = cbc_decrypt(self.enc_key, self.iv, encrypted)
+        iv = self.iv
+        if self.previous_iv is not None and len(encrypted) == BLOCK_SIZE:
+            # 3.x rejects an unknown INS before taking the command MAC as IV.
+            stale = _cbc(
+                self.enc_key, self.previous_iv, encrypted, decrypt=True)
+            if stale[2:] == STATUS_WORD_PADDING:
+                iv = self.previous_iv
+
+        plaintext = cbc_decrypt(self.enc_key, iv, encrypted)
 
         self.iv = received_mac
 

@@ -156,6 +156,35 @@ def _card_response(session, payload, sw):
     return APDUResponse(mac + encrypted, 0x9000)
 
 
+def _stale_iv_response(session, sw):
+    # What 3.x sends for an unknown INS: encrypted under the pre-command IV.
+    encrypted = cbc_encrypt(
+        session.enc_key, session.previous_iv, sw.to_bytes(2, 'big'))
+    mac = cbc_mac(session.mac_key, bytes([32]) + bytes(15) + encrypted)
+    return APDUResponse(mac + encrypted, 0x9000)
+
+
+def test_unwrap_unknown_ins_on_3x_raises_status_word(session_params):
+    session = SecureChannelV1.from_handshake(**session_params)
+    session.wrap(0xC4, 0x40, 0x00, b'path')
+    response = _stale_iv_response(session, 0x6D00)
+
+    with pytest.raises(APDUError) as excinfo:
+        session.unwrap(response)
+    assert excinfo.value.sw == 0x6D00
+    assert session.iv == response.data[:16]
+
+
+def test_unwrap_status_only_response_uses_command_iv(session_params):
+    session = SecureChannelV1.from_handshake(**session_params)
+    session.wrap(0xCA, 0x00, 0x00, b'')
+    response = _card_response(session, b'', 0x6A84)
+
+    with pytest.raises(APDUError) as excinfo:
+        session.unwrap(response)
+    assert excinfo.value.sw == 0x6A84
+
+
 def test_version_and_is_open(session_params):
     session = SecureChannelV1.from_handshake(**session_params)
     assert session.version == SecureChannelVersion.V1
