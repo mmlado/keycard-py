@@ -7,8 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-11
+
 ### Added
 
+- Python 3.10 and later are supported and tested, up to 3.14
 - Support Pairing Mode for Keycard version 3.2
 - Store NDEF data up to 512 bytes in chunks (applet 3.2+) and read it in segments (applet 4.0+)
 - `KeyCard.secure_channel_version`, chosen from the applet version
@@ -44,7 +47,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `verify_pin` marked the PIN as verified when the card rejected it
 - `SignatureResult.r` and `.s` dropped leading zero bytes; they are now always 32 bytes
 - Secure Channel V1 failed to decrypt a 3.x card's rejection of an unknown instruction; it now raises `APDUError` with the card's status word
-- Older versions not supported. Python 3.10+ now supported
 
 ## [0.3.0] - 2025-08-24
 
@@ -86,7 +88,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - FACTORY RESET command
 
 
-[unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/v0.3.0...HEAD
-[0.3.0]: https://github.com/olivierlacan/keep-a-changelog/compare/v0.2.0...v0.3.0
-[0.2.0]: https://github.com/olivierlacan/keep-a-changelog/compare/v0.1.0...v0.2.0
+[unreleased]: https://github.com/mmlado/keycard-py/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/mmlado/keycard-py/compare/v0.3.0...v0.4.0
+[0.3.0]: https://github.com/mmlado/keycard-py/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/mmlado/keycard-py/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/mmlado/keycard-py/releases/tag/v0.1.0
