@@ -181,3 +181,13 @@ def test_v1_init_requires_pairing_secret():
 
     with pytest.raises(ValueError, match='need a pairing secret'):
         keycard.init(PIN, PUK)
+
+
+def test_get_challenge_before_init():
+    card = V4Card()
+    keycard = keycard_for(card)
+    keycard.open_secure_channel()
+
+    assert keycard.get_challenge(16) == bytes(16)
+    assert card.inner_apdus[-1] == bytes([0x80, 0x84, 16, 0x00, 0])
+    assert not keycard.is_initialized

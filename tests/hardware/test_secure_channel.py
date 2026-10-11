@@ -43,9 +43,8 @@ def test_untrusted_ca_rejected(keycard):
 
 
 @pytest.mark.destructive
-def test_reset_init_and_verify_pin(keycard):
-    keycard.factory_reset()
-    keycard.select()
+def test_reset_init_and_verify_pin(reset_keycard):
+    keycard = reset_keycard
     v2 = keycard.secure_channel_version == SecureChannelVersion.V2
 
     if v2:

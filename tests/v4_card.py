@@ -94,6 +94,8 @@ class V4Card:
             return b'', 0x9000
         if ins == 0x20:
             return b'', 0x9000 if data == self.pin else 0x63C2
+        if ins == 0x84:
+            return bytes(inner[2]), 0x9000
         if ins == 0xF2:
             status = tlv(0x02, b'\x03') + tlv(0x02, b'\x05') + tlv(
                 0x01, b'\x00')
