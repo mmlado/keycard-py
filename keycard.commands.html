@@ -415,6 +415,39 @@ and raises an error if blocked or another APDU error occurs.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="keycard.commands.export_lee">
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">export_lee</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'m'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.export_lee" title="Link to this definition">¶</a></dt>
+<dd><p>Exports the LEE keys at a path (applet 4.0).</p>
+<p>The card must be in LEE mode, entered by loading a seed with
+LoadKeyType.LEE_SEED.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">LeeKeys</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>card</strong> – The card interface.</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – Derivation path from the master key, e.g.
+“m/44’/60’”. “m” exports the master keys.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ASK, NSK, VSK_D and VSK_Z, 32 bytes each.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>LeeKeys</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the path does not start at the master key.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidResponseError" title="keycard.exceptions.InvalidResponseError"><strong>InvalidResponseError</strong></a> – If a key is missing or not 32 bytes.</p></li>
+<li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns a failure status word.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.factory_reset">
 <span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">factory_reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.factory_reset" title="Link to this definition">¶</a></dt>
 <dd><p>Sends the FACTORY_RESET command to the card.</p>
@@ -678,7 +711,8 @@ channel, which is opened if needed and stays open.</p>
 <li><p><strong>public_key</strong> – Optional ECC public key (tag 0x80).</p></li>
 <li><p><strong>private_key</strong> – ECC private key (tag 0x81).</p></li>
 <li><p><strong>chain_code</strong> – Optional chain code (tag 0x82, only for extended key).</p></li>
-<li><p><strong>bip39_seed</strong> – 64-byte BIP39 seed (only for key_type=BIP39_SEED).</p></li>
+<li><p><strong>bip39_seed</strong> – 16 to 64-byte binary seed (only for key_type BIP39_SEED,
+or LEE_SEED to also derive the LEE keys on applet 4.0).</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -853,12 +887,13 @@ string disables the pinless path.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="keycard.commands.sign">
-<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">DerivationOption.CURRENT</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SigningAlgorithm.ECDSA_SECP256K1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">derivation_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.sign" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">keycard.commands.</span></span><span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">card</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">DerivationOption.CURRENT</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SigningAlgorithm.ECDSA_SECP256K1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">derivation_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tweak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.commands.sign" title="Link to this definition">¶</a></dt>
 <dd><p>Sign a 32-byte digest using the specified key and signing algorithm.</p>
 <p>This command sends the SIGN APDU to the Keycard and parses the response,
 returning a structured <cite>SignatureResult</cite> object. The signature may be
 returned as a DER-encoded structure, a raw 65-byte format including
-the recovery ID, or an ECDSA template depending on card behavior.</p>
+the recovery ID, or an ECDSA template depending on card behavior.
+Schnorr signatures are 64 bytes, R.x || s, with no recovery ID.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignatureResult</span></code></span></p>
@@ -878,16 +913,28 @@ the recovery ID, or an ECDSA template depending on card behavior.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>card</strong> (<a class="reference internal" href="keycard.html#keycard.CardInterface" title="keycard.CardInterface"><em>CardInterface</em></a>) – Active Keycard transport session.</p></li>
 <li><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to be signed.</p></li>
-<li><p><strong>p1</strong> (<a class="reference internal" href="keycard.html#keycard.constants.DerivationOption" title="keycard.constants.DerivationOption"><em>DerivationOption</em></a>) – Key derivation option. One of:
-- CURRENT: Sign with the currently loaded key
-- DERIVE: Derive key for signing without changing current
-- DERIVE_AND_MAKE_CURRENT: Derive and load for future use
-- PINLESS: Use pre-defined PIN-less key without SC/PIN</p></li>
-<li><p><strong>p2</strong> (<a class="reference internal" href="keycard.html#keycard.constants.SigningAlgorithm" title="keycard.constants.SigningAlgorithm"><em>SigningAlgorithm</em></a>) – Signing algorithm (e.g. ECDSA_SECP256K1).</p></li>
+<li><p><strong>p1</strong> (<a class="reference internal" href="keycard.html#keycard.constants.DerivationOption" title="keycard.constants.DerivationOption"><em>DerivationOption</em></a>) – <p>Key derivation option. One of:
+- CURRENT: Sign with the currently loaded key; on applet 4.0,</p>
+<blockquote>
+<div><p>which has no current key, with the master key</p>
+</div></blockquote>
+<ul>
+<li><p>DERIVE: Derive key for signing without changing current</p></li>
+<li><p>DERIVE_AND_MAKE_CURRENT: Derive and load for future use</p></li>
+<li><p>PINLESS: Use pre-defined PIN-less key without SC/PIN</p></li>
+</ul>
+<p>Applet 4.0 accepts only CURRENT and DERIVE from the master key.</p>
+</p></li>
+<li><p><strong>p2</strong> (<a class="reference internal" href="keycard.html#keycard.constants.SigningAlgorithm" title="keycard.constants.SigningAlgorithm"><em>SigningAlgorithm</em></a>) – Signing algorithm. Defaults to
+ECDSA_SECP256K1. Applet 4.0 also supports SCHNORR_BIP340.</p></li>
 <li><p><strong>derivation_path</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – String-formatted BIP32 path
-(e.g. “m/44’/60’/0’/0/0”). Required if <cite>p1</cite> uses derivation.
-The source (master/parent/current) is inferred from the path
-prefix.</p></li>
+(e.g. “m/44’/60’/0’/0/0”). Required if <cite>p1</cite> uses derivation;
+“m” is the master key. The source (master/parent/current) is
+inferred from the path prefix.</p></li>
+<li><p><strong>tweak</strong> (<em>Optional</em><em>[</em><em>bytes</em><em>]</em>) – 32 bytes the card adds to the private key
+before a Schnorr signature, e.g. a Taproot tweak. Defaults to
+zeros, an untweaked BIP-340 signature. The returned public key
+is the untweaked one.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -899,7 +946,8 @@ prefix.</p></li>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>ValueError</strong> – If the digest is not 32 bytes or path is invalid.</p></li>
+<li><p><strong>ValueError</strong> – If the digest or tweak is not 32 bytes, a tweak is
+    given for ECDSA, or the path is invalid.</p></li>
 <li><p><a class="reference internal" href="keycard.html#keycard.exceptions.InvalidStateError" title="keycard.exceptions.InvalidStateError"><strong>InvalidStateError</strong></a> – If preconditions (PIN, SC) are not met.</p></li>
 <li><p><a class="reference internal" href="keycard.html#keycard.exceptions.APDUError" title="keycard.exceptions.APDUError"><strong>APDUError</strong></a> – If the card returns an error (e.g., SW=0x6985).</p></li>
 </ul>

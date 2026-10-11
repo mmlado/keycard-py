@@ -77,6 +77,7 @@
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.change_secret"><code class="docutils literal notranslate"><span class="pre">change_secret()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.derive_key"><code class="docutils literal notranslate"><span class="pre">derive_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.export_key"><code class="docutils literal notranslate"><span class="pre">export_key()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.export_lee"><code class="docutils literal notranslate"><span class="pre">export_lee()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.factory_reset"><code class="docutils literal notranslate"><span class="pre">factory_reset()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.generate_key"><code class="docutils literal notranslate"><span class="pre">generate_key()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="keycard.commands.html#keycard.commands.generate_mnemonic"><code class="docutils literal notranslate"><span class="pre">generate_mnemonic()</span></code></a></li>
@@ -454,6 +455,11 @@ via APDU commands.</p>
 <span class="sig-name descname"><span class="pre">EXTENDED_ECC</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></span><a class="headerlink" href="#keycard.constants.LoadKeyType.EXTENDED_ECC" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.constants.LoadKeyType.LEE_SEED">
+<span class="sig-name descname"><span class="pre">LEE_SEED</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></span><a class="headerlink" href="#keycard.constants.LoadKeyType.LEE_SEED" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -765,6 +771,27 @@ bytes. If derivation_option is CURRENT, this can be omitted.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.export_lee">
+<span class="sig-name descname"><span class="pre">export_lee</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'m'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.export_lee" title="Link to this definition">¶</a></dt>
+<dd><p>Export the LEE keys at a path. Needs applet 4.0 in LEE mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">LeeKeys</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>path</strong> (<em>str</em>) – Derivation path from the master key, e.g.
+“m/44’/60’”. Defaults to the master keys.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ASK, NSK, VSK_D and VSK_Z.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>LeeKeys</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.factory_reset">
 <span class="sig-name descname"><span class="pre">factory_reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.factory_reset" title="Link to this definition">¶</a></dt>
 <dd><p>Sends the FACTORY_RESET command to the card.</p>
@@ -1038,7 +1065,9 @@ cards take none; the channel is opened if needed and stays open.</p>
 <li><p><strong>public_key</strong> – Optional ECC public key (tag 0x80).</p></li>
 <li><p><strong>private_key</strong> – ECC private key (tag 0x81).</p></li>
 <li><p><strong>chain_code</strong> – Optional chain code (tag 0x82, only for extended key).</p></li>
-<li><p><strong>bip39_seed</strong> – 64-byte BIP39 seed (only for key_type=BIP39_SEED).</p></li>
+<li><p><strong>bip39_seed</strong> – 16 to 64-byte binary seed (only for key_type
+BIP39_SEED, or LEE_SEED to also derive the LEE keys on
+applet 4.0).</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -1218,15 +1247,21 @@ string disables the pinless path.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.sign">
-<span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.sign" title="Link to this definition">¶</a></dt>
-<dd><p>Sign using the currently loaded keypair.
+<span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SigningAlgorithm.ECDSA_SECP256K1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tweak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.sign" title="Link to this definition">¶</a></dt>
+<dd><p>Sign using the currently loaded keypair; on applet 4.0, which has
+no current key, the master key.
 Requires PIN verification and secure channel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignatureResult</span></code></span></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to sign</p>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to sign</p></li>
+<li><p><strong>algorithm</strong> (<a class="reference internal" href="#keycard.constants.SigningAlgorithm" title="keycard.constants.SigningAlgorithm"><em>SigningAlgorithm</em></a>) – ECDSA_SECP256K1 (default) or, on
+applet 4.0, SCHNORR_BIP340.</p></li>
+<li><p><strong>tweak</strong> (<em>Optional</em><em>[</em><em>bytes</em><em>]</em>) – 32-byte Schnorr tweak; zeros if omitted.</p></li>
+</ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><dl class="simple">
@@ -1273,7 +1308,7 @@ public key.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.sign_with_path">
-<span class="sig-name descname"><span class="pre">sign_with_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_current</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.sign_with_path" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">sign_with_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_current</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SigningAlgorithm.ECDSA_SECP256K1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tweak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.sign_with_path" title="Link to this definition">¶</a></dt>
 <dd><p>Sign using a derived keypath. Optionally updates the current path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1282,8 +1317,13 @@ public key.</p>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to sign</p></li>
-<li><p><strong>path</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – list of 32-bit integers</p></li>
-<li><p><strong>make_current</strong> (<em>bool</em>) – whether to update current path on card</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – BIP-32-style path (e.g. “m/44’/60’/0’/0/0”); “m” is
+the master key</p></li>
+<li><p><strong>make_current</strong> (<em>bool</em>) – whether to update current path on card
+(not supported by applet 4.0)</p></li>
+<li><p><strong>algorithm</strong> (<a class="reference internal" href="#keycard.constants.SigningAlgorithm" title="keycard.constants.SigningAlgorithm"><em>SigningAlgorithm</em></a>) – ECDSA_SECP256K1 (default) or, on
+applet 4.0, SCHNORR_BIP340.</p></li>
+<li><p><strong>tweak</strong> (<em>Optional</em><em>[</em><em>bytes</em><em>]</em>) – 32-byte Schnorr tweak; zeros if omitted.</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -1723,6 +1763,27 @@ bytes. If derivation_option is CURRENT, this can be omitted.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="keycard.KeyCard.export_lee">
+<span class="sig-name descname"><span class="pre">export_lee</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'m'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.export_lee" title="Link to this definition">¶</a></dt>
+<dd><p>Export the LEE keys at a path. Needs applet 4.0 in LEE mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">LeeKeys</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>path</strong> (<em>str</em>) – Derivation path from the master key, e.g.
+“m/44’/60’”. Defaults to the master keys.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ASK, NSK, VSK_D and VSK_Z.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>LeeKeys</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="keycard.KeyCard.factory_reset">
 <span class="sig-name descname"><span class="pre">factory_reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.factory_reset" title="Link to this definition">¶</a></dt>
 <dd><p>Sends the FACTORY_RESET command to the card.</p>
@@ -1996,7 +2057,9 @@ cards take none; the channel is opened if needed and stays open.</p>
 <li><p><strong>public_key</strong> – Optional ECC public key (tag 0x80).</p></li>
 <li><p><strong>private_key</strong> – ECC private key (tag 0x81).</p></li>
 <li><p><strong>chain_code</strong> – Optional chain code (tag 0x82, only for extended key).</p></li>
-<li><p><strong>bip39_seed</strong> – 64-byte BIP39 seed (only for key_type=BIP39_SEED).</p></li>
+<li><p><strong>bip39_seed</strong> – 16 to 64-byte binary seed (only for key_type
+BIP39_SEED, or LEE_SEED to also derive the LEE keys on
+applet 4.0).</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -2176,15 +2239,21 @@ string disables the pinless path.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.KeyCard.sign">
-<span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.sign" title="Link to this definition">¶</a></dt>
-<dd><p>Sign using the currently loaded keypair.
+<span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SigningAlgorithm.ECDSA_SECP256K1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tweak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.sign" title="Link to this definition">¶</a></dt>
+<dd><p>Sign using the currently loaded keypair; on applet 4.0, which has
+no current key, the master key.
 Requires PIN verification and secure channel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignatureResult</span></code></span></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to sign</p>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to sign</p></li>
+<li><p><strong>algorithm</strong> (<a class="reference internal" href="#keycard.constants.SigningAlgorithm" title="keycard.constants.SigningAlgorithm"><em>SigningAlgorithm</em></a>) – ECDSA_SECP256K1 (default) or, on
+applet 4.0, SCHNORR_BIP340.</p></li>
+<li><p><strong>tweak</strong> (<em>Optional</em><em>[</em><em>bytes</em><em>]</em>) – 32-byte Schnorr tweak; zeros if omitted.</p></li>
+</ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><dl class="simple">
@@ -2231,7 +2300,7 @@ public key.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="keycard.KeyCard.sign_with_path">
-<span class="sig-name descname"><span class="pre">sign_with_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_current</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.sign_with_path" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">sign_with_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_current</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SigningAlgorithm.ECDSA_SECP256K1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tweak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.KeyCard.sign_with_path" title="Link to this definition">¶</a></dt>
 <dd><p>Sign using a derived keypath. Optionally updates the current path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -2240,8 +2309,13 @@ public key.</p>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>digest</strong> (<em>bytes</em>) – 32-byte hash to sign</p></li>
-<li><p><strong>path</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – list of 32-bit integers</p></li>
-<li><p><strong>make_current</strong> (<em>bool</em>) – whether to update current path on card</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – BIP-32-style path (e.g. “m/44’/60’/0’/0/0”); “m” is
+the master key</p></li>
+<li><p><strong>make_current</strong> (<em>bool</em>) – whether to update current path on card
+(not supported by applet 4.0)</p></li>
+<li><p><strong>algorithm</strong> (<a class="reference internal" href="#keycard.constants.SigningAlgorithm" title="keycard.constants.SigningAlgorithm"><em>SigningAlgorithm</em></a>) – ECDSA_SECP256K1 (default) or, on
+applet 4.0, SCHNORR_BIP340.</p></li>
+<li><p><strong>tweak</strong> (<em>Optional</em><em>[</em><em>bytes</em><em>]</em>) – 32-byte Schnorr tweak; zeros if omitted.</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
