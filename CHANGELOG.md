@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - LEE on applet 4.0: `LoadKeyType.LEE_SEED` loads a seed in LEE mode and `export_lee(path)` returns its ASK, NSK, VSK_D and VSK_Z keys
 - EXPORT BIP85 on applet 4.0: `export_bip85(path, length)` returns 1 to 64 bytes of BIP-85 entropy
 - ECDH on applet 4.0: `ecdh(public_key, path)` returns the raw shared secret with the key at a NIP-44 or EIP-1581 path
+- The package ships a `py.typed` marker, so type checkers use its annotations
 
 ### Changed
 
@@ -40,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `select()` and `factory_reset()` reset the secure channel and PIN state
 - `sign()` signs with the master key on 4.x, which has no current key
 - `load_key` accepts seeds of 16 to 64 bytes
+- The `ber-tlv` dependency accepts patch releases (`~=0.0.6`)
 
 ### Fixed
 

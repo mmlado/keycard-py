@@ -23,6 +23,14 @@ keycard.apdu module
    :show-inheritance:
    :undoc-members:
 
+keycard.card\_interface module
+------------------------------
+
+.. automodule:: keycard.card_interface
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 keycard.constants module
 ------------------------
 
@@ -43,6 +51,22 @@ keycard.keycard module
 ----------------------
 
 .. automodule:: keycard.keycard
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+keycard.pairing module
+----------------------
+
+.. automodule:: keycard.pairing
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+keycard.preconditions module
+----------------------------
+
+.. automodule:: keycard.preconditions
    :members:
    :show-inheritance:
    :undoc-members:

@@ -51,7 +51,7 @@ def htmlcov(c):
 @task
 def lint(c):
     """Run flake8 linting"""
-    c.run("flake8 keycard tests", pty=True)
+    c.run("flake8 keycard tests tools example", pty=True)
 
 
 @task
@@ -75,11 +75,27 @@ def docs(ctx, clean=False, open=False):
     if clean and os.path.exists(build_dir):
         ctx.run(f"rm -rf {build_dir}")
 
+    ctx.run(f"sphinx-apidoc --force --output-dir {docs_dir} keycard")
     ctx.run(f"sphinx-build -b html {docs_dir} {build_dir}/html")
 
     if open:
         index_path = os.path.join(build_dir, "html", "index.html")
         ctx.run(f"xdg-open {index_path} || open {index_path}", warn=True)
+
+
+@task
+def release(c, version):
+    """
+    Prepare a release: bump the version, date the changelog, run the checks.
+
+    Args:
+        version (str): The new version, e.g. 0.5.0.
+    """
+    c.run(f"python tools/release.py bump {version}")
+    lint(c)
+    typecheck(c)
+    c.run("pytest", pty=True)
+    print(f"Review CHANGELOG.md, then open a PR: Bump version to {version}.")
 
 
 @task
