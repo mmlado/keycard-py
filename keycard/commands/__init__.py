@@ -1,7 +1,7 @@
 from .change_secret import change_secret  # noqa: F401
 from .derive_key import derive_key  # noqa: F401
 from .export_key import export_key  # noqa: F401
-from .export_lee_key import export_lee_key  # noqa: F401
+from .export_lee import export_lee  # noqa: F401
 from .factory_reset import factory_reset  # noqa: F401
 from .generate_key import generate_key  # noqa: F401
 from .generate_mnemonic import generate_mnemonic  # noqa: F401
@@ -27,7 +27,7 @@ __all__ = [
     'change_secret',
     'derive_key',
     'export_key',
-    'export_lee_key',
+    'export_lee',
     'factory_reset',
     'generate_key',
     'generate_mnemonic',

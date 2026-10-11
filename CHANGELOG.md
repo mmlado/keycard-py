@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `init` accepts PIN/PUK retry limits and an Alternate PIN
 - Opt-in hardware tests (`KEYCARD_READER`, `KEYCARD_DESTRUCTIVE`) and `tools/load_test_identity.py`
 - GET CHALLENGE: `get_challenge(length)` returns random bytes from the card; applet 4.0 requires the secure channel, earlier applets with the command also answer without one
+- Schnorr (BIP-340) signing on applet 4.0: `sign(..., algorithm=SigningAlgorithm.SCHNORR_BIP340, tweak=...)`; the 32-byte tweak defaults to zeros
+- LEE on applet 4.0: `LoadKeyType.LEE_SEED` loads a seed in LEE mode and `export_lee(path)` returns its ASK, NSK, VSK_D and VSK_Z keys
 
 ### Changed
 
@@ -31,11 +33,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - AES-CBC, CBC-MAC and the ISO 7816-4 padding moved into `keycard.secure_channel.v1`; `keycard.crypto.aes` and `keycard.crypto.padding` are removed
 - `ident()` returns the CA public key in compressed form
 - `select()` and `factory_reset()` reset the secure channel and PIN state
+- `sign()` signs with the master key on 4.x, which has no current key
+- `load_key` accepts seeds of 16 to 64 bytes
 
 ### Fixed
 
 - `ident()` recovered the CA key from the wrong digest
 - `verify_pin` marked the PIN as verified when the card rejected it
+- `SignatureResult.r` and `.s` dropped leading zero bytes; they are now always 32 bytes
 - Older versions not supported. Python 3.10+ now supported
 
 ## [0.3.0] - 2025-08-24

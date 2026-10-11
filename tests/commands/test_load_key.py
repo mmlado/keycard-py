@@ -18,7 +18,6 @@ def test_load_key_bip39(card):
     card.send_secure_apdu.assert_called_once_with(
         ins=constants.INS_LOAD_KEY,
         p1=constants.LoadKeyType.BIP39_SEED,
-        p2=0,
         data=seed
     )
     assert result == fake_uid
@@ -43,7 +42,6 @@ def test_load_key_pair(card):
     card.send_secure_apdu.assert_called_once_with(
         ins=constants.INS_LOAD_KEY,
         p1=constants.LoadKeyType.ECC,
-        p2=0,
         data=encoded
     )
     assert result == uid
@@ -77,21 +75,42 @@ def test_load_key_extended_long_form_length(card):
     )
 
 
-def test_bip39_seed_too_short(card):
-    with pytest.raises(ValueError, match="BIP39 seed must be 16-64 bytes"):
-        load_key(
-            card,
-            key_type=constants.LoadKeyType.BIP39_SEED,
-            bip39_seed=b"\xAA" * 8
-        )
+@pytest.mark.parametrize('length', [16, 64])
+def test_load_key_lee_seed(card, length):
+    seed = b"\xAA" * length
+    card.send_secure_apdu.return_value = b"\xBB" * 32
+
+    load_key(
+        card,
+        key_type=constants.LoadKeyType.LEE_SEED,
+        bip39_seed=seed
+    )
+
+    card.send_secure_apdu.assert_called_once_with(
+        ins=constants.INS_LOAD_KEY,
+        p1=0x04,
+        data=seed
+    )
 
 
-def test_bip39_seed_missing(card):
-    with pytest.raises(ValueError, match="bip39_seed must be provided for key_type = BIP39_SEED"):
-        load_key(
-            card,
-            key_type=constants.LoadKeyType.BIP39_SEED
-        )
+@pytest.mark.parametrize('key_type', [
+    constants.LoadKeyType.BIP39_SEED,
+    constants.LoadKeyType.LEE_SEED,
+])
+@pytest.mark.parametrize('length', [15, 65])
+def test_seed_wrong_length(card, key_type, length):
+    with pytest.raises(ValueError, match="Seed must be 16 to 64 bytes"):
+        load_key(card, key_type=key_type, bip39_seed=b"\xAA" * length)
+    card.send_secure_apdu.assert_not_called()
+
+
+@pytest.mark.parametrize('key_type', [
+    constants.LoadKeyType.BIP39_SEED,
+    constants.LoadKeyType.LEE_SEED,
+])
+def test_seed_missing(card, key_type):
+    with pytest.raises(ValueError, match="Seed must be 16 to 64 bytes"):
+        load_key(card, key_type=key_type)
 
 
 def test_ecc_missing_private_key(card):

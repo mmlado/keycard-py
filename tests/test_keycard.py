@@ -426,9 +426,27 @@ def test_sign_current_key():
             card,
             digest,
             constants.DerivationOption.CURRENT,
-            constants.SigningAlgorithm.ECDSA_SECP256K1
+            constants.SigningAlgorithm.ECDSA_SECP256K1,
+            tweak=None
         )
         assert result == "signed"
+
+
+def test_sign_schnorr_with_tweak():
+    with patch("keycard.keycard.commands.sign") as mock_sign:
+        card = KeyCard(MagicMock())
+        digest = b"\xAA" * 32
+        tweak = b"\x01" * 32
+
+        card.sign(digest, constants.SigningAlgorithm.SCHNORR_BIP340, tweak)
+
+        mock_sign.assert_called_once_with(
+            card,
+            digest,
+            constants.DerivationOption.CURRENT,
+            constants.SigningAlgorithm.SCHNORR_BIP340,
+            tweak=tweak
+        )
 
 
 def test_sign_with_path():
@@ -445,7 +463,8 @@ def test_sign_with_path():
             digest,
             constants.DerivationOption.DERIVE,
             constants.SigningAlgorithm.ECDSA_SECP256K1,
-            derivation_path=path
+            derivation_path=path,
+            tweak=None
         )
         assert result == "sig"
 
@@ -464,7 +483,8 @@ def test_sign_with_path_make_current():
             digest,
             constants.DerivationOption.DERIVE_AND_MAKE_CURRENT,
             constants.SigningAlgorithm.ECDSA_SECP256K1,
-            derivation_path=path
+            derivation_path=path,
+            tweak=None
         )
         assert result == "sig"
 
@@ -480,10 +500,20 @@ def test_sign_pinless():
         mock_sign.assert_called_once_with(
             card,
             digest,
-            constants.DerivationOption.PINLESS,
-            constants.SigningAlgorithm.ECDSA_SECP256K1
+            constants.DerivationOption.PINLESS
         )
         assert result == "sig"
+
+
+def test_export_lee():
+    with patch("keycard.keycard.commands.export_lee") as mock_export_lee:
+        card = KeyCard(MagicMock())
+        mock_export_lee.return_value = "keys"
+
+        result = card.export_lee("m/44'/60'")
+
+        mock_export_lee.assert_called_once_with(card, "m/44'/60'")
+        assert result == "keys"
 
 
 def test_load_key_bip39_seed():
@@ -503,8 +533,7 @@ def test_load_key_bip39_seed():
             public_key=None,
             private_key=None,
             chain_code=None,
-            bip39_seed=seed,
-            lee_seed=None
+            bip39_seed=seed
         )
         assert result == b"uid"
 
@@ -528,8 +557,7 @@ def test_load_key_ecc_pair():
             public_key=pub,
             private_key=priv,
             chain_code=None,
-            bip39_seed=None,
-            lee_seed=None
+            bip39_seed=None
         )
         assert result == b"uid"
 
@@ -555,8 +583,7 @@ def test_load_key_extended():
             public_key=pub,
             private_key=priv,
             chain_code=chain,
-            bip39_seed=None,
-            lee_seed=None
+            bip39_seed=None
         )
         assert result == b"uid"
 

@@ -4,11 +4,12 @@ from typing import Iterable, Optional, Union
 from . import constants
 from . import commands
 from .apdu import APDUResponse
-from .constants import DerivationOption, PairingMode
+from .constants import DerivationOption, PairingMode, SigningAlgorithm
 from .card_interface import CardInterface
 from .exceptions import APDUError, InvalidStateError
 from .parsing.application_info import ApplicationInfo
 from .parsing.exported_key import ExportedKey
+from .parsing.lee_keys import LeeKeys
 from .parsing.signature_result import SignatureResult
 from .pairing import Pairing
 from .transport import Transport
@@ -572,40 +573,48 @@ class KeyCard(CardInterface):
     def sign(
         self,
         digest: bytes,
-        algorithm: constants.SigningAlgorithm = constants.SigningAlgorithm.ECDSA_SECP256K1,
+        algorithm: SigningAlgorithm = SigningAlgorithm.ECDSA_SECP256K1,
+        tweak: Optional[bytes] = None
     ) -> SignatureResult:
         """
-        Sign using the currently loaded keypair.
+        Sign using the currently loaded keypair; on applet 4.0, which has
+        no current key, the master key.
         Requires PIN verification and secure channel.
 
         Args:
             digest (bytes): 32-byte hash to sign
-            algorithm (SigningAlgorithm): Signing algorithm to use. Defaults to
-                ECDSA_SECP256K1. Other options include SCHNORR_BIP340.
+            algorithm (SigningAlgorithm): ECDSA_SECP256K1 (default) or, on
+                applet 4.0, SCHNORR_BIP340.
+            tweak (Optional[bytes]): 32-byte Schnorr tweak; zeros if omitted.
 
         Returns:
             SignatureResult: Parsed signature result, including the signature
                 (DER or raw), algorithm, and optional recovery ID or
                 public key.
         """
-        return commands.sign(self, digest, DerivationOption.CURRENT, algorithm)
+        return commands.sign(
+            self, digest, DerivationOption.CURRENT, algorithm, tweak=tweak)
 
     def sign_with_path(
         self,
         digest: bytes,
         path: str,
         make_current: bool = False,
-        algorithm: constants.SigningAlgorithm = constants.SigningAlgorithm.ECDSA_SECP256K1,
+        algorithm: SigningAlgorithm = SigningAlgorithm.ECDSA_SECP256K1,
+        tweak: Optional[bytes] = None
     ) -> SignatureResult:
         """
         Sign using a derived keypath. Optionally updates the current path.
 
         Args:
             digest (bytes): 32-byte hash to sign
-            path (str): BIP-32-style path (e.g. "m/44'/60'/0'/0/0")
+            path (str): BIP-32-style path (e.g. "m/44'/60'/0'/0/0"); "m" is
+                the master key
             make_current (bool): whether to update current path on card
-            algorithm (SigningAlgorithm): Signing algorithm to use. Defaults to
-                ECDSA_SECP256K1. Other options include SCHNORR_BIP340.
+                (not supported by applet 4.0)
+            algorithm (SigningAlgorithm): ECDSA_SECP256K1 (default) or, on
+                applet 4.0, SCHNORR_BIP340.
+            tweak (Optional[bytes]): 32-byte Schnorr tweak; zeros if omitted.
 
         Returns:
             SignatureResult: Parsed signature result, including the signature
@@ -616,12 +625,12 @@ class KeyCard(CardInterface):
             DerivationOption.DERIVE_AND_MAKE_CURRENT
             if make_current else DerivationOption.DERIVE
         )
-        return commands.sign(self, digest, p1, algorithm, derivation_path=path)
+        return commands.sign(
+            self, digest, p1, algorithm, derivation_path=path, tweak=tweak)
 
     def sign_pinless(
         self,
-        digest: bytes,
-        algorithm: constants.SigningAlgorithm = constants.SigningAlgorithm.ECDSA_SECP256K1,
+        digest: bytes
     ) -> SignatureResult:
         """
         Sign using the predefined PIN-less path.
@@ -629,8 +638,6 @@ class KeyCard(CardInterface):
 
         Args:
             digest (bytes): 32-byte hash to sign
-            algorithm (SigningAlgorithm): Signing algorithm to use. Defaults to
-                ECDSA_SECP256K1. Other options include SCHNORR_BIP340.
 
         Returns:
             SignatureResult: Parsed signature result, including the signature
@@ -640,7 +647,7 @@ class KeyCard(CardInterface):
         Raises:
             APDUError: if no PIN-less path is set
         """
-        return commands.sign(self, digest, DerivationOption.PINLESS, algorithm)
+        return commands.sign(self, digest, DerivationOption.PINLESS)
 
     def load_key(
         self,
@@ -648,8 +655,7 @@ class KeyCard(CardInterface):
         public_key: Optional[bytes] = None,
         private_key: Optional[bytes] = None,
         chain_code: Optional[bytes] = None,
-        bip39_seed: Optional[bytes] = None,
-        lee_seed: Optional[bytes] = None
+        bip39_seed: Optional[bytes] = None
     ) -> bytes:
         """
         Load a key into the card for signing purposes.
@@ -659,8 +665,9 @@ class KeyCard(CardInterface):
             public_key: Optional ECC public key (tag 0x80).
             private_key: ECC private key (tag 0x81).
             chain_code: Optional chain code (tag 0x82, only for extended key).
-            bip39_seed: 16 to 64-byte BIP39 seed (only for key_type=BIP39_SEED).
-            lee_seed: 16 to 64-byte LEE seed (only for key_type=BIP39_SEED).
+            bip39_seed: 16 to 64-byte binary seed (only for key_type
+                BIP39_SEED, or LEE_SEED to also derive the LEE keys on
+                applet 4.0).
 
         Returns:
             UID of the loaded key (SHA-256 of public key).
@@ -671,9 +678,21 @@ class KeyCard(CardInterface):
             public_key=public_key,
             private_key=private_key,
             chain_code=chain_code,
-            bip39_seed=bip39_seed,
-            lee_seed=lee_seed
+            bip39_seed=bip39_seed
         )
+
+    def export_lee(self, path: str = 'm') -> LeeKeys:
+        """
+        Export the LEE keys at a path. Needs applet 4.0 in LEE mode.
+
+        Args:
+            path (str): Derivation path from the master key, e.g.
+                "m/44'/60'". Defaults to the master keys.
+
+        Returns:
+            LeeKeys: ASK, NSK, VSK_D and VSK_Z.
+        """
+        return commands.export_lee(self, path)
 
     def set_pinless_path(self, path: str) -> None:
         """
