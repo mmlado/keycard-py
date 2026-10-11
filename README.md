@@ -213,7 +213,7 @@ All errors derive from `keycard.exceptions.KeyCardError`:
 
 ### Example script
 
-[`example/example.py`](example/example.py) walks through a 3.x card from start to end. It factory-resets the card first, so use a test card.
+[`example/example.py`](example/example.py) walks through the commands on a 3.x or 4.x card. It factory-resets the card first, so use a test card. It needs the `mnemonic` package.
 
 ## Development
 
