@@ -708,6 +708,21 @@ class KeyCard(CardInterface):
         """
         return commands.export_bip85(self, path, length)
 
+    def ecdh(self, public_key: bytes, path: str) -> bytes:
+        """
+        Compute an ECDH shared secret with the key at a path. Needs applet
+        4.0. The result is a raw secret; apply the protocol's KDF to it.
+
+        Args:
+            public_key (bytes): The peer's uncompressed public key, 65 bytes.
+            path (str): Path under "m/44'/1237'" (NIP-44) or
+                "m/43'/60'/1581'" (EIP-1581), at least 5 levels deep.
+
+        Returns:
+            bytes: The 32-byte X coordinate of the shared point.
+        """
+        return commands.ecdh(self, public_key, path)
+
     def set_pinless_path(self, path: str) -> None:
         """
         Set a PIN-less path on the card. Allows signing without PIN/auth if the

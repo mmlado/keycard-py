@@ -1,5 +1,6 @@
 from .change_secret import change_secret  # noqa: F401
 from .derive_key import derive_key  # noqa: F401
+from .ecdh import ecdh  # noqa: F401
 from .export_bip85 import export_bip85  # noqa: F401
 from .export_key import export_key  # noqa: F401
 from .export_lee import export_lee  # noqa: F401
@@ -27,6 +28,7 @@ from .verify_pin import verify_pin  # noqa: F401
 __all__ = [
     'change_secret',
     'derive_key',
+    'ecdh',
     'export_bip85',
     'export_key',
     'export_lee',

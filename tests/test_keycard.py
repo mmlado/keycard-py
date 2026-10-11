@@ -505,6 +505,19 @@ def test_sign_pinless():
         assert result == "sig"
 
 
+def test_ecdh():
+    with patch("keycard.keycard.commands.ecdh") as mock_ecdh:
+        card = KeyCard(MagicMock())
+        public_key = b"\x04" + b"\x11" * 64
+        mock_ecdh.return_value = b"secret"
+
+        result = card.ecdh(public_key, "m/44'/1237'/0'/0/0")
+
+        mock_ecdh.assert_called_once_with(
+            card, public_key, "m/44'/1237'/0'/0/0")
+        assert result == b"secret"
+
+
 def test_export_bip85():
     with patch("keycard.keycard.commands.export_bip85") as mock_export:
         card = KeyCard(MagicMock())
