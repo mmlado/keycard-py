@@ -1,14 +1,14 @@
-name: Build & Deploy
+name: Coverage
 
 on:
   push:
     branches: [main]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  docs:
+  coverage:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,7 +26,6 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -e ".[dev]"
-        pip install invoke
 
     - name: Run tests
       run: |
@@ -36,13 +35,3 @@ jobs:
       uses: codecov/codecov-action@v5
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-
-    - name: Build docs
-      run: |
-        invoke docs
-
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: docs/_build/html
