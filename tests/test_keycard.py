@@ -505,6 +505,17 @@ def test_sign_pinless():
         assert result == "sig"
 
 
+def test_export_bip85():
+    with patch("keycard.keycard.commands.export_bip85") as mock_export:
+        card = KeyCard(MagicMock())
+        mock_export.return_value = b"entropy"
+
+        result = card.export_bip85("m/83696968'/0'/0'", 32)
+
+        mock_export.assert_called_once_with(card, "m/83696968'/0'/0'", 32)
+        assert result == b"entropy"
+
+
 def test_export_lee():
     with patch("keycard.keycard.commands.export_lee") as mock_export_lee:
         card = KeyCard(MagicMock())

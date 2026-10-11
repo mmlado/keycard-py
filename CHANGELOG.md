@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GET CHALLENGE: `get_challenge(length)` returns random bytes from the card; applet 4.0 requires the secure channel, earlier applets with the command also answer without one
 - Schnorr (BIP-340) signing on applet 4.0: `sign(..., algorithm=SigningAlgorithm.SCHNORR_BIP340, tweak=...)`; the 32-byte tweak defaults to zeros
 - LEE on applet 4.0: `LoadKeyType.LEE_SEED` loads a seed in LEE mode and `export_lee(path)` returns its ASK, NSK, VSK_D and VSK_Z keys
+- EXPORT BIP85 on applet 4.0: `export_bip85(path, length)` returns 1 to 64 bytes of BIP-85 entropy
 
 ### Changed
 
@@ -41,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `ident()` recovered the CA key from the wrong digest
 - `verify_pin` marked the PIN as verified when the card rejected it
 - `SignatureResult.r` and `.s` dropped leading zero bytes; they are now always 32 bytes
+- Secure Channel V1 failed to decrypt a 3.x card's rejection of an unknown instruction; it now raises `APDUError` with the card's status word
 - Older versions not supported. Python 3.10+ now supported
 
 ## [0.3.0] - 2025-08-24
