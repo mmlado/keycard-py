@@ -4,6 +4,7 @@ from .export_key import export_key  # noqa: F401
 from .factory_reset import factory_reset  # noqa: F401
 from .generate_key import generate_key  # noqa: F401
 from .generate_mnemonic import generate_mnemonic  # noqa: F401
+from .get_challenge import get_challenge  # noqa: F401
 from .get_data import get_data  # noqa: F401
 from .ident import ident  # noqa: F401
 from .init import init  # noqa: F401
@@ -28,6 +29,7 @@ __all__ = [
     'factory_reset',
     'generate_key',
     'generate_mnemonic',
+    'get_challenge',
     'get_data',
     'ident',
     'init',

@@ -44,3 +44,12 @@ def keycard():
     card.select()
     yield card
     transport.disconnect()
+
+
+@pytest.fixture
+def reset_keycard(keycard):
+    # An uninitialized 3.x card accepts only INIT, so it is already reset.
+    if keycard.is_initialized:
+        keycard.factory_reset()
+    keycard.select()
+    return keycard

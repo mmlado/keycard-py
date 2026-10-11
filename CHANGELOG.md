@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 4.x SELECT fields in `ApplicationInfo`: status, PIN retries, LEE mode and Identity Certificate
 - `init` accepts PIN/PUK retry limits and an Alternate PIN
 - Opt-in hardware tests (`KEYCARD_READER`, `KEYCARD_DESTRUCTIVE`) and `tools/load_test_identity.py`
+- GET CHALLENGE: `get_challenge(length)` returns random bytes from the card; applet 4.0 requires the secure channel, earlier applets with the command also answer without one
 
 ### Changed
 
