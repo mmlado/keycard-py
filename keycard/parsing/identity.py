@@ -1,43 +1,32 @@
-from hashlib import sha256
-from ecdsa import VerifyingKey, SECP256k1, util
-
 from ..exceptions import InvalidResponseError
 from ..parsing.tlv import parse_tlv
+from .certificate import IdentityCertificate
 
 
 def parse(challenge: bytes, data: bytes) -> bytes:
-    tlvs = parse_tlv(data)
+    """
+    Parses an IDENTIFY CARD response and verifies the card's signature over
+    the challenge.
 
-    inner_tlvs = parse_tlv(tlvs[0xA0][0])
+    Args:
+        challenge (bytes): The 32-byte challenge sent to the card.
+        data (bytes): The response data.
 
+    Returns:
+        bytes: The compressed public key of the Keycard CA that signed the
+            card's Identity Certificate.
+
+    Raises:
+        InvalidResponseError: If the response is malformed or the signature
+            does not verify.
+    """
     try:
-        certificate = inner_tlvs[0x8A][0]
-        signature = inner_tlvs[0x30][0]
-    except (IndexError, KeyError):
-        raise InvalidResponseError('Malformed identity response')
+        inner = parse_tlv(parse_tlv(data)[0xA0][0])
+        certificate = IdentityCertificate.parse(inner[0x8A][0])
+        signature = inner[0x30][0]
+    except IndexError as e:
+        raise InvalidResponseError('Malformed identity response') from e
 
-    signature = b'\x30' + len(signature).to_bytes(1, 'big') + signature
-    if len(certificate) < 95 or len(signature) < 65:
-        raise InvalidResponseError('Malformed identity response')
-
-    _verify(certificate, signature, challenge)
-    return _recover_public_key(certificate)
-
-
-def _verify(certificate: bytes, signature: bytes, challenge: bytes) -> None:
-    pub_key = certificate[:33]
-    vk = VerifyingKey.from_string(pub_key, curve=SECP256k1)
-    vk.verify_digest(signature, challenge, sigdecode=util.sigdecode_der)
-
-
-def _recover_public_key(certificate: bytes) -> bytes:
-    signature = certificate[33:]
-    v = signature[-1]
-    digest = sha256(certificate).digest()
-
-    vk = VerifyingKey.from_public_key_recovery_with_digest(
-        signature[:-1], digest, SECP256k1)
-
-    public_key = vk[v] if isinstance(vk, list) else vk
-    der: bytes = public_key.to_der('compressed')
-    return der
+    certificate.verify(
+        challenge, b'\x30' + bytes([len(signature)]) + signature)
+    return certificate.ca_public_key

@@ -1,7 +1,8 @@
 from typing import Optional
 
-from ecdsa.util import sigdecode_der
-
+from cryptography.hazmat.primitives.asymmetric.utils import (
+    decode_dss_signature,
+)
 
 from .. import constants
 from ..constants import DerivationOption, DerivationSource, SigningAlgorithm
@@ -111,8 +112,7 @@ def sign(
                 len(inner[0x30][0]).to_bytes(1, 'big') +
                 inner[0x30][0]
             )
-            signature = sigdecode_der(der_bytes, 0)
-            r, s = signature
+            r, s = decode_dss_signature(der_bytes)
             return SignatureResult(
                 algo=p2,
                 digest=digest,

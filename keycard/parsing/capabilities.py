@@ -15,11 +15,14 @@ class Capabilities(IntFlag):
             management (0x04).
         NDEF (int): Indicates support for NDEF (NFC Data Exchange Format)
             operations (0x08).
+        FACTORY_RESET (int): Indicates support for the FACTORY RESET command
+            (0x10).
     """
     SECURE_CHANNEL = 0x01
     KEY_MANAGEMENT = 0x02
     CREDENTIALS_MANAGEMENT = 0x04
     NDEF = 0x08
+    FACTORY_RESET = 0x10
 
     @classmethod
     def parse(cls, value: int) -> "Capabilities":

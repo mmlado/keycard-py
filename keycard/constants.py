@@ -12,11 +12,18 @@ KEYCARD_AID: bytes = bytes.fromhex('A000000804000101')
 CLAISO7816: int = 0x00
 CLA_PROPRIETARY: int = 0x80
 
+# Keycard CA public keys (compressed secp256k1)
+OFFICIAL_CA_PUBLIC_KEY: bytes = bytes.fromhex(
+    '029ab99ee1e7a71bdf45b3f9c58c99866ff1294d2c1e304e228a86e10c3343501c')
+TEST_CA_PUBLIC_KEY: bytes = bytes.fromhex(
+    '025877220aaae6e54a6f974602d5995c0fe24a3ea7ddabd8644bec795b9da00743')
+
 # APDU instructions
 INS_SELECT: int = 0xA4
 INS_INIT: int = 0xFE
 INS_IDENT: int = 0x14
 INS_OPEN_SECURE_CHANNEL: int = 0x10
+INS_SECURED_APDU: int = 0x18
 INS_MUTUALLY_AUTHENTICATE: int = 0x11
 INS_PAIR: int = 0x12
 INS_UNPAIR: int = 0x13
@@ -28,6 +35,7 @@ INS_CHANGE_SECRET: int = 0x21
 INS_UNBLOCK_PIN: int = 0x22
 INS_STORE_DATA: int = 0xE2
 INS_GET_DATA: int = 0xCA
+INS_GET_CHALLENGE: int = 0x84
 INS_SIGN: int = 0xC0
 INS_SET_PINLESS_PATH = 0xC1
 INS_EXPORT_KEY: int = 0xC2

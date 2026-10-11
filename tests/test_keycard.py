@@ -3,9 +3,11 @@ from unittest.mock import MagicMock, patch
 
 from keycard import constants
 from keycard.apdu import APDUResponse
-from keycard.exceptions import APDUError
+from keycard.exceptions import APDUError, InvalidStateError
 from keycard.parsing.exported_key import ExportedKey
 from keycard.keycard import KeyCard
+from keycard.pairing import Pairing
+from keycard.secure_channel import SecureChannelVersion
 from keycard.transport import Transport
 
 
@@ -33,7 +35,9 @@ def test_init_calls_command():
         kc = KeyCard(transport)
         kc.card_public_key = b'pub'
         kc.init(b'pin', b'puk', b'secret')
-        mock_init.assert_called_once_with(kc, b'pin', b'puk', b'secret')
+        mock_init.assert_called_once_with(
+            kc, b'pin', b'puk', b'secret',
+            pin_retries=None, puk_retries=None, alt_pin=None)
 
 
 def test_ident_calls_command():
@@ -44,36 +48,16 @@ def test_ident_calls_command():
         assert result == 'identity'
 
 
-def test_open_secure_channel_with_mutual_authentication():
+def test_open_secure_channel_stores_session():
     with patch(
-        'keycard.keycard.commands.open_secure_channel'
+        'keycard.keycard.commands.open_secure_channel',
+        return_value='session'
     ) as mock_osc:
-        with patch(
-            'keycard.keycard.commands.mutually_authenticate'
-        ) as mock_ma:
-            mock_osc.return_value = 'session'
-            kc = KeyCard(MagicMock())
-            kc._card_public_key = b'pub'
-            kc.open_secure_channel(1, b'pairing_key')
-            mock_osc.assert_called_once_with(kc, 1, b'pairing_key')
-            mock_ma.assert_called_once_with(kc)
-            assert kc.session == 'session'
+        kc = KeyCard(MagicMock())
+        kc.open_secure_channel()
 
-
-def test_open_secure_channel_without_mutual_authentication():
-    with patch(
-        'keycard.keycard.commands.open_secure_channel'
-    ) as mock_osc:
-        with patch(
-            'keycard.keycard.commands.mutually_authenticate'
-        ) as mock_ma:
-            mock_osc.return_value = 'session'
-            kc = KeyCard(MagicMock())
-            kc._card_public_key = b'pub'
-            kc.open_secure_channel(1, b'pairing_key', False)
-            mock_osc.assert_called_once_with(kc, 1, b'pairing_key')
-            mock_ma.assert_not_called()
-            assert kc.session == 'session'
+    mock_osc.assert_called_once_with(kc)
+    assert kc.session == 'session'
 
 
 def test_mutually_authenticate_calls_command():
@@ -84,11 +68,27 @@ def test_mutually_authenticate_calls_command():
         mock_auth.assert_called_once()
 
 
-def test_pair_returns_expected_tuple():
-    with patch('keycard.keycard.commands.pair', return_value=(1, b'crypt')):
+def test_pair_stores_and_returns_pairing():
+    with patch('keycard.keycard.commands.pair', return_value=(1, b'key')):
         kc = KeyCard(MagicMock())
         result = kc.pair(b'shared')
-        assert result == (1, b'crypt')
+
+    assert result == Pairing(1, b'key')
+    assert kc.pairing == result
+    slot, key = result
+    assert (slot, key) == (1, b'key')
+
+
+def test_unpair_clears_own_pairing():
+    kc = KeyCard(MagicMock())
+    kc.pairing = Pairing(2, b'key')
+
+    with patch('keycard.keycard.commands.unpair'):
+        kc.unpair(1)
+        assert kc.pairing == Pairing(2, b'key')
+        kc.unpair(2)
+
+    assert kc.pairing is None
 
 
 def test_verify_pin_delegates_call_and_returns_result():
@@ -101,6 +101,43 @@ def test_verify_pin_delegates_call_and_returns_result():
         result = kc.verify_pin('1234')
         mock_cmd.assert_called_once_with(kc, b'1234')
         assert result is True
+        assert kc.is_pin_verified
+
+
+def test_verify_pin_rejected_leaves_pin_unverified():
+    kc = KeyCard(MagicMock())
+
+    with patch('keycard.keycard.commands.verify_pin', return_value=False):
+        assert kc.verify_pin('000000') is False
+
+    assert not kc.is_pin_verified
+
+
+def test_verify_pin_rejected_clears_previous_verification():
+    kc = KeyCard(MagicMock())
+
+    with patch('keycard.keycard.commands.verify_pin', return_value=True):
+        kc.verify_pin('123456')
+    with patch('keycard.keycard.commands.verify_pin', return_value=False):
+        kc.verify_pin('000000')
+
+    assert not kc.is_pin_verified
+
+
+@pytest.mark.parametrize('error', [
+    RuntimeError('PIN is blocked'),
+    APDUError(0x6A80),
+])
+def test_verify_pin_error_leaves_pin_unverified(error):
+    kc = KeyCard(MagicMock())
+
+    with patch('keycard.keycard.commands.verify_pin', return_value=True):
+        kc.verify_pin('123456')
+    with patch('keycard.keycard.commands.verify_pin', side_effect=error):
+        with pytest.raises(type(error)):
+            kc.verify_pin('123456')
+
+    assert not kc.is_pin_verified
 
 
 def test_unpair_delegates_call():
@@ -112,62 +149,82 @@ def test_unpair_delegates_call():
         mock_unpair.assert_called_once_with(kc,  2)
 
 
+def _open_channel():
+    channel = MagicMock()
+    channel.is_open = True
+    channel.wrap.return_value = b'wrapped apdu'
+    channel.unwrap.return_value = b'plaintext'
+    return channel
+
+
 def test_send_secure_apdu_success():
-    mock_session = MagicMock()
-    mock_session.wrap_apdu.return_value = b'encrypted'
-    mock_session.unwrap_response.return_value = (b'plaintext', 0x9000)
+    channel = _open_channel()
     mock_transport = MagicMock()
-    mock_response = MagicMock()
-    mock_response.status_word = 0x9000
-    mock_response.data = b'ciphertext'
-    mock_transport.send_apdu.return_value = mock_response
+    response = APDUResponse(b'ciphertext', status_word=0x9000)
+    mock_transport.send_apdu.return_value = response
 
     kc = KeyCard(mock_transport)
-    kc.session = mock_session
+    kc.session = channel
 
     result = kc.send_secure_apdu(0xA4, 0x01, 0x02, b'data')
 
-    mock_session.wrap_apdu.assert_called_once_with(
-        cla=kc.transport.send_apdu.call_args[0][0][0],
-        ins=0xA4,
-        p1=0x01,
-        p2=0x02,
-        data=b'data'
-    )
-    mock_transport.send_apdu.assert_called_once()
-    mock_session.unwrap_response.assert_called_once_with(mock_response)
+    channel.wrap.assert_called_once_with(0xA4, 0x01, 0x02, b'data')
+    mock_transport.send_apdu.assert_called_once_with(b'wrapped apdu')
+    channel.unwrap.assert_called_once_with(response)
     assert result == b'plaintext'
 
 
-def test_send_secure_apdu_raises_on_transport_status_word():
-    mock_session = MagicMock()
-    mock_session.wrap_apdu.return_value = b'encrypted'
-    mock_transport = MagicMock()
-    mock_transport.send_apdu.return_value = APDUResponse(
-        b'', status_word=0x6A82)
+def test_send_secure_apdu_propagates_channel_error():
+    channel = _open_channel()
+    channel.unwrap.side_effect = APDUError(0x6A84)
 
-    kc = KeyCard(mock_transport)
-    kc.session = mock_session
+    kc = KeyCard(MagicMock())
+    kc.session = channel
 
     with pytest.raises(APDUError) as exc:
         kc.send_secure_apdu(0xA4, 0x00, 0x00, b'data')
-    assert exc.value.args[0] == 'APDU failed with SW=6A82'
+    assert exc.value.sw == 0x6A84
 
 
-def test_send_secure_apdu_raises_on_unwrap_status_word():
-    mock_session = MagicMock()
-    mock_session.wrap_apdu.return_value = b'encrypted'
-    mock_session.unwrap_response.return_value = (b'plaintext', 0x6A84)
-    mock_transport = MagicMock()
-    mock_transport.send_apdu.return_value = APDUResponse(
-        b'', status_word=0x9000)
+def test_send_secure_apdu_requires_open_channel():
+    kc = KeyCard(MagicMock())
 
-    kc = KeyCard(mock_transport)
-    kc.session = mock_session
-
-    with pytest.raises(APDUError) as exc:
+    with pytest.raises(RuntimeError, match='not established'):
         kc.send_secure_apdu(0xA4, 0x00, 0x00, b'data')
-    assert exc.value.args[0] == 'APDU failed with SW=6A84'
+
+
+def _card_with_version(major, minor):
+    kc = KeyCard(MagicMock())
+    kc._application_info = MagicMock(
+        version_major=major, version_minor=minor)
+    return kc
+
+
+def test_secure_channel_version_before_select():
+    assert KeyCard(MagicMock()).secure_channel_version is None
+
+
+@pytest.mark.parametrize('version,expected', [
+    ((3, 2), SecureChannelVersion.V1),
+    ((4, 0), SecureChannelVersion.V2),
+])
+def test_secure_channel_version(version, expected):
+    assert _card_with_version(*version).secure_channel_version == expected
+
+
+@pytest.mark.parametrize('method,args,command', [
+    ('pair', (b'secret',), 'pair'),
+    ('unpair', (0,), 'unpair'),
+    ('mutually_authenticate', (), 'mutually_authenticate'),
+])
+def test_v1_operations_raise_on_v2(method, args, command):
+    kc = _card_with_version(4, 0)
+
+    with patch(f'keycard.keycard.commands.{command}') as mock_command:
+        with pytest.raises(InvalidStateError, match='Secure Channel V1'):
+            getattr(kc, method)(*args)
+
+    mock_command.assert_not_called()
 
 
 def test_send_apdu_success(monkeypatch):

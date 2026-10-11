@@ -1,3 +1,7 @@
+from cryptography.hazmat.primitives.asymmetric.utils import (
+    decode_dss_signature,
+)
+
 from keycard.parsing.signature_result import SignatureResult
 from keycard.constants import SigningAlgorithm
 from unittest import mock
@@ -45,21 +49,17 @@ def test_signature_result_signature_der_property():
     digest = b'\x01' * 32
     public_key = b'\x02' + b'\x01' * 32
 
-    with mock.patch(
-        'keycard.parsing.signature_result.util.sigencode_der'
-    ) as mock_sigencode_der:
-        mock_sigencode_der.return_value = b'der'
-        sig = SignatureResult(
-            digest=digest,
-            algo=SigningAlgorithm.ECDSA_SECP256K1,
-            r=r,
-            s=s,
-            public_key=public_key,
-            recovery_id=3
-        )
-        der = sig.signature_der
-        assert der == b'der'
-        mock_sigencode_der.assert_called_once_with(r, s, 3)
+    sig = SignatureResult(
+        digest=digest,
+        algo=SigningAlgorithm.ECDSA_SECP256K1,
+        r=r,
+        s=s,
+        public_key=public_key,
+        recovery_id=3
+    )
+
+    assert sig.signature_der == bytes.fromhex('300702017b020201c8')
+    assert decode_dss_signature(sig.signature_der) == (r, s)
 
 
 def test_signature_result_repr_exists():

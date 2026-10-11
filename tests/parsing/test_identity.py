@@ -1,87 +1,61 @@
 import pytest
-from keycard.parsing.identity import parse, InvalidResponseError
-from keycard.parsing import identity
+
+from keycard.exceptions import InvalidResponseError
+from keycard.parsing.identity import parse
+
+from tests.identity_helpers import TEST_CA_PUBLIC_KEY, make_card_identity
 
 
-def make_tlv(tag, value):
-    return bytes([tag, len(value)]) + value
+def ber_length(length):
+    return bytes([length]) if length < 0x80 else bytes([0x81, length])
 
 
-def fake_parse_tlv(data):
-    if data == b'outer':
-        return {0xA0: [b'inner']}
-    elif data == b'inner':
-        return {0x8A: [b'cert'], 0x30: [b'sig']}
-    return {}
-
-
-def test_parse_success(monkeypatch):
-    monkeypatch.setattr(
-        identity,
-        "parse_tlv",
-        lambda data:
-            {0xA0: [b'inner']} if data == b'data'
-            else {0x8A: [b'c'*95], 0x30: [b's'*64]})
-    monkeypatch.setattr(
-        identity,
-        "_verify",
-        lambda certificate, signature, challenge: None
+def ident_response(certificate, signature_der):
+    signature = signature_der[2:]
+    inner = (
+        b'\x8A' + ber_length(len(certificate)) + certificate
+        + b'\x30' + ber_length(len(signature)) + signature
     )
-    monkeypatch.setattr(
-        identity,
-        "_recover_public_key",
-        lambda certificate: b'pubkey'
-    )
-
-    challenge = b'challenge'
-    data = b'data'
-    result = parse(challenge, data)
-    assert result == b'pubkey'
+    return b'\xA0' + ber_length(len(inner)) + inner
 
 
-def test_parse_malformed_index(monkeypatch):
-    monkeypatch.setattr(
-        identity,
-        "parse_tlv",
-        lambda data: {0xA0: [b'inner']} if data == b'data' else {}
-    )
-    challenge = b'challenge'
-    data = b'data'
-    with pytest.raises(
-        InvalidResponseError,
-        match="Malformed identity response"
-    ):
-        parse(challenge, data)
+def test_parse_returns_ca_public_key():
+    identity = make_card_identity()
+    challenge = bytes(range(32))
+
+    response = ident_response(
+        identity.certificate, identity.sign_digest(challenge))
+
+    assert parse(challenge, response) == TEST_CA_PUBLIC_KEY
 
 
-def test_parse_certificate_too_short(monkeypatch):
-    monkeypatch.setattr(
-        identity,
-        "parse_tlv",
-        lambda data:
-            {0xA0: [b'inner']} if data == b'data'
-            else {0x8A: [b'c'*10], 0x30: [b's'*64]}
-    )
-    challenge = b'challenge'
-    data = b'data'
-    with pytest.raises(
-        InvalidResponseError,
-        match="Malformed identity response"
-    ):
-        parse(challenge, data)
+def test_parse_rejects_signature_over_other_challenge():
+    identity = make_card_identity()
+    response = ident_response(
+        identity.certificate, identity.sign_digest(bytes(32)))
+
+    with pytest.raises(InvalidResponseError, match="signature is invalid"):
+        parse(bytes(range(32)), response)
 
 
-def test_parse_signature_too_short(monkeypatch):
-    monkeypatch.setattr(
-        identity,
-        "parse_tlv",
-        lambda data:
-            {0xA0: [b'inner']} if data == b'data'
-            else {0x8A: [b'c'*95], 0x30: [b's'*10]})
-    challenge = b'challenge'
-    data = b'data'
-    with pytest.raises(
-        InvalidResponseError,
-        match="Malformed identity response"
-    ):
-        parse(challenge, data)
+def test_parse_missing_template():
+    with pytest.raises(InvalidResponseError, match="Malformed"):
+        parse(bytes(32), b'\x80\x01\x00')
+
+
+def test_parse_missing_signature():
+    identity = make_card_identity()
+    inner = b'\x8A' + bytes([98]) + identity.certificate
+    response = b'\xA0' + ber_length(len(inner)) + inner
+
+    with pytest.raises(InvalidResponseError, match="Malformed"):
+        parse(bytes(32), response)
+
+
+def test_parse_short_certificate():
+    identity = make_card_identity()
+    response = ident_response(
+        identity.certificate[:95], identity.sign_digest(bytes(32)))
+
+    with pytest.raises(InvalidResponseError, match="98 bytes"):
+        parse(bytes(32), response)

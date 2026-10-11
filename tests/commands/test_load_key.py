@@ -2,7 +2,6 @@ import pytest
 from keycard.commands.load_key import load_key
 from keycard import constants
 from hashlib import sha256
-from keycard.parsing import tlv
 
 
 def test_load_key_bip39(card):
@@ -31,11 +30,8 @@ def test_load_key_pair(card):
     uid = sha256(public_key).digest()
     card.send_secure_apdu.return_value = uid
 
-    encoded = tlv.encode_tlv(
-        0xA1,
-        tlv.encode_tlv(0x80, public_key) +
-        tlv.encode_tlv(0x81, private_key)
-    )
+    inner = b'\x80\x41' + public_key + b'\x81\x20' + private_key
+    encoded = b'\xA1' + bytes([len(inner)]) + inner
 
     result = load_key(
         card,
@@ -51,6 +47,34 @@ def test_load_key_pair(card):
         data=encoded
     )
     assert result == uid
+
+
+def test_load_key_extended_long_form_length(card):
+    public_key = b'\x04' + b'\x01' * 64
+    private_key = b'\x02' * 32
+    chain_code = b'\x03' * 32
+    card.send_secure_apdu.return_value = b'\xBB' * 32
+
+    inner = (
+        b'\x80\x41' + public_key +
+        b'\x81\x20' + private_key +
+        b'\x82\x20' + chain_code
+    )
+    encoded = b'\xA1\x81' + bytes([len(inner)]) + inner
+
+    load_key(
+        card,
+        key_type=constants.LoadKeyType.EXTENDED_ECC,
+        public_key=public_key,
+        private_key=private_key,
+        chain_code=chain_code
+    )
+
+    card.send_secure_apdu.assert_called_once_with(
+        ins=constants.INS_LOAD_KEY,
+        p1=constants.LoadKeyType.EXTENDED_ECC,
+        data=encoded
+    )
 
 
 def test_bip39_seed_too_short(card):

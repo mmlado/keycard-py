@@ -1,8 +1,9 @@
 from typing import Optional
 
+from ber_tlv.tlv import Tlv
+
 from .. import constants
 from ..card_interface import CardInterface
-from ..parsing import tlv
 from ..preconditions import require_pin_verified
 
 
@@ -50,19 +51,18 @@ def load_key(
             raise ValueError(
                 "LEE seed must be 16-64 bytes")
     else:
-        inner_tlv = []
-        if public_key is not None:
-            inner_tlv.append(tlv.encode_tlv(0x80, public_key))
         if private_key is None:
             raise ValueError("Private key (tag 0x81) is required")
-        inner_tlv.append(tlv.encode_tlv(0x81, private_key))
+        elements: list[tuple[int, bytes]] = []
+        if public_key is not None:
+            elements.append((0x80, public_key))
+        elements.append((0x81, private_key))
         if (
             key_type == constants.LoadKeyType.EXTENDED_ECC and
             chain_code is not None
         ):
-            inner_tlv.append(tlv.encode_tlv(0x82, chain_code))
-        tpl = tlv.encode_tlv(0xA1, b''.join(inner_tlv))
-        data = tpl
+            elements.append((0x82, chain_code))
+        data = bytes(Tlv.build([(0xA1, elements)]))
 
     response = card.send_secure_apdu(
         ins=constants.INS_LOAD_KEY,
