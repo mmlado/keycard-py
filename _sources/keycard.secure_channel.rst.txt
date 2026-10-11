@@ -1,27 +1,27 @@
-keycard.secure_channel package
-==============================
+keycard.secure\_channel package
+===============================
 
 Submodules
 ----------
 
-keycard.secure_channel.base module
-----------------------------------
+keycard.secure\_channel.base module
+-----------------------------------
 
 .. automodule:: keycard.secure_channel.base
    :members:
    :show-inheritance:
    :undoc-members:
 
-keycard.secure_channel.v1 module
---------------------------------
+keycard.secure\_channel.v1 module
+---------------------------------
 
 .. automodule:: keycard.secure_channel.v1
    :members:
    :show-inheritance:
    :undoc-members:
 
-keycard.secure_channel.v2 module
---------------------------------
+keycard.secure\_channel.v2 module
+---------------------------------
 
 .. automodule:: keycard.secure_channel.v2
    :members:

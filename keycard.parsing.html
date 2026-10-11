@@ -503,6 +503,40 @@ over a SHA-256 digest.</p>
 </dd></dl>
 
 </section>
+<section id="module-keycard.parsing.exported_key">
+<span id="keycard-parsing-exported-key-module"></span><h2>keycard.parsing.exported_key module<a class="headerlink" href="#module-keycard.parsing.exported_key" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="keycard.parsing.exported_key.ExportedKey">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.parsing.exported_key.</span></span><span class="sig-name descname"><span class="pre">ExportedKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">public_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">private_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chain_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.exported_key.ExportedKey" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.exported_key.ExportedKey.chain_code">
+<span class="sig-name descname"><span class="pre">chain_code</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#keycard.parsing.exported_key.ExportedKey.chain_code" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.parsing.exported_key.ExportedKey.has_private">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">has_private</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.parsing.exported_key.ExportedKey.has_private" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.parsing.exported_key.ExportedKey.is_extended">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_extended</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#keycard.parsing.exported_key.ExportedKey.is_extended" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.exported_key.ExportedKey.private_key">
+<span class="sig-name descname"><span class="pre">private_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#keycard.parsing.exported_key.ExportedKey.private_key" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.exported_key.ExportedKey.public_key">
+<span class="sig-name descname"><span class="pre">public_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#keycard.parsing.exported_key.ExportedKey.public_key" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-keycard.parsing.identity">
 <span id="keycard-parsing-identity-module"></span><h2>keycard.parsing.identity module<a class="headerlink" href="#module-keycard.parsing.identity" title="Link to this heading">¶</a></h2>
 <dl class="py function">
@@ -535,6 +569,103 @@ the challenge.</p>
     does not verify.</p>
 </dd>
 </dl>
+</dd></dl>
+
+</section>
+<section id="module-keycard.parsing.keypath">
+<span id="keycard-parsing-keypath-module"></span><h2>keycard.parsing.keypath module<a class="headerlink" href="#module-keycard.parsing.keypath" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="keycard.parsing.keypath.KeyPath">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.parsing.keypath.</span></span><span class="sig-name descname"><span class="pre">KeyPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">DerivationSource.MASTER</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.keypath.KeyPath" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.keypath.KeyPath.MAX_COMPONENTS">
+<span class="sig-name descname"><span class="pre">MAX_COMPONENTS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></span><a class="headerlink" href="#keycard.parsing.keypath.KeyPath.MAX_COMPONENTS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="keycard.parsing.keypath.KeyPath.to_string">
+<span class="sig-name descname"><span class="pre">to_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.keypath.KeyPath.to_string" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-keycard.parsing.lee_keys">
+<span id="keycard-parsing-lee-keys-module"></span><h2>keycard.parsing.lee_keys module<a class="headerlink" href="#module-keycard.parsing.lee_keys" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="keycard.parsing.lee_keys.LeeKeys">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.parsing.lee_keys.</span></span><span class="sig-name descname"><span class="pre">LeeKeys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nsk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vsk_d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vsk_z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.lee_keys.LeeKeys" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.lee_keys.LeeKeys.ask">
+<span class="sig-name descname"><span class="pre">ask</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#keycard.parsing.lee_keys.LeeKeys.ask" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.lee_keys.LeeKeys.nsk">
+<span class="sig-name descname"><span class="pre">nsk</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#keycard.parsing.lee_keys.LeeKeys.nsk" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.lee_keys.LeeKeys.vsk_d">
+<span class="sig-name descname"><span class="pre">vsk_d</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#keycard.parsing.lee_keys.LeeKeys.vsk_d" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.lee_keys.LeeKeys.vsk_z">
+<span class="sig-name descname"><span class="pre">vsk_z</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#keycard.parsing.lee_keys.LeeKeys.vsk_z" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-keycard.parsing.signature_result">
+<span id="keycard-parsing-signature-result-module"></span><h2>keycard.parsing.signature_result module<a class="headerlink" href="#module-keycard.parsing.signature_result" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="keycard.parsing.signature_result.SignatureResult">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">keycard.parsing.signature_result.</span></span><span class="sig-name descname"><span class="pre">SignatureResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recovery_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.parsing.signature_result.SignatureResult" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.signature_result.SignatureResult.algo">
+<span class="sig-name descname"><span class="pre">algo</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="keycard.html#keycard.constants.SigningAlgorithm" title="keycard.constants.SigningAlgorithm"><span class="pre">SigningAlgorithm</span></a></span><a class="headerlink" href="#keycard.parsing.signature_result.SignatureResult.algo" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.signature_result.SignatureResult.public_key">
+<span class="sig-name descname"><span class="pre">public_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#keycard.parsing.signature_result.SignatureResult.public_key" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.signature_result.SignatureResult.r">
+<span class="sig-name descname"><span class="pre">r</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#keycard.parsing.signature_result.SignatureResult.r" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.signature_result.SignatureResult.recovery_id">
+<span class="sig-name descname"><span class="pre">recovery_id</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#keycard.parsing.signature_result.SignatureResult.recovery_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="keycard.parsing.signature_result.SignatureResult.s">
+<span class="sig-name descname"><span class="pre">s</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#keycard.parsing.signature_result.SignatureResult.s" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.parsing.signature_result.SignatureResult.signature">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">signature</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#keycard.parsing.signature_result.SignatureResult.signature" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="keycard.parsing.signature_result.SignatureResult.signature_der">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">signature_der</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></span><a class="headerlink" href="#keycard.parsing.signature_result.SignatureResult.signature_der" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>

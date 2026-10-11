@@ -41,6 +41,7 @@
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
@@ -59,6 +60,8 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.parsing.html#keycard.parsing.signature_result.SignatureResult.algo">algo (keycard.parsing.signature_result.SignatureResult attribute)</a>
+</li>
       <li><a href="keycard.html#keycard.constants.PairingMode.ANY">ANY (keycard.constants.PairingMode attribute)</a>
 </li>
       <li><a href="keycard.html#keycard.exceptions.APDUError">APDUError</a>
@@ -68,6 +71,8 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo">ApplicationInfo (class in keycard.parsing.application_info)</a>
+</li>
+      <li><a href="keycard.parsing.html#keycard.parsing.lee_keys.LeeKeys.ask">ask (keycard.parsing.lee_keys.LeeKeys attribute)</a>
 </li>
       <li><a href="keycard.secure_channel.html#id5">authenticated (keycard.secure_channel.SecureChannelV1 attribute)</a>, <a href="keycard.secure_channel.html#keycard.secure_channel.SecureChannelV1.authenticated">[1]</a>
 
@@ -95,16 +100,28 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.parsing.html#keycard.parsing.certificate.IdentityCertificate.ca_public_key">ca_public_key (keycard.parsing.certificate.IdentityCertificate property)</a>
 </li>
-      <li><a href="keycard.html#keycard.CardInterface.ca_public_keys">ca_public_keys (keycard.CardInterface attribute)</a>
+      <li><a href="keycard.html#keycard.card_interface.CardInterface.ca_public_keys">ca_public_keys (keycard.card_interface.CardInterface attribute)</a>
+
+      <ul>
+        <li><a href="keycard.html#keycard.CardInterface.ca_public_keys">(keycard.CardInterface attribute)</a>
 </li>
+      </ul></li>
       <li><a href="keycard.parsing.html#keycard.parsing.capabilities.Capabilities">Capabilities (class in keycard.parsing.capabilities)</a>
 </li>
       <li><a href="keycard.parsing.html#id0">capabilities (keycard.parsing.application_info.ApplicationInfo attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.capabilities">[1]</a>
 </li>
-      <li><a href="keycard.html#keycard.CardInterface.card_public_key">card_public_key (keycard.CardInterface attribute)</a>
+      <li><a href="keycard.html#keycard.card_interface.CardInterface.card_public_key">card_public_key (keycard.card_interface.CardInterface attribute)</a>
+
+      <ul>
+        <li><a href="keycard.html#keycard.CardInterface.card_public_key">(keycard.CardInterface attribute)</a>
 </li>
+      </ul></li>
       <li><a href="keycard.html#keycard.CardInterface">CardInterface (class in keycard)</a>
+
+      <ul>
+        <li><a href="keycard.html#keycard.card_interface.CardInterface">(class in keycard.card_interface)</a>
 </li>
+      </ul></li>
       <li><a href="keycard.html#keycard.constants.StorageSlot.CASH">CASH (keycard.constants.StorageSlot attribute)</a>
 </li>
       <li><a href="keycard.secure_channel.html#keycard.secure_channel.v1.cbc_decrypt">cbc_decrypt() (in module keycard.secure_channel.v1)</a>
@@ -113,20 +130,22 @@
 </li>
       <li><a href="keycard.secure_channel.html#keycard.secure_channel.v1.cbc_mac">cbc_mac() (in module keycard.secure_channel.v1)</a>
 </li>
+      <li><a href="keycard.parsing.html#keycard.parsing.exported_key.ExportedKey.chain_code">chain_code (keycard.parsing.exported_key.ExportedKey attribute)</a>
+</li>
       <li><a href="keycard.html#keycard.KeyCard.change_pairing_secret">change_pairing_secret() (keycard.KeyCard method)</a>
 
       <ul>
         <li><a href="index.html#keycard.keycard.KeyCard.change_pairing_secret">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.change_pairing_secret">[1]</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.html#keycard.KeyCard.change_pin">change_pin() (keycard.KeyCard method)</a>
 
       <ul>
         <li><a href="index.html#keycard.keycard.KeyCard.change_pin">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.change_pin">[1]</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.html#keycard.KeyCard.change_puk">change_puk() (keycard.KeyCard method)</a>
 
       <ul>
@@ -134,7 +153,11 @@
 </li>
       </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.change_secret">change_secret() (in module keycard.commands)</a>
+
+      <ul>
+        <li><a href="keycard.commands.html#keycard.commands.change_secret.change_secret">(in module keycard.commands.change_secret)</a>
 </li>
+      </ul></li>
       <li><a href="keycard.secure_channel.html#keycard.secure_channel.channel_version">channel_version() (in module keycard.secure_channel)</a>
 
       <ul>
@@ -175,13 +198,15 @@
 </li>
       <li><a href="keycard.html#keycard.constants.DerivationOption.DERIVE">DERIVE (keycard.constants.DerivationOption attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.html#keycard.constants.DerivationOption.DERIVE_AND_MAKE_CURRENT">DERIVE_AND_MAKE_CURRENT (keycard.constants.DerivationOption attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.commands.html#keycard.commands.derive_key">derive_key() (in module keycard.commands)</a>
 
       <ul>
+        <li><a href="keycard.commands.html#keycard.commands.derive_key.derive_key">(in module keycard.commands.derive_key)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.derive_key">(keycard.KeyCard method)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.derive_key">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.derive_key">[1]</a>
@@ -202,6 +227,8 @@
       <li><a href="keycard.commands.html#keycard.commands.ecdh">ecdh() (in module keycard.commands)</a>
 
       <ul>
+        <li><a href="keycard.commands.html#keycard.commands.ecdh.ecdh">(in module keycard.commands.ecdh)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.ecdh">(keycard.KeyCard method)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.ecdh">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.ecdh">[1]</a>
@@ -223,16 +250,18 @@
 </li>
       <li><a href="keycard.html#keycard.constants.PairingMode.EPHEMERAL">EPHEMERAL (keycard.constants.PairingMode attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.commands.html#keycard.commands.export_bip85">export_bip85() (in module keycard.commands)</a>
 
       <ul>
+        <li><a href="keycard.commands.html#keycard.commands.export_bip85.export_bip85">(in module keycard.commands.export_bip85)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.export_bip85">(keycard.KeyCard method)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.export_bip85">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.export_bip85">[1]</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.html#keycard.KeyCard.export_current_key">export_current_key() (keycard.KeyCard method)</a>
 
       <ul>
@@ -242,6 +271,8 @@
       <li><a href="keycard.commands.html#keycard.commands.export_key">export_key() (in module keycard.commands)</a>
 
       <ul>
+        <li><a href="keycard.commands.html#keycard.commands.export_key.export_key">(in module keycard.commands.export_key)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.export_key">(keycard.KeyCard method)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.export_key">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.export_key">[1]</a>
@@ -250,11 +281,15 @@
       <li><a href="keycard.commands.html#keycard.commands.export_lee">export_lee() (in module keycard.commands)</a>
 
       <ul>
+        <li><a href="keycard.commands.html#keycard.commands.export_lee.export_lee">(in module keycard.commands.export_lee)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.export_lee">(keycard.KeyCard method)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.export_lee">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.export_lee">[1]</a>
 </li>
       </ul></li>
+      <li><a href="keycard.parsing.html#keycard.parsing.exported_key.ExportedKey">ExportedKey (class in keycard.parsing.exported_key)</a>
+</li>
       <li><a href="keycard.html#keycard.constants.LoadKeyType.EXTENDED_ECC">EXTENDED_ECC (keycard.constants.LoadKeyType attribute)</a>
 </li>
       <li><a href="keycard.html#keycard.constants.KeyExportOption.EXTENDED_PUBLIC">EXTENDED_PUBLIC (keycard.constants.KeyExportOption attribute)</a>
@@ -270,6 +305,8 @@
       <li><a href="keycard.commands.html#keycard.commands.factory_reset">factory_reset() (in module keycard.commands)</a>
 
       <ul>
+        <li><a href="keycard.commands.html#keycard.commands.factory_reset.factory_reset">(in module keycard.commands.factory_reset)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.factory_reset">(keycard.KeyCard method)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.factory_reset">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.factory_reset">[1]</a>
@@ -298,6 +335,8 @@
       <li><a href="keycard.commands.html#keycard.commands.generate_key">generate_key() (in module keycard.commands)</a>
 
       <ul>
+        <li><a href="keycard.commands.html#keycard.commands.generate_key.generate_key">(in module keycard.commands.generate_key)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.generate_key">(keycard.KeyCard method)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.generate_key">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.generate_key">[1]</a>
@@ -308,14 +347,20 @@
       <li><a href="keycard.commands.html#keycard.commands.generate_mnemonic">generate_mnemonic() (in module keycard.commands)</a>
 
       <ul>
+        <li><a href="keycard.commands.html#keycard.commands.generate_mnemonic.generate_mnemonic">(in module keycard.commands.generate_mnemonic)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.generate_mnemonic">(keycard.KeyCard method)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.generate_mnemonic">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.generate_mnemonic">[1]</a>
 </li>
       </ul></li>
+      <li><a href="keycard.crypto.html#keycard.crypto.generate_pairing_token.generate_pairing_token">generate_pairing_token() (in module keycard.crypto.generate_pairing_token)</a>
+</li>
       <li><a href="keycard.commands.html#keycard.commands.get_challenge">get_challenge() (in module keycard.commands)</a>
 
       <ul>
+        <li><a href="keycard.commands.html#keycard.commands.get_challenge.get_challenge">(in module keycard.commands.get_challenge)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.get_challenge">(keycard.KeyCard method)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.get_challenge">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.get_challenge">[1]</a>
@@ -326,6 +371,8 @@
       <li><a href="keycard.commands.html#keycard.commands.get_data">get_data() (in module keycard.commands)</a>
 
       <ul>
+        <li><a href="keycard.commands.html#keycard.commands.get_data.get_data">(in module keycard.commands.get_data)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.get_data">(keycard.KeyCard method)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.get_data">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.get_data">[1]</a>
@@ -338,6 +385,18 @@
 </li>
       </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.get_status">get_status() (in module keycard.commands)</a>
+
+      <ul>
+        <li><a href="keycard.commands.html#keycard.commands.get_status.get_status">(in module keycard.commands.get_status)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.parsing.html#keycard.parsing.exported_key.ExportedKey.has_private">has_private (keycard.parsing.exported_key.ExportedKey property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -355,9 +414,11 @@
         <li><a href="index.html#keycard.keycard.KeyCard.ident">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.ident">[1]</a>
 </li>
       </ul></li>
-      <li><a href="keycard.html#keycard.CardInterface.identity_certificate">identity_certificate (keycard.CardInterface property)</a>
+      <li><a href="keycard.html#keycard.card_interface.CardInterface.identity_certificate">identity_certificate (keycard.card_interface.CardInterface property)</a>
 
       <ul>
+        <li><a href="keycard.html#keycard.CardInterface.identity_certificate">(keycard.CardInterface property)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.identity_certificate">(keycard.KeyCard property)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.identity_certificate">(keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.identity_certificate">[1]</a>
@@ -385,9 +446,13 @@
 </li>
       <li><a href="keycard.html#keycard.exceptions.InvalidStateError">InvalidStateError</a>
 </li>
-      <li><a href="keycard.html#keycard.CardInterface.is_initialized">is_initialized (keycard.CardInterface property)</a>
+      <li><a href="keycard.parsing.html#keycard.parsing.exported_key.ExportedKey.is_extended">is_extended (keycard.parsing.exported_key.ExportedKey property)</a>
+</li>
+      <li><a href="keycard.html#keycard.card_interface.CardInterface.is_initialized">is_initialized (keycard.card_interface.CardInterface property)</a>
 
       <ul>
+        <li><a href="keycard.html#keycard.CardInterface.is_initialized">(keycard.CardInterface property)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.is_initialized">(keycard.KeyCard property)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.is_initialized">(keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.is_initialized">[1]</a>
@@ -413,25 +478,31 @@
         <li><a href="keycard.secure_channel.html#keycard.secure_channel.v2.SecureChannelV2.is_open">(keycard.secure_channel.v2.SecureChannelV2 property)</a>
 </li>
       </ul></li>
-      <li><a href="keycard.html#keycard.CardInterface.is_pin_verified">is_pin_verified (keycard.CardInterface property)</a>
+      <li><a href="keycard.html#keycard.card_interface.CardInterface.is_pin_verified">is_pin_verified (keycard.card_interface.CardInterface property)</a>
 
       <ul>
+        <li><a href="keycard.html#keycard.CardInterface.is_pin_verified">(keycard.CardInterface property)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.is_pin_verified">(keycard.KeyCard property)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.is_pin_verified">(keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.is_pin_verified">[1]</a>
 </li>
       </ul></li>
-      <li><a href="keycard.html#keycard.CardInterface.is_secure_channel_open">is_secure_channel_open (keycard.CardInterface property)</a>
+      <li><a href="keycard.html#keycard.card_interface.CardInterface.is_secure_channel_open">is_secure_channel_open (keycard.card_interface.CardInterface property)</a>
 
       <ul>
+        <li><a href="keycard.html#keycard.CardInterface.is_secure_channel_open">(keycard.CardInterface property)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.is_secure_channel_open">(keycard.KeyCard property)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.is_secure_channel_open">(keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.is_secure_channel_open">[1]</a>
 </li>
       </ul></li>
-      <li><a href="keycard.html#keycard.CardInterface.is_selected">is_selected (keycard.CardInterface property)</a>
+      <li><a href="keycard.html#keycard.card_interface.CardInterface.is_selected">is_selected (keycard.card_interface.CardInterface property)</a>
 
       <ul>
+        <li><a href="keycard.html#keycard.CardInterface.is_selected">(keycard.CardInterface property)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.is_selected">(keycard.KeyCard property)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.is_selected">(keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.is_selected">[1]</a>
@@ -455,6 +526,8 @@
 <h2 id="K">K</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.html#keycard.pairing.Pairing.key">key (keycard.pairing.Pairing attribute)</a>
+</li>
       <li><a href="keycard.parsing.html#id11">KEY_MANAGEMENT (keycard.parsing.capabilities.Capabilities attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.capabilities.Capabilities.KEY_MANAGEMENT">[1]</a>
 </li>
       <li><a href="keycard.parsing.html#id5">key_uid (keycard.parsing.application_info.ApplicationInfo attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.key_uid">[1]</a>
@@ -480,10 +553,101 @@
 </li>
       </ul></li>
       <li>
+    keycard.card_interface
+
+      <ul>
+        <li><a href="keycard.html#module-keycard.card_interface">module</a>
+</li>
+      </ul></li>
+      <li>
     keycard.commands
 
       <ul>
         <li><a href="keycard.commands.html#module-keycard.commands">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.commands.change_secret
+
+      <ul>
+        <li><a href="keycard.commands.html#module-keycard.commands.change_secret">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.commands.derive_key
+
+      <ul>
+        <li><a href="keycard.commands.html#module-keycard.commands.derive_key">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.commands.ecdh
+
+      <ul>
+        <li><a href="keycard.commands.html#module-keycard.commands.ecdh">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.commands.export_bip85
+
+      <ul>
+        <li><a href="keycard.commands.html#module-keycard.commands.export_bip85">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.commands.export_key
+
+      <ul>
+        <li><a href="keycard.commands.html#module-keycard.commands.export_key">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.commands.export_lee
+
+      <ul>
+        <li><a href="keycard.commands.html#module-keycard.commands.export_lee">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.commands.factory_reset
+
+      <ul>
+        <li><a href="keycard.commands.html#module-keycard.commands.factory_reset">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.commands.generate_key
+
+      <ul>
+        <li><a href="keycard.commands.html#module-keycard.commands.generate_key">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.commands.generate_mnemonic
+
+      <ul>
+        <li><a href="keycard.commands.html#module-keycard.commands.generate_mnemonic">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.commands.get_challenge
+
+      <ul>
+        <li><a href="keycard.commands.html#module-keycard.commands.get_challenge">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.commands.get_data
+
+      <ul>
+        <li><a href="keycard.commands.html#module-keycard.commands.get_data">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.commands.get_status
+
+      <ul>
+        <li><a href="keycard.commands.html#module-keycard.commands.get_status">module</a>
 </li>
       </ul></li>
       <li>
@@ -498,6 +662,13 @@
 
       <ul>
         <li><a href="keycard.commands.html#module-keycard.commands.init">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.commands.load_key
+
+      <ul>
+        <li><a href="keycard.commands.html#module-keycard.commands.load_key">module</a>
 </li>
       </ul></li>
       <li>
@@ -522,10 +693,47 @@
 </li>
       </ul></li>
       <li>
+    keycard.commands.remove_key
+
+      <ul>
+        <li><a href="keycard.commands.html#module-keycard.commands.remove_key">module</a>
+</li>
+      </ul></li>
+      <li>
     keycard.commands.select
 
       <ul>
         <li><a href="keycard.commands.html#module-keycard.commands.select">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.commands.set_pinless_path
+
+      <ul>
+        <li><a href="keycard.commands.html#module-keycard.commands.set_pinless_path">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.commands.sign
+
+      <ul>
+        <li><a href="keycard.commands.html#module-keycard.commands.sign">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    keycard.commands.store_data
+
+      <ul>
+        <li><a href="keycard.commands.html#module-keycard.commands.store_data">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.commands.unblock_pin
+
+      <ul>
+        <li><a href="keycard.commands.html#module-keycard.commands.unblock_pin">module</a>
 </li>
       </ul></li>
       <li>
@@ -556,13 +764,18 @@
         <li><a href="keycard.crypto.html#module-keycard.crypto">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     keycard.crypto.ecdh
 
       <ul>
         <li><a href="keycard.crypto.html#module-keycard.crypto.ecdh">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.crypto.generate_pairing_token
+
+      <ul>
+        <li><a href="keycard.crypto.html#module-keycard.crypto.generate_pairing_token">module</a>
 </li>
       </ul></li>
       <li>
@@ -577,6 +790,13 @@
 
       <ul>
         <li><a href="index.html#module-keycard.keycard">module</a>, <a href="keycard.html#module-keycard.keycard">[1]</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.pairing
+
+      <ul>
+        <li><a href="keycard.html#module-keycard.pairing">module</a>
 </li>
       </ul></li>
       <li>
@@ -608,6 +828,13 @@
 </li>
       </ul></li>
       <li>
+    keycard.parsing.exported_key
+
+      <ul>
+        <li><a href="keycard.parsing.html#module-keycard.parsing.exported_key">module</a>
+</li>
+      </ul></li>
+      <li>
     keycard.parsing.identity
 
       <ul>
@@ -615,10 +842,38 @@
 </li>
       </ul></li>
       <li>
+    keycard.parsing.keypath
+
+      <ul>
+        <li><a href="keycard.parsing.html#module-keycard.parsing.keypath">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.parsing.lee_keys
+
+      <ul>
+        <li><a href="keycard.parsing.html#module-keycard.parsing.lee_keys">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.parsing.signature_result
+
+      <ul>
+        <li><a href="keycard.parsing.html#module-keycard.parsing.signature_result">module</a>
+</li>
+      </ul></li>
+      <li>
     keycard.parsing.tlv
 
       <ul>
         <li><a href="keycard.parsing.html#module-keycard.parsing.tlv">module</a>
+</li>
+      </ul></li>
+      <li>
+    keycard.preconditions
+
+      <ul>
+        <li><a href="keycard.html#module-keycard.preconditions">module</a>
 </li>
       </ul></li>
       <li>
@@ -660,6 +915,8 @@
 </li>
       <li><a href="keycard.html#keycard.constants.KeyExportOption">KeyExportOption (class in keycard.constants)</a>
 </li>
+      <li><a href="keycard.parsing.html#keycard.parsing.keypath.KeyPath">KeyPath (class in keycard.parsing.keypath)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -668,9 +925,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.html#keycard.constants.LoadKeyType.LEE_SEED">LEE_SEED (keycard.constants.LoadKeyType attribute)</a>
 </li>
+      <li><a href="keycard.parsing.html#keycard.parsing.lee_keys.LeeKeys">LeeKeys (class in keycard.parsing.lee_keys)</a>
+</li>
       <li><a href="keycard.commands.html#keycard.commands.load_key">load_key() (in module keycard.commands)</a>
 
       <ul>
+        <li><a href="keycard.commands.html#keycard.commands.load_key.load_key">(in module keycard.commands.load_key)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.load_key">(keycard.KeyCard method)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.load_key">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.load_key">[1]</a>
@@ -692,7 +953,11 @@
         <li><a href="keycard.secure_channel.html#id3">(keycard.secure_channel.v1.SecureChannelV1 attribute)</a>, <a href="keycard.secure_channel.html#keycard.secure_channel.v1.SecureChannelV1.mac_key">[1]</a>
 </li>
       </ul></li>
+      <li><a href="keycard.html#keycard.preconditions.make_precondition">make_precondition() (in module keycard.preconditions)</a>
+</li>
       <li><a href="keycard.html#keycard.constants.DerivationSource.MASTER">MASTER (keycard.constants.DerivationSource attribute)</a>
+</li>
+      <li><a href="keycard.parsing.html#keycard.parsing.keypath.KeyPath.MAX_COMPONENTS">MAX_COMPONENTS (keycard.parsing.keypath.KeyPath attribute)</a>
 </li>
       <li>
     module
@@ -702,11 +967,39 @@
 </li>
         <li><a href="keycard.html#module-keycard.apdu">keycard.apdu</a>
 </li>
+        <li><a href="keycard.html#module-keycard.card_interface">keycard.card_interface</a>
+</li>
         <li><a href="keycard.commands.html#module-keycard.commands">keycard.commands</a>
+</li>
+        <li><a href="keycard.commands.html#module-keycard.commands.change_secret">keycard.commands.change_secret</a>
+</li>
+        <li><a href="keycard.commands.html#module-keycard.commands.derive_key">keycard.commands.derive_key</a>
+</li>
+        <li><a href="keycard.commands.html#module-keycard.commands.ecdh">keycard.commands.ecdh</a>
+</li>
+        <li><a href="keycard.commands.html#module-keycard.commands.export_bip85">keycard.commands.export_bip85</a>
+</li>
+        <li><a href="keycard.commands.html#module-keycard.commands.export_key">keycard.commands.export_key</a>
+</li>
+        <li><a href="keycard.commands.html#module-keycard.commands.export_lee">keycard.commands.export_lee</a>
+</li>
+        <li><a href="keycard.commands.html#module-keycard.commands.factory_reset">keycard.commands.factory_reset</a>
+</li>
+        <li><a href="keycard.commands.html#module-keycard.commands.generate_key">keycard.commands.generate_key</a>
+</li>
+        <li><a href="keycard.commands.html#module-keycard.commands.generate_mnemonic">keycard.commands.generate_mnemonic</a>
+</li>
+        <li><a href="keycard.commands.html#module-keycard.commands.get_challenge">keycard.commands.get_challenge</a>
+</li>
+        <li><a href="keycard.commands.html#module-keycard.commands.get_data">keycard.commands.get_data</a>
+</li>
+        <li><a href="keycard.commands.html#module-keycard.commands.get_status">keycard.commands.get_status</a>
 </li>
         <li><a href="keycard.commands.html#module-keycard.commands.ident">keycard.commands.ident</a>
 </li>
         <li><a href="keycard.commands.html#module-keycard.commands.init">keycard.commands.init</a>
+</li>
+        <li><a href="keycard.commands.html#module-keycard.commands.load_key">keycard.commands.load_key</a>
 </li>
         <li><a href="keycard.commands.html#module-keycard.commands.mutually_authenticate">keycard.commands.mutually_authenticate</a>
 </li>
@@ -714,7 +1007,17 @@
 </li>
         <li><a href="keycard.commands.html#module-keycard.commands.pair">keycard.commands.pair</a>
 </li>
+        <li><a href="keycard.commands.html#module-keycard.commands.remove_key">keycard.commands.remove_key</a>
+</li>
         <li><a href="keycard.commands.html#module-keycard.commands.select">keycard.commands.select</a>
+</li>
+        <li><a href="keycard.commands.html#module-keycard.commands.set_pinless_path">keycard.commands.set_pinless_path</a>
+</li>
+        <li><a href="keycard.commands.html#module-keycard.commands.sign">keycard.commands.sign</a>
+</li>
+        <li><a href="keycard.commands.html#module-keycard.commands.store_data">keycard.commands.store_data</a>
+</li>
+        <li><a href="keycard.commands.html#module-keycard.commands.unblock_pin">keycard.commands.unblock_pin</a>
 </li>
         <li><a href="keycard.commands.html#module-keycard.commands.unpair">keycard.commands.unpair</a>
 </li>
@@ -726,9 +1029,13 @@
 </li>
         <li><a href="keycard.crypto.html#module-keycard.crypto.ecdh">keycard.crypto.ecdh</a>
 </li>
+        <li><a href="keycard.crypto.html#module-keycard.crypto.generate_pairing_token">keycard.crypto.generate_pairing_token</a>
+</li>
         <li><a href="keycard.html#module-keycard.exceptions">keycard.exceptions</a>
 </li>
         <li><a href="index.html#module-keycard.keycard">keycard.keycard</a>, <a href="keycard.html#module-keycard.keycard">[1]</a>
+</li>
+        <li><a href="keycard.html#module-keycard.pairing">keycard.pairing</a>
 </li>
         <li><a href="keycard.parsing.html#module-keycard.parsing">keycard.parsing</a>
 </li>
@@ -738,9 +1045,19 @@
 </li>
         <li><a href="keycard.parsing.html#module-keycard.parsing.certificate">keycard.parsing.certificate</a>
 </li>
+        <li><a href="keycard.parsing.html#module-keycard.parsing.exported_key">keycard.parsing.exported_key</a>
+</li>
         <li><a href="keycard.parsing.html#module-keycard.parsing.identity">keycard.parsing.identity</a>
 </li>
+        <li><a href="keycard.parsing.html#module-keycard.parsing.keypath">keycard.parsing.keypath</a>
+</li>
+        <li><a href="keycard.parsing.html#module-keycard.parsing.lee_keys">keycard.parsing.lee_keys</a>
+</li>
+        <li><a href="keycard.parsing.html#module-keycard.parsing.signature_result">keycard.parsing.signature_result</a>
+</li>
         <li><a href="keycard.parsing.html#module-keycard.parsing.tlv">keycard.parsing.tlv</a>
+</li>
+        <li><a href="keycard.html#module-keycard.preconditions">keycard.preconditions</a>
 </li>
         <li><a href="keycard.secure_channel.html#module-keycard.secure_channel">keycard.secure_channel</a>
 </li>
@@ -783,6 +1100,8 @@
 </li>
       <li><a href="keycard.html#keycard.exceptions.NotSelectedError">NotSelectedError</a>
 </li>
+      <li><a href="keycard.parsing.html#keycard.parsing.lee_keys.LeeKeys.nsk">nsk (keycard.parsing.lee_keys.LeeKeys attribute)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -795,6 +1114,8 @@
 
       <ul>
         <li><a href="keycard.commands.html#keycard.commands.open_secure_channel.open_secure_channel">(in module keycard.commands.open_secure_channel)</a>
+</li>
+        <li><a href="keycard.html#keycard.card_interface.CardInterface.open_secure_channel">(keycard.card_interface.CardInterface method)</a>
 </li>
         <li><a href="keycard.html#keycard.CardInterface.open_secure_channel">(keycard.CardInterface method)</a>
 </li>
@@ -819,8 +1140,14 @@
         <li><a href="index.html#keycard.keycard.KeyCard.pair">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.pair">[1]</a>
 </li>
       </ul></li>
-      <li><a href="keycard.html#keycard.CardInterface.pairing">pairing (keycard.CardInterface attribute)</a>
+      <li><a href="keycard.html#keycard.pairing.Pairing">Pairing (class in keycard.pairing)</a>
 </li>
+      <li><a href="keycard.html#keycard.card_interface.CardInterface.pairing">pairing (keycard.card_interface.CardInterface attribute)</a>
+
+      <ul>
+        <li><a href="keycard.html#keycard.CardInterface.pairing">(keycard.CardInterface attribute)</a>
+</li>
+      </ul></li>
       <li><a href="keycard.html#keycard.constants.PinType.PAIRING">PAIRING (keycard.constants.PinType attribute)</a>
 </li>
       <li><a href="keycard.html#keycard.constants.PairingMode">PairingMode (class in keycard.constants)</a>
@@ -857,8 +1184,16 @@
       </ul></li>
       <li><a href="keycard.html#keycard.constants.KeyExportOption.PRIVATE_AND_PUBLIC">PRIVATE_AND_PUBLIC (keycard.constants.KeyExportOption attribute)</a>
 </li>
+      <li><a href="keycard.parsing.html#keycard.parsing.exported_key.ExportedKey.private_key">private_key (keycard.parsing.exported_key.ExportedKey attribute)</a>
+</li>
       <li><a href="keycard.html#keycard.constants.StorageSlot.PUBLIC">PUBLIC (keycard.constants.StorageSlot attribute)</a>
 </li>
+      <li><a href="keycard.parsing.html#keycard.parsing.exported_key.ExportedKey.public_key">public_key (keycard.parsing.exported_key.ExportedKey attribute)</a>
+
+      <ul>
+        <li><a href="keycard.parsing.html#keycard.parsing.signature_result.SignatureResult.public_key">(keycard.parsing.signature_result.SignatureResult attribute)</a>
+</li>
+      </ul></li>
       <li><a href="keycard.html#keycard.constants.KeyExportOption.PUBLIC_ONLY">PUBLIC_ONLY (keycard.constants.KeyExportOption attribute)</a>
 </li>
       <li><a href="keycard.html#keycard.constants.PinType.PUK">PUK (keycard.constants.PinType attribute)</a>
@@ -869,22 +1204,42 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="keycard.parsing.html#id15">recovery_id (keycard.parsing.certificate.IdentityCertificate attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.certificate.IdentityCertificate.recovery_id">[1]</a>
+      <li><a href="keycard.parsing.html#keycard.parsing.signature_result.SignatureResult.r">r (keycard.parsing.signature_result.SignatureResult attribute)</a>
 </li>
+      <li><a href="keycard.parsing.html#id15">recovery_id (keycard.parsing.certificate.IdentityCertificate attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.certificate.IdentityCertificate.recovery_id">[1]</a>
+
+      <ul>
+        <li><a href="keycard.parsing.html#keycard.parsing.signature_result.SignatureResult.recovery_id">(keycard.parsing.signature_result.SignatureResult attribute)</a>
+</li>
+      </ul></li>
       <li><a href="keycard.commands.html#keycard.commands.remove_key">remove_key() (in module keycard.commands)</a>
 
       <ul>
+        <li><a href="keycard.commands.html#keycard.commands.remove_key.remove_key">(in module keycard.commands.remove_key)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.remove_key">(keycard.KeyCard method)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.remove_key">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.remove_key">[1]</a>
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.html#keycard.preconditions.require_initialized">require_initialized() (in module keycard.preconditions)</a>
+</li>
+      <li><a href="keycard.html#keycard.preconditions.require_pin_verified">require_pin_verified() (in module keycard.preconditions)</a>
+</li>
+      <li><a href="keycard.html#keycard.preconditions.require_secure_channel">require_secure_channel() (in module keycard.preconditions)</a>
+</li>
+      <li><a href="keycard.html#keycard.preconditions.require_selected">require_selected() (in module keycard.preconditions)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.parsing.html#keycard.parsing.signature_result.SignatureResult.s">s (keycard.parsing.signature_result.SignatureResult attribute)</a>
+</li>
       <li><a href="keycard.html#keycard.constants.SigningAlgorithm.SCHNORR_BIP340">SCHNORR_BIP340 (keycard.constants.SigningAlgorithm attribute)</a>
 </li>
       <li><a href="keycard.parsing.html#id13">SECURE_CHANNEL (keycard.parsing.capabilities.Capabilities attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.capabilities.Capabilities.SECURE_CHANNEL">[1]</a>
@@ -929,9 +1284,11 @@
         <li><a href="index.html#keycard.keycard.KeyCard.select">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.select">[1]</a>
 </li>
       </ul></li>
-      <li><a href="keycard.html#keycard.CardInterface.send_apdu">send_apdu() (keycard.CardInterface method)</a>
+      <li><a href="keycard.html#keycard.card_interface.CardInterface.send_apdu">send_apdu() (keycard.card_interface.CardInterface method)</a>
 
       <ul>
+        <li><a href="keycard.html#keycard.CardInterface.send_apdu">(keycard.CardInterface method)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.send_apdu">(keycard.KeyCard method)</a>
 </li>
         <li><a href="keycard.html#keycard.keycard.KeyCard.send_apdu">(keycard.keycard.KeyCard method)</a>
@@ -939,27 +1296,33 @@
         <li><a href="keycard.html#keycard.transport.Transport.send_apdu">(keycard.transport.Transport method)</a>
 </li>
       </ul></li>
-      <li><a href="keycard.html#keycard.CardInterface.send_raw_apdu">send_raw_apdu() (keycard.CardInterface method)</a>
+      <li><a href="keycard.html#keycard.card_interface.CardInterface.send_raw_apdu">send_raw_apdu() (keycard.card_interface.CardInterface method)</a>
 
       <ul>
+        <li><a href="keycard.html#keycard.CardInterface.send_raw_apdu">(keycard.CardInterface method)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.send_raw_apdu">(keycard.KeyCard method)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.send_raw_apdu">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.send_raw_apdu">[1]</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="keycard.html#keycard.CardInterface.send_secure_apdu">send_secure_apdu() (keycard.CardInterface method)</a>
+      <li><a href="keycard.html#keycard.card_interface.CardInterface.send_secure_apdu">send_secure_apdu() (keycard.card_interface.CardInterface method)</a>
 
       <ul>
+        <li><a href="keycard.html#keycard.CardInterface.send_secure_apdu">(keycard.CardInterface method)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.send_secure_apdu">(keycard.KeyCard method)</a>
 </li>
         <li><a href="keycard.html#keycard.keycard.KeyCard.send_secure_apdu">(keycard.keycard.KeyCard method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.commands.html#keycard.commands.set_pinless_path">set_pinless_path() (in module keycard.commands)</a>
 
       <ul>
+        <li><a href="keycard.commands.html#keycard.commands.set_pinless_path.set_pinless_path">(in module keycard.commands.set_pinless_path)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.set_pinless_path">(keycard.KeyCard method)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.set_pinless_path">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.set_pinless_path">[1]</a>
@@ -968,6 +1331,8 @@
       <li><a href="keycard.commands.html#keycard.commands.sign">sign() (in module keycard.commands)</a>
 
       <ul>
+        <li><a href="keycard.commands.html#keycard.commands.sign.sign">(in module keycard.commands.sign)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.sign">(keycard.KeyCard method)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.sign">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.sign">[1]</a>
@@ -986,8 +1351,18 @@
 </li>
       </ul></li>
       <li><a href="keycard.parsing.html#id16">signature (keycard.parsing.certificate.IdentityCertificate attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.certificate.IdentityCertificate.signature">[1]</a>
+
+      <ul>
+        <li><a href="keycard.parsing.html#keycard.parsing.signature_result.SignatureResult.signature">(keycard.parsing.signature_result.SignatureResult property)</a>
+</li>
+      </ul></li>
+      <li><a href="keycard.parsing.html#keycard.parsing.signature_result.SignatureResult.signature_der">signature_der (keycard.parsing.signature_result.SignatureResult property)</a>
+</li>
+      <li><a href="keycard.parsing.html#keycard.parsing.signature_result.SignatureResult">SignatureResult (class in keycard.parsing.signature_result)</a>
 </li>
       <li><a href="keycard.html#keycard.constants.SigningAlgorithm">SigningAlgorithm (class in keycard.constants)</a>
+</li>
+      <li><a href="keycard.html#keycard.pairing.Pairing.slot">slot (keycard.pairing.Pairing attribute)</a>
 </li>
       <li><a href="keycard.html#keycard.KeyCard.status">status (keycard.KeyCard property)</a>
 
@@ -1004,6 +1379,8 @@
       <li><a href="keycard.commands.html#keycard.commands.store_data">store_data() (in module keycard.commands)</a>
 
       <ul>
+        <li><a href="keycard.commands.html#keycard.commands.store_data.store_data">(in module keycard.commands.store_data)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.store_data">(keycard.KeyCard method)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.store_data">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.store_data">[1]</a>
@@ -1015,6 +1392,8 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="keycard.parsing.html#keycard.parsing.keypath.KeyPath.to_string">to_string() (keycard.parsing.keypath.KeyPath method)</a>
+</li>
       <li><a href="keycard.secure_channel.html#keycard.secure_channel.v2.transcript_digest">transcript_digest() (in module keycard.secure_channel.v2)</a>
 </li>
       <li><a href="keycard.html#keycard.transport.Transport">Transport (class in keycard.transport)</a>
@@ -1023,8 +1402,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="keycard.html#keycard.exceptions.TransportError">TransportError</a>
 </li>
-      <li><a href="keycard.html#keycard.CardInterface.trusted_identity_keys">trusted_identity_keys (keycard.CardInterface attribute)</a>
+      <li><a href="keycard.html#keycard.card_interface.CardInterface.trusted_identity_keys">trusted_identity_keys (keycard.card_interface.CardInterface attribute)</a>
+
+      <ul>
+        <li><a href="keycard.html#keycard.CardInterface.trusted_identity_keys">(keycard.CardInterface attribute)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -1034,6 +1417,8 @@
       <li><a href="keycard.commands.html#keycard.commands.unblock_pin">unblock_pin() (in module keycard.commands)</a>
 
       <ul>
+        <li><a href="keycard.commands.html#keycard.commands.unblock_pin.unblock_pin">(in module keycard.commands.unblock_pin)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.unblock_pin">(keycard.KeyCard method)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.unblock_pin">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.unblock_pin">[1]</a>
@@ -1105,9 +1490,11 @@
         <li><a href="index.html#keycard.keycard.KeyCard.verify_pin">(keycard.keycard.KeyCard method)</a>, <a href="keycard.html#keycard.keycard.KeyCard.verify_pin">[1]</a>
 </li>
       </ul></li>
-      <li><a href="keycard.html#keycard.CardInterface.version">version (keycard.CardInterface property)</a>
+      <li><a href="keycard.html#keycard.card_interface.CardInterface.version">version (keycard.card_interface.CardInterface property)</a>
 
       <ul>
+        <li><a href="keycard.html#keycard.CardInterface.version">(keycard.CardInterface property)</a>
+</li>
         <li><a href="keycard.html#keycard.KeyCard.version">(keycard.KeyCard property)</a>
 </li>
         <li><a href="index.html#keycard.keycard.KeyCard.version">(keycard.keycard.KeyCard property)</a>, <a href="keycard.html#keycard.keycard.KeyCard.version">[1]</a>
@@ -1130,6 +1517,10 @@
       <li><a href="keycard.parsing.html#id7">version_major (keycard.parsing.application_info.ApplicationInfo attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.version_major">[1]</a>
 </li>
       <li><a href="keycard.parsing.html#id8">version_minor (keycard.parsing.application_info.ApplicationInfo attribute)</a>, <a href="keycard.parsing.html#keycard.parsing.application_info.ApplicationInfo.version_minor">[1]</a>
+</li>
+      <li><a href="keycard.parsing.html#keycard.parsing.lee_keys.LeeKeys.vsk_d">vsk_d (keycard.parsing.lee_keys.LeeKeys attribute)</a>
+</li>
+      <li><a href="keycard.parsing.html#keycard.parsing.lee_keys.LeeKeys.vsk_z">vsk_z (keycard.parsing.lee_keys.LeeKeys attribute)</a>
 </li>
   </ul></td>
 </tr></table>
