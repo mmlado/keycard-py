@@ -128,6 +128,31 @@ and card operations.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="keycard.keycard.KeyCard.ecdh">
+<span class="sig-name descname"><span class="pre">ecdh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">public_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.ecdh" title="Link to this definition">¶</a></dt>
+<dd><p>Compute an ECDH shared secret with the key at a path. Needs applet
+4.0. The result is a raw secret; apply the protocol’s KDF to it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>public_key</strong> (<em>bytes</em>) – The peer’s uncompressed public key, 65 bytes.</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – Path under “m/44’/1237’” (NIP-44) or
+“m/43’/60’/1581’” (EIP-1581), at least 5 levels deep.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The 32-byte X coordinate of the shared point.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="keycard.keycard.KeyCard.export_bip85">
 <span class="sig-name descname"><span class="pre">export_bip85</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#keycard.keycard.KeyCard.export_bip85" title="Link to this definition">¶</a></dt>
 <dd><p>Export BIP-85 entropy derived from the loaded key. Needs applet 4.0.</p>
