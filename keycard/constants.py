@@ -39,6 +39,7 @@ INS_GET_CHALLENGE: int = 0x84
 INS_SIGN: int = 0xC0
 INS_SET_PINLESS_PATH = 0xC1
 INS_EXPORT_KEY: int = 0xC2
+INS_EXPORT_LEE: int = 0xC3
 INS_LOAD_KEY: int = 0xD0
 INS_DERIVE_KEY = 0xD1
 INS_GENERATE_MNEMONIC = 0xD2
@@ -89,6 +90,7 @@ class LoadKeyType(IntEnum):
     ECC = 0x01
     EXTENDED_ECC = 0x02
     BIP39_SEED = 0x03
+    LEE_SEED = 0x04
 
 
 class PairingMode(IntEnum):

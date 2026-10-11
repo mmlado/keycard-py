@@ -27,8 +27,15 @@ class SignatureResult:
         public_key: Optional[bytes] = None
     ) -> None:
         self.algo = algo
-        self.r = r.to_bytes((r.bit_length() + 7) // 8, 'big')
-        self.s = s.to_bytes((s.bit_length() + 7) // 8, 'big')
+        self.r = r.to_bytes(32, 'big')
+        self.s = s.to_bytes(32, 'big')
+        if algo == SigningAlgorithm.SCHNORR_BIP340:
+            if public_key is None:
+                raise ValueError("Public key not returned from card")
+            self.public_key = public_key
+            self.recovery_id = None
+            return
+
         if public_key is None and recovery_id is None:
             raise ValueError(
                 "Public key and recovery id not returned from card")

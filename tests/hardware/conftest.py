@@ -14,10 +14,15 @@ import pytest
 
 from keycard import constants
 from keycard.keycard import KeyCard
+from keycard.secure_channel import SecureChannelVersion
 from keycard.transport import Transport
 
 READER = os.environ.get('KEYCARD_READER')
 DESTRUCTIVE = os.environ.get('KEYCARD_DESTRUCTIVE')
+
+PIN = '123456'
+PUK = '987654321098'
+PAIRING_SECRET = 'KeycardTest'
 
 
 def pytest_collection_modifyitems(config, items):
@@ -52,4 +57,18 @@ def reset_keycard(keycard):
     if keycard.is_initialized:
         keycard.factory_reset()
     keycard.select()
+    return keycard
+
+
+@pytest.fixture
+def verified_keycard(reset_keycard):
+    keycard = reset_keycard
+    if keycard.secure_channel_version == SecureChannelVersion.V2:
+        keycard.init(PIN, PUK)
+    else:
+        keycard.init(PIN, PUK, PAIRING_SECRET)
+        keycard.select()
+        keycard.pair(PAIRING_SECRET)
+        keycard.open_secure_channel()
+    keycard.verify_pin(PIN)
     return keycard

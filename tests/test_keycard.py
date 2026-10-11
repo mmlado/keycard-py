@@ -425,9 +425,28 @@ def test_sign_current_key():
         mock_sign.assert_called_once_with(
             card,
             digest,
-            constants.DerivationOption.CURRENT
+            constants.DerivationOption.CURRENT,
+            constants.SigningAlgorithm.ECDSA_SECP256K1,
+            tweak=None
         )
         assert result == "signed"
+
+
+def test_sign_schnorr_with_tweak():
+    with patch("keycard.keycard.commands.sign") as mock_sign:
+        card = KeyCard(MagicMock())
+        digest = b"\xAA" * 32
+        tweak = b"\x01" * 32
+
+        card.sign(digest, constants.SigningAlgorithm.SCHNORR_BIP340, tweak)
+
+        mock_sign.assert_called_once_with(
+            card,
+            digest,
+            constants.DerivationOption.CURRENT,
+            constants.SigningAlgorithm.SCHNORR_BIP340,
+            tweak=tweak
+        )
 
 
 def test_sign_with_path():
@@ -443,7 +462,9 @@ def test_sign_with_path():
             card,
             digest,
             constants.DerivationOption.DERIVE,
+            constants.SigningAlgorithm.ECDSA_SECP256K1,
             derivation_path=path,
+            tweak=None
         )
         assert result == "sig"
 
@@ -461,7 +482,9 @@ def test_sign_with_path_make_current():
             card,
             digest,
             constants.DerivationOption.DERIVE_AND_MAKE_CURRENT,
+            constants.SigningAlgorithm.ECDSA_SECP256K1,
             derivation_path=path,
+            tweak=None
         )
         assert result == "sig"
 
@@ -480,6 +503,17 @@ def test_sign_pinless():
             constants.DerivationOption.PINLESS
         )
         assert result == "sig"
+
+
+def test_export_lee():
+    with patch("keycard.keycard.commands.export_lee") as mock_export_lee:
+        card = KeyCard(MagicMock())
+        mock_export_lee.return_value = "keys"
+
+        result = card.export_lee("m/44'/60'")
+
+        mock_export_lee.assert_called_once_with(card, "m/44'/60'")
+        assert result == "keys"
 
 
 def test_load_key_bip39_seed():

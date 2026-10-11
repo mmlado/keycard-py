@@ -1,3 +1,4 @@
+import pytest
 from cryptography.hazmat.primitives.asymmetric.utils import (
     decode_dss_signature,
 )
@@ -20,9 +21,9 @@ def test_signature_result_with_minimal_r_s():
         public_key=public_key,
         recovery_id=0
     )
-    assert sig.r == b'\x01'
-    assert sig.s == b'\x01'
-    assert sig.signature == b'\x01\x01'
+    assert sig.r == (1).to_bytes(32, 'big')
+    assert sig.s == (1).to_bytes(32, 'big')
+    assert len(sig.signature) == 64
 
 
 def test_signature_result_with_large_r_s():
@@ -38,8 +39,8 @@ def test_signature_result_with_large_r_s():
         public_key=public_key,
         recovery_id=2
     )
-    assert sig.r == r.to_bytes((r.bit_length() + 7) // 8, 'big')
-    assert sig.s == s.to_bytes((s.bit_length() + 7) // 8, 'big')
+    assert sig.r == r.to_bytes(32, 'big')
+    assert sig.s == s.to_bytes(32, 'big')
     assert sig.recovery_id == 2
 
 
@@ -60,6 +61,30 @@ def test_signature_result_signature_der_property():
 
     assert sig.signature_der == bytes.fromhex('300702017b020201c8')
     assert decode_dss_signature(sig.signature_der) == (r, s)
+
+
+def test_signature_result_schnorr_has_no_recovery_id():
+    public_key = b'\x04' + b'\x01' * 64
+    sig = SignatureResult(
+        digest=b'\x01' * 32,
+        algo=SigningAlgorithm.SCHNORR_BIP340,
+        r=1,
+        s=2,
+        public_key=public_key
+    )
+    assert sig.signature == (1).to_bytes(32, 'big') + (2).to_bytes(32, 'big')
+    assert sig.public_key == public_key
+    assert sig.recovery_id is None
+
+
+def test_signature_result_schnorr_requires_public_key():
+    with pytest.raises(ValueError, match="Public key not returned"):
+        SignatureResult(
+            digest=b'\x01' * 32,
+            algo=SigningAlgorithm.SCHNORR_BIP340,
+            r=1,
+            s=2
+        )
 
 
 def test_signature_result_repr_exists():

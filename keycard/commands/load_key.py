@@ -25,15 +25,18 @@ def load_key(
         public_key: Optional ECC public key (tag 0x80).
         private_key: ECC private key (tag 0x81).
         chain_code: Optional chain code (tag 0x82, only for extended key).
-        bip39_seed: 64-byte BIP39 seed (only for key_type=BIP39_SEED).
+        bip39_seed: 16 to 64-byte binary seed (only for key_type BIP39_SEED,
+            or LEE_SEED to also derive the LEE keys on applet 4.0).
 
     Returns:
         UID of the loaded key (SHA-256 of public key).
     """
-    if key_type == constants.LoadKeyType.BIP39_SEED:
-        if bip39_seed is None or len(bip39_seed) != 64:
-            raise ValueError(
-                "BIP39 seed must be 64 bytes for key_type = BIP39_SEED")
+    if key_type in (
+        constants.LoadKeyType.BIP39_SEED,
+        constants.LoadKeyType.LEE_SEED
+    ):
+        if bip39_seed is None or not 16 <= len(bip39_seed) <= 64:
+            raise ValueError("Seed must be 16 to 64 bytes")
         data = bip39_seed
     else:
         if private_key is None:

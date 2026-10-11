@@ -50,3 +50,6 @@ _Avoid_: duress PIN, alt PIN, decoy PIN
 **Current Key**:
 On 3.x, the derived key the card keeps selected between commands for signing and export. Does not exist on 4.x, where every operation names its derivation path.
 _Avoid_: active key
+
+**LEE Mode**:
+On 4.x, the state a card enters when a seed is loaded for LEE; the card then derives LEE keys alongside its BIP-32 keys. Loading any other key leaves it.
