@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Schnorr (BIP-340) signing on applet 4.0: `sign(..., algorithm=SigningAlgorithm.SCHNORR_BIP340, tweak=...)`; the 32-byte tweak defaults to zeros
 - LEE on applet 4.0: `LoadKeyType.LEE_SEED` loads a seed in LEE mode and `export_lee(path)` returns its ASK, NSK, VSK_D and VSK_Z keys
 - EXPORT BIP85 on applet 4.0: `export_bip85(path, length)` returns 1 to 64 bytes of BIP-85 entropy
+- ECDH on applet 4.0: `ecdh(public_key, path)` returns the raw shared secret with the key at a NIP-44 or EIP-1581 path
 
 ### Changed
 
